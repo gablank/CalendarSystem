@@ -1,4 +1,4 @@
-package gruppe30.fellesprosjekt;
+package fellesprosjekt.gruppe30;
 
 
 public class Application {
