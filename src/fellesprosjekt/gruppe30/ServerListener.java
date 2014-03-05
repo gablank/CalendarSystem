@@ -9,7 +9,7 @@ import java.net.Socket;
 // ServerNetwork sn = new ServerNetwork();
 // sn.start();
 
-public class ServerNetwork extends Network {
+public class ServerListener implements Runnable {
 	int listener_port = 11223;
 
 	@Override
@@ -61,40 +61,50 @@ public class ServerNetwork extends Network {
 
 }
 
-class ClientHandler implements Runnable {
-	Socket connectionSocket;
-	boolean running = true;
+class ClientHandler extends Network {
 	
 	public ClientHandler(Socket connectionSocket) {
-		this.connectionSocket = connectionSocket;
+		this.connection_socket = connectionSocket;
 	}
 
 	@Override
 	public void run() {
 		System.out.println("Hello from Clienthandler!");
 		
-		while(running){
+		try{
+			set_up_streams();
 			
-			//
-			// do stuff
-			//
-			
-			try {
-				connectionSocket.getOutputStream().write("closing...\n".getBytes());
-				System.out.println("sent message");
-
-				Thread.sleep(100);
+			while(running){
 				
-				connectionSocket.close();
-			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//
+				// do stuff
+				//
+				
+				String message = read_line();
+				
+				if(message != null && message.compareTo("closing...") == 0){
+					try {
+						connection_socket.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+//				connection_socket.getOutputStream().write("closing...\n".getBytes());
+//				System.out.println("sent message");
+//
+//				Thread.sleep(100);
+
+				
+				if(connection_socket.isClosed()){
+					System.out.println("Clienthandler: connection is closed, terminating...");
+					running = false;
+				}
 			}
-			
-			if(connectionSocket.isClosed()){
-				System.out.println("Clienthandler: connection is closed, terminating...");
-				running = false;
-			}
+		} catch (IOException e) {
+			System.out.println("ClientNetwork: Failed to set up connection.");
+			e.printStackTrace();
 		}
 	}
 	

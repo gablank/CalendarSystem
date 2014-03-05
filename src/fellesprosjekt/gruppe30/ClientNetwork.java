@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
@@ -13,37 +14,31 @@ import java.net.Socket;
 //cn.functions_not_yet_implemented();
 
 public class ClientNetwork extends Network {
-	Socket socket;
-	
 	int serverPort = 11223;
 	String serverAddress = "localhost";
 	
-	boolean running = true;
-	
-	BufferedReader incoming_stream;
 
 	@Override
 	public void run() {
 		try {
-			socket = new Socket(serverAddress, serverPort);
-			System.out.println("ClientNetwork: Connected to server: " + socket.getRemoteSocketAddress());
+			connection_socket = new Socket(serverAddress, serverPort);
+			System.out.println("ClientNetwork: Connected to server: " + connection_socket.getRemoteSocketAddress());
 			
-			incoming_stream = new BufferedReader( new InputStreamReader(socket.getInputStream()));
+			if(connection_socket == null){
+				System.out.println("connection_socket was null, terminating");
+				running = false;
+				
+			}else{
+				set_up_streams();
+			}
 			
 			while(running){
+				
+				System.out.println("ClientNetwork: closing connection");
+				close_connection();
 
 				
-				String message = incoming_stream.readLine();		//note: only reads to next newline
-				
-				if(message != null){
-					System.out.println("got: " + message);
-				}
-				
-				if(message.compareTo("closing...") == 0){ 
-					socket.close();
-				}
-				
-				if(socket.isClosed()){
+				if(connection_socket.isClosed()){
 					System.out.println("ClientNetwork: connection is closed, terminating...");
 					running = false;
 				}
@@ -56,4 +51,20 @@ public class ClientNetwork extends Network {
 		
 		System.out.println("ClientNetwork: run() is returning.");
 	}
+	
+	public void close_connection(){
+		send("closing...");
+		
+		try {
+			connection_socket.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
+	
+	
 }
