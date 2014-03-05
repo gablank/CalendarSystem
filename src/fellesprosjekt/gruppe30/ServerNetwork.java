@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+// intended use:
+//
+// ServerNetwork sn = new ServerNetwork();
+// sn.start();
+
 public class ServerNetwork extends Network {
 	int listener_port = 11223;
 
@@ -70,7 +75,21 @@ class ClientHandler implements Runnable {
 		
 		while(running){
 			
-			System.out.println("connected?: " + connectionSocket.isConnected());
+			//
+			// do stuff
+			//
+			
+			try {
+				connectionSocket.getOutputStream().write("closing...\n".getBytes());
+				System.out.println("sent message");
+
+				Thread.sleep(100);
+				
+				connectionSocket.close();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			if(connectionSocket.isClosed()){
 				System.out.println("Clienthandler: connection is closed, terminating...");
