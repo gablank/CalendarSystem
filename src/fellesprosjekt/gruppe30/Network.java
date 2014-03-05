@@ -94,7 +94,6 @@ public abstract class Network implements Runnable {
 		return null;
 	}
 	
-	
 	public void close_connection(){
 		running = false;
 		send("closing...");
