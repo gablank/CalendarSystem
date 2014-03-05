@@ -14,35 +14,35 @@ public class User {
 		this.email = email;
 	}
 
-	public String getFirstname() {
+	public String get_firstname() {
 		return firstname;
 	}
 
-	public void setFirstname(String firstname) {
+	public void set_firstname(String firstname) {
 		this.firstname = firstname;
 	}
 
-	public String getLastname() {
+	public String get_lastname() {
 		return lastname;
 	}
 
-	public void setLastname(String lastname) {
+	public void set_lastname(String lastname) {
 		this.lastname = lastname;
 	}
 
-	public String getUsername() {
+	public String get_username() {
 		return username;
 	}
 
-	public void setUsername(String username) {
+	public void set_username(String username) {
 		this.username = username;
 	}
 
-	public String getEmail() {
+	public String get_email() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void set_email(String email) {
 		this.email = email;
 	}
 	
