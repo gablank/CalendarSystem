@@ -10,7 +10,7 @@
     </list>
     <ignored path="CalendarSystem.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394145737807" ignored="false" />
+    <file path="/Dummy.txt" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394145806510" ignored="false" />
     <file path="/Database.java" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394145443549" ignored="false" />
     <file path="/a.sql" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394134119570" ignored="false" />
     <file path="/dummy.sql" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394134119570" ignored="false" />
@@ -96,10 +96,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Attendant.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Attendant.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Attendant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="39" selection-start="325" selection-end="325" vertical-scroll-proportion="0.0">
+            <state line="18" column="50" selection-start="432" selection-end="432" vertical-scroll-proportion="0.45454547">
               <folding />
             </state>
           </provider>
@@ -108,7 +108,7 @@
       <file leaf-file-name="MeetingRoom.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/MeetingRoom.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="56" selection-start="292" selection-end="292" vertical-scroll-proportion="0.0">
+            <state line="22" column="66" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -117,7 +117,7 @@
       <file leaf-file-name="Appointment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Appointment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="68" selection-start="1379" selection-end="1379" vertical-scroll-proportion="0.0">
+            <state line="78" column="79" selection-start="1959" selection-end="1959" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -125,10 +125,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="User.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="56" selection-start="729" selection-end="729" vertical-scroll-proportion="0.6969697">
+            <state line="32" column="56" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -155,10 +155,10 @@
         <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java" />
         <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Alarm.java" />
         <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/UserAppointment.java" />
-        <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/MeetingRoom.java" />
-        <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Appointment.java" />
-        <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Attendant.java" />
         <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Controller/Database.java" />
+        <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Appointment.java" />
+        <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/MeetingRoom.java" />
+        <option value="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Attendant.java" />
       </list>
     </option>
   </component>
@@ -502,7 +502,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented all needed insert methods." />
+    <option name="LAST_COMMIT_MESSAGE" value="Restructured constructors, added list of attendants, owner, id and last_updated fields." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -519,6 +519,7 @@
     <MESSAGE value="Added IDEA project files, and MySQL connector for java." />
     <MESSAGE value="Workspace file didnt get included somehow" />
     <MESSAGE value="Implemented all needed insert methods." />
+    <MESSAGE value="Restructured constructors, added list of attendants, owner, id and last_updated fields." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -591,18 +592,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///usr/lib/jvm/java-7-oracle/src.zip!/java/sql/Timestamp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="11" selection-start="3760" selection-end="3760" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/initialize_database.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="30" selection-start="1452" selection-end="1452" vertical-scroll-proportion="-0.025252525">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Appointment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="68" selection-start="1379" selection-end="1379" vertical-scroll-proportion="0.0">
+        <state line="78" column="79" selection-start="1959" selection-end="1959" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-7-oracle/src.zip!/java/sql/Timestamp.java">
+    <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/MeetingRoom.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="11" selection-start="3760" selection-end="3760" vertical-scroll-proportion="0.33333334">
+        <state line="22" column="66" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="56" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -618,28 +640,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Attendant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="39" selection-start="325" selection-end="325" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/MeetingRoom.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="56" selection-start="292" selection-end="292" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/initialize_database.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="30" selection-start="1452" selection-end="1452" vertical-scroll-proportion="-0.025252525">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="56" selection-start="729" selection-end="729" vertical-scroll-proportion="0.6969697">
+        <state line="18" column="50" selection-start="432" selection-end="432" vertical-scroll-proportion="0.45454547">
           <folding />
         </state>
       </provider>
