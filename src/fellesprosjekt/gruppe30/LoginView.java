@@ -21,14 +21,15 @@ public class LoginView extends JPanel{
 	
 	public LoginView(){
 		GridBagLayout gridBag = new GridBagLayout();
-		//setLayout(gridBag); // får feil, ingen anelse hvorfor.
+		setLayout(gridBag); // får feil, ingen anelse hvorfor.
 		GridBagConstraints c_left = new GridBagConstraints();
 		GridBagConstraints c_right = new GridBagConstraints();
 		
-		c_left.weightx = 0.0;
+		//c_left.insets = new Insets(5,5,5,5);
+		c_left.weightx = 0.5;
 		c_left.gridx = 0;
 		
-		c_right.weightx = 1.0;
+		c_right.weightx = 0.5;
 		c_right.gridx = 1;
 
 		
@@ -58,7 +59,8 @@ public class LoginView extends JPanel{
 		add(passwordTextField, c_right);
 		
 		c_left.gridy = 2;
-		c_left.gridy = 2;
+		c_right.gridy = 2;
+		c_left.insets = new Insets(0,10,0,0);
 		add(login_button, c_left);
 		add(quit_button, c_right);
 		
@@ -71,7 +73,7 @@ public class LoginView extends JPanel{
 		frame.add(panel);
 		frame.pack();
 		frame.setVisible(true);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(350, 125);
 	}
