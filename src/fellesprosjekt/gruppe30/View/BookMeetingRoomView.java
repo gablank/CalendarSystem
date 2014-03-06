@@ -62,7 +62,7 @@ public class BookMeetingRoomView extends JPanel {
 		c_middle.gridy = 0;
 		c_left.gridy = 0;
 		
-		c_right.gridheight = 5; // gjør at Scrollpanel får egen størrelse
+		c_right.gridheight = 5; // gjï¿½r at Scrollpanel fï¿½r egen stï¿½rrelse
 		add(room_list, c_left);
 		c_right.gridheight = 1;
 		c_middle.gridheight = 1;
