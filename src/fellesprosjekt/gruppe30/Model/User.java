@@ -5,6 +5,7 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String username;
+    private String password;
 	private String email;
 	
 	public User(String firstname, String lastname, String username, String email) {
@@ -13,6 +14,10 @@ public class User {
 		this.username = username;
 		this.email = email;
 	}
+
+    public String get_name() {
+        return this.get_firstname() + " " + this.get_lastname();
+    }
 
 	public String get_firstname() {
 		return firstname;
@@ -30,13 +35,21 @@ public class User {
 		this.lastname = lastname;
 	}
 
-	public String get_username() {
-		return username;
-	}
+    public String get_username() {
+        return username;
+    }
 
-	public void set_username(String username) {
-		this.username = username;
-	}
+    public void set_username(String username) {
+        this.username = username;
+    }
+
+    public String get_password() {
+        return password;
+    }
+
+    public void set_password(String password) {
+        this.password = password;
+    }
 
 	public String get_email() {
 		return email;
@@ -45,6 +58,4 @@ public class User {
 	public void set_email(String email) {
 		this.email = email;
 	}
-	
-	
 }
