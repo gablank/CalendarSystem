@@ -10,16 +10,24 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 
+CREATE TABLE IF NOT EXISTS meeting_room (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  capacity INT
+);
+
+
 CREATE TABLE IF NOT EXISTS appointments (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  password CHAR(20),
-  name CHAR(50),
-  email CHAR(50)
+  name CHAR(100),
+  description CHAR(200),
+  start_date DATETIME,
+  end_date DATETIME,
+  place CHAR(50),
+  last_updated DATETIME
 );
 
 
 CREATE TABLE IF NOT EXISTS alarms (
-  id INT AUTO_INCREMENT PRIMARY KEY,
   appointment_id INT,
   user_id INT,
   time DATETIME,
@@ -28,12 +36,15 @@ CREATE TABLE IF NOT EXISTS alarms (
     ON DELETE CASCADE,
   FOREIGN KEY (user_id)
     REFERENCES users(id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+  PRIMARY KEY (appointment_id, user_id)
 );
 
 
-CREATE TABLE IF NOT EXISTS meeting_room (
-  room_number INT AUTO_INCREMENT PRIMARY KEY,
-  capacity INT
+CREATE TABLE IF NOT EXISTS meeting_room_reservation (
+  meeting_room_id INT,
+  appointment_id INT,
+  PRIMARY KEY (meeting_room_id, appointment_id)
 );
+
 
