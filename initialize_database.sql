@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS alarms (
 
 CREATE TABLE IF NOT EXISTS meeting_room_reservations (
   meeting_room_id INT NOT NULL,
-  appointment_id INT NOT NULL,
+  appointment_id  INT NOT NULL,
 
   FOREIGN KEY (appointment_id)
     REFERENCES appointments(id)
@@ -81,11 +81,11 @@ CREATE TABLE IF NOT EXISTS meeting_room_reservations (
 
 
 CREATE TABLE IF NOT EXISTS user_appointments (
-  user_id INT NOT NULL,
-  appointment_id INT NOT NULL,
-  status INT NOT NULL,
-  last_checked DATETIME NOT NULL,
-  is_visible BOOL NOT NULL,
+  user_id        INT      NOT NULL,
+  appointment_id INT      NOT NULL,
+  status         INT      NOT NULL,
+  last_checked   DATETIME NOT NULL,
+  is_visible     BOOL     NOT NULL,
 
   FOREIGN KEY (user_id)
     REFERENCES users(id)
