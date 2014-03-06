@@ -6,10 +6,11 @@ import java.net.Socket;
 
 // intended use:
 //
-// ServerNetwork sn = new ServerNetwork();
-// sn.start();
+//ServerListener sn = new ServerListener();
+//Thread thread = new Thread(sn);
+//thread.start();
 
-public class ServerNetwork extends Network {
+public class ServerListener implements Runnable {
 	int listener_port = 11223;
 
 	@Override
@@ -61,41 +62,13 @@ public class ServerNetwork extends Network {
 
 }
 
-class ClientHandler implements Runnable {
-	Socket connectionSocket;
-	boolean running = true;
+class ClientHandler extends Network {
 	
 	public ClientHandler(Socket connectionSocket) {
-		this.connectionSocket = connectionSocket;
+		this.connection_socket = connectionSocket;
+		System.out.println("ClientHandler created.");
 	}
 
-	@Override
-	public void run() {
-		System.out.println("Hello from Clienthandler!");
-		
-		while(running){
-			
-			//
-			// do stuff
-			//
-			
-			try {
-				connectionSocket.getOutputStream().write("closing...\n".getBytes());
-				System.out.println("sent message");
 
-				Thread.sleep(100);
-				
-				connectionSocket.close();
-			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			if(connectionSocket.isClosed()){
-				System.out.println("Clienthandler: connection is closed, terminating...");
-				running = false;
-			}
-		}
-	}
 	
 }

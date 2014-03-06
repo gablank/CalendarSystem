@@ -1,59 +1,36 @@
 package fellesprosjekt.gruppe30;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 //intended use:
 //
 //ClientNetwork cn = new ClientNetwork();
-//cn.start();
+//Thread thread = new Thread(cn);
+//thread.start();
 //...
 //cn.functions_not_yet_implemented();
 
 public class ClientNetwork extends Network {
-	Socket socket;
-	
 	int serverPort = 11223;
 	String serverAddress = "localhost";
 	
-	boolean running = true;
 	
-	BufferedReader incoming_stream;
-
 	@Override
 	public void run() {
 		try {
-			socket = new Socket(serverAddress, serverPort);
-			System.out.println("ClientNetwork: Connected to server: " + socket.getRemoteSocketAddress());
-			
-			incoming_stream = new BufferedReader( new InputStreamReader(socket.getInputStream()));
-			
-			while(running){
-
-				
-				String message = incoming_stream.readLine();		//note: only reads to next newline
-				
-				if(message != null){
-					System.out.println("got: " + message);
-				}
-				
-				if(message.compareTo("closing...") == 0){ 
-					socket.close();
-				}
-				
-				if(socket.isClosed()){
-					System.out.println("ClientNetwork: connection is closed, terminating...");
-					running = false;
-				}
-			}
+			connection_socket = new Socket(serverAddress, serverPort);
+			System.out.println("ClientNetwork: Connected to server: " + connection_socket.getRemoteSocketAddress());
 			
 		} catch (IOException e) {
-			System.out.println("ClientNetwork: Failed to set up connection.");
+			System.out.println("ClientNetwork: Failed to set up connection, terminating...");
 			e.printStackTrace();
+			return;
 		}
-		
-		System.out.println("ClientNetwork: run() is returning.");
+		super.run();
 	}
 }
