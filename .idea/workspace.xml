@@ -4,12 +4,11 @@
     <list default="true" id="bbc302c6-6801-4cf5-8352-35db76a58b6d" name="Default" comment="Workspace file didnt get included somehow">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Appointment.java" afterPath="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Appointment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/MeetingRoom.java" afterPath="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/MeetingRoom.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java" afterPath="$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java" />
     </list>
     <ignored path="CalendarSystem.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394145953770" ignored="false" />
+    <file path="/Dummy.txt" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394146011825" ignored="false" />
     <file path="/Database.java" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394145443549" ignored="false" />
     <file path="/a.sql" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394134119570" ignored="false" />
     <file path="/dummy.sql" changelist="bbc302c6-6801-4cf5-8352-35db76a58b6d" time="1394134119570" ignored="false" />
@@ -95,10 +94,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Attendant.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Attendant.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Attendant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="65" selection-start="464" selection-end="464" vertical-scroll-proportion="0.5050505">
+            <state line="19" column="60" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -124,10 +123,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="User.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="56" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0">
+            <state line="17" column="54" selection-start="456" selection-end="456" vertical-scroll-proportion="0.3181818">
               <folding />
             </state>
           </provider>
@@ -501,7 +500,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed Status into a class for easy insertion into database. Removed alarm_enabled boolean, using alarm_clock != null as indicator of whether the alarm is set or not from now on.&#10;&#10;Changed hidden_from_calendar to visible_on_calendar to more accurately depict how the database looks.&#10;&#10;Added appointment to constructor." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added id, removed room_nmr (they're practically the same thing, but id is used in other models)." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -520,6 +519,7 @@
     <MESSAGE value="Implemented all needed insert methods." />
     <MESSAGE value="Restructured constructors, added list of attendants, owner, id and last_updated fields." />
     <MESSAGE value="Changed Status into a class for easy insertion into database. Removed alarm_enabled boolean, using alarm_clock != null as indicator of whether the alarm is set or not from now on.&#10;&#10;Changed hidden_from_calendar to visible_on_calendar to more accurately depict how the database looks.&#10;&#10;Added appointment to constructor." />
+    <MESSAGE value="Added id, removed room_nmr (they're practically the same thing, but id is used in other models)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -622,13 +622,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="56" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Controller/Database.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="291" column="10" selection-start="10471" selection-end="10471" vertical-scroll-proportion="0.0">
@@ -640,7 +633,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/Attendant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="65" selection-start="464" selection-end="464" vertical-scroll-proportion="0.5050505">
+        <state line="19" column="60" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fellesprosjekt/gruppe30/Model/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="54" selection-start="456" selection-end="456" vertical-scroll-proportion="0.3181818">
           <folding />
         </state>
       </provider>
