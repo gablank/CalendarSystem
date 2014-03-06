@@ -15,11 +15,11 @@ public class Attendant {
 		this.user = user;
 		alarm = false;
 		alarm_clock.setTime(appointment.get_start().getTime() - 15*60*1000);
-		status = status.NOT_ANSWERED;
+		status = Status.NOT_ANSWERED;
 		hidden_from_calendar = false;
 	}
 	
-	public static enum Status {
+	public enum Status {
 		ATTENDTING, NOT_ATTENDING, NOT_ANSWERED
 	}
 	

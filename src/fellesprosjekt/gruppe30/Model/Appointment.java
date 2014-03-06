@@ -22,7 +22,7 @@ public class Appointment {
 		} else this.room = room;
 	}
 
-	public String get_itle() {
+	public String get_title() {
 		return title;
 	}
 
@@ -66,7 +66,7 @@ public class Appointment {
 		return room;
 	}
 
-	public void setRoom(MeetingRoom room) {
+	public void set_room(MeetingRoom room) {
 		this.room = room;
 	}
 	
