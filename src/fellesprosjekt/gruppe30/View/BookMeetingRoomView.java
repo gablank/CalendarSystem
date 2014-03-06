@@ -102,6 +102,7 @@ public class BookMeetingRoomView extends JPanel {
 		BookMeetingRoomView panel = new BookMeetingRoomView();
 		frame.add(panel);
 		frame.setVisible(true);
+		frame.setSize(500,500);
 
 	}
 
