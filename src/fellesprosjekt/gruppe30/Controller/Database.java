@@ -39,6 +39,8 @@ public class Database {
             e.printStackTrace();
             return -1;
         }
+        // TODO: Add get id of last operation
+        return 0;
     }
 
     public ResultSet query(String query) {
