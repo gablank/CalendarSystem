@@ -3,12 +3,12 @@ CREATE DATABASE IF NOT EXISTS calendar_system;
 USE calendar_system;
 
 CREATE TABLE IF NOT EXISTS users (
-  id INT AUTO_INCREMENT NOT NULL,
-  username CHAR(20) NOT NULL,
-  password CHAR(64) NOT NULL,  # sha256
+  id         INT      NOT NULL AUTO_INCREMENT,
+  username   CHAR(20) NOT NULL,
+  password   CHAR(64) NOT NULL,  # sha256
   first_name CHAR(50) NOT NULL,
-  last_name CHAR(50) NOT NULL,
-  email CHAR(50) NOT NULL,
+  last_name  CHAR(50) NOT NULL,
+  email      CHAR(50) NOT NULL,
 
   UNIQUE (username),
   UNIQUE (email),
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 
 CREATE TABLE IF NOT EXISTS meeting_rooms (
-  id INT AUTO_INCREMENT NOT NULL,
+  id       INT NOT NULL AUTO_INCREMENT,
   capacity INT NOT NULL,
 
   PRIMARY KEY (id)
@@ -25,14 +25,14 @@ CREATE TABLE IF NOT EXISTS meeting_rooms (
 
 
 CREATE TABLE IF NOT EXISTS appointments (
-  id INT AUTO_INCREMENT NOT NULL,
-  name CHAR(100) NOT NULL,
-  description CHAR(200) NOT NULL,
-  start_date DATETIME NOT NULL,
-  end_date DATETIME NOT NULL,
-  place CHAR(50) NULL,
-  last_updated DATETIME NOT NULL,
-  owner_id INT NOT NULL,
+  id           INT       NOT NULL AUTO_INCREMENT,
+  name         CHAR(100) NOT NULL,
+  description  CHAR(200) NOT NULL,
+  start_date   DATETIME  NOT NULL,
+  end_date     DATETIME  NOT NULL,
+  place        CHAR(50)  NULL,
+  last_updated DATETIME  NOT NULL,
+  owner_id     INT       NOT NULL,
 
   FOREIGN KEY (owner_id)
     REFERENCES users(id)
@@ -44,9 +44,9 @@ CREATE TABLE IF NOT EXISTS appointments (
 
 
 CREATE TABLE IF NOT EXISTS alarms (
-  appointment_id INT NOT NULL,
-  user_id INT NOT NULL,
-  time DATETIME NOT NULL,
+  appointment_id INT      NOT NULL,
+  user_id        INT      NOT NULL,
+  time           DATETIME NOT NULL,
 
   FOREIGN KEY (appointment_id)
     REFERENCES appointments(id)
