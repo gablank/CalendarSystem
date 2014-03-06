@@ -25,10 +25,11 @@ public class LoginView extends JPanel{
 		GridBagConstraints c_left = new GridBagConstraints();
 		GridBagConstraints c_right = new GridBagConstraints();
 		
-		//c_left.insets = new Insets(5,5,5,5);
+		c_left.insets = new Insets(10,0,0,0);
 		c_left.weightx = 0.5;
 		c_left.gridx = 0;
 		
+		c_right.insets = new Insets(10,0,0,0);
 		c_right.weightx = 0.5;
 		c_right.gridx = 1;
 
@@ -60,7 +61,6 @@ public class LoginView extends JPanel{
 		
 		c_left.gridy = 2;
 		c_right.gridy = 2;
-		c_left.insets = new Insets(0,10,0,0);
 		add(login_button, c_left);
 		add(quit_button, c_right);
 		
