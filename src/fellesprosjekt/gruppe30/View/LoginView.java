@@ -3,25 +3,28 @@ package fellesprosjekt.gruppe30.View;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.util.EventListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.xml.bind.Marshaller.Listener;
 
-
-//blir veldig kompakt i toppen, m� f� inn luft.
 public class LoginView extends JPanel{
-	private JLabel username_label, password_label;
+	private JLabel username_label, password_label, spaceLabel;
 	private JTextField usernameTextField;
 	private JPasswordField passwordTextField;
 	private JButton login_button, quit_button;
+	private JFrame frame;
 	
 	public LoginView(){
 		GridBagLayout gridBag = new GridBagLayout();
-		setLayout(gridBag); // f�r feil, ingen anelse hvorfor.
+		setLayout(gridBag);
 		GridBagConstraints c_left = new GridBagConstraints();
 		GridBagConstraints c_right = new GridBagConstraints();
 		
@@ -34,7 +37,7 @@ public class LoginView extends JPanel{
 		c_right.gridx = 1;
 
 		
-		
+		spaceLabel = new JLabel("      ");
 		// username
 		username_label = new JLabel("Username:");
 		usernameTextField = new JTextField(20);
@@ -59,22 +62,40 @@ public class LoginView extends JPanel{
 		add(password_label, c_left);
 		add(passwordTextField, c_right);
 		
-		c_left.gridy = 2;
 		c_right.gridy = 2;
-		add(login_button, c_left);
-		add(quit_button, c_right);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+		buttonPanel.add(login_button);
+		buttonPanel.add(spaceLabel);
+		buttonPanel.add(quit_button);
+		add(buttonPanel, c_right);
+		
+		frame = new JFrame("Calendar System");
+		frame.add(this);
+		frame.setVisible(false);
+		frame.setResizable(false);
+		frame.setSize(350, 140);
+		frame.setLocationRelativeTo(null);
 		
 		
 		
 	}
+	
+	public void setVisible(boolean visible) {
+		this.frame.setVisible(visible);
+	}
+	
+	public void addListener(EventListener controller) {
+		this.addActionListener((ActionListener) controller);
+	}
+	
+	public void addActionListener(ActionListener controller) {
+		login_button.addActionListener(controller);
+		quit_button.addActionListener(controller);
+	}
+	
 	public static void main(String[] args) {
-		JFrame frame = new JFrame();
 		LoginView panel = new LoginView();
-		frame.add(panel);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setResizable(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(350, 125);
+		panel.setVisible(true);
 	}
 }

@@ -7,11 +7,13 @@ import java.util.Properties;
 
 
 public class Database {
+    private static Database instance = null;
     private Connection connection;
     private final String username = "cs_user";
     private final String password = "cs_password";
 
-    public Database() {
+    // Stop instantiation
+    private Database() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch(ClassNotFoundException e) {
@@ -31,6 +33,13 @@ public class Database {
             e.printStackTrace();
             System.out.println("Could not get database connection.");
         }
+    }
+
+    public static Database getInstance() {
+        if(instance == null) {
+            instance = new Database();
+        }
+        return instance;
     }
 
     /**
@@ -58,7 +67,7 @@ public class Database {
             ResultSet user_id = preparedStatement.getGeneratedKeys();
 
             /**
-             * Moves the cursor froward one row from its current position.
+             * Moves the cursor forward one row from its current position.
              * A <code>ResultSet</code> cursor is initially positioned
              * before the first row; the first call to the method
              * <code>next</code> makes the first row the current row; the
@@ -186,7 +195,7 @@ public class Database {
             ResultSet appointment_id = preparedStatement.getGeneratedKeys();
 
             /**
-             * Moves the cursor froward one row from its current position.
+             * Moves the cursor forward one row from its current position.
              * A <code>ResultSet</code> cursor is initially positioned
              * before the first row; the first call to the method
              * <code>next</code> makes the first row the current row; the
@@ -229,7 +238,7 @@ public class Database {
             ResultSet meeting_room_id = preparedStatement.getGeneratedKeys();
 
             /**
-             * Moves the cursor froward one row from its current position.
+             * Moves the cursor forward one row from its current position.
              * A <code>ResultSet</code> cursor is initially positioned
              * before the first row; the first call to the method
              * <code>next</code> makes the first row the current row; the

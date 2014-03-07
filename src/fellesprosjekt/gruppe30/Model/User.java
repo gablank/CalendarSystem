@@ -1,5 +1,7 @@
 package fellesprosjekt.gruppe30.Model;
 
+import java.security.MessageDigest;
+
 public class User {
     private int id;
 	private String firstname;
@@ -12,9 +14,9 @@ public class User {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.username = username;
-        // TODO: Password should be hashed with sha-256 here
-        this.password = password;
 		this.email = email;
+		set_password(password);
+			
 	}
 
     public int get_id() {
@@ -58,7 +60,17 @@ public class User {
     }
 
     public void set_password(String password) {
-        this.password = password;
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] password_hash = digest.digest(password.getBytes("UTF-8")); 
+			StringBuffer sb = new StringBuffer();
+			for(byte b : password_hash) {
+				sb.append(Integer.toHexString(b & 0xff));
+			}
+			this.password = sb.toString();
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
     }
 
 	public String get_email() {
@@ -67,5 +79,12 @@ public class User {
 
 	public void set_email(String email) {
 		this.email = email;
+	}
+	
+	public static void main(String[] args) {
+		User me = new User("Emil", "Heien", "uberjew", "password", "email");
+		System.out.print("ID: " + me.get_id() + "\nName: " + me.get_firstname() + " " + 
+		me.get_lastname() + "\nUsername: " + me.get_username() + "\nEmail: " + me.get_email() + 
+		"\nPassword hash: " + me.get_password());
 	}
 }
