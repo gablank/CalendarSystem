@@ -94,8 +94,18 @@ public class LoginView extends JPanel{
 		quit_button.addActionListener(controller);
 	}
 	
+	public String get_username() {
+		return usernameTextField.getText();
+	}
+	
+	public String get_password() {
+		return passwordTextField.getText();
+	}
+	
 	public static void main(String[] args) {
 		LoginView panel = new LoginView();
 		panel.setVisible(true);
+		panel.passwordTextField.setText("abc");
+		System.out.println(panel.passwordTextField.getText());
 	}
 }
