@@ -58,7 +58,7 @@ public class Database {
             ResultSet user_id = preparedStatement.getGeneratedKeys();
 
             /**
-             * Moves the cursor froward one row from its current position.
+             * Moves the cursor forward one row from its current position.
              * A <code>ResultSet</code> cursor is initially positioned
              * before the first row; the first call to the method
              * <code>next</code> makes the first row the current row; the
@@ -186,7 +186,7 @@ public class Database {
             ResultSet appointment_id = preparedStatement.getGeneratedKeys();
 
             /**
-             * Moves the cursor froward one row from its current position.
+             * Moves the cursor forward one row from its current position.
              * A <code>ResultSet</code> cursor is initially positioned
              * before the first row; the first call to the method
              * <code>next</code> makes the first row the current row; the
@@ -229,7 +229,7 @@ public class Database {
             ResultSet meeting_room_id = preparedStatement.getGeneratedKeys();
 
             /**
-             * Moves the cursor froward one row from its current position.
+             * Moves the cursor forward one row from its current position.
              * A <code>ResultSet</code> cursor is initially positioned
              * before the first row; the first call to the method
              * <code>next</code> makes the first row the current row; the
