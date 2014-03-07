@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ public class LoginView extends JPanel{
 	private JTextField usernameTextField;
 	private JPasswordField passwordTextField;
 	private JButton login_button, quit_button;
+	private JFrame frame;
 	
 	public LoginView(){
 		GridBagLayout gridBag = new GridBagLayout();
@@ -68,9 +70,9 @@ public class LoginView extends JPanel{
 		buttonPanel.add(quit_button);
 		add(buttonPanel, c_right);
 		
-		JFrame frame = new JFrame("Calendar System");
+		frame = new JFrame("Calendar System");
 		frame.add(this);
-		frame.setVisible(true);
+		frame.setVisible(false);
 		frame.setResizable(false);
 		frame.setSize(350, 140);
 		frame.setLocationRelativeTo(null);
@@ -79,7 +81,11 @@ public class LoginView extends JPanel{
 		
 	}
 	
-	public void addListener(Listener controller) {
+	public void setVisible(boolean visible) {
+		this.frame.setVisible(visible);
+	}
+	
+	public void addListener(EventListener controller) {
 		this.addActionListener((ActionListener) controller);
 	}
 	
@@ -90,5 +96,6 @@ public class LoginView extends JPanel{
 	
 	public static void main(String[] args) {
 		LoginView panel = new LoginView();
+		panel.setVisible(true);
 	}
 }

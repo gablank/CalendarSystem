@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.EventListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ public class BookMeetingRoomView extends JPanel {
 	private JLabel start_label, end_label, date_label, room_label, capacity_label, spaceLabel;
 	private JScrollPane room_list_scroll;
 	private JButton ok_button, quit_button;
+	private JFrame frame;
 	
 	public BookMeetingRoomView() {
 		// gridbag og gridconstraints deklarasjon.
@@ -155,17 +157,21 @@ public class BookMeetingRoomView extends JPanel {
 		ok_quit_panel.add(quit_button, c_right);
 		add(ok_quit_panel, c_right);
 		
-		JFrame frame = new JFrame("Reserve Room");
+		frame = new JFrame("Reserve Room");
 		frame.add(this);
-		frame.setVisible(true);
+		frame.setVisible(false);
 		frame.setSize(500, 250);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		
 	}
 	
+	public void setVisible(boolean visible) {
+		this.frame.setVisible(visible);
+	}
+	
 	//listener FEEEST
-	 public void addListener (Listener controller) {
+	 public void addListener (EventListener controller) {
 		 this.addActionListener((ActionListener) controller);
 		 this.addListSelectionListener((ListSelectionListener) controller);
 		 this.addKeyListener((KeyListener) controller);
@@ -188,6 +194,7 @@ public class BookMeetingRoomView extends JPanel {
 	
 	public static void main(String[] args) {
 		BookMeetingRoomView frame = new BookMeetingRoomView();
+		frame.setVisible(true);
 	}
 
 }
