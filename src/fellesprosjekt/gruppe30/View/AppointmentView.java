@@ -6,7 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,6 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.text.MaskFormatter;
+import javax.xml.bind.Marshaller.Listener;
 
 import fellesprosjekt.gruppe30.Model.User;
 
@@ -53,23 +58,34 @@ public class AppointmentView extends JPanel implements ActionListener {
 		select_room = new JButton("Select...");
 		select_room.setPreferredSize(new Dimension(100,25));
 		
-		//TODO formatering på JTextFields
-		//String date = new SimpleDateFormat("DD.MM.YY").format(new Date());
-		date_field = new JFormattedTextField();
-		date_field.setPreferredSize(new Dimension(100,20));
-		date_field.setText("DD.MM.YY");
+		MaskFormatter dateformatter;
+		try {
+			dateformatter = new MaskFormatter("##.##.##");
+			date_field = new JFormattedTextField(dateformatter);
+			date_field.setPreferredSize(new Dimension(100,20));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
-		start_time_field = new JFormattedTextField();
-		start_time_field.setPreferredSize(new Dimension(50,20));
-		start_time_field.setText("HH:MM");
-		
-		end_time_field = new JFormattedTextField();
-		end_time_field.setPreferredSize(new Dimension(50,20));
-		end_time_field.setText("HH:MM");
-		
-		alarm_time_field = new JFormattedTextField();
-		alarm_time_field.setPreferredSize(new Dimension(100,20));
-		alarm_time_field.setText("alarm time");
+		MaskFormatter timeformatter;
+		try {
+			timeformatter = new MaskFormatter("##:##");
+			start_time_field = new JFormattedTextField(timeformatter);
+			start_time_field.setPreferredSize(new Dimension(50,20));
+			end_time_field = new JFormattedTextField(timeformatter);
+			end_time_field.setPreferredSize(new Dimension(50,20));
+			alarm_time_field = new JFormattedTextField(timeformatter);
+			alarm_time_field.setPreferredSize(new Dimension(100,20));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// TODO fix Labels
+		/* JLabel date_label = new JLabel("DD.MM.YY");
+		JLabel start_time_label = new JLabel("from");
+		JLabel end_time_label = new JLabel("to");
+		date_field.add(date_label, c_left);
+		start_time_field.add(start_time_label, c_left);
+		end_time_field.add(end_time_label, c_left); */
 		
 		use_meeting_room = new JCheckBox("Use meeting room");
 		hide_from_calendar = new JCheckBox("Hide from calendar");
@@ -162,13 +178,42 @@ public class AppointmentView extends JPanel implements ActionListener {
 		save_delete.add(cancel_button, c_right);
 		add(save_delete, c_right);
 
-		//TODO Legg til  listeners osv
 		listrenderer = new PersonRenderer();
 		participants.setCellRenderer(listrenderer);
+		
+		//testing purposes, REMOVE this following code later:
 		use_meeting_room.addActionListener(this);
-
+		//end of testing Code
 	}
 	
+	public void addListener(Listener controller){
+		this.addActionListener((ActionListener)controller);
+		this.addKeyListener((KeyListener) controller);
+		this.addListSelectionListener((ListSelectionListener) controller);
+	}
+	public void addActionListener(ActionListener controller){
+		select_room.addActionListener(controller);
+		add_button.addActionListener(controller);
+		remove_button.addActionListener(controller);
+		save_button.addActionListener(controller);
+		delete_button.addActionListener(controller);
+		cancel_button.addActionListener(controller);
+		participant_list.addActionListener(controller);
+		hide_from_calendar.addActionListener(controller);
+		set_alarm.addActionListener(controller);	
+	}
+	public void addKeyListener(KeyListener controller){
+		title_field.addKeyListener(controller);
+		description.addKeyListener(controller);
+		meeting_room_field.addKeyListener(controller);
+		date_field.addKeyListener(controller);
+		start_time_field.addKeyListener(controller);
+		end_time_field.addKeyListener(controller);
+		alarm_time_field.addKeyListener(controller);		
+	}
+	public void addListSelectionListener(ListSelectionListener controller){
+		participants.addListSelectionListener(controller);
+	}
 	
 
 
