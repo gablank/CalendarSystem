@@ -11,8 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-
-//blir veldig kompakt i toppen, m� f� inn luft.
 public class LoginView extends JPanel{
 	private JLabel username_label, password_label;
 	private JTextField usernameTextField;
@@ -21,7 +19,7 @@ public class LoginView extends JPanel{
 	
 	public LoginView(){
 		GridBagLayout gridBag = new GridBagLayout();
-		setLayout(gridBag); // f�r feil, ingen anelse hvorfor.
+		setLayout(gridBag);
 		GridBagConstraints c_left = new GridBagConstraints();
 		GridBagConstraints c_right = new GridBagConstraints();
 		
@@ -75,6 +73,6 @@ public class LoginView extends JPanel{
 		frame.setVisible(true);
 		frame.setResizable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(350, 125);
+		frame.setSize(350, 150);
 	}
 }
