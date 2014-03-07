@@ -24,6 +24,7 @@ public class ViewAppointmentView extends AppointmentView{
 
 	public static void main(String[] args) {
 		ViewAppointmentView view = new ViewAppointmentView();
+		view.setVisible(true);
 	}
 
 }
