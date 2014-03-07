@@ -206,7 +206,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 
 		c_right.gridy = 8;
 		c_right.gridx = 2;
-		c_right.anchor=GridBagConstraints.EAST;
+		c_right.anchor=GridBagConstraints.CENTER;
 		
 		JPanel save_delete = new JPanel();
 		save_delete.add(save_button);
