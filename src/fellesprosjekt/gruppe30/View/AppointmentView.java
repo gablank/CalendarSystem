@@ -1,5 +1,6 @@
 package fellesprosjekt.gruppe30.View;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,7 +32,6 @@ import javax.xml.bind.Marshaller.Listener;
 import fellesprosjekt.gruppe30.Model.User;
 
 public class AppointmentView extends JPanel implements ActionListener {
-	//TODO generell formatering på utseendet
 	private PersonRenderer listrenderer;
 	private JTextField title_field, meeting_room_field;
 	private JTextArea description;
@@ -54,7 +54,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		description.setText("Description");
 		description.setBorder(title_field.getBorder());
 		
-		meeting_room_field = new JTextField("Place", 8);
+		meeting_room_field = new JTextField("Place", 13);
 		select_room = new JButton("Select...");
 		select_room.setPreferredSize(new Dimension(100,25));
 		
@@ -79,16 +79,10 @@ public class AppointmentView extends JPanel implements ActionListener {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		// TODO fix Labels
-		/* JLabel date_label = new JLabel("DD.MM.YY");
-		JLabel start_time_label = new JLabel("from");
-		JLabel end_time_label = new JLabel("to");
-		date_field.add(date_label, c_left);
-		start_time_field.add(start_time_label, c_left);
-		end_time_field.add(end_time_label, c_left); */
+
 		
 		use_meeting_room = new JCheckBox("Use meeting room");
-		hide_from_calendar = new JCheckBox("Hide from calendar");
+		hide_from_calendar = new JCheckBox("Hide from calendar             ");
 		set_alarm = new JCheckBox("Alarm");
 		
 		participant_list = new JComboBox();
@@ -122,14 +116,32 @@ public class AppointmentView extends JPanel implements ActionListener {
 		add(description, c_left);
 		c_left.gridy = 2;
 		
-		add(date_field, c_left);
-		c_left.gridy = 3;
-		
 		JPanel date_panel = new JPanel();
-		date_panel.add(start_time_field, c_left);
-		date_panel.add(end_time_field, c_left);
+		JLabel date_label = new JLabel("DD.MM.YY");
+		date_panel.setLayout(new BoxLayout(date_panel, BoxLayout.Y_AXIS));
+		date_panel.add(date_label, c_left);
+		date_panel.add(date_field, c_left);
 		add(date_panel, c_left);
+		c_left.gridy = 3;
+
+		JPanel from_panel = new JPanel();
+		from_panel.setLayout(new BoxLayout(from_panel, BoxLayout.Y_AXIS));
+		JLabel start_time_label = new JLabel("from");
+		from_panel.add(start_time_label, c_left);
+	    from_panel.add(start_time_field, c_left);
+		
+		JPanel to_panel = new JPanel();
+		to_panel.setLayout(new BoxLayout(to_panel, BoxLayout.Y_AXIS));
+		JLabel end_time_label = new JLabel("to");
+		to_panel.add(end_time_label, c_left);
+		to_panel.add(end_time_field, c_left);
+		
+		JPanel time_panel = new JPanel();
+		time_panel.add(from_panel, c_left);
+		time_panel.add(to_panel, c_left);
+		add(time_panel, c_left);
 		c_left.gridy = 4;
+		
 		
 		add(use_meeting_room, c_left);
 		c_left.gridy = 5;
