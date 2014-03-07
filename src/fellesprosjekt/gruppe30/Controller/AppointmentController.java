@@ -16,22 +16,23 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
     }
 
     public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-        String cmd = actionEvent.getActionCommand();
+        String cmd = actionEvent.getActionCommand().toLowerCase();
 
-        if(cmd == "Save") {
+        System.out.println(cmd);
+        if(cmd.equals("save")) {
             // Save
-        } else if(cmd == "Cancel") {
-            client.close("Appointment");
-        } else if(cmd == "Cancel") {
-
-        } else if(cmd == "Cancel") {
-
-        } else if(cmd == "Cancel") {
-
-        } else if(cmd == "Cancel") {
-
-        } else if(cmd == "Select...") {
+        } else if(cmd.equals("select...")) {
             client.open("BookMeetingRoom");
+        } else if(cmd.equals("cancel")) {
+            client.close("Appointment");
+        } else if(cmd.equals("cancel")) {
+
+        } else if(cmd.equals("cancel")) {
+
+        } else if(cmd.equals("cancel")) {
+
+        } else if(cmd.equals("cancel")) {
+
         }
     }
 

@@ -7,7 +7,7 @@ import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
 import fellesprosjekt.gruppe30.View.LoginView;
 
 import javax.swing.*;
-import javax.xml.bind.Marshaller;
+
 
 public class Client {
     private final LoginView loginView;
@@ -25,7 +25,7 @@ public class Client {
 
 
         this.close("all");
-        this.open("login");
+        this.open("appointment");
     }
 
     public void open(String view) {
@@ -38,13 +38,14 @@ public class Client {
 
     public void setViewVisible(String view, boolean state) {
         view = view.toLowerCase();
-        if(view == "all" || view == "login") {
+
+        if(view.equals("all") || view.equals("login")) {
             this.loginView.setVisible(state);
-        } else if(view == "all" || view == "week") {
+        } else if(view.equals("all") || view.equals("week")) {
             // TODO
-        } else if(view == "all" || view == "appointment") {
+        } else if(view.equals("all") || view.equals("appointment")) {
             this.appointmentView.setVisible(state);
-        } else if(view == "all" || view == "bookmeetingroom") {
+        } else if(view.equals("all") || view.equals("bookmeetingroom")) {
             this.bookMeetingRoomView.setVisible(state);
         }
     }
