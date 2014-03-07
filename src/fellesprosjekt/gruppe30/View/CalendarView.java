@@ -19,8 +19,8 @@ public class CalendarView extends JPanel {
 	private JButton add_button, remove_button, new_appointment_button, log_out_button, left_arrow_button, right_arrow_button;
 	private JComboBox users;
 	private JLabel weekday_label, week_label, show_calendars_for;
-	private JList day_appointments;
-	private JScrollPane scrollpane;
+	private JList day_appointments, tue_appointments;
+	private JScrollPane scrollpane, scrollpane2;
 	private JFrame frame;
 	
 	public CalendarView() {
@@ -29,22 +29,22 @@ public class CalendarView extends JPanel {
 		
 		//bestem utseende på hver knapp
 		add_button = new JButton("Add");
-		add_button.setPreferredSize(new Dimension(50, 25));
+		add_button.setPreferredSize(new Dimension(60, 30));
 		
 		remove_button = new JButton("Remove");
-		remove_button.setPreferredSize(new Dimension(50,25));
-		
-		new_appointment_button = new JButton("New Appointment");
-		new_appointment_button.setPreferredSize(new Dimension(80, 40));
+		remove_button.setPreferredSize(new Dimension(80, 30));
+	
+		new_appointment_button = new JButton("New Appt...");
+		new_appointment_button.setPreferredSize(new Dimension(120, 30));
 		
 		log_out_button = new JButton("Log out");
 		log_out_button.setPreferredSize(new Dimension(80, 25));
 		
-		left_arrow_button = new JButton("<-");
-		left_arrow_button.setPreferredSize(new Dimension(30, 20));
+		left_arrow_button = new JButton("<---");
+		left_arrow_button.setPreferredSize(new Dimension(60, 30));
 		
-		right_arrow_button = new JButton("->");
-		right_arrow_button.setPreferredSize(new Dimension(30, 20));
+		right_arrow_button = new JButton("--->");
+		right_arrow_button.setPreferredSize(new Dimension(60, 30));
 		
 		users = new JComboBox();
 		users.setPreferredSize(new Dimension(100, 25));
@@ -52,10 +52,15 @@ public class CalendarView extends JPanel {
 		show_calendars_for = new JLabel("Show calendars for:");
 		
 		day_appointments = new JList<AppointmentSummaryView>();
+		tue_appointments = new JList<AppointmentSummaryView>();
 
 		scrollpane = new JScrollPane(day_appointments);
 		scrollpane.setFocusable(true);
 		scrollpane.setPreferredSize(new Dimension(150, 450));
+		
+		scrollpane2 = new JScrollPane(tue_appointments);
+		scrollpane2.setFocusable(true);
+		scrollpane2.setPreferredSize(new Dimension(150, 450));
 		
 		// bygg opp en gridbag
 		c.gridx = 0;
@@ -66,13 +71,26 @@ public class CalendarView extends JPanel {
 		arrow_panel.add(left_arrow_button);
 		arrow_panel.add(right_arrow_button);
 		add(arrow_panel, c);
-		//
-		//stuff goes here later
-		//
+
 		c.gridy = 1;
+		add(show_calendars_for, c);
+		c.gridy = 2;
+		add(users, c);
+		c.gridy = 3;
+		JPanel add_remove = new JPanel();
+		add_remove.add(add_button);
+		add_remove.add(remove_button);
+		add(add_remove, c);
+		c.gridy = 4;
+		add(new_appointment_button, c);
+		c.gridy = 7;
 		add(log_out_button, c);
 		c.gridx = 1;
-		add(day_appointments, c);
+		c.gridy = 1;
+		c.gridheight= 7;
+		add(scrollpane, c);
+		c.gridx = 2;
+		add(scrollpane2, c);
 
 		
 		

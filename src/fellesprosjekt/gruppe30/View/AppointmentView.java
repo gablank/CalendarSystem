@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.EventListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -231,7 +232,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 	}
 	
 	//add listeners to all components
-	public void addListener(Listener controller){
+	public void addListener(EventListener controller){
 		this.addActionListener((ActionListener)controller);
 		this.addKeyListener((KeyListener) controller);
 		this.addListSelectionListener((ListSelectionListener) controller);
