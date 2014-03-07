@@ -160,6 +160,7 @@ public class BookMeetingRoomView extends JPanel {
 		frame.setVisible(true);
 		frame.setSize(500, 250);
 		frame.setResizable(true);
+		frame.setLocationRelativeTo(null);
 		
 	}
 	
