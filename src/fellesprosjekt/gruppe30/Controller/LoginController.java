@@ -6,7 +6,7 @@ public class LoginController {
 	
 	public String get_credentials() {
 		
-		
+	    return "";
 	}
 	
 }
