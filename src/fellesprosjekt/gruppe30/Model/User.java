@@ -10,8 +10,7 @@ public class User {
     private String password;
 	private String email;
 	
-	public User(int id, String firstname, String lastname, String username, String password, String email) {
-		this.id = id;
+	public User(String firstname, String lastname, String username, String password, String email) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.username = username;
@@ -83,7 +82,7 @@ public class User {
 	}
 	
 	public static void main(String[] args) {
-		User me = new User(37, "Emil", "Heien", "uberjew", "password", "email");
+		User me = new User("Emil", "Heien", "uberjew", "password", "email");
 		System.out.print("ID: " + me.get_id() + "\nName: " + me.get_firstname() + " " + 
 		me.get_lastname() + "\nUsername: " + me.get_username() + "\nEmail: " + me.get_email() + 
 		"\nPassword hash: " + me.get_password());
