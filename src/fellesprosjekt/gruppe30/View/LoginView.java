@@ -16,6 +16,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.xml.bind.Marshaller.Listener;
 
+import fellesprosjekt.gruppe30.Controller.LoginController;
+
 public class LoginView extends JPanel{
 	private JLabel username_label, password_label, spaceLabel, notifier;
 	private JTextField usernameTextField;
@@ -94,7 +96,7 @@ public class LoginView extends JPanel{
 		this.frame.setVisible(visible);
 	}
 	
-	public void addListener(EventListener controller) {
+	public void addListener(LoginController controller) {
 		this.addActionListener((ActionListener) controller);
 	}
 	
