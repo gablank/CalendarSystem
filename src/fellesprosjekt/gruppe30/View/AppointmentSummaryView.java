@@ -17,7 +17,7 @@ import fellesprosjekt.gruppe30.Model.User;
 
 public class AppointmentSummaryView extends JPanel {
 
-	private JLabel title_label, time_label, yes_label, no_label, creator_label, unanswered ;
+	private JLabel titleLabel, timeLabel, yesLabel, noLabel, creatorLabel, unanswered ;
 	private JFrame frame;
 	private JComboBox<User> participants;
 	
@@ -26,14 +26,14 @@ public class AppointmentSummaryView extends JPanel {
 		setLayout(new GridBagLayout());
 		
 		
-		title_label = new JLabel ("Lunch");
-		time_label = new JLabel("12:15 - 12:45");
-		yes_label = new JLabel ("Y");
-		yes_label.setPreferredSize(new Dimension(40,30));
-		yes_label.setBorder(BorderFactory.createLineBorder(Color.black));
-		no_label = new JLabel("N");
-		no_label.setPreferredSize(new Dimension(40,30));
-		no_label.setBorder(BorderFactory.createLineBorder(Color.black));
+		titleLabel = new JLabel ("Lunch");
+		timeLabel = new JLabel("12:15 - 12:45");
+		yesLabel = new JLabel ("Y");
+		yesLabel.setPreferredSize(new Dimension(40,30));
+		yesLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+		noLabel = new JLabel("N");
+		noLabel.setPreferredSize(new Dimension(40,30));
+		noLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		unanswered = new JLabel("?");
 		unanswered.setPreferredSize(new Dimension(40,30));
 		unanswered.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -45,32 +45,32 @@ public class AppointmentSummaryView extends JPanel {
 		c.gridy = 0;
 		c.insets = new Insets(0,0,0,0);
 		
-		JPanel header_panel = new JPanel();
-		header_panel.setLayout(new BoxLayout(header_panel, BoxLayout.Y_AXIS));
-		header_panel.add(title_label);
-		header_panel.add(time_label);
-		header_panel.setPreferredSize(new Dimension(150,40));
-		header_panel.setBackground(Color.BLUE);
-		add(header_panel, c);
+		JPanel headerPanel = new JPanel();
+		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+		headerPanel.add(titleLabel);
+		headerPanel.add(timeLabel);
+		headerPanel.setPreferredSize(new Dimension(150,40));
+		headerPanel.setBackground(Color.BLUE);
+		add(headerPanel, c);
 		c.gridy = 1;
 		
-		JPanel status_panel = new JPanel();
-		status_panel.add(yes_label);
-		yes_label.setHorizontalAlignment(yes_label.CENTER);
-		status_panel.add(no_label);
-		no_label.setHorizontalAlignment(no_label.CENTER);
-		status_panel.add(unanswered);
+		JPanel statusPanel = new JPanel();
+		statusPanel.add(yesLabel);
+		yesLabel.setHorizontalAlignment(yesLabel.CENTER);
+		statusPanel.add(noLabel);
+		noLabel.setHorizontalAlignment(noLabel.CENTER);
+		statusPanel.add(unanswered);
 		unanswered.setHorizontalAlignment(unanswered.CENTER);
-		status_panel.setPreferredSize(new Dimension(150,40));
-		status_panel.setBackground(Color.GREEN);
-		add(status_panel, c);
+		statusPanel.setPreferredSize(new Dimension(150,40));
+		statusPanel.setBackground(Color.GREEN);
+		add(statusPanel, c);
 		c.gridy = 2;
 		
-		JPanel participant_panel = new JPanel();
-		participant_panel.add(participants);
-		participant_panel.setPreferredSize(new Dimension(150,40));
-		participant_panel.setBackground(Color.pink);
-		add(participant_panel, c);
+		JPanel participantPanel = new JPanel();
+		participantPanel.add(participants);
+		participantPanel.setPreferredSize(new Dimension(150,40));
+		participantPanel.setBackground(Color.pink);
+		add(participantPanel, c);
 		
 		frame = new JFrame();
 		frame.add(this);

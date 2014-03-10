@@ -53,19 +53,19 @@ public class Client {
             this.bookMeetingRoomView.setVisible(state);
         }
     }
-	public AppointmentView get_appointment_view() {
+	public AppointmentView getAppointmentView() {
 		return appointmentView;
 	}
 
-	public BookMeetingRoomView get_book_meeting_room_view() {
+	public BookMeetingRoomView getBookMeetingRoomView() {
 		return bookMeetingRoomView;
 	}
 
-	public AppointmentController get_appointment_controller() {
+	public AppointmentController getAppointmentController() {
 		return appointmentController;
 	}
 	
-	public LoginView get_login_view() {
+	public LoginView getLoginView() {
 		return this.loginView;
 	}
 

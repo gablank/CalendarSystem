@@ -7,13 +7,13 @@ public class LoginController {
 	
 	public LoginController(Client client) {
 		this.client = client;
-		client.get_login_view().addListener(this);
+		client.getLoginView().addListener(this);
 	}
 	
-	public boolean check_credentials() {
-		String username = client.get_login_view().get_username();
-		String password = client.get_login_view().get_password();
-		if (is_valid(username, password)) {
+	public boolean checkCredentials() {
+		String username = client.getLoginView().getUsername();
+		String password = client.getLoginView().getPassword();
+		if (isValid(username, password)) {
 			/*
 			 * Set user information
 			 */
@@ -22,7 +22,7 @@ public class LoginController {
 	}
 	
 	
-	private boolean is_valid(String username, String password) {
+	private boolean isValid(String username, String password) {
 		return true;
 	}
 	
@@ -30,9 +30,9 @@ public class LoginController {
         String cmd = actionEvent.getActionCommand();
         
         if (cmd.equalsIgnoreCase("login")) {
-        	if (check_credentials()) {
+        	if (checkCredentials()) {
         		client.open("CalendarView");
-        	} else client.get_login_view().view_notifier(); // Shows wrong username/password notifier
+        	} else client.getLoginView().viewNotifier(); // Shows wrong username/password notifier
         } else if (cmd.equalsIgnoreCase("quit")) {
         	
         }

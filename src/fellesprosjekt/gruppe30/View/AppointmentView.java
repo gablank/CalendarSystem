@@ -34,50 +34,50 @@ import fellesprosjekt.gruppe30.Model.User;
 
 public class AppointmentView extends JPanel implements ActionListener {
 	protected PersonRenderer listrenderer;
-	protected JTextField title_field;
-	protected JTextField meeting_room_field;
+	protected JTextField titleField;
+	protected JTextField meetingRoomField;
 	protected JTextArea description;
-	protected JFormattedTextField date_field;
-	protected JFormattedTextField start_time_field;
-	protected JFormattedTextField end_time_field;
-	protected JFormattedTextField alarm_time_field;
-	protected JCheckBox use_meeting_room;
-	protected JCheckBox hide_from_calendar;
-	protected JCheckBox set_alarm;
-	protected JComboBox<User> participant_list;
+	protected JFormattedTextField dateField;
+	protected JFormattedTextField startTimeField;
+	protected JFormattedTextField endTimeField;
+	protected JFormattedTextField alarmTimeField;
+	protected JCheckBox useMeetingRoom;
+	protected JCheckBox hideFromCalendar;
+	protected JCheckBox setAlarm;
+	protected JComboBox<User> participantList;
 	protected JList<User> participants;
-	protected JButton add_button;
-	protected JButton remove_button;
-	protected JButton save_button;
-	protected JButton delete_button;
-	protected JButton cancel_button;
-	protected JButton select_room;
+	protected JButton addButton;
+	protected JButton removeButton;
+	protected JButton saveButton;
+	protected JButton deleteButton;
+	protected JButton cancelButton;
+	protected JButton selectRoom;
 	protected JScrollPane scrollpane;
-	protected JLabel participant_label, date_label, start_time_label, end_time_label, alarm_label;
+	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame frame;
 	
 	public AppointmentView() {
-		GridBagConstraints c_left = new GridBagConstraints() ;
-		GridBagConstraints c_right = new GridBagConstraints() ;
+		GridBagConstraints cLeft = new GridBagConstraints() ;
+		GridBagConstraints cRight = new GridBagConstraints() ;
 		setLayout(new GridBagLayout());
 		
-		//Bestem utseende på hver knapp
-		title_field = new JTextField("Title", 13);
+		//Bestem utseende pï¿½ hver knapp
+		titleField = new JTextField("Title", 13);
 		description = new JTextArea(5,13);
 		description.setText("Description");
-		description.setBorder(title_field.getBorder());
+		description.setBorder(titleField.getBorder());
 		
-		meeting_room_field = new JTextField("Place", 13);
-		select_room = new JButton("Select...");
-		select_room.setPreferredSize(new Dimension(100,25));
+		meetingRoomField = new JTextField("Place", 13);
+		selectRoom = new JButton("Select...");
+		selectRoom.setPreferredSize(new Dimension(100,25));
 		
 		MaskFormatter dateformatter;
 		try {
 			dateformatter = new MaskFormatter("##.##.####");
-			date_field = new JFormattedTextField(dateformatter);
-			date_field.setPreferredSize(new Dimension(100,20));
-			date_field.setValue("03.07.2014");
-			date_field.setHorizontalAlignment(date_field.CENTER);
+			dateField = new JFormattedTextField(dateformatter);
+			dateField.setPreferredSize(new Dimension(100,20));
+			dateField.setValue("03.07.2014");
+			dateField.setHorizontalAlignment(dateField.CENTER);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -85,140 +85,140 @@ public class AppointmentView extends JPanel implements ActionListener {
 		MaskFormatter timeformatter;
 		try {
 			timeformatter = new MaskFormatter("##:##");
-			start_time_field = new JFormattedTextField(timeformatter);
-			start_time_field.setPreferredSize(new Dimension(50,20));
-			start_time_field.setValue("08:40");
-			start_time_field.setHorizontalAlignment(date_field.CENTER);
-			end_time_field = new JFormattedTextField(timeformatter);
-			end_time_field.setPreferredSize(new Dimension(50,20));
-			end_time_field.setValue("10:40");
-			end_time_field.setHorizontalAlignment(date_field.CENTER);
-			alarm_time_field = new JFormattedTextField(timeformatter);
-			alarm_time_field.setPreferredSize(new Dimension(40,20));
-			alarm_time_field.setValue("00:30");
-			alarm_time_field.setHorizontalAlignment(date_field.CENTER);
+			startTimeField = new JFormattedTextField(timeformatter);
+			startTimeField.setPreferredSize(new Dimension(50,20));
+			startTimeField.setValue("08:40");
+			startTimeField.setHorizontalAlignment(dateField.CENTER);
+			endTimeField = new JFormattedTextField(timeformatter);
+			endTimeField.setPreferredSize(new Dimension(50,20));
+			endTimeField.setValue("10:40");
+			endTimeField.setHorizontalAlignment(dateField.CENTER);
+			alarmTimeField = new JFormattedTextField(timeformatter);
+			alarmTimeField.setPreferredSize(new Dimension(40,20));
+			alarmTimeField.setValue("00:30");
+			alarmTimeField.setHorizontalAlignment(dateField.CENTER);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
 		
-		use_meeting_room = new JCheckBox("Use meeting room");
-		hide_from_calendar = new JCheckBox("Hide from calendar                                             ");
-		set_alarm = new JCheckBox("Alarm");
+		useMeetingRoom = new JCheckBox("Use meeting room");
+		hideFromCalendar = new JCheckBox("Hide from calendar                                             ");
+		setAlarm = new JCheckBox("Alarm");
 		
-		participant_list = new JComboBox<User>();
-		participant_list.setPreferredSize(new Dimension(100, 25));
+		participantList = new JComboBox<User>();
+		participantList.setPreferredSize(new Dimension(100, 25));
 		participants = new JList<User>();
 		
 		scrollpane = new JScrollPane(participants);
 		scrollpane.setFocusable(true);
 		scrollpane.setPreferredSize(new Dimension(150, 150));
-		participant_label = new JLabel("              Participants");
+		participantLabel = new JLabel("              Participants");
 		
-		add_button = new JButton("Add        ");
-		add_button.setPreferredSize(new Dimension(80,25));
+		addButton = new JButton("Add        ");
+		addButton.setPreferredSize(new Dimension(80,25));
 		
-		remove_button = new JButton("Remove");
-		remove_button.setPreferredSize(new Dimension(80,25));
+		removeButton = new JButton("Remove");
+		removeButton.setPreferredSize(new Dimension(80,25));
 		
-		save_button = new JButton("Save");
-		delete_button = new JButton("Delete");
-		cancel_button = new JButton("Cancel");
+		saveButton = new JButton("Save");
+		deleteButton = new JButton("Delete");
+		cancelButton = new JButton("Cancel");
 		
 
 		//Bygg opp en gridbag
-		c_left.gridx = 0;
-		c_left.gridy = 0;
-		c_left.insets = new Insets(5,5,5,5);
+		cLeft.gridx = 0;
+		cLeft.gridy = 0;
+		cLeft.insets = new Insets(5,5,5,5);
 		
-		add(title_field, c_left);
-		c_left.gridy = 1;
+		add(titleField, cLeft);
+		cLeft.gridy = 1;
 		
-		add(description, c_left);
-		c_left.gridy = 2;
+		add(description, cLeft);
+		cLeft.gridy = 2;
 		
-		JPanel date_panel = new JPanel();
-		date_label = new JLabel("DD.MM.YYYY");
-		date_panel.setLayout(new BoxLayout(date_panel, BoxLayout.Y_AXIS));
-		date_panel.add(date_label);
-		date_panel.add(date_field);
-		add(date_panel, c_left);
-		c_left.gridy = 3;
+		JPanel datePanel = new JPanel();
+		dateLabel = new JLabel("DD.MM.YYYY");
+		datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
+		datePanel.add(dateLabel);
+		datePanel.add(dateField);
+		add(datePanel, cLeft);
+		cLeft.gridy = 3;
 
-		JPanel from_panel = new JPanel();
-		from_panel.setLayout(new BoxLayout(from_panel, BoxLayout.Y_AXIS));
-		start_time_label = new JLabel("From");
-		from_panel.add(start_time_label);
-	    from_panel.add(start_time_field);
+		JPanel fromPanel = new JPanel();
+		fromPanel.setLayout(new BoxLayout(fromPanel, BoxLayout.Y_AXIS));
+		startTimeLabel = new JLabel("From");
+		fromPanel.add(startTimeLabel);
+	    fromPanel.add(startTimeField);
 		
-		JPanel to_panel = new JPanel();
-		to_panel.setLayout(new BoxLayout(to_panel, BoxLayout.Y_AXIS));
-		end_time_label = new JLabel("To");
-		to_panel.add(end_time_label);
-		to_panel.add(end_time_field);
+		JPanel toPanel = new JPanel();
+		toPanel.setLayout(new BoxLayout(toPanel, BoxLayout.Y_AXIS));
+		endTimeLabel = new JLabel("To");
+		toPanel.add(endTimeLabel);
+		toPanel.add(endTimeField);
 		
-		JPanel time_panel = new JPanel();
-		time_panel.add(from_panel);
-		time_panel.add(to_panel);
-		add(time_panel, c_left);
-		c_left.gridy = 4;
+		JPanel timePanel = new JPanel();
+		timePanel.add(fromPanel);
+		timePanel.add(toPanel);
+		add(timePanel, cLeft);
+		cLeft.gridy = 4;
 		
 		
-		add(use_meeting_room, c_left);
-		c_left.gridy = 5;
-		add(meeting_room_field,c_left);
-		add(select_room, c_left);
-		select_room.setVisible(false);
+		add(useMeetingRoom, cLeft);
+		cLeft.gridy = 5;
+		add(meetingRoomField,cLeft);
+		add(selectRoom, cLeft);
+		selectRoom.setVisible(false);
 		
-		c_right.gridx = 2;
-		c_right.gridy = 0;
-		c_right.insets = new Insets (5,5,5,5);
+		cRight.gridx = 2;
+		cRight.gridy = 0;
+		cRight.insets = new Insets (5,5,5,5);
 		
-		JPanel alarm_panel = new JPanel();
-		alarm_panel.add(set_alarm);
-		alarm_panel.add(alarm_time_field);
-		alarm_label = new JLabel("before meeting");
-		alarm_panel.add(alarm_label);
-		JPanel calendar_and_alarm = new JPanel();
-		calendar_and_alarm.setLayout(new BoxLayout(calendar_and_alarm, BoxLayout.Y_AXIS));
-		calendar_and_alarm.add(hide_from_calendar);
-		calendar_and_alarm.add(alarm_panel);
-		add(calendar_and_alarm, c_right);
-		c_right.gridy = 1;
+		JPanel alarmPanel = new JPanel();
+		alarmPanel.add(setAlarm);
+		alarmPanel.add(alarmTimeField);
+		alarmLabel = new JLabel("before meeting");
+		alarmPanel.add(alarmLabel);
+		JPanel calendarAndAlarm = new JPanel();
+		calendarAndAlarm.setLayout(new BoxLayout(calendarAndAlarm, BoxLayout.Y_AXIS));
+		calendarAndAlarm.add(hideFromCalendar);
+		calendarAndAlarm.add(alarmPanel);
+		add(calendarAndAlarm, cRight);
+		cRight.gridy = 1;
 		
-		c_right.gridheight = 3;
-		JPanel participant_panel = new JPanel();
-		participant_panel.setLayout(new BoxLayout(participant_panel, BoxLayout.Y_AXIS));
-		participant_panel.add(participant_label);
-		participant_panel.add(scrollpane);
-		add(participant_panel, c_right);
-		c_right.gridy = 4;
+		cRight.gridheight = 3;
+		JPanel participantPanel = new JPanel();
+		participantPanel.setLayout(new BoxLayout(participantPanel, BoxLayout.Y_AXIS));
+		participantPanel.add(participantLabel);
+		participantPanel.add(scrollpane);
+		add(participantPanel, cRight);
+		cRight.gridy = 4;
 		
-		JPanel add_remove = new JPanel();
-		add_remove.setLayout(new BoxLayout(add_remove, BoxLayout.Y_AXIS));
-		add_remove.add(add_button);
-		add_remove.add(remove_button);
-		JPanel person_add_remove = new JPanel();
-		person_add_remove.add(participant_list);
-		person_add_remove.add(add_remove);
-		add(person_add_remove, c_right);
+		JPanel addRemove = new JPanel();
+		addRemove.setLayout(new BoxLayout(addRemove, BoxLayout.Y_AXIS));
+		addRemove.add(addButton);
+		addRemove.add(removeButton);
+		JPanel personAddRemove = new JPanel();
+		personAddRemove.add(participantList);
+		personAddRemove.add(addRemove);
+		add(personAddRemove, cRight);
 
-		c_right.gridy = 8;
-		c_right.gridx = 2;
-		c_right.anchor=GridBagConstraints.CENTER;
+		cRight.gridy = 8;
+		cRight.gridx = 2;
+		cRight.anchor=GridBagConstraints.CENTER;
 		
-		JPanel save_delete = new JPanel();
-		save_delete.add(save_button);
-		save_delete.add(delete_button);
-		save_delete.add(cancel_button);
-		add(save_delete, c_right);
+		JPanel saveDelete = new JPanel();
+		saveDelete.add(saveButton);
+		saveDelete.add(deleteButton);
+		saveDelete.add(cancelButton);
+		add(saveDelete, cRight);
 
 		listrenderer = new PersonRenderer();
 		participants.setCellRenderer(listrenderer);
 		
 		//testing purposes, REMOVE this following code later:
-		use_meeting_room.addActionListener(this);
+		useMeetingRoom.addActionListener(this);
 		//end of testing Code
 		
 		frame = new JFrame("Appointment view");
@@ -238,24 +238,24 @@ public class AppointmentView extends JPanel implements ActionListener {
 		this.addListSelectionListener((ListSelectionListener) controller);
 	}
 	public void addActionListener(ActionListener controller){
-		select_room.addActionListener(controller);
-		add_button.addActionListener(controller);
-		remove_button.addActionListener(controller);
-		save_button.addActionListener(controller);
-		delete_button.addActionListener(controller);
-		cancel_button.addActionListener(controller);
-		participant_list.addActionListener(controller);
-		hide_from_calendar.addActionListener(controller);
-		set_alarm.addActionListener(controller);	
+		selectRoom.addActionListener(controller);
+		addButton.addActionListener(controller);
+		removeButton.addActionListener(controller);
+		saveButton.addActionListener(controller);
+		deleteButton.addActionListener(controller);
+		cancelButton.addActionListener(controller);
+		participantList.addActionListener(controller);
+		hideFromCalendar.addActionListener(controller);
+		setAlarm.addActionListener(controller);	
 	}
 	public void addKeyListener(KeyListener controller){
-		title_field.addKeyListener(controller);
+		titleField.addKeyListener(controller);
 		description.addKeyListener(controller);
-		meeting_room_field.addKeyListener(controller);
-		date_field.addKeyListener(controller);
-		start_time_field.addKeyListener(controller);
-		end_time_field.addKeyListener(controller);
-		alarm_time_field.addKeyListener(controller);		
+		meetingRoomField.addKeyListener(controller);
+		dateField.addKeyListener(controller);
+		startTimeField.addKeyListener(controller);
+		endTimeField.addKeyListener(controller);
+		alarmTimeField.addKeyListener(controller);		
 	}
 	public void addListSelectionListener(ListSelectionListener controller){
 		participants.addListSelectionListener(controller);
@@ -266,14 +266,14 @@ public class AppointmentView extends JPanel implements ActionListener {
 	@Override
 	//change room select field into button and vice versa
 	public void actionPerformed(ActionEvent e) {
-		if (use_meeting_room.isSelected()){
-			meeting_room_field.setVisible(false);
-			select_room.setVisible(true);
+		if (useMeetingRoom.isSelected()){
+			meetingRoomField.setVisible(false);
+			selectRoom.setVisible(true);
 			this.repaint();
 		}
 		else {
-			select_room.setVisible(false);
-			meeting_room_field.setVisible(true);
+			selectRoom.setVisible(false);
+			meetingRoomField.setVisible(true);
 			this.repaint();
 		}
 		

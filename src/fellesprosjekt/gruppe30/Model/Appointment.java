@@ -10,109 +10,109 @@ public class Appointment {
 	private String description;
 	private Date start;
 	private Date end;
-	private String meeting_place;
+	private String meetingPlace;
     private List<Attendant> attendants;
 	private MeetingRoom room;
-    private Date last_updated;
+    private Date lastUpdated;
     private User owner;
 
-    public Appointment(User owner, String title, String description, Date start, Date end, String meeting_place) {
-        this(owner, title, description, start, end, meeting_place, null);
+    public Appointment(User owner, String title, String description, Date start, Date end, String meetingPlace) {
+        this(owner, title, description, start, end, meetingPlace, null);
     }
 
     public Appointment(User owner, String title, String description, Date start, Date end, MeetingRoom meetingRoom) {
         this(owner, title, description, start, end, null, meetingRoom);
     }
 
-    public Appointment(User owner, String title, String description, Date start, Date end, String meeting_place, MeetingRoom room) {
+    public Appointment(User owner, String title, String description, Date start, Date end, String meetingPlace, MeetingRoom room) {
         this.owner = owner;
 		this.title = title;
 		this.description = description;
 		this.start = start;
 		this.end = end;
-        this.meeting_place = meeting_place;
+        this.meetingPlace = meetingPlace;
         this.room = room;
         attendants = new ArrayList<Attendant>();
-        this.last_updated = new Date();
+        this.lastUpdated = new Date();
     }
 
-    public void add_attendant(Attendant attendant) {
+    public void addAttendant(Attendant attendant) {
         this.attendants.add(attendant);
     }
 
-    public void remove_attendant(Attendant attendant) {
+    public void removeAttendant(Attendant attendant) {
         this.attendants.remove(attendant);
     }
 
-    public int get_id() {
+    public int getId() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-	public String get_title() {
+	public String getTitle() {
 		return title;
 	}
 
-	public void set_title(String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public String get_description() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void set_description(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public Date get_start() {
+	public Date getStart() {
 		return start;
 	}
 
-	public void set_start(Date start) {
+	public void setStart(Date start) {
 		this.start.setTime(start.getTime());
 	}
 
-	public Date get_end() {
+	public Date getEnd() {
 		return end;
 	}
 
-	public void set_end(Date end) {
+	public void setEnd(Date end) {
 		this.end.setTime(end.getTime());
 	}
 
-	public String get_meeting_place() {
-		return meeting_place;
+	public String getMeetingPlace() {
+		return meetingPlace;
 	}
 
-	public void set_meeting_place(String meeting_place) {
-		this.meeting_place = meeting_place;
+	public void setMeetingPlace(String meetingPlace) {
+		this.meetingPlace = meetingPlace;
 	}
 
-	public MeetingRoom get_room() {
+	public MeetingRoom getRoom() {
 		return room;
 	}
 
-	public void set_room(MeetingRoom room) {
+	public void setRoom(MeetingRoom room) {
 		this.room = room;
 	}
 
-    public User get_owner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void set_owner(User owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 
-    public Date get_last_updated() {
-        return last_updated;
+    public Date getLastUpdated() {
+        return lastUpdated;
     }
 
-    public void set_last_updated(Date last_updated) {
-        this.last_updated = last_updated;
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

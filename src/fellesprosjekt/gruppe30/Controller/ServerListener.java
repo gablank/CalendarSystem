@@ -11,38 +11,38 @@ import java.net.Socket;
 //thread.start();
 
 public class ServerListener implements Runnable {
-	int listener_port = 11223;
+	int listenerPort = 11223;
 
 	@Override
 	public void run() {
-		ServerSocket listener_socket = null;
+		ServerSocket listenerSocket = null;
 		
 		try {
-			listener_socket = new ServerSocket(listener_port);
-			listener_socket.setReuseAddress(true);
-			System.out.println("Server is now listening at port " + listener_port);
+			listenerSocket = new ServerSocket(listenerPort);
+			listenerSocket.setReuseAddress(true);
+			System.out.println("Server is now listening at port " + listenerPort);
 			
 		} catch (IOException e) {
-			System.out.println("ServerNetwork failed to set up listener_socket");
+			System.out.println("ServerNetwork failed to set up listenerSocket");
 			e.printStackTrace();
-			//if(listener_socket != null)
-			//	listener_socket.close();
+			//if(listenerSocket != null)
+			//	listenerSocket.close();
 			return;
 		}
 		
 		
 		boolean running = true;
 		while(running){
-			Socket connection_socket = null;
+			Socket connectionSocket = null;
 			
 			try {
-				connection_socket = listener_socket.accept();
-				if(connection_socket != null){
-					ClientHandler client_handler = new ClientHandler(connection_socket);
+				connectionSocket = listenerSocket.accept();
+				if(connectionSocket != null){
+					ClientHandler clientHandler = new ClientHandler(connectionSocket);
 					
-					System.out.println("ServerNetwork: accepted new connection from " + connection_socket.getRemoteSocketAddress());
+					System.out.println("ServerNetwork: accepted new connection from " + connectionSocket.getRemoteSocketAddress());
 					
-					Thread thread = new Thread(client_handler);
+					Thread thread = new Thread(clientHandler);
 					thread.start();
 				}
 				
@@ -54,7 +54,7 @@ public class ServerListener implements Runnable {
 		}
 		
 		try {
-			listener_socket.close();
+			listenerSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,7 +65,7 @@ public class ServerListener implements Runnable {
 class ClientHandler extends Network {
 	
 	public ClientHandler(Socket connectionSocket) {
-		this.connection_socket = connectionSocket;
+		this.connectionSocket = connectionSocket;
 		System.out.println("ClientHandler created.");
 	}
 

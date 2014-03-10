@@ -15,56 +15,56 @@ public class User {
 		this.lastname = lastname;
 		this.username = username;
 		this.email = email;
-		set_password(password);
+		setPassword(password);
 			
 	}
 
-    public int get_id() {
+    public int getId() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String get_name() {
-        return this.get_firstname() + " " + this.get_lastname();
+    public String getName() {
+        return this.getFirstname() + " " + this.getLastname();
     }
 
-	public String get_firstname() {
+	public String getFirstname() {
 		return firstname;
 	}
 
-	public void set_firstname(String firstname) {
+	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 
-	public String get_lastname() {
+	public String getLastname() {
 		return lastname;
 	}
 
-	public void set_lastname(String lastname) {
+	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
 
-    public String get_username() {
+    public String getUsername() {
         return username;
     }
 
-    public void set_username(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String get_password() {
+    public String getPassword() {
         return password;
     }
 
-    public void set_password(String password) {
+    public void setPassword(String password) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] password_hash = digest.digest(password.getBytes("UTF-8")); 
+			byte[] passwordHash = digest.digest(password.getBytes("UTF-8")); 
 			StringBuffer sb = new StringBuffer();
-			for(byte b : password_hash) {
+			for(byte b : passwordHash) {
 				sb.append(Integer.toHexString(b & 0xff));
 			}
 			this.password = sb.toString();
@@ -73,18 +73,18 @@ public class User {
 		}
     }
 
-	public String get_email() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void set_email(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 	
 	public static void main(String[] args) {
 		User me = new User("Emil", "Heien", "uberjew", "password", "email");
-		System.out.print("ID: " + me.get_id() + "\nName: " + me.get_firstname() + " " + 
-		me.get_lastname() + "\nUsername: " + me.get_username() + "\nEmail: " + me.get_email() + 
-		"\nPassword hash: " + me.get_password());
+		System.out.print("ID: " + me.getId() + "\nName: " + me.getFirstname() + " " + 
+		me.getLastname() + "\nUsername: " + me.getUsername() + "\nEmail: " + me.getEmail() + 
+		"\nPassword hash: " + me.getPassword());
 	}
 }

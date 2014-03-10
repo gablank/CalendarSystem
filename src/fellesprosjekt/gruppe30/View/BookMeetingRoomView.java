@@ -29,133 +29,133 @@ import javax.xml.bind.Marshaller.Listener;
 //TODO: skaler bedre(?), 
 public class BookMeetingRoomView extends JPanel {
 	//Salvador Fali aka Kush Wagner
-	private JList room_list; 
-	private JFormattedTextField start_text, end_text, date_text, capacity_text;
-	private JLabel start_label, end_label, date_label, room_label, capacity_label, spaceLabel;
-	private JScrollPane room_list_scroll;
-	private JButton ok_button, quit_button;
+	private JList roomList; 
+	private JFormattedTextField startText, endText, dateText, capacityText;
+	private JLabel startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
+	private JScrollPane roomListScroll;
+	private JButton okButton, quitButton;
 	private JFrame frame;
 	
 	public BookMeetingRoomView() {
 		// gridbag og gridconstraints deklarasjon.
 		GridBagLayout gridBag = new GridBagLayout();
 		setLayout(gridBag);
-		GridBagConstraints c_right = new GridBagConstraints();
-		GridBagConstraints c_middle = new GridBagConstraints();
-		GridBagConstraints c_left = new GridBagConstraints();
+		GridBagConstraints cRight = new GridBagConstraints();
+		GridBagConstraints cMiddle = new GridBagConstraints();
+		GridBagConstraints cLeft = new GridBagConstraints();
 		// forflytningsrate og gridplassering.
-		c_left.weightx = 0.5;
-		c_left.gridx = 0;
-		c_middle.weightx = 0.5;
-		c_middle.gridx = 1;
-		c_right.weightx = 0.5;
-		c_right.gridx = 2;
-		c_right.insets = new Insets(5,5,5,5);
+		cLeft.weightx = 0.5;
+		cLeft.gridx = 0;
+		cMiddle.weightx = 0.5;
+		cMiddle.gridx = 1;
+		cRight.weightx = 0.5;
+		cRight.gridx = 2;
+		cRight.insets = new Insets(5,5,5,5);
 
 
 		
 		//Layout elements
 		spaceLabel = new JLabel("    ");
 		
-		room_label = new JLabel("Rooms availible:");
-		room_list = new JList();
-		room_list.setPreferredSize(new Dimension(200,200));
-		room_list_scroll = new JScrollPane(room_list);
-		room_list.setVisible(true);
+		roomLabel = new JLabel("Rooms availible:");
+		roomList = new JList();
+		roomList.setPreferredSize(new Dimension(200,200));
+		roomListScroll = new JScrollPane(roomList);
+		roomList.setVisible(true);
 		
-		start_label = new JLabel("Start:");
-		MaskFormatter start_formatter;
+		startLabel = new JLabel("Start:");
+		MaskFormatter startFormatter;
 		try {
-			start_formatter = new MaskFormatter("##:##");
-			start_formatter.setPlaceholder("00000");
-			start_text = new JFormattedTextField(start_formatter);
-			start_text.setHorizontalAlignment(start_text.CENTER);
+			startFormatter = new MaskFormatter("##:##");
+			startFormatter.setPlaceholder("00000");
+			startText = new JFormattedTextField(startFormatter);
+			startText.setHorizontalAlignment(startText.CENTER);
 		} catch(ParseException e) {
-			start_text.setText("hei");
+			startText.setText("hei");
 		}
-		start_text.setColumns(5);
+		startText.setColumns(5);
 		
-		end_label = new JLabel("End:");
-		MaskFormatter end_formatter;
+		endLabel = new JLabel("End:");
+		MaskFormatter endFormatter;
 		try {
-			end_formatter = new MaskFormatter("##:##");
-			end_formatter.setPlaceholder("00000");
-			end_text = new JFormattedTextField(end_formatter);
-			end_text.setHorizontalAlignment(end_text.CENTER);
+			endFormatter = new MaskFormatter("##:##");
+			endFormatter.setPlaceholder("00000");
+			endText = new JFormattedTextField(endFormatter);
+			endText.setHorizontalAlignment(endText.CENTER);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		end_text.setColumns(5);
+		endText.setColumns(5);
 		
-		date_label = new JLabel("Date:");
-		MaskFormatter date_formatter;
+		dateLabel = new JLabel("Date:");
+		MaskFormatter dateFormatter;
 		try {
-			date_formatter = new MaskFormatter("##.##.####");
-			date_formatter.setPlaceholder("0000000000");
-			date_text = new JFormattedTextField(date_formatter);
+			dateFormatter = new MaskFormatter("##.##.####");
+			dateFormatter.setPlaceholder("0000000000");
+			dateText = new JFormattedTextField(dateFormatter);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-		capacity_label = new JLabel("Capacity:");
-		MaskFormatter capacity_formatter;
+		capacityLabel = new JLabel("Capacity:");
+		MaskFormatter capacityFormatter;
 		try {
-			capacity_formatter = new MaskFormatter("##");
-			capacity_formatter.setPlaceholder("0");
-			capacity_text = new JFormattedTextField(capacity_formatter);
-			capacity_text.setHorizontalAlignment(capacity_text.CENTER);
+			capacityFormatter = new MaskFormatter("##");
+			capacityFormatter.setPlaceholder("0");
+			capacityText = new JFormattedTextField(capacityFormatter);
+			capacityText.setHorizontalAlignment(capacityText.CENTER);
 		} catch (ParseException e) {
-			capacity_text.setText("hei");
+			capacityText.setText("hei");
 		}
-		capacity_text.setColumns(2);
+		capacityText.setColumns(2);
 		
-		ok_button = new JButton("Ok");
-		quit_button = new JButton("Quit");
+		okButton = new JButton("Ok");
+		quitButton = new JButton("Quit");
 		
-		c_right.gridy = 0;
-		c_middle.gridy = 0;
-		c_left.gridy = 0;
-		
-		
-		c_left.gridheight = 5;
-		JPanel room_panel = new JPanel();
-		room_panel.setLayout(new BoxLayout(room_panel, BoxLayout.Y_AXIS));
-		room_panel.add(room_label, c_left);
-		room_panel.add(room_list_scroll, c_left);
-		add(room_panel, c_left);
-		c_left.gridheight = 1;
+		cRight.gridy = 0;
+		cMiddle.gridy = 0;
+		cLeft.gridy = 0;
 		
 		
-		add(start_label, c_middle);
-		add(start_text, c_right);
+		cLeft.gridheight = 5;
+		JPanel roomPanel = new JPanel();
+		roomPanel.setLayout(new BoxLayout(roomPanel, BoxLayout.Y_AXIS));
+		roomPanel.add(roomLabel, cLeft);
+		roomPanel.add(roomListScroll, cLeft);
+		add(roomPanel, cLeft);
+		cLeft.gridheight = 1;
 		
-		c_middle.gridy = 1;
-		c_right.gridy = 1;
 		
-		add(end_label, c_middle);
-		add(end_text, c_right);
+		add(startLabel, cMiddle);
+		add(startText, cRight);
 		
-		c_middle.gridy = 2;
-		c_right.gridy = 2;
+		cMiddle.gridy = 1;
+		cRight.gridy = 1;
 		
-		add(date_label,c_middle);
-		add(date_text,c_right);
+		add(endLabel, cMiddle);
+		add(endText, cRight);
 		
-		c_middle.gridy = 3;
-		c_right.gridy = 3;
+		cMiddle.gridy = 2;
+		cRight.gridy = 2;
 		
-		add(capacity_label, c_middle);
-		add(capacity_text, c_right);
+		add(dateLabel,cMiddle);
+		add(dateText,cRight);
 		
-		c_right.gridy = 5;
-		JPanel ok_quit_panel  = new JPanel();
-		ok_quit_panel.setLayout(new BoxLayout(ok_quit_panel, BoxLayout.X_AXIS));
-		ok_quit_panel.add(ok_button, c_left);
-		ok_quit_panel.add(spaceLabel, c_left);
-		ok_quit_panel.add(quit_button, c_right);
-		add(ok_quit_panel, c_right);
+		cMiddle.gridy = 3;
+		cRight.gridy = 3;
+		
+		add(capacityLabel, cMiddle);
+		add(capacityText, cRight);
+		
+		cRight.gridy = 5;
+		JPanel okQuitPanel  = new JPanel();
+		okQuitPanel.setLayout(new BoxLayout(okQuitPanel, BoxLayout.X_AXIS));
+		okQuitPanel.add(okButton, cLeft);
+		okQuitPanel.add(spaceLabel, cLeft);
+		okQuitPanel.add(quitButton, cRight);
+		add(okQuitPanel, cRight);
 		
 		frame = new JFrame("Reserve Room");
 		frame.add(this);
@@ -178,16 +178,16 @@ public class BookMeetingRoomView extends JPanel {
 	 }
 	 
 	 public void addActionListener(ActionListener controller) {
-		 ok_button.addActionListener(controller);
+		 okButton.addActionListener(controller);
 	 }
 	 
 	 public void addKeyListener(KeyListener controller) {
-		 start_text.addKeyListener(controller);
-		 end_text.addKeyListener(controller);
+		 startText.addKeyListener(controller);
+		 endText.addKeyListener(controller);
 	 }
 	 
 	 public void addListSelectionListener(ListSelectionListener controller){
-		 room_list.addListSelectionListener(controller);
+		 roomList.addListSelectionListener(controller);
 	 }
 	 
 	

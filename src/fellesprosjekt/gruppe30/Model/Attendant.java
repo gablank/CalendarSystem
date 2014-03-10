@@ -6,16 +6,16 @@ public class Attendant {
 	
 	public User user;
 	public Appointment appointment;
-	private Date alarm_clock;
+	private Date alarmClock;
 	public int status;
-	private boolean visible_on_calendar;
+	private boolean visibleOnCalendar;
 	
 	public Attendant(User user, Appointment appointment) {
         this.appointment = appointment;
 		this.user = user;
-		alarm_clock = null;
+		alarmClock = null;
 		status = Status.NOT_ANSWERED;
-		visible_on_calendar = true;
+		visibleOnCalendar = true;
 	}
 	
 	public static class Status {
@@ -24,39 +24,39 @@ public class Attendant {
         public static final int NOT_ANSWERED = 2;
 	}
 	
-	public boolean get_alarm_status() {
-		return alarm_clock != null;
+	public boolean getAlarmStatus() {
+		return alarmClock != null;
 	}
 	
-	public void set_alarm(Date alarm_time) {
-		this.alarm_clock = alarm_time;
+	public void setAlarm(Date alarmTime) {
+		this.alarmClock = alarmTime;
 	}
 	
-	public Date get_alarm_clock() {
-		return alarm_clock;
+	public Date getAlarmClock() {
+		return alarmClock;
 	}
 	
-	public void set_alarm_clock(Date time) {
-		alarm_clock.setTime(time.getTime());
+	public void setAlarmClock(Date time) {
+		alarmClock.setTime(time.getTime());
 	}
 	
-	public boolean get_visible_on_calendar() {
-		return visible_on_calendar;
+	public boolean getVisibleOnCalendar() {
+		return visibleOnCalendar;
 	}
 	
-	public void set_visible_on_calendar(boolean show) {
-		visible_on_calendar = show;
+	public void setVisibleOnCalendar(boolean show) {
+		visibleOnCalendar = show;
 	}
 
-    public User get_user() {
+    public User getUser() {
         return user;
     }
 
-    public Appointment get_appointment() {
+    public Appointment getAppointment() {
         return appointment;
     }
 
-    public int get_status() {
+    public int getStatus() {
         return status;
     }
 }

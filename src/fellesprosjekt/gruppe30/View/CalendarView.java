@@ -19,12 +19,12 @@ import javax.swing.JScrollPane;
 import fellesprosjekt.gruppe30.Model.User;
 
 public class CalendarView extends JPanel {
-	private JButton add_button, remove_button, new_appointment_button, log_out_button, left_arrow_button, right_arrow_button;
+	private JButton addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
 	private JComboBox users;
-	private JLabel week_label, show_calendars_for, mon_label, tue_label, wed_label, thu_label, fri_label, sat_label, sun_label;
-	private JList<User> user_calendars;
-	private JList<AppointmentSummaryView>  mon_appointments, tue_appointments, wed_appointments, thu_appointments, fri_appointments, sat_appointments, sun_appointments;
-	private JScrollPane mon_scrollpane, tue_scrollpane, wed_scrollpane, thu_scrollpane, fri_scrollpane, sat_scrollpane, sun_scrollpane;
+	private JLabel weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
+	private JList<User> userCalendars;
+	private JList<AppointmentSummaryView>  monAppointments, tueAppointments, wedAppointments, thuAppointments, friAppointments, satAppointments, sunAppointments;
+	private JScrollPane monScrollpane, tueScrollpane, wedScrollpane, thuScrollpane, friScrollpane, satScrollpane, sunScrollpane;
 	private JFrame frame;
 	
 	public CalendarView() {
@@ -32,69 +32,69 @@ public class CalendarView extends JPanel {
 		GridBagConstraints contents = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 		
-		//bestem utseende på hver knapp
-		add_button = new JButton("Add");
-		add_button.setPreferredSize(new Dimension(60, 30));
+		//bestem utseende pï¿½ hver knapp
+		addButton = new JButton("Add");
+		addButton.setPreferredSize(new Dimension(60, 30));
 		
-		remove_button = new JButton("Remove");
-		remove_button.setPreferredSize(new Dimension(80, 30));
+		removeButton = new JButton("Remove");
+		removeButton.setPreferredSize(new Dimension(80, 30));
 	
-		new_appointment_button = new JButton("New Appointment");
-		new_appointment_button.setPreferredSize(new Dimension(145, 30));
+		newAppointmentButton = new JButton("New Appointment");
+		newAppointmentButton.setPreferredSize(new Dimension(145, 30));
 		
-		log_out_button = new JButton("Log out");
-		log_out_button.setPreferredSize(new Dimension(80, 25));
+		logOutButton = new JButton("Log out");
+		logOutButton.setPreferredSize(new Dimension(80, 25));
 		
-		left_arrow_button = new JButton("<");
-		left_arrow_button.setPreferredSize(new Dimension(45, 30));
+		leftArrowButton = new JButton("<");
+		leftArrowButton.setPreferredSize(new Dimension(45, 30));
 		
-		right_arrow_button = new JButton(">");
-		right_arrow_button.setPreferredSize(new Dimension(45, 30));
+		rightArrowButton = new JButton(">");
+		rightArrowButton.setPreferredSize(new Dimension(45, 30));
 		
-		user_calendars = new JList<User>();
-		user_calendars.setPreferredSize(new Dimension(140,150));
+		userCalendars = new JList<User>();
+		userCalendars.setPreferredSize(new Dimension(140,150));
 		
 		users = new JComboBox();
 		users.setPreferredSize(new Dimension(140, 25));
 		
-		week_label = new JLabel("week 10");
-		show_calendars_for = new JLabel("Show calendars for:");
-		mon_label = new JLabel("Mon 3/3");
-		tue_label = new JLabel("Tue 4/3");
-		wed_label = new JLabel("Wed 5/3");
-		thu_label = new JLabel("Thu 6/3");
-		fri_label = new JLabel("Fri 7/3");
-		sat_label = new JLabel("Sat 8/3");
-		sun_label = new JLabel("Sun 9/3");
+		weekLabel = new JLabel("week 10");
+		showCalendarsFor = new JLabel("Show calendars for:");
+		monLabel = new JLabel("Mon 3/3");
+		tueLabel = new JLabel("Tue 4/3");
+		wedLabel = new JLabel("Wed 5/3");
+		thuLabel = new JLabel("Thu 6/3");
+		friLabel = new JLabel("Fri 7/3");
+		satLabel = new JLabel("Sat 8/3");
+		sunLabel = new JLabel("Sun 9/3");
 		
-		mon_appointments = new JList<AppointmentSummaryView>();
-		tue_appointments = new JList<AppointmentSummaryView>();
-		wed_appointments = new JList<AppointmentSummaryView>();
-		thu_appointments = new JList<AppointmentSummaryView>();
-		fri_appointments = new JList<AppointmentSummaryView>();
-		sat_appointments = new JList<AppointmentSummaryView>();
-		sun_appointments = new JList<AppointmentSummaryView>();
+		monAppointments = new JList<AppointmentSummaryView>();
+		tueAppointments = new JList<AppointmentSummaryView>();
+		wedAppointments = new JList<AppointmentSummaryView>();
+		thuAppointments = new JList<AppointmentSummaryView>();
+		friAppointments = new JList<AppointmentSummaryView>();
+		satAppointments = new JList<AppointmentSummaryView>();
+		sunAppointments = new JList<AppointmentSummaryView>();
 		
-		mon_scrollpane = new JScrollPane(mon_appointments);
-		mon_scrollpane.setPreferredSize(new Dimension(160, 450));
+		monScrollpane = new JScrollPane(monAppointments);
+		monScrollpane.setPreferredSize(new Dimension(160, 450));
 		
-		tue_scrollpane = new JScrollPane(tue_appointments);
-		tue_scrollpane.setPreferredSize(new Dimension(160, 450));
+		tueScrollpane = new JScrollPane(tueAppointments);
+		tueScrollpane.setPreferredSize(new Dimension(160, 450));
 		
-		wed_scrollpane = new JScrollPane(wed_appointments);
-		wed_scrollpane.setPreferredSize(new Dimension(160, 450));
+		wedScrollpane = new JScrollPane(wedAppointments);
+		wedScrollpane.setPreferredSize(new Dimension(160, 450));
 		
-		thu_scrollpane = new JScrollPane(thu_appointments);
-		thu_scrollpane.setPreferredSize(new Dimension(160, 450));
+		thuScrollpane = new JScrollPane(thuAppointments);
+		thuScrollpane.setPreferredSize(new Dimension(160, 450));
 		
-		fri_scrollpane = new JScrollPane(fri_appointments);
-		fri_scrollpane.setPreferredSize(new Dimension(160, 450));
+		friScrollpane = new JScrollPane(friAppointments);
+		friScrollpane.setPreferredSize(new Dimension(160, 450));
 		
-		sat_scrollpane = new JScrollPane(sat_appointments);
-		sat_scrollpane.setPreferredSize(new Dimension(160, 450));
+		satScrollpane = new JScrollPane(satAppointments);
+		satScrollpane.setPreferredSize(new Dimension(160, 450));
 		
-		sun_scrollpane = new JScrollPane(sun_appointments);
-		sun_scrollpane.setPreferredSize(new Dimension(160, 450));
+		sunScrollpane = new JScrollPane(sunAppointments);
+		sunScrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		
 		
@@ -104,62 +104,62 @@ public class CalendarView extends JPanel {
 		c.insets = new Insets(5,5,5,5);
 		contents.insets = new Insets(0,0,0,0);
 		
-		JPanel arrow_panel = new JPanel();
-		arrow_panel.add(left_arrow_button);
-		arrow_panel.add(week_label);
-		arrow_panel.add(right_arrow_button);
-		add(arrow_panel, c);
+		JPanel arrowPanel = new JPanel();
+		arrowPanel.add(leftArrowButton);
+		arrowPanel.add(weekLabel);
+		arrowPanel.add(rightArrowButton);
+		add(arrowPanel, c);
 
 		c.gridy = 1;
-		add(show_calendars_for, c);
+		add(showCalendarsFor, c);
 		c.gridy = 2;
-		add(user_calendars, c);
+		add(userCalendars, c);
 		c.gridy = 3;
 		add(users, c);
 		c.gridy = 4;
-		JPanel add_remove = new JPanel();
-		add_remove.add(add_button);
-		add_remove.add(remove_button);
-		add(add_remove, c);
+		JPanel addRemove = new JPanel();
+		addRemove.add(addButton);
+		addRemove.add(removeButton);
+		add(addRemove, c);
 		c.gridy = 5;
-		add(new_appointment_button, c);
+		add(newAppointmentButton, c);
 		c.gridy = 7;
 		c.anchor = GridBagConstraints.SOUTHWEST;
-		add(log_out_button, c);
+		add(logOutButton, c);
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridy = 0;
 		c.gridx = 1;
-		add(mon_label, c);
+		add(monLabel, c);
 		c.gridx = 2;
-		add(tue_label, c);
+		add(tueLabel, c);
 		c.gridx = 3;
-		add(wed_label, c);
+		add(wedLabel, c);
 		c.gridx = 4;
-		add(thu_label, c);
+		add(thuLabel, c);
 		c.gridx = 5;
-		add(fri_label, c);
+		add(friLabel, c);
 		c.gridx = 6;
-		add(sat_label, c);
+		add(satLabel, c);
 		c.gridx = 7;
-		add(sun_label, c);
+		add(sunLabel, c);
 		
 
 		contents.gridx = 1;
 		contents.gridy = 1;
 		contents.gridheight = 7;
-		add(mon_scrollpane, contents);
+		add(monScrollpane, contents);
 		contents.gridx = 2;
-		add(tue_scrollpane, contents);
+		add(tueScrollpane, contents);
 		contents.gridx = 3;
-		add(wed_scrollpane, contents);
+		add(wedScrollpane, contents);
 		contents.gridx = 4;
-		add(thu_scrollpane, contents);
+		add(thuScrollpane, contents);
 		contents.gridx = 5;
-		add(fri_scrollpane, contents);
+		add(friScrollpane, contents);
 		contents.gridx = 6;
-		add(sat_scrollpane, contents);
+		add(satScrollpane, contents);
 		contents.gridx = 7;
-		add(sun_scrollpane, contents);
+		add(sunScrollpane, contents);
 		
 		
 		frame = new JFrame("Calendar view");	

@@ -9,7 +9,7 @@ import java.net.Socket;
 //Thread thread = new Thread(cn);
 //thread.start();
 //...
-//cn.functions_not_yet_implemented();
+//cn.functionsNotYetImplemented();
 
 public class ClientNetwork extends Network {
 	int serverPort = 11223;
@@ -19,8 +19,8 @@ public class ClientNetwork extends Network {
 	@Override
 	public void run() {
 		try {
-			connection_socket = new Socket(serverAddress, serverPort);
-			System.out.println("ClientNetwork: Connected to server: " + connection_socket.getRemoteSocketAddress());
+			connectionSocket = new Socket(serverAddress, serverPort);
+			System.out.println("ClientNetwork: Connected to server: " + connectionSocket.getRemoteSocketAddress());
 			
 		} catch (IOException e) {
 			System.out.println("ClientNetwork: Failed to set up connection, terminating...");

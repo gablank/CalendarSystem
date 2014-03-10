@@ -7,19 +7,19 @@ public class ViewAppointmentView extends AppointmentView{
 	
 	public ViewAppointmentView() {
 		super();
-		title_field.setEditable(false);
+		titleField.setEditable(false);
 		description.setEditable(false);
-		description.setBackground(title_field.getBackground());
-		date_field.setEditable(false);
-		start_time_field.setEditable(false);
-		end_time_field.setEditable(false);
-		meeting_room_field.setEditable(false);
+		description.setBackground(titleField.getBackground());
+		dateField.setEditable(false);
+		startTimeField.setEditable(false);
+		endTimeField.setEditable(false);
+		meetingRoomField.setEditable(false);
 		
-		use_meeting_room.setVisible(false);
-		add_button.setVisible(false);
-		remove_button.setVisible(false);
-		participant_list.setVisible(false);
-		delete_button.setVisible(false);
+		useMeetingRoom.setVisible(false);
+		addButton.setVisible(false);
+		removeButton.setVisible(false);
+		participantList.setVisible(false);
+		deleteButton.setVisible(false);
 	}
 
 	public static void main(String[] args) {
