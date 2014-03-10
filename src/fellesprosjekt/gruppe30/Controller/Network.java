@@ -101,6 +101,7 @@ public abstract class Network implements Runnable {
 		if (connection_socket == null || connection_socket.isClosed())
 			return "";
 
+
 		String result = "";
 
 		try {
