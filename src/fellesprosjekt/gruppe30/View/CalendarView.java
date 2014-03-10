@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
 import java.util.EventListener;
 
 import javax.swing.BorderFactory;
@@ -245,6 +246,20 @@ public class CalendarView extends JPanel {
 	
 	public void setVisible(boolean visible){
 		this.frame.setVisible(visible);
+	}
+	
+	public void propertyChange(PropertyChangeEvent pce) {
+		if (pce.getPropertyName() == "next week") {
+			weekLabel.setText((String)pce.getNewValue());
+			/*
+			 * TODO implement next week functions
+			 */
+		} else if (pce.getPropertyName() == "previous week") {
+			weekLabel.setText((String)pce.getNewValue());
+			/*
+			 * TODO implement previous week functions
+			 */
+		}
 	}
 
 	public static void main(String[] args) {
