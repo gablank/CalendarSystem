@@ -10,6 +10,8 @@ import java.net.SocketException;
 
 import org.json.JSONObject;
 
+// ka som helst
+
 public abstract class Network implements Runnable {
 	Socket connectionSocket;
 	public boolean running = true;
