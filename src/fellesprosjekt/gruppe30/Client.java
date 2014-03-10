@@ -11,7 +11,27 @@ import javax.swing.*;
 
 public class Client {
     private final LoginView loginView;
-    private final AppointmentView appointmentView;
+    public LoginView getLoginView() {
+		return loginView;
+	}
+
+	public AppointmentView get_appointment_view() {
+		return appointmentView;
+	}
+
+	public BookMeetingRoomView get_book_meeting_room_view() {
+		return bookMeetingRoomView;
+	}
+
+	public AppointmentController get_appointment_controller() {
+		return appointmentController;
+	}
+	
+	public LoginView get_login_view() {
+		return this.loginView;
+	}
+
+	private final AppointmentView appointmentView;
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
 
