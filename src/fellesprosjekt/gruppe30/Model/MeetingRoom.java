@@ -5,6 +5,7 @@ public class MeetingRoom {
 	int roomSize;
 	
 	public MeetingRoom(int roomSize) {
+        this.id = -1;
 		this.roomSize = roomSize;
     }
 

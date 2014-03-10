@@ -9,16 +9,27 @@ public class Attendant {
 	private Date alarmClock;
 	public int status;
 	private boolean visibleOnCalendar;
-	
-	public Attendant(User user, Appointment appointment) {
+    private java.util.Date lastChecked;
+
+    public Attendant(User user, Appointment appointment) {
         this.appointment = appointment;
 		this.user = user;
 		alarmClock = null;
 		status = Status.NOT_ANSWERED;
 		visibleOnCalendar = true;
+        lastChecked = new Date(0);
 	}
-	
-	public static class Status {
+
+    // Set last checked to now
+    public void setLastChecked() {
+        this.lastChecked = new Date();
+    }
+
+    public java.util.Date getLastChecked() {
+        return lastChecked;
+    }
+
+    public static class Status {
 		public static final int ATTENDTING = 0;
         public static final int NOT_ATTENDING = 1;
         public static final int NOT_ANSWERED = 2;

@@ -25,6 +25,7 @@ public class Appointment {
     }
 
     public Appointment(User owner, String title, String description, Date start, Date end, String meetingPlace, MeetingRoom room) {
+        this.id = -1;
         this.owner = owner;
 		this.title = title;
 		this.description = description;
