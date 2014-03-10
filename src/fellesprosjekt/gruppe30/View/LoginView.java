@@ -69,6 +69,7 @@ public class LoginView extends JPanel{
 		c_right.gridy = 2;
 		add(notifier, c_right);
 		notifier.setForeground(Color.RED);
+		notifier.setVisible(false);
 		
 		c_right.gridy = 3;
 		JPanel buttonPanel = new JPanel();
@@ -108,6 +109,10 @@ public class LoginView extends JPanel{
 	
 	public String get_password() {
 		return passwordTextField.getText();
+	}
+	
+	public void view_notifier() {
+		notifier.setVisible(true);
 	}
 	
 	public static void main(String[] args) {
