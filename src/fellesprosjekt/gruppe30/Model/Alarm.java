@@ -13,4 +13,16 @@ public class Alarm {
         this.appointmentid = appointmentid;
         this.date = date;
     }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public int getAppointmentId() {
+        return appointmentid;
+    }
 }
