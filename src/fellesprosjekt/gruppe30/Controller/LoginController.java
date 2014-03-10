@@ -34,7 +34,7 @@ public class LoginController implements ActionListener {
         		client.open("calendar");
         	} else client.getLoginView().viewNotifier(); // Shows wrong username/password notifier
         } else if (cmd.equalsIgnoreCase("quit")) {
-        	client.quit();
+        	client.quit(0);
         }
 	}
 }

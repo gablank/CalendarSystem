@@ -62,7 +62,7 @@ public class CalendarView extends JPanel {
 		userCalendars = new JList<User>();
 		userCalendars.setPreferredSize(new Dimension(140,150));
 		
-		users = new JComboBox();
+		users = new JComboBox<User>();
 		users.setPreferredSize(new Dimension(140, 25));
 		
 		weekLabel = new JLabel("week 10");
@@ -246,6 +246,10 @@ public class CalendarView extends JPanel {
 	
 	public void setVisible(boolean visible){
 		this.frame.setVisible(visible);
+	}
+	
+	public User getUser() {
+		return (User)users.getSelectedItem();
 	}
 	
 	public void propertyChange(PropertyChangeEvent pce) {
