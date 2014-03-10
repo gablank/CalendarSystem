@@ -7,6 +7,7 @@ public class LoginController {
 	
 	public LoginController(Client client) {
 		this.client = client;
+		client.get_login_view().addListener(this);
 	}
 	
 	public boolean check_credentials() {
