@@ -52,7 +52,7 @@ public class AppointmentSummaryView extends JPanel {
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
 		headerPanel.add(titleLabel);
 		headerPanel.add(timeLabel);
-		headerPanel.setPreferredSize(new Dimension(120,40));
+		headerPanel.setPreferredSize(new Dimension(130,40));
 		add(headerPanel, c);
 		c.gridy = 1;
 		
@@ -63,13 +63,13 @@ public class AppointmentSummaryView extends JPanel {
 		noLabel.setHorizontalAlignment(noLabel.CENTER);
 		statusPanel.add(unanswered);
 		unanswered.setHorizontalAlignment(unanswered.CENTER);
-		statusPanel.setPreferredSize(new Dimension(120,40));
+		statusPanel.setPreferredSize(new Dimension(130,40));
 		add(statusPanel, c);
 		c.gridy = 2;
 		
 		JPanel participantPanel = new JPanel();
 		participantPanel.add(participants);
-		participantPanel.setPreferredSize(new Dimension(120,40));
+		participantPanel.setPreferredSize(new Dimension(130,40));
 		add(participantPanel, c);
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -78,6 +78,7 @@ public class AppointmentSummaryView extends JPanel {
 
 		frame = new JFrame();
 		frame.add(this);
+		this.setMaximumSize(new Dimension(155,122));
 		frame.pack();
 		frame.setVisible(false);
 		frame.setResizable(false);
