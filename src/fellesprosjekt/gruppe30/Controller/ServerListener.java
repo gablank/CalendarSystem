@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-
 public class ServerListener implements Runnable {
 	int listenerPort = 11223;
 	List<ClientHandler> clientHandlers = new ArrayList<ClientHandler>();
 
-	
 	
 	@Override
 	public void run() {

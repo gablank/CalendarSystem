@@ -19,14 +19,8 @@ public class Server {
     private List<Alarm> alarms = new ArrayList<Alarm>();
 
 	private ServerListener listener;
-	
-	private QueueWorker queueWorker;
 
     public Server() {
-		queueWorker = new QueueWorker();
-		Thread queueWorkerThread = new Thread(queueWorker);
-		queueWorkerThread.start();
-
 		listener = new ServerListener();
 		Thread listenerThread = new Thread(listener);
 		listenerThread.start();
