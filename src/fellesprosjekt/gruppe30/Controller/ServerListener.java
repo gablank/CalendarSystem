@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-// intended use:
-//
-//ServerListener sn = new ServerListener();
-//Thread thread = new Thread(sn);
-//thread.start();
 
 public class ServerListener implements Runnable {
 	int listenerPort = 11223;
