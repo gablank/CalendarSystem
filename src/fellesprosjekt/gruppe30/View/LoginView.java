@@ -22,7 +22,7 @@ public class LoginView extends JPanel{
 	private JLabel usernameLabel, passwordLabel, spaceLabel, notifier;
 	private JTextField usernameTextField;
 	private JPasswordField passwordTextField;
-	private JButton loginButton, quitButton;
+	public JButton loginButton, quitButton;
 	private JFrame frame;
 	
 	public LoginView(){
@@ -50,7 +50,7 @@ public class LoginView extends JPanel{
 		passwordTextField = new JPasswordField(20);
 		
 		//notifier
-		notifier = new JLabel("Wrong username/password");
+		notifier = new JLabel("     Wrong username/password");
 		
 		//buttons
 		loginButton = new JButton("Log in");
@@ -69,6 +69,7 @@ public class LoginView extends JPanel{
 		add(passwordTextField, cRight);
 		
 		cRight.gridy = 2;
+		cRight.anchor = GridBagConstraints.WEST;
 		add(notifier, cRight);
 		notifier.setForeground(Color.RED);
 		notifier.setVisible(false);
@@ -87,9 +88,6 @@ public class LoginView extends JPanel{
 		frame.setResizable(false);
 		frame.setSize(350, 160);
 		frame.setLocationRelativeTo(null);
-		
-		
-		
 	}
 	
 	public void setVisible(boolean visible) {

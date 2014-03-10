@@ -9,9 +9,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
 import java.util.EventListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -77,58 +79,61 @@ public class CalendarView extends JPanel {
 		JScrollPane monScroller = new JScrollPane(monAppointment);
 		monScroller.setFocusable(true);
 		monScroller.setPreferredSize(new Dimension(160, 450));
-		monScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		monAppointment.setPreferredSize(new Dimension(140, 450));
 		monAppointment.setBackground(Color.WHITE);
 		monAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
+		monAppointment.setLayout(new BoxLayout(monAppointment, BoxLayout.Y_AXIS));
 		
 		tueAppointment = new JPanel();
 		JScrollPane tueScroller = new JScrollPane(tueAppointment);
 		tueScroller.setFocusable(true);
 		tueScroller.setPreferredSize(new Dimension(160, 450));
-		tueAppointment.setPreferredSize(new Dimension(140, 450));
 		tueAppointment.setBackground(Color.WHITE);
 		tueAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
+		tueAppointment.setLayout(new BoxLayout(tueAppointment, BoxLayout.Y_AXIS));
 		
 		wedAppointment = new JPanel();
 		JScrollPane wedScroller = new JScrollPane(wedAppointment);
 		wedScroller.setFocusable(true);
 		wedScroller.setPreferredSize(new Dimension(160, 450));
-		wedAppointment.setPreferredSize(new Dimension(140, 450));
 		wedAppointment.setBackground(Color.WHITE);
 		wedAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
+		wedAppointment.setLayout(new BoxLayout(wedAppointment, BoxLayout.Y_AXIS));
 		
 		thuAppointment = new JPanel();
 		JScrollPane thuScroller = new JScrollPane(thuAppointment);
 		thuScroller.setFocusable(true);
 		thuScroller.setPreferredSize(new Dimension(160, 450));
-		thuAppointment.setPreferredSize(new Dimension(140, 450));
+		//thuAppointment.setPreferredSize(new Dimension(140, 450));
 		thuAppointment.setBackground(Color.WHITE);
 		thuAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
+		thuAppointment.setLayout(new BoxLayout(thuAppointment, BoxLayout.Y_AXIS));
 		
 		friAppointment = new JPanel();
 		JScrollPane friScroller = new JScrollPane(friAppointment);
 		friScroller.setFocusable(true);
 		friScroller.setPreferredSize(new Dimension(160, 450));
-		friAppointment.setPreferredSize(new Dimension(140, 450));
+		//friAppointment.setPreferredSize(new Dimension(140, 450));
 		friAppointment.setBackground(Color.WHITE);
 		friAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
+		friAppointment.setLayout(new BoxLayout(friAppointment, BoxLayout.Y_AXIS));
 		
 		satAppointment = new JPanel();
 		JScrollPane satScroller = new JScrollPane(satAppointment);
 		satScroller.setFocusable(true);
 		satScroller.setPreferredSize(new Dimension(160, 450));
-		satAppointment.setPreferredSize(new Dimension(140, 450));
+		//satAppointment.setPreferredSize(new Dimension(140, 450));
 		satAppointment.setBackground(Color.WHITE);
 		satAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
+		satAppointment.setLayout(new BoxLayout(satAppointment, BoxLayout.Y_AXIS));
 		
 		sunAppointment = new JPanel();
 		JScrollPane sunScroller = new JScrollPane(sunAppointment);
 		sunScroller.setFocusable(true);
 		sunScroller.setPreferredSize(new Dimension(160, 450));
-		sunAppointment.setPreferredSize(new Dimension(140, 450));
+		//sunAppointment.setPreferredSize(new Dimension(140, 450));
 		sunAppointment.setBackground(Color.WHITE);
 		sunAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
+		sunAppointment.setLayout(new BoxLayout(sunAppointment, BoxLayout.Y_AXIS));
 		
 		
 		// build a gridbag
@@ -204,6 +209,8 @@ public class CalendarView extends JPanel {
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		wedAppointment.add(new AppointmentSummaryView());
+		wedAppointment.add(new AppointmentSummaryView());
+		thuAppointment.add(new AppointmentSummaryView());
 		monAppointment.add(new AppointmentSummaryView());
 		monAppointment.add(new AppointmentSummaryView());
 		monAppointment.add(new AppointmentSummaryView());
@@ -213,8 +220,8 @@ public class CalendarView extends JPanel {
 		tueAppointment.add(new AppointmentSummaryView());
 		tueAppointment.add(new AppointmentSummaryView());
 		tueAppointment.add(new AppointmentSummaryView());
-		//end test code
 		
+		//end test code
 		
 		
 	}
@@ -239,6 +246,20 @@ public class CalendarView extends JPanel {
 	
 	public void setVisible(boolean visible){
 		this.frame.setVisible(visible);
+	}
+	
+	public void propertyChange(PropertyChangeEvent pce) {
+		if (pce.getPropertyName() == "next week") {
+			weekLabel.setText((String)pce.getNewValue());
+			/*
+			 * TODO implement next week functions
+			 */
+		} else if (pce.getPropertyName() == "previous week") {
+			weekLabel.setText((String)pce.getNewValue());
+			/*
+			 * TODO implement previous week functions
+			 */
+		}
 	}
 
 	public static void main(String[] args) {

@@ -6,6 +6,7 @@ import fellesprosjekt.gruppe30.Controller.LoginController;
 import fellesprosjekt.gruppe30.Model.User;
 import fellesprosjekt.gruppe30.View.AppointmentView;
 import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
+import fellesprosjekt.gruppe30.View.CalendarView;
 import fellesprosjekt.gruppe30.View.LoginView;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ import javax.swing.*;
 public class Client {
 	private final LoginController loginController;
     private final LoginView loginView;
+    private final CalendarView calendarView;
 	private final AppointmentView appointmentView;
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
@@ -21,6 +23,10 @@ public class Client {
     public Client() {
     	this.loginController = new LoginController(this);
         this.loginView = new LoginView();
+		loginView.addListener(loginController);
+		
+		this.calendarView = new CalendarView();
+		
         this.appointmentView = new AppointmentView();
         this.bookMeetingRoomView = new BookMeetingRoomView();
 
@@ -29,7 +35,7 @@ public class Client {
 
 
         this.close("all");
-        this.open("appointment");
+        this.open("login");
     }
 
     public void open(String view) {
@@ -51,6 +57,8 @@ public class Client {
             this.appointmentView.setVisible(state);
         } else if(view.equals("all") || view.equals("bookmeetingroom")) {
             this.bookMeetingRoomView.setVisible(state);
+        } else if(view.equals("all")|| view.equals("calendar")) {
+        	this.calendarView.setVisible(true);
         }
     }
 	public AppointmentView getAppointmentView() {
@@ -83,5 +91,9 @@ public class Client {
             }
         });
 
+    }
+    
+    public void quit() {
+    	System.exit(0);
     }
 }
