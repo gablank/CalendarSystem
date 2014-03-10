@@ -7,6 +7,9 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.util.EventListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,6 +20,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionListener;
 
 import fellesprosjekt.gruppe30.Model.User;
 
@@ -211,6 +215,26 @@ public class CalendarView extends JPanel {
 		tueAppointment.add(new AppointmentSummaryView());
 		//end test code
 		
+		
+		
+	}
+	
+	public void addListener(EventListener controller){
+		this.addActionListener((ActionListener)controller);
+	}
+	
+	public void addActionListener(ActionListener controller){
+		addButton.addActionListener(controller);
+		removeButton.addActionListener(controller);
+		newAppointmentButton.addActionListener(controller);
+		logOutButton.addActionListener(controller);
+		leftArrowButton.addActionListener(controller);
+		rightArrowButton.addActionListener(controller);
+		users.addActionListener(controller);
+	}
+	
+	public void addListSelectionListener(ListSelectionListener controller){
+		userCalendars.addListSelectionListener(controller);
 	}
 	
 	public void setVisible(boolean visible){
