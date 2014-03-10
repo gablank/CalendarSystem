@@ -10,6 +10,8 @@ import java.net.SocketException;
 
 import org.json.JSONObject;
 
+// ka som helst
+
 public abstract class Network implements Runnable {
 	Socket connectionSocket;
 	public boolean running = true;
@@ -18,6 +20,8 @@ public abstract class Network implements Runnable {
 	DataOutputStream outgoingStream = null;
 	
 	String buffer; // for saving partial and double json-objects
+	
+	
 
 	@Override
 	public void run() {
@@ -33,14 +37,18 @@ public abstract class Network implements Runnable {
 			
 			while(running){
 				
-//				String message = readLine();
-				String message = getJSONObject();
+				JSONObject message = getJSONObject();
+
+				if (message == null) {
+					System.out.println("tom message");
+					continue;
+				}
 
 				//
 				// do stuff based on the message
 				//
 				
-				if (message != null	&& message.compareTo("{\"request\":\"close\"}") == 0) {
+				if (message.get("request").equals("close")) {
 					System.out.println("closing clienthandler socket");
 					connectionSocket.close();
 				}
@@ -95,29 +103,26 @@ public abstract class Network implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	// public JSONObject getJsonObject() {
-	public String getJSONObject() {
+
+// public String getJSONObject() {	
+
+	// returns null if there is an error
+	public JSONObject getJSONObject() {
+
 		if (connectionSocket == null || connectionSocket.isClosed())
-			return "";
+			return null;
 
-
-		String result = "";
+		JSONObject result = null;
 
 		try {
-			result = incomingStream.readUTF();
+			String stringObj = incomingStream.readUTF();
+			result = new JSONObject(stringObj);
+			System.out.println("got: " + result.toString());
 		} catch (IOException e) {
 			// System.out.println("getJsonObject threw exception: ");
-			// e.printStackTrace();
-			return "";
 		}
-		
 
-		System.out.println("got: " + result);
-
-		// JSONObject o = json.parse(result);
 		return result;
-		// return o;
 	}
 
 //	public String readLine(){
