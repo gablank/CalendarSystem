@@ -55,13 +55,14 @@ public class AppointmentView extends JPanel implements ActionListener {
 	protected JScrollPane scrollpane;
 	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame frame;
+	private User me = new User("Emil", "Heien", "uberjew", "password", "email");
 	
 	public AppointmentView() {
 		GridBagConstraints cLeft = new GridBagConstraints() ;
 		GridBagConstraints cRight = new GridBagConstraints() ;
 		setLayout(new GridBagLayout());
 		
-		//Bestem utseende p� hver knapp
+		//set appearance of all buttons
 		titleField = new JTextField("Title", 13);
 		description = new JTextArea(5,13);
 		description.setText("Description");
@@ -127,7 +128,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		cancelButton = new JButton("Cancel");
 		
 
-		//Bygg opp en gridbag
+		//Build a gridbag
 		cLeft.gridx = 0;
 		cLeft.gridy = 0;
 		cLeft.insets = new Insets(5,5,5,5);
@@ -228,6 +229,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		frame.setResizable(false);
 		//test code:
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//why this shit dont work? -> participants.add(new User("Emil", "Heien", "uberjew", "password", "email"));
 		//end test code
 	}
 	
