@@ -2,6 +2,7 @@ package fellesprosjekt.gruppe30;
 
 
 import fellesprosjekt.gruppe30.Controller.AppointmentController;
+import fellesprosjekt.gruppe30.Controller.LoginController;
 import fellesprosjekt.gruppe30.Model.User;
 import fellesprosjekt.gruppe30.View.AppointmentView;
 import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
@@ -11,12 +12,14 @@ import javax.swing.*;
 
 
 public class Client {
+	private final LoginController loginController;
     private final LoginView loginView;
 	private final AppointmentView appointmentView;
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
 
     public Client() {
+    	this.loginController = new LoginController(this);
         this.loginView = new LoginView();
         this.appointmentView = new AppointmentView();
         this.bookMeetingRoomView = new BookMeetingRoomView();
