@@ -3,13 +3,8 @@ package fellesprosjekt.gruppe30.Controller;
 import java.io.IOException;
 import java.net.Socket;
 
-//intended use:
-//
-//ClientNetwork cn = new ClientNetwork();
-//Thread thread = new Thread(cn);
-//thread.start();
-//...
-//cn.functionsNotYetImplemented();
+import org.json.JSONObject;
+
 
 public class ClientNetwork extends Network {
 	int serverPort = 11223;
@@ -28,5 +23,11 @@ public class ClientNetwork extends Network {
 			return;
 		}
 		super.run();
+	}
+
+
+	@Override
+	protected void handleMessage(JSONObject message) {
+		
 	}
 }

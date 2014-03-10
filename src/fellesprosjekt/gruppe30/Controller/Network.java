@@ -1,16 +1,12 @@
 package fellesprosjekt.gruppe30.Controller;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.SocketException;
 
 import org.json.JSONObject;
 
-// ka som helst
 
 public abstract class Network implements Runnable {
 	Socket connectionSocket;
@@ -18,9 +14,6 @@ public abstract class Network implements Runnable {
 	
 	DataInputStream incomingStream = null;
 	DataOutputStream outgoingStream = null;
-	
-	String buffer; // for saving partial and double json-objects
-	
 	
 
 	@Override
@@ -44,9 +37,9 @@ public abstract class Network implements Runnable {
 					continue;
 				}
 
-				//
-				// do stuff based on the message
-				//
+				handleMessage(message);
+
+
 				
 				if (message.get("request").equals("close")) {
 					System.out.println("closing clienthandler socket");
@@ -67,7 +60,10 @@ public abstract class Network implements Runnable {
 	}
 	
 	
-	public void setUpStreams() throws IOException{
+	protected abstract void handleMessage(JSONObject message);
+
+
+	private void setUpStreams() throws IOException {
 		incomingStream = new DataInputStream(connectionSocket.getInputStream());
 		outgoingStream = new DataOutputStream(connectionSocket.getOutputStream());
 		
@@ -76,23 +72,8 @@ public abstract class Network implements Runnable {
 			running = false;
 		}
 	}
-	
-//	public void send(String message){
-//		if(connectionSocket == null || connectionSocket.isClosed())
-//			return;
-//		
-//		try {
-//			System.out.println("Sending: " + message);
-//			outgoingStream.writeUTF(message);
-//			
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-	
+
 	public void sendJSONObject(JSONObject obj) {
-	// public void sendJsonObject(String jsonString) {
 		String jsonString = obj.toString();
 		System.out.println("sending: " + jsonString);
 		try {
@@ -104,11 +85,8 @@ public abstract class Network implements Runnable {
 		}
 	}
 
-// public String getJSONObject() {	
-
 	// returns null if there is an error
 	public JSONObject getJSONObject() {
-
 		if (connectionSocket == null || connectionSocket.isClosed())
 			return null;
 
@@ -117,7 +95,7 @@ public abstract class Network implements Runnable {
 		try {
 			String stringObj = incomingStream.readUTF();
 			result = new JSONObject(stringObj);
-			System.out.println("got: " + result.toString());
+			System.out.println("recieved: " + result.toString());
 		} catch (IOException e) {
 			// System.out.println("getJsonObject threw exception: ");
 		}
@@ -125,25 +103,7 @@ public abstract class Network implements Runnable {
 		return result;
 	}
 
-//	public String readLine(){
 
-//		
-//		try {
-//			String message = null;
-//			message = incomingStream.readLine();		
-//			if(message != null){
-//				System.out.println("got: " + message + " (len: " + message.length() + ")");
-//			}
-//			
-//			return message;
-//			
-//		} catch (IOException e) {
-//			System.out.println("readLine threw Exception, connection is closed");
-//			running = false;
-//		}
-//
-//		return null;
-//	}
 	
 	public void closeConnection(){
 		running = false;

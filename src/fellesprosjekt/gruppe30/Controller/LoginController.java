@@ -1,40 +1,40 @@
 package fellesprosjekt.gruppe30.Controller;
 
-import fellesprosjekt.gruppe30.Client;
+import java.awt.event.ActionListener;
 
-public class LoginController {
+import javax.swing.JButton;
+
+import fellesprosjekt.gruppe30.Client;
+import fellesprosjekt.gruppe30.View.LoginView;
+
+public class LoginController implements ActionListener {
 	private final Client client;
 	
 	public LoginController(Client client) {
 		this.client = client;
-		client.getLoginView().addListener(this);
 	}
 	
 	public boolean checkCredentials() {
 		String username = client.getLoginView().getUsername();
 		String password = client.getLoginView().getPassword();
-		if (isValid(username, password)) {
-			/*
-			 * Set user information
-			 */
-			return true;
-		} return false;
-	}
-	
-	
-	private boolean isValid(String username, String password) {
+		/*
+		 * TODO check if input is valid
+		 * set user information?
+		 */
 		return true;
 	}
+	
 	
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
         String cmd = actionEvent.getActionCommand();
         
-        if (cmd.equalsIgnoreCase("login")) {
+        if (cmd.equalsIgnoreCase("log in")) {
         	if (checkCredentials()) {
-        		client.open("CalendarView");
+        		client.close("login");
+        		client.open("calendar");
         	} else client.getLoginView().viewNotifier(); // Shows wrong username/password notifier
         } else if (cmd.equalsIgnoreCase("quit")) {
-        	
+        	client.quit();
         }
 	}
 }

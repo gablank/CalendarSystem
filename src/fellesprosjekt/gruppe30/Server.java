@@ -3,13 +3,13 @@ package fellesprosjekt.gruppe30;
 
 import fellesprosjekt.gruppe30.Controller.AlarmController;
 import fellesprosjekt.gruppe30.Controller.Database;
+import fellesprosjekt.gruppe30.Controller.ServerListener;
 import fellesprosjekt.gruppe30.Model.Alarm;
 import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import fellesprosjekt.gruppe30.Model.User;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Server {
@@ -20,17 +20,25 @@ public class Server {
     private ArrayList<Alarm> alarms;
     private final AlarmController alarmController;
 
+	private ServerListener listener;
 
     public Server() {
         this.loadDatabase();
-
-        Alarm alarm = new Alarm(1, 1, new Date(new Date().getTime() + 120 * 1000));
-        System.out.println("Added alarm for " + alarm.getDate().getTime());
-        alarms.add(alarm);
-
+		
+        listener = new ServerListener();
+		Thread listenerThread = new Thread(listener);
+		listenerThread.start();
+		
         alarmController = new AlarmController(this);
         alarmController.start();
-        alarmController.interrupt();
+        
+		try {
+			listenerThread.join();
+            alarmController.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public void loadDatabase() {
