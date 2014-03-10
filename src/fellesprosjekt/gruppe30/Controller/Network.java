@@ -1,39 +1,47 @@
 package fellesprosjekt.gruppe30.Controller;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.json.JSONObject;
 
 public abstract class Network implements Runnable {
 	Socket connection_socket;
-	boolean running = true;
+	public boolean running = true;
 	
-	BufferedReader incoming_stream = null;
+	DataInputStream incoming_stream = null;
 	DataOutputStream outgoing_stream = null;
 	
+	String buffer; // for saving partial and double json-objects
+
 	@Override
 	public void run() {
 		try{
 			if(connection_socket != null && connection_socket.isConnected()){
 				set_up_streams();
+				System.out.println("streams set up!");
 				
-			}else{
+			} else {
 				System.out.println("connection_socket was not set up, terminating");
 				running = false;
 			}
 			
 			while(running){
-				String message = read_line();
+				
+//				String message = read_line();
+				String message = getJSONObject();
 
 				//
 				// do stuff based on the message
 				//
 				
-				if(message != null && message.compareTo("closing...") == 0){
+				if (message != null	&& message.compareTo("{\"request\":\"close\"}") == 0) {
+					System.out.println("closing clienthandler socket");
 					connection_socket.close();
 				}
 
@@ -46,11 +54,13 @@ public abstract class Network implements Runnable {
 			System.out.println("Network.run(): Caught exception, terminating...");
 			e.printStackTrace();
 		}
+
+		System.out.println("run returning normally.");
 	}
 	
 	
 	public void set_up_streams() throws IOException{
-		incoming_stream = new BufferedReader( new InputStreamReader(connection_socket.getInputStream()));
+		incoming_stream = new DataInputStream(connection_socket.getInputStream());
 		outgoing_stream = new DataOutputStream(connection_socket.getOutputStream());
 		
 		if(incoming_stream == null || outgoing_stream == null){
@@ -59,44 +69,82 @@ public abstract class Network implements Runnable {
 		}
 	}
 	
-	public void send(String message){
-		if(connection_socket == null || connection_socket.isClosed())
-			return;
-		
+//	public void send(String message){
+//		if(connection_socket == null || connection_socket.isClosed())
+//			return;
+//		
+//		try {
+//			System.out.println("Sending: " + message);
+//			outgoing_stream.writeUTF(message);
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public void sendJSONObject(JSONObject obj) {
+	// public void send_json_object(String json_string) {
+		String json_string = obj.toString();
+		System.out.println("sending: " + json_string);
 		try {
-			System.out.println("Sending: " + message);
-			outgoing_stream.writeUTF(message);
-			
+			outgoing_stream.writeUTF(json_string);
+			outgoing_stream.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("send_json_object threw exception: ");
 			e.printStackTrace();
 		}
 	}
 	
-	public String read_line(){
-		if(connection_socket == null || connection_socket.isClosed())
-			return null;
-		
-		try {
-			String message = null;
-			message = incoming_stream.readLine();		
-			if(message != null){
-				System.out.println("got: " + message + " (len: " + message.length() + ")");
-			}
-			
-			return message;
-			
-		} catch (IOException e) {
-			System.out.println("readLine threw Exception, connection is closed");
-			running = false;
-		}
+	// public JSON_object get_json_object() {
+	public String getJSONObject() {
+		if (connection_socket == null || connection_socket.isClosed())
+			return "";
 
-		return null;
+
+		String result = "";
+
+		try {
+			result = incoming_stream.readUTF();
+		} catch (IOException e) {
+			// System.out.println("get_json_object threw exception: ");
+			// e.printStackTrace();
+			return "";
+		}
+		
+
+		System.out.println("got: " + result);
+
+		// JSONObject o = json.parse(result);
+		return result;
+		// return o;
 	}
+
+//	public String read_line(){
+
+//		
+//		try {
+//			String message = null;
+//			message = incoming_stream.readLine();		
+//			if(message != null){
+//				System.out.println("got: " + message + " (len: " + message.length() + ")");
+//			}
+//			
+//			return message;
+//			
+//		} catch (IOException e) {
+//			System.out.println("readLine threw Exception, connection is closed");
+//			running = false;
+//		}
+//
+//		return null;
+//	}
 	
 	public void close_connection(){
 		running = false;
-		send("closing...");
+		JSONObject obj = new JSONObject();
+		obj.put("request", "close");
+		sendJSONObject(obj);
 		
 		try {
 			//Thread.sleep(2000);
