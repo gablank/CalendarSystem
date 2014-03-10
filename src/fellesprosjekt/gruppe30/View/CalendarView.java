@@ -22,7 +22,8 @@ public class CalendarView extends JPanel {
 	private JButton add_button, remove_button, new_appointment_button, log_out_button, left_arrow_button, right_arrow_button;
 	private JComboBox users;
 	private JLabel week_label, show_calendars_for, mon_label, tue_label, wed_label, thu_label, fri_label, sat_label, sun_label;
-	private JList user_calendars, mon_appointments, tue_appointments, wed_appointments, thu_appointments, fri_appointments, sat_appointments, sun_appointments;
+	private JList<User> user_calendars;
+	private JList<AppointmentSummaryView>  mon_appointments, tue_appointments, wed_appointments, thu_appointments, fri_appointments, sat_appointments, sun_appointments;
 	private JScrollPane mon_scrollpane, tue_scrollpane, wed_scrollpane, thu_scrollpane, fri_scrollpane, sat_scrollpane, sun_scrollpane;
 	private JFrame frame;
 	
@@ -50,11 +51,11 @@ public class CalendarView extends JPanel {
 		right_arrow_button = new JButton(">");
 		right_arrow_button.setPreferredSize(new Dimension(45, 30));
 		
-		users = new JComboBox();
-		users.setPreferredSize(new Dimension(100, 25));
-		
 		user_calendars = new JList<User>();
-		user_calendars.setPreferredSize(new Dimension(100,150));
+		user_calendars.setPreferredSize(new Dimension(140,150));
+		
+		users = new JComboBox();
+		users.setPreferredSize(new Dimension(140, 25));
 		
 		week_label = new JLabel("week 10");
 		show_calendars_for = new JLabel("Show calendars for:");
@@ -75,25 +76,25 @@ public class CalendarView extends JPanel {
 		sun_appointments = new JList<AppointmentSummaryView>();
 		
 		mon_scrollpane = new JScrollPane(mon_appointments);
-		mon_scrollpane.setPreferredSize(new Dimension(150, 450));
+		mon_scrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		tue_scrollpane = new JScrollPane(tue_appointments);
-		tue_scrollpane.setPreferredSize(new Dimension(150, 450));
+		tue_scrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		wed_scrollpane = new JScrollPane(wed_appointments);
-		wed_scrollpane.setPreferredSize(new Dimension(150, 450));
+		wed_scrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		thu_scrollpane = new JScrollPane(thu_appointments);
-		thu_scrollpane.setPreferredSize(new Dimension(150, 450));
+		thu_scrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		fri_scrollpane = new JScrollPane(fri_appointments);
-		fri_scrollpane.setPreferredSize(new Dimension(150, 450));
+		fri_scrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		sat_scrollpane = new JScrollPane(sat_appointments);
-		sat_scrollpane.setPreferredSize(new Dimension(150, 450));
+		sat_scrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		sun_scrollpane = new JScrollPane(sun_appointments);
-		sun_scrollpane.setPreferredSize(new Dimension(150, 450));
+		sun_scrollpane.setPreferredSize(new Dimension(160, 450));
 		
 		
 		
@@ -166,8 +167,10 @@ public class CalendarView extends JPanel {
 		frame.pack();
 		frame.setVisible(false);
 		frame.setResizable(true);
+		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		//end test code
+		
 	}
 	
 	public void setVisible(boolean visible){

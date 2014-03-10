@@ -44,8 +44,8 @@ public class AppointmentView extends JPanel implements ActionListener {
 	protected JCheckBox use_meeting_room;
 	protected JCheckBox hide_from_calendar;
 	protected JCheckBox set_alarm;
-	protected JComboBox participant_list;
-	protected JList participants;
+	protected JComboBox<User> participant_list;
+	protected JList<User> participants;
 	protected JButton add_button;
 	protected JButton remove_button;
 	protected JButton save_button;
@@ -107,7 +107,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		hide_from_calendar = new JCheckBox("Hide from calendar                                             ");
 		set_alarm = new JCheckBox("Alarm");
 		
-		participant_list = new JComboBox();
+		participant_list = new JComboBox<User>();
 		participant_list.setPreferredSize(new Dimension(100, 25));
 		participants = new JList<User>();
 		
