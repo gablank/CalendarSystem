@@ -1,5 +1,6 @@
 package fellesprosjekt.gruppe30.View;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,7 +17,7 @@ import javax.swing.JTextField;
 import javax.xml.bind.Marshaller.Listener;
 
 public class LoginView extends JPanel{
-	private JLabel username_label, password_label, spaceLabel;
+	private JLabel username_label, password_label, spaceLabel, notifier;
 	private JTextField usernameTextField;
 	private JPasswordField passwordTextField;
 	private JButton login_button, quit_button;
@@ -46,6 +47,9 @@ public class LoginView extends JPanel{
 		password_label = new JLabel("Password:");
 		passwordTextField = new JPasswordField(20);
 		
+		//notifier
+		notifier = new JLabel("Wrong username/password");
+		
 		//buttons
 		login_button = new JButton("Log in");
 		quit_button = new JButton("Quit");
@@ -63,6 +67,10 @@ public class LoginView extends JPanel{
 		add(passwordTextField, c_right);
 		
 		c_right.gridy = 2;
+		add(notifier, c_right);
+		notifier.setForeground(Color.RED);
+		
+		c_right.gridy = 3;
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		buttonPanel.add(login_button);
@@ -74,7 +82,7 @@ public class LoginView extends JPanel{
 		frame.add(this);
 		frame.setVisible(false);
 		frame.setResizable(false);
-		frame.setSize(350, 140);
+		frame.setSize(350, 160);
 		frame.setLocationRelativeTo(null);
 		
 		
