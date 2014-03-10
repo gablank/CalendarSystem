@@ -30,7 +30,7 @@ public class PersonRenderer implements ListCellRenderer{
 		    ImageIcon accept = new ImageIcon(acceptIcon);
 		    ImageIcon decline = new ImageIcon(declineIcon);
 		    ImageIcon unanswered = new ImageIcon(unansweredIcon);
-		    //TODO logikk for � velge riktig ikon
+		    //TODO logic to choose correct icon
 		    label.setIcon(accept);
 		} catch (MalformedURLException e) {
 			System.out.println("bad image URL");
