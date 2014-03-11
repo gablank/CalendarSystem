@@ -4,19 +4,16 @@ package fellesprosjekt.gruppe30;
 import fellesprosjekt.gruppe30.Controller.AlarmController;
 import fellesprosjekt.gruppe30.Controller.Database;
 import fellesprosjekt.gruppe30.Controller.ServerListener;
-import fellesprosjekt.gruppe30.Model.Alarm;
-import fellesprosjekt.gruppe30.Model.Appointment;
-import fellesprosjekt.gruppe30.Model.MeetingRoom;
-import fellesprosjekt.gruppe30.Model.User;
+import fellesprosjekt.gruppe30.Model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
     private final Database database = Database.getInstance();
-    private List<User> users;
-    private List<Appointment> appointments;
-    private List<MeetingRoom> meetingRooms;
+    private ArrayList<User> users;
+    private ArrayList<Appointment> appointments;
+    private ArrayList<MeetingRoom> meetingRooms;
     private ArrayList<Alarm> alarms;
     private final AlarmController alarmController;
 
@@ -42,7 +39,7 @@ public class Server {
     }
 
     public void loadDatabase() {
-        //
+        this.database.loadDatabase(this);
     }
 
     public synchronized List<Alarm> getAlarms() {
@@ -60,6 +57,26 @@ public class Server {
 
     public static void main(String[] args) {
         Server server = new Server();
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
+    }
+
+    public void setAlarms(ArrayList<Alarm> alarms) {
+        this.alarms = alarms;
+    }
+
+    public void setMeetingRooms(ArrayList<MeetingRoom> meetingRooms) {
+        this.meetingRooms = meetingRooms;
+    }
+
+    public void setAppointments(ArrayList<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
     }
     
     public void insertAppointment(Appointment appointment){
