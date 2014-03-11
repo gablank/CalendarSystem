@@ -9,16 +9,20 @@ public class User {
 	private String username;
     private String password;
 	private String email;
-	
-	public User(String firstname, String lastname, String username, String password, String email) {
+
+    public User(String firstname, String lastname, String username, String email) {
+        this(firstname, lastname, username, "", email);
+    }
+
+    // This should only be used server side!
+    public User(String firstname, String lastname, String username, String password, String email) {
         this.id = -1;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.username = username;
-		this.email = email;
-		setPassword(password);
-			
-	}
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     public int getId() {
         return id;
