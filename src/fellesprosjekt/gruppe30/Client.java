@@ -150,4 +150,8 @@ public class Client {
 	public void removeAppointment(int id) {
 //		appointments.remove(o)
 	}
+
+	public LoginController getLoginController() {
+		return loginController;
+	}
 }

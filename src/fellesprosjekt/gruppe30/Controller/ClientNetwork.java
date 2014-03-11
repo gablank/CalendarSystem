@@ -45,14 +45,14 @@ public class ClientNetwork extends Network {
 
 			switch (type) {
 			case "login":
-				if (message.has("status") && message.has("statusMessage")) {
+				if (message.has("status") && message.has("statusMessage") && message.has("username")) {
 
 					String status = message.getString("status");
 					String statusMessage = message.getString("statusMessage");
+					String username = message.getString("username");
+					
 
-					//
-					// notify() something loginController is wait()-ing on?
-					//
+					client.getLoginController().handleLoginResponse(status.compareTo("success") == 0, username);
 
 				} else {
 					System.out
@@ -184,34 +184,34 @@ public class ClientNetwork extends Network {
 				
 				break;
 				
-			case "alarm":
-				String action = "";
-				if (message.has("action"))
-					action = message.getString("action");
-//			{
-//			    ‘type’: ‘alarm’,
-//			    ‘action’: [‘new’, ‘change’, ‘remove’],
-//			    ‘userId’: <userid>,
-//			    ‘appointmentId’: <appointmentid>,
-//			    ‘time’: <timestamp>
-//			}
-				
-				if((action == "change" || action == "new")
-						&& message.has("userId")
-						&& message.has("appointmentId")
-						&& message.has("time")){
-					
-					int userId        = message.getInt("userId");
-					int appointmentId = message.getInt("appointmentId");
-					long time         = message.getLong("time");
-					
-					User user = client.getUserById(userId);
-					
-					Alarm alarm = new Alarm()
-					
-				}
-				
-				break;
+//			case "alarm":
+//				String action = "";
+//				if (message.has("action"))
+//					action = message.getString("action");
+////			{
+////			    ‘type’: ‘alarm’,
+////			    ‘action’: [‘new’, ‘change’, ‘remove’],
+////			    ‘userId’: <userid>,
+////			    ‘appointmentId’: <appointmentid>,
+////			    ‘time’: <timestamp>
+////			}
+//				
+//				if((action == "change" || action == "new")
+//						&& message.has("userId")
+//						&& message.has("appointmentId")
+//						&& message.has("time")){
+//					
+//					int userId        = message.getInt("userId");
+//					int appointmentId = message.getInt("appointmentId");
+//					long time         = message.getLong("time");
+//					
+//					User user = client.getUserById(userId);
+//					
+//					Alarm alarm = new Alarm()
+//					
+//				}
+//				
+//				break;
 
 			default:
 				System.out.println("got a message of invalid type: "
