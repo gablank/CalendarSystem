@@ -4,14 +4,25 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
 
+import fellesprosjekt.gruppe30.Server;
+import fellesprosjekt.gruppe30.Model.Appointment;
+import fellesprosjekt.gruppe30.Model.Attendant;
+import fellesprosjekt.gruppe30.Model.MeetingRoom;
+import fellesprosjekt.gruppe30.Model.User;
+
 public class ServerListener implements Runnable {
 	int listenerPort = 11223;
 	List<ClientHandler> clientHandlers = new ArrayList<ClientHandler>();
+	Server server;
 
+	public ServerListener(Server server) {
+		this.server = server;
+	}
 	
 	@Override
 	public void run() {
@@ -38,7 +49,7 @@ public class ServerListener implements Runnable {
 			try {
 				connectionSocket = listenerSocket.accept();
 				if(connectionSocket != null){
-					ClientHandler clientHandler = new ClientHandler(connectionSocket);
+					ClientHandler clientHandler = new ClientHandler(connectionSocket, server);
 					clientHandlers.add(clientHandler);
 					
 					System.out.println("ServerNetwork: accepted new connection from " + connectionSocket.getRemoteSocketAddress());
@@ -64,15 +75,16 @@ public class ServerListener implements Runnable {
 }
 
 class ClientHandler extends Network {
-	
+	Server server;
 
-	public ClientHandler(Socket connectionSocket) {
+	public ClientHandler(Socket connectionSocket, Server server) {
 		this.connectionSocket = connectionSocket;
+		this.server = server;
 		System.out.println("ClientHandler created.");
 	}
 
 	@Override
-	protected void handleMessage(JSONObject message) {
+	protected void handleMessage(JSONObject message) throws IOException {
 		if (message.has("type")) {
 			String type = message.getString("type");
 			String action = "";
@@ -105,28 +117,70 @@ class ClientHandler extends Network {
 						&& message.has("start")
 						&& message.has("end")
 						&& message.has("meetingPlace")
-						&& message.has("attendants")) {
+						&& message.has("attendants")
+						&& message.has("owner")
+						&& message.has("meetingRoom")) {
 
-					int    id           = message.getInt("id");
-					String title        = message.getString("title");
-					String description  = message.getString("description");
-					String start        = message.getString("start");
-					String end          = message.getString("end");
-					String meetingPlace = message.getString("meetingPlace");
-					String attendants   = message.getString("attendants");
-
+					String title         = message.getString("title");
+					String description   = message.getString("description");
+					long   start         = message.getLong("start");
+					long   end           = message.getLong("end");
+					String meetingPlace  = message.getString("meetingPlace");
+					String attendants    = message.getString("attendants");
+					int    ownerId       = message.getInt("owner");
+					int    meetingRoomId = message.getInt("meetingRoom");
 					
+
+					User owner = server.getUserById(ownerId);
+					
+					if(owner == null){
+						System.out.println("failed handling an appointment message, owner was not found. Message: " + message.toString());
+						return;
+					}
+					
+					Date startDate = new Date(start);
+					Date endDate = new Date(end);
+					
+					MeetingRoom meetingRoom = server.getMeetingRoomById(meetingRoomId);
 					
 					//
-					// modify serverside model
+					// todo: parse, look up and add attendants
 					//
+
+					Appointment appointment = null;
+
+					if(meetingRoom == null && meetingPlace.isEmpty()){
+						System.out.println("failed handling an appointment message, no meetingPlace or valid meetingRoom was set. Message: " + message.toString());
+						return;
+						
+					}else if(meetingRoom != null && !meetingPlace.isEmpty()){
+						System.out.println("failed handling an appointment message, both meetingPlace and meetingRoom were set. Message: " + message.toString());
+						return;
+						
+					}else if(meetingRoom != null){
+						appointment = new Appointment(owner, title, description, startDate, endDate, meetingRoom);
+						
+					}else{
+						appointment = new Appointment(owner, title, description, startDate, endDate, meetingPlace);
+						
+					}
+
+					if(action == "change"){
+						int id = message.getInt("id");
+						appointment.setId(id);
+						if(server.getAppointmentById(id) == null){
+							System.out.println("failed handling an change appointment message, the appointment with specified id could not be found.");
+						}
+					}
+					
+					server.insertAppointment(appointment);
+					
 
 				} else if(action == "remove" && message.has("id")  ){
 					int    id           = message.getInt("id");
 					
-					//
-					// modify serverside model
-					//
+					
+					server.removeAppointment(id);
 				
 				}else{
 					System.out.println("an appointment message did not have the required fields: " + message.toString());
@@ -163,6 +217,9 @@ class ClientHandler extends Network {
 				//
 				// do stuff?
 				//
+
+				connectionSocket.close();
+				running = false;
 
 				break;
 				

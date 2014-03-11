@@ -44,6 +44,14 @@ public class Appointment {
     public void removeAttendant(Attendant attendant) {
         this.attendants.remove(attendant);
     }
+    
+    public void setAttendants(List<Attendant> attendants){
+    	this.attendants = attendants;
+    }
+    
+    public List<Attendant> getAttendants(){
+    	return attendants;
+    }
 
     public int getId() {
         return id;

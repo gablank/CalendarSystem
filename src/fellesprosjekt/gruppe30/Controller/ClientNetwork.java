@@ -30,4 +30,23 @@ public class ClientNetwork extends Network {
 	protected void handleMessage(JSONObject message) {
 		
 	}
+	
+
+
+	
+	public void closeConnection(){
+		running = false;
+		JSONObject obj = new JSONObject();
+		obj.put("type", "logout");
+		sendJSONObject(obj);
+		
+		try {
+			//Thread.sleep(2000);
+			connectionSocket.close();
+			
+		} catch (IOException  e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

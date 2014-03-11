@@ -21,7 +21,6 @@ public abstract class Network implements Runnable {
 		try{
 			if(connectionSocket != null && connectionSocket.isConnected()){
 				setUpStreams();
-				System.out.println("streams set up!");
 				
 			} else {
 				System.out.println("connectionSocket was not set up, terminating");
@@ -33,7 +32,7 @@ public abstract class Network implements Runnable {
 				JSONObject message = getJSONObject();
 
 				if (message == null) {
-					System.out.println("tom message");
+					System.out.println("empty message");
 					continue;
 				}
 
@@ -41,10 +40,10 @@ public abstract class Network implements Runnable {
 
 
 				
-				if (message.get("request").equals("close")) {
-					System.out.println("closing clienthandler socket");
-					connectionSocket.close();
-				}
+//				if (message.get("request").equals("close")) {
+//					System.out.println("closing clienthandler socket");
+//					connectionSocket.close();
+//				}
 
 				if(connectionSocket.isClosed()){
 					System.out.println("Clienthandler: connection is closed, terminating...");
@@ -60,7 +59,7 @@ public abstract class Network implements Runnable {
 	}
 	
 	
-	protected abstract void handleMessage(JSONObject message);
+	protected abstract void handleMessage(JSONObject message) throws IOException;
 
 
 	private void setUpStreams() throws IOException {
@@ -103,21 +102,4 @@ public abstract class Network implements Runnable {
 		return result;
 	}
 
-
-	
-	public void closeConnection(){
-		running = false;
-		JSONObject obj = new JSONObject();
-		obj.put("request", "close");
-		sendJSONObject(obj);
-		
-		try {
-			//Thread.sleep(2000);
-			connectionSocket.close();
-			
-		} catch (IOException  e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

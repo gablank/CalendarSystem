@@ -25,7 +25,7 @@ public class Server {
     public Server() {
         this.loadDatabase();
 		
-        listener = new ServerListener();
+        listener = new ServerListener(this);
 		Thread listenerThread = new Thread(listener);
 		listenerThread.start();
 		
@@ -61,4 +61,64 @@ public class Server {
     public static void main(String[] args) {
         Server server = new Server();
     }
+    
+    public void insertAppointment(Appointment appointment){
+   		int id = database.insertAppointment(appointment);
+
+		if(appointment.getId() == -1){
+			appointment.setId(id);
+			appointments.add(appointment);
+		}else{
+			Appointment oldAppointment = getAppointmentById(id);
+			
+			oldAppointment.setDescription(appointment.getDescription());
+			oldAppointment.setEnd(appointment.getEnd());
+//			oldAppointment.setLastUpdated(lastUpdated);
+			oldAppointment.setMeetingPlace(appointment.getMeetingPlace());
+//			oldAppointment.setOwner(owner);
+			oldAppointment.setRoom(appointment.getRoom());
+			oldAppointment.setStart(appointment.getStart());
+			oldAppointment.setTitle(appointment.getTitle());
+			oldAppointment.setAttendants(appointment.getAttendants());
+			
+			
+//			appointments.remove(getAppointmentById(id));
+//			appointments.add(appointment);
+		}
+		
+    }
+    
+    public void removeAppointment(int id){
+    	
+    	// todo: database.remove...
+    	
+		appointments.remove(getAppointmentById(id));
+    }
+
+	public User getUserById(int id) {
+		for (User u : users){
+			if(u.getId() == id)
+				return u;
+		}
+		
+		return null;
+	}
+	
+	public Appointment getAppointmentById(int id) {
+		for (Appointment a : appointments){
+			if(a.getId() == id)
+				return a;
+		}
+		
+		return null;
+	}
+
+	public MeetingRoom getMeetingRoomById(int id) {
+		for (MeetingRoom m : meetingRooms){
+			if(m.getId() == id)
+				return m;
+		}
+		
+		return null;
+	}
 }
