@@ -17,6 +17,7 @@ import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
 import fellesprosjekt.gruppe30.View.CalendarView;
 import fellesprosjekt.gruppe30.View.LoginView;
 import fellesprosjekt.gruppe30.View.ViewAppointmentView;
+import org.json.JSONObject;
 
 import javax.swing.*;
 
@@ -77,13 +78,17 @@ public class Client {
     public void setViewVisible(ViewEnum viewEnum, boolean state) {
         if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.LOGIN)) {
             this.loginView.setVisible(state);
-        } else if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.APPOINTMENT)) {
+        }
+		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.APPOINTMENT)) {
             this.appointmentView.setVisible(state);
-        } else if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.BOOKMEETINGROOM)) {
+        }
+		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.BOOKMEETINGROOM)) {
             this.bookMeetingRoomView.setVisible(state);
-        } else if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.CALENDAR)) {
+        }
+		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.CALENDAR)) {
         	this.calendarView.setVisible(state);
-        } else if(viewEnum.equals(ViewEnum.ALL)|| viewEnum.equals(ViewEnum.VIEWAPPOINTMENTVIEW)) {
+        }
+		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.VIEWAPPOINTMENTVIEW)) {
         	this.viewAppointmentView.setVisible(state);
         }
     }
@@ -131,6 +136,15 @@ public class Client {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
 		this.username = username;
+	}
+
+	public void logout() {
+		this.username = null;
+		JSONObject obj = new JSONObject();
+		obj.put("type", "logout");
+		this.network.sendJSONObject(obj);
+		close(ViewEnum.ALL);
+		open(ViewEnum.LOGIN);
 	}
 
 	public static enum ViewEnum {

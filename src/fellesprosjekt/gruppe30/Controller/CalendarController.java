@@ -16,10 +16,7 @@ public class CalendarController implements ActionListener {
         String cmd = actionEvent.getActionCommand();
 		
         if (cmd.equalsIgnoreCase("log out")) {
-        	/*
-        	 * TODO reset client
-        	 */
-        	client.quit(0);
+        	client.logout();
         } else if (cmd.equalsIgnoreCase(">")) {
         	client.getCalendar().nextWeek();
         } else if (cmd.equalsIgnoreCase("<")) {
