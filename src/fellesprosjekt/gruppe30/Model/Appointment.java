@@ -11,10 +11,11 @@ public class Appointment {
 	private Date start;
 	private Date end;
 	private String meetingPlace;
-    private List<Attendant> attendants;
+    private ArrayList<Attendant> attendants;
 	private MeetingRoom room;
     private Date lastUpdated;
     private User owner;
+
 
     public Appointment(User owner, String title, String description, Date start, Date end, String meetingPlace) {
         this(owner, title, description, start, end, meetingPlace, null);
@@ -51,6 +52,10 @@ public class Appointment {
     
     public List<Attendant> getAttendants(){
     	return attendants;
+    }
+
+    public ArrayList<Attendant> getAttendants() {
+        return this.attendants;
     }
 
     public int getId() {
