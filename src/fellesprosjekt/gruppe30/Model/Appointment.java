@@ -46,12 +46,8 @@ public class Appointment {
         this.attendants.remove(attendant);
     }
     
-    public void setAttendants(List<Attendant> attendants){
+    public void setAttendants(ArrayList<Attendant> attendants){
     	this.attendants = attendants;
-    }
-    
-    public List<Attendant> getAttendants(){
-    	return attendants;
     }
 
     public ArrayList<Attendant> getAttendants() {
