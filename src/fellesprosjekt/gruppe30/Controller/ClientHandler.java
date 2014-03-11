@@ -37,14 +37,20 @@ class ClientHandler extends Network {
                         // password is a sha256 hash (64 chars)
                         String password = message.getString("password");
 
-                        //
-                        // send response
-                        //
+                        JSONObject response = new JSONObject();
+                        response.put("type", "login");
+                        
                         if(this.server.verifyLogin(username, password)) {
+                            response.put("status", "success");
+                            response.put("statusMessage", "OK");
                             System.out.println(username + " has logged in!");
                         } else {
+                            response.put("status", "wrongCombination");
+                            response.put("statusMessage", "The username and password combination was wrong!");
                             System.out.println("Someone tried logging in as " + username + ", but the password was wrong!");
                         }
+                        
+                        sendJSONObject(response);
 
                     }else{
                         System.out.println("a login message did not have the required fields: " + message.toString());

@@ -6,6 +6,7 @@ import java.net.Socket;
 import org.json.JSONObject;
 
 import fellesprosjekt.gruppe30.Client;
+import fellesprosjekt.gruppe30.Model.Alarm;
 import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import fellesprosjekt.gruppe30.Model.User;
 
@@ -184,18 +185,31 @@ public class ClientNetwork extends Network {
 				break;
 				
 			case "alarm":
-//				if (message.has("id") 
-//						&& message.has("id")
-//						&& message.has("roomSize")) {
-//
-//					int id       = message.getInt("id");
-//					int roomSize = message.getInt("roomSize");
-//
-//					MeetingRoom meetingRoom = new MeetingRoom(roomSize);
-//					meetingRoom.setId(id);
-//
-//					client.addMeetingRoom(meetingRoom);
-//				}
+				String action = "";
+				if (message.has("action"))
+					action = message.getString("action");
+//			{
+//			    ‘type’: ‘alarm’,
+//			    ‘action’: [‘new’, ‘change’, ‘remove’],
+//			    ‘userId’: <userid>,
+//			    ‘appointmentId’: <appointmentid>,
+//			    ‘time’: <timestamp>
+//			}
+				
+				if((action == "change" || action == "new")
+						&& message.has("userId")
+						&& message.has("appointmentId")
+						&& message.has("time")){
+					
+					int userId        = message.getInt("userId");
+					int appointmentId = message.getInt("appointmentId");
+					long time         = message.getLong("time");
+					
+					User user = client.getUserById(userId);
+					
+					Alarm alarm = new Alarm()
+					
+				}
 				
 				break;
 
