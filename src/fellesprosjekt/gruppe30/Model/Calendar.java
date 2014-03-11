@@ -15,6 +15,7 @@ public class Calendar {
 	PropertyChangeSupport pcs;
 	
 	public Calendar() {
+		appointments = new ArrayList<Appointment>();
 		/*
 		 * TODO get appointments
 		 */
@@ -24,12 +25,20 @@ public class Calendar {
 	
 	public void nextWeek() {
 		week ++;
-		pcs.firePropertyChange("next week", week-1, week);
+		if (week > 52) {
+			week = 1;
+			pcs.firePropertyChange("next week", 52, week);
+		} else pcs.firePropertyChange("new week", week - 1, week);
 	}
-	
+	/*
+	 * Yea... these are failing as well
+	 */
 	public void previousWeek() {
 		week --;
-		pcs.firePropertyChange("previous week", week-1, week);
+		if (week < 1) {
+			week = 52;
+			pcs.firePropertyChange("next week", 1, week);
+		}else pcs.firePropertyChange("new week", week + 1, week);
 	}
 	
 	public void addPropertyChangeSuppertListener(PropertyChangeListener listener) {

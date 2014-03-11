@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.EventListener;
 
 import javax.swing.BorderFactory;
@@ -26,10 +27,10 @@ import javax.swing.event.ListSelectionListener;
 
 import fellesprosjekt.gruppe30.Model.User;
 
-public class CalendarView extends JPanel {
+public class CalendarView extends JPanel implements PropertyChangeListener {
 	private PersonRenderer listrenderer;
 	private JButton addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
-	private JComboBox users;
+	private JComboBox<User> users;
 	private JLabel weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
 	private JList<User> userCalendars;
 	private JPanel monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
@@ -67,13 +68,13 @@ public class CalendarView extends JPanel {
 		
 		weekLabel = new JLabel("week 10");
 		showCalendarsFor = new JLabel("Show calendars for:");
-		monLabel = new JLabel("Mon 3.3");
-		tueLabel = new JLabel("Tue 4.3");
-		wedLabel = new JLabel("Wed 5.3");
-		thuLabel = new JLabel("Thu 6.3");
-		friLabel = new JLabel("Fri 7.3");
-		satLabel = new JLabel("Sat 8.3");
-		sunLabel = new JLabel("Sun 9.3");
+		monLabel = new JLabel("Monday 3.3");
+		tueLabel = new JLabel("Tuesday 4.3");
+		wedLabel = new JLabel("Wednesday 5.3");
+		thuLabel = new JLabel("Thursday 6.3");
+		friLabel = new JLabel("Friday 7.3");
+		satLabel = new JLabel("Saturday 8.3");
+		sunLabel = new JLabel("Sunday 9.3");
 		
 		monAppointment = new JPanel();
 		JScrollPane monScroller = new JScrollPane(monAppointment);
@@ -252,23 +253,26 @@ public class CalendarView extends JPanel {
 		return (User)users.getSelectedItem();
 	}
 	
+
 	public void propertyChange(PropertyChangeEvent pce) {
-		if (pce.getPropertyName() == "next week") {
-			weekLabel.setText((String)pce.getNewValue());
+		if (pce.getPropertyName() == "new week") {
+			weekLabel.setText("Week " + pce.getNewValue().toString());
+			System.out.println("New week");
 			/*
-			 * TODO implement next week functions
-			 */
-		} else if (pce.getPropertyName() == "previous week") {
-			weekLabel.setText((String)pce.getNewValue());
-			/*
-			 * TODO implement previous week functions
-			 */
-		}
+			 * TODO yea... this is wrong
+			monLabel.setText("Monday " + java.util.Calendar.getInstance().get(java.util.Calendar.MONDAY));
+			tueLabel.setText("Tuesday " + java.util.Calendar.getInstance().get(java.util.Calendar.TUESDAY));
+			wedLabel.setText("Wednesday " + java.util.Calendar.getInstance().get(java.util.Calendar.WEDNESDAY));
+			thuLabel.setText("Thursday " + java.util.Calendar.getInstance().get(java.util.Calendar.THURSDAY));
+			friLabel.setText("Friday " + java.util.Calendar.getInstance().get(java.util.Calendar.FRIDAY));
+			satLabel.setText("Saturday " + java.util.Calendar.getInstance().get(java.util.Calendar.SATURDAY));
+			sunLabel.setText("Sunday " + java.util.Calendar.getInstance().get(java.util.Calendar.SUNDAY));
+			*/
+		} 
 	}
 
 	public static void main(String[] args) {
 		CalendarView view = new CalendarView();
 		view.setVisible(true);
 	}
-
 }

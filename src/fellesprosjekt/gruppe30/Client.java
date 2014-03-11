@@ -35,6 +35,7 @@ public class Client {
 		this.calendarController = new CalendarController(this);
 		this.calendarView = new CalendarView();
 		this.calendarView.addListener(calendarController);
+		this.calendar.addPropertyChangeSuppertListener(calendarView);
 		
         this.appointmentView = new AppointmentView();
         this.bookMeetingRoomView = new BookMeetingRoomView();
