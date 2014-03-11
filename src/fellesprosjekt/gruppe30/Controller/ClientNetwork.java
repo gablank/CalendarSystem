@@ -45,7 +45,7 @@ public class ClientNetwork extends Network {
 
 			switch (type) {
 			case "login":
-				if (message.has("status") && message.has("statusMessage") && message.has("username")) {
+				if (message.has("status") && message.has("statusMessage")) {
 
 					String status = message.getString("status");
 					String statusMessage = message.getString("statusMessage");
