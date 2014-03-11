@@ -62,6 +62,8 @@ public class Client {
         this.open(ViewEnum.LOGIN);
 
         this.network = new ClientNetwork(this);
+		Thread networkThread = new Thread(this.network);
+		networkThread.start();
     }
 
     public void open(ViewEnum viewEnum) {
