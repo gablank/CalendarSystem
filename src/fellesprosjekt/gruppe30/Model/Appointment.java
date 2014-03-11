@@ -1,5 +1,8 @@
 package fellesprosjekt.gruppe30.Model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -125,4 +128,25 @@ public class Appointment {
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+
+	public JSONObject getJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("type", "appointment");
+		obj.put("id", this.id);
+		obj.put("title", this.title);
+		obj.put("description", this.description);
+		obj.put("start", this.start.getTime());
+		obj.put("end", this.end.getTime());
+		obj.put("meetingPlace", this.meetingPlace);
+		JSONArray attendants = new JSONArray();
+		for(Attendant attendant : this.attendants) {
+			attendants.put(attendant.getJSON());
+		}
+		obj.put("attendants", this.attendants);
+		obj.put("meetingRoom", this.room.getId());
+		obj.put("lastUpdated", this.lastUpdated.getTime());
+		obj.put("owner", this.owner.getId());
+		return obj;
+	}
 }

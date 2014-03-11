@@ -487,7 +487,8 @@ public class Database {
                     String lastName = results.getString("last_name");
                     String email = results.getString("email");
 
-                    User user = new User(firstName, lastName, username, password, email);
+                    User user = new User(firstName, lastName, username, email);
+					user.setPassword(password);
                     user.setId(userid);
                     users.add(user);
 
@@ -676,7 +677,8 @@ public class Database {
         /**
          * Test data
          */
-        User anders = new User("Anders", "Wenhaug", "andersw", "password", "anders@wenhaug.no");
+        User anders = new User("Anders", "Wenhaug", "andersw", "anders@wenhaug.no");
+		anders.setPassword("password");
         MeetingRoom meetingRoom = new MeetingRoom(8);
         Appointment appointment = new Appointment(
                 anders,

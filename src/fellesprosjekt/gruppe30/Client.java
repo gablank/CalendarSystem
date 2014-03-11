@@ -1,10 +1,16 @@
 package fellesprosjekt.gruppe30;
 
 
+import java.util.List;
+
 import fellesprosjekt.gruppe30.Controller.AppointmentController;
 import fellesprosjekt.gruppe30.Controller.CalendarController;
+import fellesprosjekt.gruppe30.Controller.ClientNetwork;
 import fellesprosjekt.gruppe30.Controller.LoginController;
+import fellesprosjekt.gruppe30.Model.Alarm;
+import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
+import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import fellesprosjekt.gruppe30.Model.User;
 import fellesprosjekt.gruppe30.View.AppointmentView;
 import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
@@ -25,6 +31,12 @@ public class Client {
 	private final ViewAppointmentView viewAppointmentView;
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
+    private final ClientNetwork network;
+
+	private List<User> users;
+	private List<Appointment> appointments;
+	private List<MeetingRoom> meetingRooms;
+	private List<Alarm> alarms;
 
     public Client() {
     	this.loginController = new LoginController(this);
@@ -45,35 +57,34 @@ public class Client {
         this.appointmentView.addListener(this.appointmentController);
 
 
-        this.close("all");
-        this.open("login");
+        this.close(ViewEnum.ALL);
+        this.open(ViewEnum.LOGIN);
+
+        this.network = new ClientNetwork();
     }
 
-    public void open(String view) {
-        this.setViewVisible(view, true);
+    public void open(ViewEnum viewEnum) {
+        this.setViewVisible(viewEnum, true);
     }
 
-    public void close(String view) {
-        this.setViewVisible(view, false);
+    public void close(ViewEnum viewEnum) {
+        this.setViewVisible(viewEnum, false);
     }
 
-    public void setViewVisible(String view, boolean state) {
-        view = view.toLowerCase();
-
-        if(view.equals("all") || view.equals("login")) {
+    public void setViewVisible(ViewEnum viewEnum, boolean state) {
+        if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.LOGIN)) {
             this.loginView.setVisible(state);
-        } else if(view.equals("all") || view.equals("week")) {
-            // TODO
-        } else if(view.equals("all") || view.equals("appointment")) {
+        } else if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.APPOINTMENT)) {
             this.appointmentView.setVisible(state);
-        } else if(view.equals("all") || view.equals("bookmeetingroom")) {
+        } else if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.BOOKMEETINGROOM)) {
             this.bookMeetingRoomView.setVisible(state);
-        } else if(view.equals("all")|| view.equals("calendar")) {
+        } else if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.CALENDAR)) {
         	this.calendarView.setVisible(state);
-        } else if(view.equals("all")|| view.equals("view appointment")) {
+        } else if(viewEnum.equals(ViewEnum.ALL)|| viewEnum.equals(ViewEnum.VIEWAPPOINTMENTVIEW)) {
         	this.viewAppointmentView.setVisible(state);
         }
     }
+
 	public AppointmentView getAppointmentView() {
 		return appointmentView;
 	}
@@ -111,10 +122,25 @@ public class Client {
                 Client client = new Client();
             }
         });
-
     }
-    
+
+    public enum ViewEnum {
+        ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW
+    }
+
     public void quit(int i) {
     	System.exit(i);
     }
+    
+	public void addUser(User user) {
+		users.add(user);
+	}
+
+	public void addMeetingRoom(MeetingRoom meetingRoom) {
+		meetingRooms.add(meetingRoom);
+	}
+
+	public void removeAppointment(int id) {
+//		appointments.remove(o)
+	}
 }

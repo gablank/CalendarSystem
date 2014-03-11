@@ -1,5 +1,7 @@
 package fellesprosjekt.gruppe30.Model;
 
+import org.json.JSONObject;
+
 public class MeetingRoom {
     private int id;
 	int roomSize;
@@ -20,4 +22,12 @@ public class MeetingRoom {
 	public int getRoomSize() {
 		return roomSize;
     }
+
+	public JSONObject getJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("type", "meetingRoom");
+		obj.put("id", this.id);
+		obj.put("roomSize", this.roomSize);
+		return obj;
+	}
 }
