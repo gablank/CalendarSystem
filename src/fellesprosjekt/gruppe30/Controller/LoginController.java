@@ -2,10 +2,8 @@ package fellesprosjekt.gruppe30.Controller;
 
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-
 import fellesprosjekt.gruppe30.Client;
-import fellesprosjekt.gruppe30.View.LoginView;
+import org.json.JSONObject;
 
 public class LoginController implements ActionListener {
 	private final Client client;
@@ -14,14 +12,24 @@ public class LoginController implements ActionListener {
 		this.client = client;
 	}
 	
-	public boolean checkCredentials() {
+	public void sendLoginRequest() {
 		String username = client.getLoginView().getUsername();
 		String password = client.getLoginView().getPassword();
-		/*
-		 * TODO check if input is valid
-		 * set user information?
-		 */
-		return true;
+
+		JSONObject obj = new JSONObject();
+		obj.put("type", "login");
+		obj.put("username", username);
+		obj.put("password", password);
+
+		client.network.sendJSONObject(obj);
+	}
+
+	public void handleLoginResponse(boolean success, String username) {
+		if(success) {
+			client.setLoggedin(username);
+		} else {
+			client.getLoginView().viewNotifier();
+		}
 	}
 	
 	
@@ -29,10 +37,7 @@ public class LoginController implements ActionListener {
         String cmd = actionEvent.getActionCommand();
         
         if (cmd.equalsIgnoreCase("log in")) {
-        	if (checkCredentials()) {
-        		client.close("login");
-        		client.open("calendar");
-        	} else client.getLoginView().viewNotifier(); // Shows wrong username/password notifier
+        	sendLoginRequest();
         } else if (cmd.equalsIgnoreCase("quit")) {
         	client.quit(0);
         }

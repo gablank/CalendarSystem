@@ -31,7 +31,8 @@ public class Client {
 	private final ViewAppointmentView viewAppointmentView;
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
-    private final ClientNetwork network;
+    public  final ClientNetwork network;
+	private String username = null;
 
 	private List<User> users;
 	private List<Appointment> appointments;
@@ -60,7 +61,7 @@ public class Client {
         this.close(ViewEnum.ALL);
         this.open(ViewEnum.LOGIN);
 
-        this.network = new ClientNetwork();
+        this.network = new ClientNetwork(this);
     }
 
     public void open(ViewEnum viewEnum) {
@@ -124,7 +125,13 @@ public class Client {
         });
     }
 
-    public enum ViewEnum {
+	public void setLoggedin(String username) {
+		close(ViewEnum.LOGIN);
+		open(ViewEnum.CALENDAR);
+		this.username = username;
+	}
+
+	public static enum ViewEnum {
         ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW
     }
 
