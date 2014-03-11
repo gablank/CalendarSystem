@@ -2,11 +2,13 @@ package fellesprosjekt.gruppe30.Controller;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Date;
 
 import org.json.JSONObject;
 
 import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.Alarm;
+import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import fellesprosjekt.gruppe30.Model.User;
 
@@ -41,6 +43,7 @@ public class ClientNetwork extends Network {
 		if (message.has("type")) {
 			String type = message.getString("type");
 
+			String action = "";
 
 
 			switch (type) {
@@ -51,9 +54,9 @@ public class ClientNetwork extends Network {
 					String statusMessage = message.getString("statusMessage");
 					
 					String username = "";
-					if(status.equals("success")){
+					if(message.has("username"))
 						username = message.getString("username");
-					}
+					
 					
 					client.getLoginController().handleLoginResponse(status.equals("success"), username);
 					
@@ -84,7 +87,6 @@ public class ClientNetwork extends Network {
 				break;
 
 			case "appointment":
-				String action = "";
 				if (message.has("action"))
 					action = message.getString("action");
 				
@@ -186,43 +188,62 @@ public class ClientNetwork extends Network {
 				
 				break;
 				
-//			case "alarm":
-//				String action = "";
-//				if (message.has("action"))
-//					action = message.getString("action");
-////			{
-////			    ‘type’: ‘alarm’,
-////			    ‘action’: [‘new’, ‘change’, ‘remove’],
-////			    ‘userId’: <userid>,
-////			    ‘appointmentId’: <appointmentid>,
-////			    ‘time’: <timestamp>
-////			}
-//				
-//				if((action == "change" || action == "new")
-//						&& message.has("userId")
-//						&& message.has("appointmentId")
-//						&& message.has("time")){
-//					
-//					int userId        = message.getInt("userId");
-//					int appointmentId = message.getInt("appointmentId");
-//					long time         = message.getLong("time");
-//					
-//					User user = client.getUserById(userId);
-//					
-//					Alarm alarm = new Alarm()
-//					
-//				}
-//				
-//				break;
+			case "alarm":
+				if (message.has("action"))
+					action = message.getString("action");
+				
+				if (message.has("userId")
+						&& message.has("appointmentId")) {
+					
+					int userId        = message.getInt("userId");
+					int appointmentId = message.getInt("appointmentId");
+
+					
+					if(action == "new"){
+						if (!message.has("time")) {
+							System.out.println("an add alarm message did not have the required time field: " + message.toString());
+							return;
+						}
+
+						long time = message.getLong("time");
+						Date date = new Date(time);
+						User user = client.getUserById(userId);
+						Appointment appointment = client.getAppointmentById(appointmentId);
+						Alarm alarm = new Alarm(user, appointment, date);
+						client.addAlarm(alarm);
+
+					} else if (action == "change") {
+						if (!message.has("time")) {
+							System.out.println("an add alarm message did not have the required time field: " + message.toString());
+							return;
+						}
+
+						long time = message.getLong("time");
+						Date date = new Date(time);
+
+						client.getAlarmByIds(userId, appointmentId).setDate(date);
+					
+					
+					} else if (action == "remove") {
+						client.removeAlarm(userId, appointmentId);
+					
+
+					} else {
+						System.out.println("an alarm message had invalid action field: " + message.toString());
+					}
+
+				} else {
+					System.out.println("an alarm message did not have the required fields: " + message.toString());
+				}
+				
+				break;
 
 			default:
-				System.out.println("got a message of invalid type: "
-						+ message.toString());
+				System.out.println("got a message of invalid type: " + message.toString());
 			}
 
 		} else {
-			System.out.println("a message had no type field: "
-					+ message.toString());
+			System.out.println("a message had no type field: " + message.toString());
 		}
 	}
 	

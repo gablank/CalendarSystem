@@ -108,27 +108,27 @@ public class Server {
     }
 
 	public User getUserById(int id) {
-		for (User u : users){
-			if(u.getId() == id)
-				return u;
+		for (User user : users){
+			if(user.getId() == id)
+				return user;
 		}
 		
 		return null;
 	}
 	
 	public Appointment getAppointmentById(int id) {
-		for (Appointment a : appointments){
-			if(a.getId() == id)
-				return a;
+		for (Appointment appointment : appointments){
+			if(appointment.getId() == id)
+				return appointment;
 		}
 		
 		return null;
 	}
 
 	public MeetingRoom getMeetingRoomById(int id) {
-		for (MeetingRoom m : meetingRooms){
-			if(m.getId() == id)
-				return m;
+		for (MeetingRoom meetingRoom : meetingRooms){
+			if(meetingRoom.getId() == id)
+				return meetingRoom;
 		}
 		
 		return null;

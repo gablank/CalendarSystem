@@ -36,4 +36,8 @@ public class Alarm {
 		obj.put("time", this.date.getTime());
 		return obj;
 	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 }

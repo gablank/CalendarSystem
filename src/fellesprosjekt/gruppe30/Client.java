@@ -170,4 +170,49 @@ public class Client {
 	public LoginController getLoginController() {
 		return loginController;
 	}
+
+	public User getUserById(int id) {
+		for (User user : users) {
+			if (user.getId() == id)
+				return user;
+		}
+
+		return null;
+	}
+
+	public Appointment getAppointmentById(int id) {
+		for (Appointment appointment : appointments) {
+			if (appointment.getId() == id)
+				return appointment;
+		}
+
+		return null;
+	}
+
+	public MeetingRoom getMeetingRoomById(int id) {
+		for (MeetingRoom meetingRoom : meetingRooms) {
+			if (meetingRoom.getId() == id)
+				return meetingRoom;
+		}
+
+		return null;
+	}
+
+	public Alarm getAlarmByIds(int appointmentId, int userId) {
+		for (Alarm alarm : alarms) {
+			if (alarm.getAppointment().getId() == appointmentId && alarm.getUser().getId() == userId)
+				return alarm;
+		}
+
+		return null;
+	}
+
+	public void addAlarm(Alarm alarm) {
+		alarms.add(alarm);
+	}
+
+	public void removeAlarm(int userId, int appointmentId) {
+		Alarm alarm = getAlarmByIds(appointmentId, userId);
+		alarms.remove(alarm);
+	}
 }
