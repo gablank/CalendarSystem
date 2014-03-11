@@ -44,32 +44,28 @@ public class Client {
         this.appointmentView.addListener(this.appointmentController);
 
 
-        this.close("all");
-        this.open("login");
+        this.close(View.ALL);
+        this.open(View.LOGIN);
     }
 
-    public void open(String view) {
+    public void open(View view) {
         this.setViewVisible(view, true);
     }
 
-    public void close(String view) {
+    public void close(View view) {
         this.setViewVisible(view, false);
     }
 
-    public void setViewVisible(String view, boolean state) {
-        view = view.toLowerCase();
-
-        if(view.equals("all") || view.equals("login")) {
+    public void setViewVisible(View view, boolean state) {
+        if(view.equals(View.ALL) || view.equals(View.LOGIN)) {
             this.loginView.setVisible(state);
-        } else if(view.equals("all") || view.equals("week")) {
-            // TODO
-        } else if(view.equals("all") || view.equals("appointment")) {
+        } else if(view.equals(View.ALL) || view.equals(View.APPOINTMENT)) {
             this.appointmentView.setVisible(state);
-        } else if(view.equals("all") || view.equals("bookmeetingroom")) {
+        } else if(view.equals(View.ALL) || view.equals(View.BOOKMEETINGROOM)) {
             this.bookMeetingRoomView.setVisible(state);
-        } else if(view.equals("all")|| view.equals("calendar")) {
+        } else if(view.equals(View.ALL) || view.equals(View.CALENDAR)) {
         	this.calendarView.setVisible(state);
-        } else if(view.equals("all")|| view.equals("view appointment")) {
+        } else if(view.equals(View.ALL)|| view.equals(View.VIEWAPPOINTMENTVIEW)) {
         	this.viewAppointmentView.setVisible(state);
         }
     }
@@ -112,7 +108,11 @@ public class Client {
         });
 
     }
-    
+
+    public enum View {
+        ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW
+    }
+
     public void quit(int i) {
     	System.exit(i);
     }
