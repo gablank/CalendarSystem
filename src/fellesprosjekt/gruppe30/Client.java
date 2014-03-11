@@ -49,7 +49,7 @@ public class Client {
 		this.calendarController = new CalendarController(this);
 		this.calendarView = new CalendarView();
 		this.calendarView.addListener(calendarController);
-		this.calendar.addPropertyChangeSuppertListener(calendarView);
+		//this.calendar.addPropertyChangeSuppertListener(calendarView);
 		
         this.appointmentView = new AppointmentView();
         this.bookMeetingRoomView = new BookMeetingRoomView();
@@ -142,7 +142,7 @@ public class Client {
 		this.username = null;
 		JSONObject obj = new JSONObject();
 		obj.put("type", "logout");
-		this.network.sendJSONObject(obj);
+		this.network.send(obj);
 		close(ViewEnum.ALL);
 		open(ViewEnum.LOGIN);
 	}
