@@ -55,7 +55,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 	protected JScrollPane scrollpane;
 	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame frame;
-	private User me = new User("Emil", "Heien", "uberjew", "password", "email");
+	private User me = new User("Emil", "Heien", "uberjew", "email");
 	
 	public AppointmentView() {
 		GridBagConstraints cLeft = new GridBagConstraints() ;
