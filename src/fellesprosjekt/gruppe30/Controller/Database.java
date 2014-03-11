@@ -1,11 +1,17 @@
 package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Model.*;
+import fellesprosjekt.gruppe30.Server;
 
 import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.sql.Date;
+import java.util.*;
+import java.util.Calendar;
 
 
 public class Database {
@@ -115,11 +121,9 @@ public class Database {
 
     /**
      *
-     * @param userId id of the owner of the alarm
-     * @param appointmentId id of the appointment the alarm is for
-     * @param date the date the alarm should go off (java.util.Date)
+     * @param alarm object to insert into (or update) db
      */
-    private void insertAlarm(int userId, int appointmentId, java.util.Date date) {
+    private void insertAlarm(Alarm alarm) {
         String query;
         query =  "INSERT INTO alarms ";
         query += "(appointment_id, user_id, time) ";
@@ -127,16 +131,16 @@ public class Database {
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setInt      (1, appointmentId                );
-            preparedStatement.setInt      (2, userId                       );
-            preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(date));
+            preparedStatement.setInt      (1, alarm.getAppointment().getId()          );
+            preparedStatement.setInt      (2, alarm.getUser().getId()                 );
+            preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(alarm.getDate()));
             preparedStatement.executeUpdate();
             preparedStatement.close();
 
         } catch(SQLException e) {
             e.printStackTrace();
             System.out.println("Alarm (probably) already existed, updating instead of inserting...");
-            this.updateAlarm(userId, appointmentId, date);
+            this.updateAlarm(alarm.getUser().getId(), alarm.getAppointment().getId(), alarm.getDate());
             return;
         }
     }
@@ -213,10 +217,10 @@ public class Database {
         }
 
         if(attendant.getAlarmStatus()) {
-            this.insertAlarm(
-                    attendant.getUser().getId(),
-                    attendant.getAppointment().getId(),
-                    attendant.getAlarmClock()
+            this.insertAlarm(new Alarm(
+                    attendant.getUser(),
+                    attendant.getAppointment(),
+                    attendant.getAlarmClock())
             );
         }
     }
@@ -244,10 +248,10 @@ public class Database {
         }
 
         if(attendant.getAlarmStatus()) {
-            this.insertAlarm(
-                    attendant.getUser().getId(),
-                    attendant.getAppointment().getId(),
-                    attendant.getAlarmClock()
+            this.insertAlarm(new Alarm(
+                    attendant.getUser(),
+                    attendant.getAppointment(),
+                    attendant.getAlarmClock())
             );
         }
     }
@@ -401,7 +405,27 @@ public class Database {
         return new java.sql.Timestamp(date.getTime());
     }
 
-    public ArrayList<Alarm> getAlarms() {
+    public boolean loadDatabase(Server server) {
+        ArrayList<User> users;
+        ArrayList<MeetingRoom> meetingRooms;
+        ArrayList<Appointment> appointments;
+        ArrayList<Alarm> alarms;
+        ArrayList<Attendant> attendants;
+
+        users = this.getUsers();
+        meetingRooms = this.getMeetingRooms();
+        appointments = this.getAppointments(users, meetingRooms);
+        alarms = this.getAlarms(users, appointments);
+
+
+        server.setUsers(users);
+        server.setAppointments(appointments);
+        server.setMeetingRooms(meetingRooms);
+        server.setAlarms(alarms);
+        return true;
+    }
+
+    public ArrayList<Alarm> getAlarms(ArrayList<User> users, ArrayList<Appointment> appointments) {
         ArrayList<Alarm> alarms = new ArrayList<Alarm>();
         String query = "SELECT * FROM alarms;";
         ResultSet results = this.query(query);
@@ -416,7 +440,25 @@ public class Database {
                     java.sql.Timestamp date = results.getTimestamp("time");
                     java.util.Date date_ = new java.util.Date(date.getTime());
 
-                    alarms.add(new Alarm(userid, appointmentid, date_));
+                    User user = null;
+                    for(int i = 0; i < users.size(); i++) {
+                        if(users.get(i).getId() == userid) {
+                            user = users.get(i);
+                            break;
+                        }
+                    }
+                    Appointment appointment = null;
+                    for(int i = 0; i < appointments.size(); i++) {
+                        if(appointments.get(i).getId() == appointmentid) {
+                            appointment = appointments.get(i);
+                            break;
+                        }
+                    }
+                    if(user == null || appointment == null) {
+                        System.out.println("Couldn't find user or appointment for alarm!");
+                        return null;
+                    }
+                    alarms.add(new Alarm(user, appointment, date_));
 
                 } catch(SQLException e) {
                     e.printStackTrace();
@@ -426,6 +468,189 @@ public class Database {
             e.printStackTrace();
         }
         return alarms;
+    }
+
+    public ArrayList<User> getUsers() {
+        ArrayList<User> users = new ArrayList<User>();
+        String query = "SELECT * FROM users;";
+        ResultSet results = this.query(query);
+        if(results == null) {
+            return null;
+        }
+        try {
+            while(results.next()) {
+                try {
+                    int userid = results.getInt("id");
+                    String username = results.getString("username");
+                    String password = results.getString("password");
+                    String firstName = results.getString("first_name");
+                    String lastName = results.getString("last_name");
+                    String email = results.getString("email");
+
+                    User user = new User(firstName, lastName, username, password, email);
+                    user.setId(userid);
+                    users.add(user);
+
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public ArrayList<MeetingRoom> getMeetingRooms() {
+        ArrayList<MeetingRoom> meetingRooms = new ArrayList<MeetingRoom>();
+        String query = "SELECT * FROM meeting_rooms;";
+        ResultSet results = this.query(query);
+        if(results == null) {
+            return null;
+        }
+        try {
+            while(results.next()) {
+                try {
+                    int meeting_room_id = results.getInt("id");
+                    int capacity = results.getInt("capacity");
+
+                    MeetingRoom meetingRoom = new MeetingRoom(capacity);
+                    meetingRoom.setId(meeting_room_id);
+
+                    meetingRooms.add(meetingRoom);
+
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return meetingRooms;
+    }
+
+    public ArrayList<Appointment> getAppointments(ArrayList<User> users,
+                                                  ArrayList<MeetingRoom> meetingRooms) {
+        ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+        String query = "SELECT * FROM appointments;";
+        ResultSet results = this.query(query);
+        if(results == null) {
+            return null;
+        }
+        try {
+            while(results.next()) {
+                try {
+                    int appointment_id = results.getInt("id");
+                    String name = results.getString("name");
+                    String description = results.getString("description");
+                    java.sql.Timestamp startTimestamp = results.getTimestamp("start_date");
+                    java.sql.Timestamp endTimestamp = results.getTimestamp("end_date");
+                    String place = results.getString("place");
+                    java.sql.Timestamp lastUpdatedTimestamp = results.getTimestamp("last_updated");
+                    java.util.Date startDate = new java.util.Date(startTimestamp.getTime());
+                    java.util.Date endDate = new java.util.Date(endTimestamp.getTime());
+                    java.util.Date lastUpdatedDate = new java.util.Date(lastUpdatedTimestamp.getTime());
+
+                    int ownerId = results.getInt("owner_id");
+
+                    User owner = null;
+                    for(int i = 0; i < users.size(); i++) {
+                        if(users.get(i).getId() == ownerId) {
+                            owner = users.get(i);
+                            break;
+                        }
+                    }
+
+                    if(owner == null) {
+                        System.out.println("Error: the user with id " + Integer.toString(ownerId) + " does not exist!");
+                    }
+
+                    Appointment appointment = null;
+                    if(place == null) {
+                        int meetingRoomId = this.getMeetingRoomForAppointment(appointment_id);
+                        for(int i = 0; i < meetingRooms.size(); i++) {
+                            if(meetingRooms.get(i).getId() == meetingRoomId) {
+                                appointment = new Appointment(owner, name, description, startDate, endDate, meetingRooms.get(i));
+                                break;
+                            }
+                        }
+                        if(appointment == null) {
+                            System.out.println("Did not find meeting room for appointment " + Integer.toString(appointment_id));
+                            appointment = new Appointment(owner, name, description, startDate, endDate, null, null);
+                        }
+                    } else {
+                        appointment = new Appointment(owner, name, description, startDate, endDate, place);
+                    }
+
+                    ArrayList<Integer> attendantIds = this.getAttendantIds(appointment_id);
+                    for(int i = 0; i < attendantIds.size(); i++) {
+                        for(int j = 0; j < users.size(); j++) {
+                            if(users.get(j).getId() == attendantIds.get(i)) {
+                                Attendant newAttendant = new Attendant(users.get(j), appointment);
+                                appointment.addAttendant(newAttendant);
+                            }
+                        }
+                    }
+
+                    appointment.setLastUpdated(lastUpdatedDate);
+                    appointment.setId(appointment_id);
+                    appointments.add(appointment);
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return appointments;
+    }
+
+    private ArrayList<Integer> getAttendantIds(int appointment_id) {
+        ArrayList<Integer> attendantIds = new ArrayList<Integer>();
+        String query = "SELECT * FROM user_appointments WHERE appointment_id = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, appointment_id);
+            ResultSet results = preparedStatement.executeQuery();
+
+            if(results == null) {
+                return null;
+            }
+            while(results.next()) {
+                try {
+                    int userId = results.getInt("user_id");
+                    attendantIds.add(new Integer(userId));
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return attendantIds;
+    }
+
+    private int getMeetingRoomForAppointment(int appointment_id) {
+        String query = "SELECT * FROM meeting_room_reservations;";
+        ResultSet results = this.query(query);
+        if(results == null) {
+            return -1;
+        }
+        try {
+            while(results.next()) {
+                try {
+                    int meeting_room_id = results.getInt("meeting_room_id");
+                    if(results.getInt("appointment_id") == appointment_id) {
+                        return meeting_room_id;
+                    }
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public ResultSet query(String query) {
@@ -469,12 +694,6 @@ public class Database {
         meetingRoom.setId(database.insertMeetingRoom(meetingRoom));
         appointment.setId(database.insertAppointment(appointment));
         database.insertAttendant(attendant);           */
-        ArrayList<Alarm> alarms = database.getAlarms();
-        for(int i = 0; i < alarms.size(); i++) {
-            Alarm alarm = alarms.get(i);
-            System.out.println(alarm.getDate().toString() + Integer.toString(alarm.getUserid()) + Integer.toString(alarm.getAppointmentId()));
-        }
-
         database.close();
     }
 }
