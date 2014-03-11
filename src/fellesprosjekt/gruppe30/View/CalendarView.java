@@ -249,6 +249,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		this.frame.setVisible(visible);
 	}
 	
+	
 	public User getUser() {
 		return (User)users.getSelectedItem();
 	}
