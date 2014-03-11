@@ -422,6 +422,7 @@ public class Database {
         server.setAppointments(appointments);
         server.setMeetingRooms(meetingRooms);
         server.setAlarms(alarms);
+
         return true;
     }
 
