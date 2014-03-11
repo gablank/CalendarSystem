@@ -30,7 +30,7 @@ class ClientHandler extends Network {
             if(message.has("action"))
                 action = message.getString("action");
 
-            if(username == null && type != "login"){
+            if(username == null && !type.equals("login")){
             	System.out.println("Recieved message to do something while not logged in, ignoring it. message: " + message.toString());
             	return;
             }
