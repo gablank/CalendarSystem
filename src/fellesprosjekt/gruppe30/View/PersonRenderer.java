@@ -2,12 +2,14 @@ package fellesprosjekt.gruppe30.View;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
 
 import fellesprosjekt.gruppe30.Model.User;
 
@@ -21,32 +23,26 @@ public class PersonRenderer implements ListCellRenderer{
 		User model = (User) value;
 		
 		JLabel label;
-		label = new JLabel(model.getFirstname() + model.getLastname());
+		String firstName = model.getFirstname();
+		String lastName = model.getLastname();
+		label = new JLabel(firstName + " " + lastName.charAt(0)+ ".");
 		
-		try {
-			java.net.URL acceptIcon = new URL("http://www.nevadacpasend.com/files/images/yesIcon.jpg");
-		    java.net.URL declineIcon = new URL("http://www.bankrollmob.com/gfx/reviews/no-icon.gif");
-		    java.net.URL unansweredIcon = new URL ("http://en.lernu.net/grafikajhoj/aspekto/question-mark.gif");
-		    ImageIcon accept = new ImageIcon(acceptIcon);
-		    ImageIcon decline = new ImageIcon(declineIcon);
-		    ImageIcon unanswered = new ImageIcon(unansweredIcon);
-		    //TODO logic to choose correct icon
-		    label.setIcon(accept);
-		} catch (MalformedURLException e) {
-			System.out.println("bad image URL");
-			e.printStackTrace();
-		}
+		File directory = new File(System.getProperty("user.dir"), "Icons");
+		new File(directory,"yesIcon.png").getPath();
 		
-		if (isSelected){
-			label.setFont(label.getFont().deriveFont(14L));
-		}
-		label.setPreferredSize(new Dimension(250, 40));
+		ImageIcon accept = new ImageIcon(new File(directory,"yesIcon(small).png").getPath());
+		ImageIcon decline = new ImageIcon(new File(directory,"noIcon(small).png").getPath());
+		ImageIcon unanswer = new ImageIcon(new File(directory,"unanswer(small).png").getPath());
+		ImageIcon creator = new ImageIcon (new File(directory,"creatorIcon(small).png").getPath());
+			/*
+		     *TODO logic to choose correct icon
+		     */
+		label.setIcon(accept);
+		label.setHorizontalTextPosition(SwingConstants.LEFT);
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		label.setIconTextGap(40 - label.getText().length());
+		
 		return label;
-	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

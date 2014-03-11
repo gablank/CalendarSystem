@@ -1,16 +1,13 @@
 package fellesprosjekt.gruppe30.View;
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.EventListener;
 
 import javax.swing.BorderFactory;
@@ -22,15 +19,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionListener;
 
 import fellesprosjekt.gruppe30.Model.User;
 
-public class CalendarView extends JPanel implements PropertyChangeListener {
+public class CalendarView extends JPanel {
 	private PersonRenderer listrenderer;
 	private JButton addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
-	private JComboBox<User> users;
+	private JComboBox users;
 	private JLabel weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
 	private JList<User> userCalendars;
 	private JPanel monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
@@ -53,7 +49,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		logOutButton = new JButton("Log out");
 		logOutButton.setPreferredSize(new Dimension(80, 25));
-		
+	 	
 		leftArrowButton = new JButton("<");
 		leftArrowButton.setPreferredSize(new Dimension(45, 30));
 		
@@ -63,18 +59,18 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		userCalendars = new JList<User>();
 		userCalendars.setPreferredSize(new Dimension(140,150));
 		
-		users = new JComboBox<User>();
+		users = new JComboBox();
 		users.setPreferredSize(new Dimension(140, 25));
 		
 		weekLabel = new JLabel("week 10");
 		showCalendarsFor = new JLabel("Show calendars for:");
-		monLabel = new JLabel("Monday 3.3");
-		tueLabel = new JLabel("Tuesday 4.3");
-		wedLabel = new JLabel("Wednesday 5.3");
-		thuLabel = new JLabel("Thursday 6.3");
-		friLabel = new JLabel("Friday 7.3");
-		satLabel = new JLabel("Saturday 8.3");
-		sunLabel = new JLabel("Sunday 9.3");
+		monLabel = new JLabel("Mon 3.3");
+		tueLabel = new JLabel("Tue 4.3");
+		wedLabel = new JLabel("Wed 5.3");
+		thuLabel = new JLabel("Thu 6.3");
+		friLabel = new JLabel("Fri 7.3");
+		satLabel = new JLabel("Sat 8.3");
+		sunLabel = new JLabel("Sun 9.3");
 		
 		monAppointment = new JPanel();
 		JScrollPane monScroller = new JScrollPane(monAppointment);
@@ -104,7 +100,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		JScrollPane thuScroller = new JScrollPane(thuAppointment);
 		thuScroller.setFocusable(true);
 		thuScroller.setPreferredSize(new Dimension(160, 450));
-		//thuAppointment.setPreferredSize(new Dimension(140, 450));
 		thuAppointment.setBackground(Color.WHITE);
 		thuAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
 		thuAppointment.setLayout(new BoxLayout(thuAppointment, BoxLayout.Y_AXIS));
@@ -113,7 +108,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		JScrollPane friScroller = new JScrollPane(friAppointment);
 		friScroller.setFocusable(true);
 		friScroller.setPreferredSize(new Dimension(160, 450));
-		//friAppointment.setPreferredSize(new Dimension(140, 450));
 		friAppointment.setBackground(Color.WHITE);
 		friAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
 		friAppointment.setLayout(new BoxLayout(friAppointment, BoxLayout.Y_AXIS));
@@ -122,7 +116,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		JScrollPane satScroller = new JScrollPane(satAppointment);
 		satScroller.setFocusable(true);
 		satScroller.setPreferredSize(new Dimension(160, 450));
-		//satAppointment.setPreferredSize(new Dimension(140, 450));
 		satAppointment.setBackground(Color.WHITE);
 		satAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
 		satAppointment.setLayout(new BoxLayout(satAppointment, BoxLayout.Y_AXIS));
@@ -131,7 +124,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		JScrollPane sunScroller = new JScrollPane(sunAppointment);
 		sunScroller.setFocusable(true);
 		sunScroller.setPreferredSize(new Dimension(160, 450));
-		//sunAppointment.setPreferredSize(new Dimension(140, 450));
 		sunAppointment.setBackground(Color.WHITE);
 		sunAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
 		sunAppointment.setLayout(new BoxLayout(sunAppointment, BoxLayout.Y_AXIS));
@@ -209,19 +201,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		for (int i=0; i<4; i++){monAppointment.add(new AppointmentSummaryView());}
+		for (int i=0; i<5; i++){tueAppointment.add(new AppointmentSummaryView());}
 		wedAppointment.add(new AppointmentSummaryView());
 		wedAppointment.add(new AppointmentSummaryView());
 		thuAppointment.add(new AppointmentSummaryView());
-		monAppointment.add(new AppointmentSummaryView());
-		monAppointment.add(new AppointmentSummaryView());
-		monAppointment.add(new AppointmentSummaryView());
-		monAppointment.add(new AppointmentSummaryView());
-		tueAppointment.add(new AppointmentSummaryView());
-		tueAppointment.add(new AppointmentSummaryView());
-		tueAppointment.add(new AppointmentSummaryView());
-		tueAppointment.add(new AppointmentSummaryView());
-		tueAppointment.add(new AppointmentSummaryView());
-		
 		//end test code
 		
 		
@@ -249,31 +233,23 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		this.frame.setVisible(visible);
 	}
 	
-	
-	public User getUser() {
-		return (User)users.getSelectedItem();
-	}
-	
-
 	public void propertyChange(PropertyChangeEvent pce) {
-		if (pce.getPropertyName() == "new week") {
-			weekLabel.setText("Week " + pce.getNewValue().toString());
-			System.out.println("New week");
+		if (pce.getPropertyName() == "next week") {
+			weekLabel.setText((String)pce.getNewValue());
 			/*
-			 * TODO yea... this is wrong
-			monLabel.setText("Monday " + java.util.Calendar.getInstance().get(java.util.Calendar.MONDAY));
-			tueLabel.setText("Tuesday " + java.util.Calendar.getInstance().get(java.util.Calendar.TUESDAY));
-			wedLabel.setText("Wednesday " + java.util.Calendar.getInstance().get(java.util.Calendar.WEDNESDAY));
-			thuLabel.setText("Thursday " + java.util.Calendar.getInstance().get(java.util.Calendar.THURSDAY));
-			friLabel.setText("Friday " + java.util.Calendar.getInstance().get(java.util.Calendar.FRIDAY));
-			satLabel.setText("Saturday " + java.util.Calendar.getInstance().get(java.util.Calendar.SATURDAY));
-			sunLabel.setText("Sunday " + java.util.Calendar.getInstance().get(java.util.Calendar.SUNDAY));
-			*/
-		} 
+			 * TODO implement next week functions
+			 */
+		} else if (pce.getPropertyName() == "previous week") {
+			weekLabel.setText((String)pce.getNewValue());
+			/*
+			 * TODO implement previous week functions
+			 */
+		}
 	}
 
 	public static void main(String[] args) {
 		CalendarView view = new CalendarView();
 		view.setVisible(true);
 	}
+
 }

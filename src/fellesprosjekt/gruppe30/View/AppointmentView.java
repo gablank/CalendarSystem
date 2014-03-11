@@ -1,6 +1,5 @@
 package fellesprosjekt.gruppe30.View;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,13 +7,11 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.EventListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -26,36 +23,23 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
-import javax.xml.bind.Marshaller.Listener;
-
 import fellesprosjekt.gruppe30.Model.User;
 
 public class AppointmentView extends JPanel implements ActionListener {
 	protected PersonRenderer listrenderer;
-	protected JTextField titleField;
-	protected JTextField meetingRoomField;
+	protected JTextField titleField, meetingRoomField, emailField;
 	protected JTextArea description;
-	protected JFormattedTextField dateField;
-	protected JFormattedTextField startTimeField;
-	protected JFormattedTextField endTimeField;
-	protected JFormattedTextField alarmTimeField;
-	protected JCheckBox useMeetingRoom;
-	protected JCheckBox hideFromCalendar;
-	protected JCheckBox setAlarm;
+	protected JFormattedTextField dateField, startTimeField, endTimeField, alarmTimeField;
+	protected JCheckBox useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
 	protected JComboBox<User> participantList;
 	protected JList<User> participants;
-	protected JButton addButton;
-	protected JButton removeButton;
-	protected JButton saveButton;
-	protected JButton deleteButton;
-	protected JButton cancelButton;
-	protected JButton selectRoom;
+	protected JButton addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
 	protected JScrollPane scrollpane;
 	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame frame;
-	private User me = new User("Emil", "Heien", "uberjew", "password", "email");
 	
 	public AppointmentView() {
 		GridBagConstraints cLeft = new GridBagConstraints() ;
@@ -68,9 +52,13 @@ public class AppointmentView extends JPanel implements ActionListener {
 		description.setText("Description");
 		description.setBorder(titleField.getBorder());
 		
-		meetingRoomField = new JTextField("Place", 13);
+		meetingRoomField = new JTextField("Place", 11);
+		emailField = new JTextField("Email", 1);
+		
+		
 		selectRoom = new JButton("Select...");
 		selectRoom.setPreferredSize(new Dimension(100,25));
+		
 		
 		MaskFormatter dateformatter;
 		try {
@@ -89,15 +77,15 @@ public class AppointmentView extends JPanel implements ActionListener {
 			startTimeField = new JFormattedTextField(timeformatter);
 			startTimeField.setPreferredSize(new Dimension(50,20));
 			startTimeField.setValue("08:40");
-			startTimeField.setHorizontalAlignment(dateField.CENTER);
+			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			endTimeField = new JFormattedTextField(timeformatter);
 			endTimeField.setPreferredSize(new Dimension(50,20));
 			endTimeField.setValue("10:40");
-			endTimeField.setHorizontalAlignment(dateField.CENTER);
+			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			alarmTimeField = new JFormattedTextField(timeformatter);
 			alarmTimeField.setPreferredSize(new Dimension(40,20));
 			alarmTimeField.setValue("00:30");
-			alarmTimeField.setHorizontalAlignment(dateField.CENTER);
+			alarmTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -107,9 +95,10 @@ public class AppointmentView extends JPanel implements ActionListener {
 		useMeetingRoom = new JCheckBox("Use meeting room");
 		hideFromCalendar = new JCheckBox("Hide from calendar                                             ");
 		setAlarm = new JCheckBox("Alarm");
+		inviteByEmail = new JCheckBox("Invite by email");
 		
 		participantList = new JComboBox<User>();
-		participantList.setPreferredSize(new Dimension(100, 25));
+		participantList.setPreferredSize(new Dimension(40, 25));
 		participants = new JList<User>();
 		
 		scrollpane = new JScrollPane(participants);
@@ -200,8 +189,14 @@ public class AppointmentView extends JPanel implements ActionListener {
 		addRemove.setLayout(new BoxLayout(addRemove, BoxLayout.Y_AXIS));
 		addRemove.add(addButton);
 		addRemove.add(removeButton);
+		JPanel userOrEmail = new JPanel();
+		userOrEmail.setLayout(new BoxLayout(userOrEmail, BoxLayout.Y_AXIS));
+		userOrEmail.add(inviteByEmail);
+		userOrEmail.add(participantList, 1);
+		userOrEmail.add(emailField, 1);
+		emailField.setVisible(false);
 		JPanel personAddRemove = new JPanel();
-		personAddRemove.add(participantList);
+		personAddRemove.add(userOrEmail);
 		personAddRemove.add(addRemove);
 		add(personAddRemove, cRight);
 
@@ -220,6 +215,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		
 		//testing purposes, REMOVE this following code later:
 		useMeetingRoom.addActionListener(this);
+		inviteByEmail.addActionListener(this);
 		//end of testing Code
 		
 		frame = new JFrame("Appointment view");
@@ -227,9 +223,14 @@ public class AppointmentView extends JPanel implements ActionListener {
 		frame.pack();
 		frame.setVisible(false);
 		frame.setResizable(false);
+		
 		//test code:
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//why this shit dont work? -> participants.add(new User("Emil", "Heien", "uberjew", "password", "email"));
+		
+		//why this shit dont work?
+		DefaultListModel<User> model = new DefaultListModel<User>();
+		participants = new JList<User>(model);
+		model.add(0, new User("Emil", "Heien", "uberjew", "email"));
 		//end test code
 	}
 	
@@ -249,6 +250,8 @@ public class AppointmentView extends JPanel implements ActionListener {
 		participantList.addActionListener(controller);
 		hideFromCalendar.addActionListener(controller);
 		setAlarm.addActionListener(controller);	
+		useMeetingRoom.addActionListener(controller);
+		inviteByEmail.addActionListener(controller);
 	}
 	public void addKeyListener(KeyListener controller){
 		titleField.addKeyListener(controller);
@@ -268,15 +271,27 @@ public class AppointmentView extends JPanel implements ActionListener {
 	@Override
 	//change room select field into button and vice versa
 	public void actionPerformed(ActionEvent e) {
-		if (useMeetingRoom.isSelected()){
-			meetingRoomField.setVisible(false);
-			selectRoom.setVisible(true);
-			this.repaint();
+		if (e.getSource() == useMeetingRoom){
+			if (useMeetingRoom.isSelected()){
+				meetingRoomField.setVisible(false);
+				selectRoom.setVisible(true);
+				this.repaint();
+			}
+			else {
+				selectRoom.setVisible(false);
+				meetingRoomField.setVisible(true);
+				this.repaint();
+			}
 		}
-		else {
-			selectRoom.setVisible(false);
-			meetingRoomField.setVisible(true);
-			this.repaint();
+		else if (e.getSource() == inviteByEmail){
+			if (inviteByEmail.isSelected()){
+				participantList.setVisible(false);
+				emailField.setVisible(true);
+			}
+			else {
+				emailField.setVisible(false);
+				participantList.setVisible(true);
+			}
 		}
 		
 	}
