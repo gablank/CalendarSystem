@@ -32,7 +32,8 @@ public abstract class Network implements Runnable {
 				JSONObject message = getJSONObject();
 
 				if (message == null) {
-					System.out.println("empty message");
+					System.out.println("empty message, terminating ClientHandler/ClientNetwork");
+					running = false;
 					continue;
 				}
 
