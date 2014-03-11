@@ -25,13 +25,13 @@ public class CalendarController implements ActionListener {
         } else if (cmd.equalsIgnoreCase("<")) {
         	client.getCalendar().previousWeek();
         } else if (cmd.equalsIgnoreCase("new appointment")) {
-        	client.open("appointment");
+        	client.open(Client.ViewEnum.APPOINTMENT);
         } else if (cmd.equalsIgnoreCase("add")) {
         	client.getCalendar().addUser(client.getCalendarView().getUser());
         } else if (cmd.equalsIgnoreCase("remove")) {
         	client.getCalendar().removeUser(client.getCalendarView().getUser());
         } else if (cmd.equalsIgnoreCase("AppointmentSummaryView")) {
-        	client.open("view appointment");
+        	client.open(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
         }
 	}
 	

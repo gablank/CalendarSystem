@@ -3,6 +3,7 @@ package fellesprosjekt.gruppe30.Controller;
 import java.awt.event.ActionListener;
 
 import fellesprosjekt.gruppe30.Client;
+import fellesprosjekt.gruppe30.Model.User;
 import org.json.JSONObject;
 
 public class LoginController implements ActionListener {
@@ -19,9 +20,9 @@ public class LoginController implements ActionListener {
 		JSONObject obj = new JSONObject();
 		obj.put("type", "login");
 		obj.put("username", username);
-		obj.put("password", password);
+		obj.put("password", User.hashPassword(password));
 
-		client.network.sendJSONObject(obj);
+		client.network.send(obj);
 	}
 
 	public void handleLoginResponse(boolean success, String username) {

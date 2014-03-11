@@ -1,5 +1,6 @@
 package fellesprosjekt.gruppe30.View;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -7,11 +8,13 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.EventListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -23,7 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 import fellesprosjekt.gruppe30.Model.User;
@@ -41,6 +43,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame frame;
 	
+	private User me = new User("Emil", "Heien", "uberjew", "email");
 	public AppointmentView() {
 		GridBagConstraints cLeft = new GridBagConstraints() ;
 		GridBagConstraints cRight = new GridBagConstraints() ;

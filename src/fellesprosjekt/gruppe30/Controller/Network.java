@@ -29,10 +29,11 @@ public abstract class Network implements Runnable {
 			
 			while(running){
 				
-				JSONObject message = getJSONObject();
+				JSONObject message = getNextMessage();
 
 				if (message == null) {
-					System.out.println("empty message");
+					System.out.println("empty message, terminating ClientHandler/ClientNetwork");
+					running = false;
 					continue;
 				}
 
@@ -72,7 +73,7 @@ public abstract class Network implements Runnable {
 		}
 	}
 
-	public void sendJSONObject(JSONObject obj) {
+	public void send(JSONObject obj) {
 		String jsonString = obj.toString();
 		System.out.println("sending: " + jsonString);
 		try {
@@ -85,7 +86,7 @@ public abstract class Network implements Runnable {
 	}
 
 	// returns null if there is an error
-	public JSONObject getJSONObject() {
+	public JSONObject getNextMessage() {
 		if (connectionSocket == null || connectionSocket.isClosed())
 			return null;
 

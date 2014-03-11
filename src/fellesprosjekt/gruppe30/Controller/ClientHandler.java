@@ -13,6 +13,7 @@ import java.util.Date;
 
 class ClientHandler extends Network {
     Server server;
+    String username = null;
 
     public ClientHandler(Socket connectionSocket, Server server) {
         this.connectionSocket = connectionSocket;
@@ -29,11 +30,15 @@ class ClientHandler extends Network {
             if(message.has("action"))
                 action = message.getString("action");
 
+            if(username == null && type != "login"){
+            	System.out.println("Recieved message to do something while not logged in, ignoring it. message: " + message.toString());
+            	return;
+            }
 
             switch (type) {
                 case "login":
                     if(message.has("username") && message.has("password")){
-                        String username = message.getString("username");
+                        String usernameRecieved = message.getString("username");
                         // password is a sha256 hash (64 chars)
                         String password = message.getString("password");
 
@@ -43,6 +48,7 @@ class ClientHandler extends Network {
                         if(this.server.verifyLogin(username, password)) {
                             response.put("status", "success");
                             response.put("statusMessage", "OK");
+                            username = usernameRecieved;
                             System.out.println(username + " has logged in!");
                         } else {
                             response.put("status", "wrongCombination");
@@ -50,7 +56,7 @@ class ClientHandler extends Network {
                             System.out.println("Someone tried logging in as " + username + ", but the password was wrong!");
                         }
                         
-                        sendJSONObject(response);
+                        send(response);
 
                     }else{
                         System.out.println("a login message did not have the required fields: " + message.toString());
@@ -161,14 +167,8 @@ class ClientHandler extends Network {
                     break;
 
                 case "logout":
-
-
-                    //
-                    // do stuff?
-                    //
-
-                    connectionSocket.close();
-                    running = false;
+                	
+                	username = null;
 
                     break;
 
