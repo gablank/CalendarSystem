@@ -49,15 +49,17 @@ public class ClientNetwork extends Network {
 
 					String status = message.getString("status");
 					String statusMessage = message.getString("statusMessage");
-					String username = message.getString("username");
+					
+					String username = "";
+					if(status.equals("success")){
+						username = message.getString("username");
+					}
+					
+					client.getLoginController().handleLoginResponse(status.equals("success"), username);
 					
 
-					client.getLoginController().handleLoginResponse(status.compareTo("success") == 0, username);
-
 				} else {
-					System.out
-							.println("a login message did not have the required fields: "
-									+ message.toString());
+					System.out.println("a login message did not have the required fields: " + message.toString());
 				}
 
 				break;
