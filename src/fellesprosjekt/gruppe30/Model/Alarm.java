@@ -4,13 +4,13 @@ package fellesprosjekt.gruppe30.Model;
 import java.util.Date;
 
 public class Alarm {
-    private final int userid;
-    private final int appointmentid;
+    private final User user;
+    private final Appointment appointment;
     private Date date;
 
-    public Alarm(int userid, int appointmentid, Date date) {
-        this.userid = userid;
-        this.appointmentid = appointmentid;
+    public Alarm(User user, Appointment appointment, Date date) {
+        this.user = user;
+        this.appointment = appointment;
         this.date = date;
     }
 
@@ -18,11 +18,11 @@ public class Alarm {
         return this.date;
     }
 
-    public int getUserid() {
-        return userid;
+    public User getUser() {
+        return this.user;
     }
 
-    public int getAppointmentId() {
-        return appointmentid;
+    public Appointment getAppointment() {
+        return this.appointment;
     }
 }
