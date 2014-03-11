@@ -25,11 +25,12 @@ public class AlarmController extends Thread {
 
             alarms = server.getAlarms();
             Date curTime = new Date(new Date().getTime() + 30 * 000);
+            Date oneMinBeforeCurTime = new Date(new Date().getTime() - 30 * 000);
 
             for(int i = 0; i < alarms.size(); i++) {
                 // If now is after alarm date, send mail
-                if(curTime.after(alarms.get(i).getDate())) {
-                    this.server.sendMail(Integer.toString(alarms.get(i).getUserid()), "ALARM!", "This is an alarm!!!!!");
+                if(curTime.after(alarms.get(i).getDate()) && oneMinBeforeCurTime.before(alarms.get(i).getDate())) {
+                    this.server.sendMail(Integer.toString(alarms.get(i).getUser().getId()), "ALARM!", "This is an alarm!!!!!");
                 }
             }
 
