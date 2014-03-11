@@ -9,6 +9,7 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String username;
+	private String password;
 	private String email;
 
 
@@ -55,6 +56,16 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+	// Should only be used by the server!
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	// Should only be used by the server!
+	public String getPassword() {
+		return this.password;
+	}
 
     public static String hashPassword(String password) {
 		try {
