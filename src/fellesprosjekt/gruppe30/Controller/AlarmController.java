@@ -7,7 +7,7 @@ import fellesprosjekt.gruppe30.Server;
 import java.util.Date;
 import java.util.List;
 
-public class AlarmController extends Thread {
+public class AlarmController implements Runnable {
     private Server server;
     private boolean run;
 
@@ -17,6 +17,7 @@ public class AlarmController extends Thread {
     }
 
     // Runs then sleeps 60 secs
+    @Override
     public void run() {
         System.out.println("I'm alive!");
         List<Alarm> alarms;
@@ -46,10 +47,5 @@ public class AlarmController extends Thread {
             }
 
         }
-    }
-
-    public void shutdown() {
-        this.run = false;
-        this.interrupt();
     }
 }

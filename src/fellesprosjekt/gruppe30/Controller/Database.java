@@ -406,11 +406,11 @@ public class Database {
     }
 
     public boolean loadDatabase(Server server) {
-        ArrayList<User> users;
-        ArrayList<MeetingRoom> meetingRooms;
-        ArrayList<Appointment> appointments;
-        ArrayList<Alarm> alarms;
-        ArrayList<Attendant> attendants;
+        List<User> users;
+        List<MeetingRoom> meetingRooms;
+        List<Appointment> appointments;
+        List<Alarm> alarms;
+        List<Attendant> attendants;
 
         users = this.getUsers();
         meetingRooms = this.getMeetingRooms();
@@ -425,8 +425,8 @@ public class Database {
         return true;
     }
 
-    public ArrayList<Alarm> getAlarms(ArrayList<User> users, ArrayList<Appointment> appointments) {
-        ArrayList<Alarm> alarms = new ArrayList<Alarm>();
+    public List<Alarm> getAlarms(List<User> users, List<Appointment> appointments) {
+        List<Alarm> alarms = new ArrayList<Alarm>();
         String query = "SELECT * FROM alarms;";
         ResultSet results = this.query(query);
         if(results == null) {
@@ -470,8 +470,8 @@ public class Database {
         return alarms;
     }
 
-    public ArrayList<User> getUsers() {
-        ArrayList<User> users = new ArrayList<User>();
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<User>();
         String query = "SELECT * FROM users;";
         ResultSet results = this.query(query);
         if(results == null) {
@@ -501,8 +501,8 @@ public class Database {
         return users;
     }
 
-    public ArrayList<MeetingRoom> getMeetingRooms() {
-        ArrayList<MeetingRoom> meetingRooms = new ArrayList<MeetingRoom>();
+    public List<MeetingRoom> getMeetingRooms() {
+        List<MeetingRoom> meetingRooms = new ArrayList<MeetingRoom>();
         String query = "SELECT * FROM meeting_rooms;";
         ResultSet results = this.query(query);
         if(results == null) {
@@ -529,9 +529,9 @@ public class Database {
         return meetingRooms;
     }
 
-    public ArrayList<Appointment> getAppointments(ArrayList<User> users,
-                                                  ArrayList<MeetingRoom> meetingRooms) {
-        ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+    public List<Appointment> getAppointments(List<User> users,
+                                                  List<MeetingRoom> meetingRooms) {
+        List<Appointment> appointments = new ArrayList<Appointment>();
         String query = "SELECT * FROM appointments;";
         ResultSet results = this.query(query);
         if(results == null) {
@@ -582,7 +582,7 @@ public class Database {
                         appointment = new Appointment(owner, name, description, startDate, endDate, place);
                     }
 
-                    ArrayList<Integer> attendantIds = this.getAttendantIds(appointment_id);
+                    List<Integer> attendantIds = this.getAttendantIds(appointment_id);
                     for(int i = 0; i < attendantIds.size(); i++) {
                         for(int j = 0; j < users.size(); j++) {
                             if(users.get(j).getId() == attendantIds.get(i)) {
@@ -605,8 +605,8 @@ public class Database {
         return appointments;
     }
 
-    private ArrayList<Integer> getAttendantIds(int appointment_id) {
-        ArrayList<Integer> attendantIds = new ArrayList<Integer>();
+    private List<Integer> getAttendantIds(int appointment_id) {
+        List<Integer> attendantIds = new ArrayList<Integer>();
         String query = "SELECT * FROM user_appointments WHERE appointment_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);

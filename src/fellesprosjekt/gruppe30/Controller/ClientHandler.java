@@ -34,11 +34,17 @@ class ClientHandler extends Network {
                 case "login":
                     if(message.has("username") && message.has("password")){
                         String username = message.getString("username");
+                        // password is a sha256 hash (64 chars)
                         String password = message.getString("password");
 
                         //
                         // send response
                         //
+                        if(this.server.verifyLogin(username, password)) {
+                            System.out.println(username + " has logged in!");
+                        } else {
+                            System.out.println("Someone tried logging in as " + username + ", but the password was wrong!");
+                        }
 
                     }else{
                         System.out.println("a login message did not have the required fields: " + message.toString());

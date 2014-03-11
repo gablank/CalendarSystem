@@ -11,26 +11,25 @@ import java.util.List;
 
 public class Server {
     private final Database database = Database.getInstance();
-    private ArrayList<User> users;
-    private ArrayList<Appointment> appointments;
-    private ArrayList<MeetingRoom> meetingRooms;
-    private ArrayList<Alarm> alarms;
-    private final AlarmController alarmController;
+    private List<User> users;
+    private List<Appointment> appointments;
+    private List<MeetingRoom> meetingRooms;
+    private List<Alarm> alarms;
+    private final Thread alarmController;
+    private final Thread serverListener;
 
-	private ServerListener listener;
 
     public Server() {
         this.loadDatabase();
 		
-        listener = new ServerListener(this);
-		Thread listenerThread = new Thread(listener);
-		listenerThread.start();
-		
-        alarmController = new AlarmController(this);
+        serverListener = new Thread(new ServerListener(this));
+		serverListener.start();
+
+        alarmController = new Thread(new AlarmController(this));
         alarmController.start();
         
 		try {
-			listenerThread.join();
+			serverListener.join();
             alarmController.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -43,7 +42,7 @@ public class Server {
     }
 
     public synchronized List<Alarm> getAlarms() {
-        return (ArrayList<Alarm>) this.alarms.clone();
+        return (List<Alarm>) ((ArrayList<Alarm>)this.alarms).clone();
     }
 
     public synchronized void sendMail(String recipient, String subject, String body) {
@@ -51,31 +50,27 @@ public class Server {
     }
 
     public void shutdown() {
-        this.alarmController.shutdown();
+        this.alarmController.interrupt();
+        this.serverListener.interrupt();
     }
 
-
-    public static void main(String[] args) {
-        Server server = new Server();
-    }
-
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
-    public void setAlarms(ArrayList<Alarm> alarms) {
+    public void setAlarms(List<Alarm> alarms) {
         this.alarms = alarms;
     }
 
-    public void setMeetingRooms(ArrayList<MeetingRoom> meetingRooms) {
+    public void setMeetingRooms(List<MeetingRoom> meetingRooms) {
         this.meetingRooms = meetingRooms;
     }
 
-    public void setAppointments(ArrayList<Appointment> appointments) {
+    public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 
-    public ArrayList<Appointment> getAppointments() {
+    public List<Appointment> getAppointments() {
         return appointments;
     }
     
@@ -138,4 +133,22 @@ public class Server {
 		
 		return null;
 	}
+
+    public boolean verifyLogin(String username, String password) {
+        for(User user : users) {
+            if(user.getUsername() == username) {
+                if(user.getPassword() == password) {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+
+    public static void main(String[] args) {
+        Server server = new Server();
+    }
 }
