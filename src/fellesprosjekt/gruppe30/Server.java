@@ -136,8 +136,8 @@ public class Server {
 
     public boolean verifyLogin(String username, String password) {
         for(User user : users) {
-            if(user.getUsername() == username) {
-                if(user.getPassword() == password) {
+            if(user.getUsername().equals(username)) {
+                if(user.getPassword().equals(password)) {
                     return true;
                 }
             } else {
