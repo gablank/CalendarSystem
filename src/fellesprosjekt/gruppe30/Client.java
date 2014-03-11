@@ -1,11 +1,17 @@
 package fellesprosjekt.gruppe30;
 
 
+import java.util.List;
+
 import fellesprosjekt.gruppe30.Controller.AppointmentController;
 import fellesprosjekt.gruppe30.Controller.CalendarController;
 import fellesprosjekt.gruppe30.Controller.ClientNetwork;
 import fellesprosjekt.gruppe30.Controller.LoginController;
+import fellesprosjekt.gruppe30.Model.Alarm;
+import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
+import fellesprosjekt.gruppe30.Model.MeetingRoom;
+import fellesprosjekt.gruppe30.Model.User;
 import fellesprosjekt.gruppe30.View.AppointmentView;
 import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
 import fellesprosjekt.gruppe30.View.CalendarView;
@@ -26,6 +32,11 @@ public class Client {
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
     private final ClientNetwork network;
+
+	private List<User> users;
+	private List<Appointment> appointments;
+	private List<MeetingRoom> meetingRooms;
+	private List<Alarm> alarms;
 
     public Client() {
     	this.loginController = new LoginController(this);
@@ -119,4 +130,16 @@ public class Client {
     public void quit(int i) {
     	System.exit(i);
     }
+    
+	public void addUser(User user) {
+		users.add(user);
+	}
+
+	public void addMeetingRoom(MeetingRoom meetingRoom) {
+		meetingRooms.add(meetingRoom);
+	}
+
+	public void removeAppointment(int id) {
+//		appointments.remove(o)
+	}
 }
