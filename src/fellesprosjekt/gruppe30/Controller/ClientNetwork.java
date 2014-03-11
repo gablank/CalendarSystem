@@ -228,7 +228,7 @@ public class ClientNetwork extends Network {
 		running = false;
 		JSONObject obj = new JSONObject();
 		obj.put("type", "logout");
-		sendJSONObject(obj);
+		send(obj);
 		
 		try {
 			//Thread.sleep(2000);

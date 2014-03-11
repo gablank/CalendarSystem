@@ -56,7 +56,7 @@ class ClientHandler extends Network {
                             System.out.println("Someone tried logging in as " + username + ", but the password was wrong!");
                         }
                         
-                        sendJSONObject(response);
+                        send(response);
 
                     }else{
                         System.out.println("a login message did not have the required fields: " + message.toString());

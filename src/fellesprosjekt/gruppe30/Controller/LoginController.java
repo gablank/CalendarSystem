@@ -22,7 +22,7 @@ public class LoginController implements ActionListener {
 		obj.put("username", username);
 		obj.put("password", User.hashPassword(password));
 
-		client.network.sendJSONObject(obj);
+		client.network.send(obj);
 	}
 
 	public void handleLoginResponse(boolean success, String username) {
