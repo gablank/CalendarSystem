@@ -38,17 +38,18 @@ class ClientHandler extends Network {
             switch (type) {
                 case "login":
                     if(message.has("username") && message.has("password")){
-                        String usernameRecieved = message.getString("username");
+                        String usernameReceived = message.getString("username");
                         // password is a sha256 hash (64 chars)
                         String password = message.getString("password");
 
                         JSONObject response = new JSONObject();
                         response.put("type", "login");
                         
-                        if(this.server.verifyLogin(usernameRecieved, password)) {
+                        if(this.server.verifyLogin(usernameReceived, password)) {
                             response.put("status", "success");
                             response.put("statusMessage", "OK");
-                            username = usernameRecieved;
+                            response.put("username", usernameReceived);
+                            username = usernameReceived;
                             System.out.println(username + " has logged in!");
                         } else {
                             response.put("status", "wrongCombination");
