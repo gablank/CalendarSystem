@@ -45,7 +45,7 @@ class ClientHandler extends Network {
                         JSONObject response = new JSONObject();
                         response.put("type", "login");
                         
-                        if(this.server.verifyLogin(username, password)) {
+                        if(this.server.verifyLogin(usernameRecieved, password)) {
                             response.put("status", "success");
                             response.put("statusMessage", "OK");
                             username = usernameRecieved;
