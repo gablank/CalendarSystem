@@ -1,5 +1,7 @@
 package fellesprosjekt.gruppe30.Model;
 
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 
 public class User {
@@ -7,21 +9,15 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String username;
-    private String password;
 	private String email;
 
-    public User(String firstname, String lastname, String username, String email) {
-        this(firstname, lastname, username, "", email);
-    }
 
-    // This should only be used server side!
-    public User(String firstname, String lastname, String username, String password, String email) {
+    public User(String firstname, String lastname, String username, String email) {
         this.id = -1;
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.email = email;
-        this.password = password;
     }
 
     public int getId() {
@@ -60,11 +56,7 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
+    public static String hashPassword(String password) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			byte[] passwordHash = digest.digest(password.getBytes("UTF-8")); 
@@ -72,7 +64,7 @@ public class User {
 			for(byte b : passwordHash) {
 				sb.append(Integer.toHexString(b & 0xff));
 			}
-			this.password = sb.toString();
+			return sb.toString();
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -85,11 +77,21 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+    public JSONObject getJSON() {
+        JSONObject obj = new JSONObject();
+        obj.put("type", "user");
+        obj.put("id", this.id);
+        obj.put("username", this.username);
+        obj.put("firstName", this.firstname);
+        obj.put("lastName", this.id);
+        obj.put("email", this.email);
+		return obj;
+    }
+
 	public static void main(String[] args) {
-		User me = new User("Emil", "Heien", "uberjew", "password", "email");
+		User me = new User("Emil", "Heien", "uberjew", "email");
 		System.out.print("ID: " + me.getId() + "\nName: " + me.getFirstname() + " " + 
-		me.getLastname() + "\nUsername: " + me.getUsername() + "\nEmail: " + me.getEmail() + 
-		"\nPassword hash: " + me.getPassword());
+		me.getLastname() + "\nUsername: " + me.getUsername() + "\nEmail: " + me.getEmail());
 	}
 }

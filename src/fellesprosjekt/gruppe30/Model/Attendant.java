@@ -1,9 +1,10 @@
 package fellesprosjekt.gruppe30.Model;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 public class Attendant {
-	
 	public User user;
 	public Appointment appointment;
 	private Date alarmClock;
@@ -70,6 +71,18 @@ public class Attendant {
     public int getStatus() {
         return status;
     }
+
+
+	public JSONObject getJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("userid", this.user.getId());
+		obj.put("appointmentid", this.appointment.getId());
+		obj.put("alarmClock", this.alarmClock.getTime());
+		obj.put("status", this.status);
+		obj.put("visibleOnCalendar", this.visibleOnCalendar);
+		obj.put("lastChecked", this.lastChecked);
+		return obj;
+	}
 }
 
 
