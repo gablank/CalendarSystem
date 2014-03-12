@@ -31,6 +31,7 @@ public class CalendarView extends JPanel {
 	private JList<User> userCalendars;
 	private JPanel monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
 	private JFrame frame;
+	private JPanel mainFrame;
 	
 	public CalendarView() {
 		GridBagConstraints c = new GridBagConstraints();

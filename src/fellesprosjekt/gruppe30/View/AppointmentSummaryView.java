@@ -111,9 +111,9 @@ public class AppointmentSummaryView extends JPanel {
 		timeLabel.setText("12:15 - 12:45");
 		
 		personListModel = new PersonListModel();
-		personListModel.addElement(new InternalUser("Jonathan", "Strømjordet", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("email" ,"Jonathan", "Cinderella"));
 		for (int i=0; i<userCount-1; i++){
-		personListModel.addElement(new InternalUser("Emil", "Heien", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("email" ,"Emil", "Heien"));
 		}
 		this.setPersonListModel(personListModel);
 		//System.out.println(participants.getModel().getSize());
