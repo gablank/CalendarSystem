@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Model.Appointment;
+import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import fellesprosjekt.gruppe30.Model.User;
 import fellesprosjekt.gruppe30.Server;
@@ -87,7 +88,7 @@ class ClientHandler extends Network {
                         int    meetingRoomId = message.getInt("meetingRoom");
 
 
-                        User owner = server.getUserById(ownerId);
+						InternalUser owner = server.getUserById(ownerId);
 
                         if(owner == null){
                             System.out.println("failed handling an appointment message, owner was not found. Message: " + message.toString());

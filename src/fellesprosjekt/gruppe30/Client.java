@@ -9,11 +9,7 @@ import fellesprosjekt.gruppe30.Controller.AppointmentController;
 import fellesprosjekt.gruppe30.Controller.CalendarController;
 import fellesprosjekt.gruppe30.Controller.ClientNetwork;
 import fellesprosjekt.gruppe30.Controller.LoginController;
-import fellesprosjekt.gruppe30.Model.Alarm;
-import fellesprosjekt.gruppe30.Model.Appointment;
-import fellesprosjekt.gruppe30.Model.Calendar;
-import fellesprosjekt.gruppe30.Model.MeetingRoom;
-import fellesprosjekt.gruppe30.Model.User;
+import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.View.AppointmentView;
 import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
 import fellesprosjekt.gruppe30.View.CalendarView;
@@ -37,7 +33,7 @@ public class Client {
     public  final ClientNetwork network;
 	private String username = null;
 
-	private List<User> users;
+	private List<InternalUser> users;
 	private List<Appointment> appointments;
 	private List<MeetingRoom> meetingRooms;
 	private List<Alarm> alarms;
@@ -45,8 +41,8 @@ public class Client {
     public Client() {
 		// test code
 		appointments = new ArrayList<Appointment>();
-		users = new ArrayList<User>();
-		User test = new User("Anders", "Wenhaug", "andersw", "anders@wenhaug.no");
+		users = new ArrayList<InternalUser>();
+		InternalUser test = new InternalUser("Anders", "Wenhaug", "andersw", "anders@wenhaug.no");
 		users.add(test);
 		// end test code
 
@@ -171,7 +167,7 @@ public class Client {
     	System.exit(i);
     }
     
-	public void addUser(User user) {
+	public void addUser(InternalUser user) {
 		users.add(user);
 	}
 
@@ -183,8 +179,8 @@ public class Client {
 //		appointments.remove(o)
 	}
 
-	public User getUs() {
-		for(User user : users) {
+	public InternalUser getUs() {
+		for(InternalUser user : users) {
 			if(user.getUsername().equals(username)) {
 				return user;
 			}
@@ -196,8 +192,8 @@ public class Client {
 		return loginController;
 	}
 
-	public User getUserById(int id) {
-		for (User user : users) {
+	public InternalUser getUserById(int id) {
+		for (InternalUser user : users) {
 			if (user.getId() == id)
 				return user;
 		}

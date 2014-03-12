@@ -55,7 +55,7 @@ public class Database {
      * @param user the user to insert into the database
      * @return the database id of the user; if an exception happened it returns -1
      */
-    public int insertUser(User user) {
+    public int insertUser(InternalUser user) {
         if(user.getId() != -1) {
             this.updateUser(user);
             return user.getId();
@@ -97,7 +97,7 @@ public class Database {
         return newUserId;
     }
 
-    public void updateUser(User user) {
+    public void updateUser(InternalUser user) {
         String query;
         query =  "UPDATE users ";
         query += "SET username = '?', password = '?', first_name = '?', last_name = '?', email = '?') ";
@@ -406,7 +406,7 @@ public class Database {
     }
 
     public boolean loadDatabase(Server server) {
-        List<User> users;
+        List<InternalUser> users;
         List<MeetingRoom> meetingRooms;
         List<Appointment> appointments;
         List<Alarm> alarms;
@@ -426,7 +426,7 @@ public class Database {
         return true;
     }
 
-    public List<Alarm> getAlarms(List<User> users, List<Appointment> appointments) {
+    public List<Alarm> getAlarms(List<InternalUser> users, List<Appointment> appointments) {
         List<Alarm> alarms = new ArrayList<Alarm>();
         String query = "SELECT * FROM alarms;";
         ResultSet results = this.query(query);
@@ -441,7 +441,7 @@ public class Database {
                     java.sql.Timestamp date = results.getTimestamp("time");
                     java.util.Date date_ = new java.util.Date(date.getTime());
 
-                    User user = null;
+					InternalUser user = null;
                     for(int i = 0; i < users.size(); i++) {
                         if(users.get(i).getId() == userid) {
                             user = users.get(i);
@@ -471,8 +471,8 @@ public class Database {
         return alarms;
     }
 
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<User>();
+    public List<InternalUser> getUsers() {
+        List<InternalUser> users = new ArrayList<InternalUser>();
         String query = "SELECT * FROM users;";
         ResultSet results = this.query(query);
         if(results == null) {
@@ -488,7 +488,7 @@ public class Database {
                     String lastName = results.getString("last_name");
                     String email = results.getString("email");
 
-                    User user = new User(firstName, lastName, username, email);
+					InternalUser user = new InternalUser(firstName, lastName, username, email);
 					user.setPassword(password);
                     user.setId(userid);
                     users.add(user);
@@ -531,7 +531,7 @@ public class Database {
         return meetingRooms;
     }
 
-    public List<Appointment> getAppointments(List<User> users,
+    public List<Appointment> getAppointments(List<InternalUser> users,
                                                   List<MeetingRoom> meetingRooms) {
         List<Appointment> appointments = new ArrayList<Appointment>();
         String query = "SELECT * FROM appointments;";
@@ -555,7 +555,7 @@ public class Database {
 
                     int ownerId = results.getInt("owner_id");
 
-                    User owner = null;
+					InternalUser owner = null;
                     for(int i = 0; i < users.size(); i++) {
                         if(users.get(i).getId() == ownerId) {
                             owner = users.get(i);
@@ -678,7 +678,7 @@ public class Database {
         /**
          * Test data
          */
-        User anders = new User("Anders", "Wenhaug", "andersw", "anders@wenhaug.no");
+		InternalUser anders = new InternalUser("Anders", "Wenhaug", "andersw", "anders@wenhaug.no");
 		anders.setPassword("password");
         MeetingRoom meetingRoom = new MeetingRoom(8);
         Appointment appointment = new Appointment(

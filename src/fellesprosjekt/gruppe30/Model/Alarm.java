@@ -6,11 +6,11 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class Alarm {
-    private final User user;
+    private final InternalUser user;
     private final Appointment appointment;
     private Date date;
 
-    public Alarm(User user, Appointment appointment, Date date) {
+    public Alarm(InternalUser user, Appointment appointment, Date date) {
         this.user = user;
         this.appointment = appointment;
         this.date = date;
@@ -20,7 +20,7 @@ public class Alarm {
         return this.date;
     }
 
-    public User getUser() {
+    public InternalUser getUser() {
         return this.user;
     }
 

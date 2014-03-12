@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
+import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
 
@@ -111,9 +112,9 @@ public class AppointmentSummaryView extends JPanel {
 		timeLabel.setText("12:15 - 12:45");
 		
 		personListModel = new PersonListModel();
-		personListModel.addElement(new User("Jonathan", "Strømjordet", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("Jonathan", "Strømjordet", "uberjew", "email"));
 		for (int i=0; i<userCount-1; i++){
-		personListModel.addElement(new User("Emil", "Heien", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("Emil", "Heien", "uberjew", "email"));
 		}
 		this.setPersonListModel(personListModel);
 		//end test code

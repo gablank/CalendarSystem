@@ -17,22 +17,22 @@ public class Appointment {
     private ArrayList<Attendant> attendants;
 	private MeetingRoom room;
     private Date lastUpdated;
-    private User owner;
+    private InternalUser owner;
 
 
-	public Appointment(User owner) {
+	public Appointment(InternalUser owner) {
 		this(owner, "Title", "Description", new Date(), new Date(), null, null);
 	}
 
-    public Appointment(User owner, String title, String description, Date start, Date end, String meetingPlace) {
+    public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace) {
         this(owner, title, description, start, end, meetingPlace, null);
     }
 
-    public Appointment(User owner, String title, String description, Date start, Date end, MeetingRoom meetingRoom) {
+    public Appointment(InternalUser owner, String title, String description, Date start, Date end, MeetingRoom meetingRoom) {
         this(owner, title, description, start, end, null, meetingRoom);
     }
 
-    public Appointment(User owner, String title, String description, Date start, Date end, String meetingPlace, MeetingRoom room) {
+    public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace, MeetingRoom room) {
         this.id = -1;
         this.owner = owner;
 		this.title = title;
@@ -117,11 +117,11 @@ public class Appointment {
 		this.room = room;
 	}
 
-    public User getOwner() {
+    public InternalUser getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(InternalUser owner) {
         this.owner = owner;
     }
 

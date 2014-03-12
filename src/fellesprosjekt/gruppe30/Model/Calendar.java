@@ -9,7 +9,7 @@ import fellesprosjekt.gruppe30.View.CalendarView;
 public class Calendar {
 
 	private int week;
-	private ArrayList<User> otherCalendars;
+	private ArrayList<InternalUser> otherCalendars;
 	private ArrayList<Appointment> appointments;
 
 	PropertyChangeSupport pcs;
@@ -45,11 +45,11 @@ public class Calendar {
 		pcs.addPropertyChangeListener(listener);
 	}
 	
-	public void addUser(User user) {
+	public void addUser(InternalUser user) {
 		otherCalendars.add(user);
 	}
 	
-	public void removeUser(User user) {
+	public void removeUser(InternalUser user) {
 		otherCalendars.remove(user);
 	}
 	

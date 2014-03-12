@@ -5,14 +5,15 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class Attendant {
-	public User user;
+	public InternalUser user;
+	public ExternalUser externalUser;
 	public Appointment appointment;
 	private Date alarmClock;
 	public int status;
 	private boolean visibleOnCalendar;
     private java.util.Date lastChecked;
 
-    public Attendant(User user, Appointment appointment) {
+    public Attendant(InternalUser user, Appointment appointment) {
         this.appointment = appointment;
 		this.user = user;
 		alarmClock = null;
@@ -60,7 +61,7 @@ public class Attendant {
 		visibleOnCalendar = show;
 	}
 
-    public User getUser() {
+    public InternalUser getUser() {
         return user;
     }
 

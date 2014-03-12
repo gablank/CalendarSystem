@@ -11,6 +11,8 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
+import fellesprosjekt.gruppe30.Model.ExternalUser;
+import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.User;
 
 public class PersonRenderer implements ListCellRenderer{
@@ -23,9 +25,13 @@ public class PersonRenderer implements ListCellRenderer{
 		User model = (User) value;
 		
 		JLabel label;
-		String firstName = model.getFirstname();
-		String lastName = model.getLastname();
-		label = new JLabel(firstName + " " + lastName.charAt(0)+ ".");
+		if(model instanceof InternalUser) {
+			String firstName = ((InternalUser) model).getFirstname();
+			String lastName = ((InternalUser) model).getLastname();
+			label = new JLabel(firstName + " " + lastName.charAt(0) + ".");
+		} else {
+			label = new JLabel(((ExternalUser)model).getEmail());
+		}
 		
 		File directory = new File(System.getProperty("user.dir"), "Icons");
 		new File(directory,"yesIcon.png").getPath();

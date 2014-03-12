@@ -36,6 +36,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 
 import fellesprosjekt.gruppe30.Model.Appointment;
+import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.User;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -242,7 +243,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		//why this shit dont work?
 		DefaultListModel<User> model = new DefaultListModel<User>();
 		participants = new JList<User>(model);
-		model.add(0, new User("Emil", "Heien", "uberjew", "email"));
+		model.add(0, new InternalUser("Emil", "Heien", "uberjew", "email"));
 		//end test code
 	}
 	

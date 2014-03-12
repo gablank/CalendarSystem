@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionListener;
 
+import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.User;
 
 public class CalendarView extends JPanel {
@@ -28,7 +29,7 @@ public class CalendarView extends JPanel {
 	private JButton addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
 	private JComboBox users;
 	private JLabel weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
-	private JList<User> userCalendars;
+	private JList<InternalUser> userCalendars;
 	private JPanel monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
 	private JFrame frame;
 	
@@ -56,7 +57,7 @@ public class CalendarView extends JPanel {
 		rightArrowButton = new JButton(">");
 		rightArrowButton.setPreferredSize(new Dimension(45, 30));
 		
-		userCalendars = new JList<User>();
+		userCalendars = new JList<InternalUser>();
 		userCalendars.setPreferredSize(new Dimension(140,150));
 		
 		users = new JComboBox();

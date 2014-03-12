@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Date;
 
+import fellesprosjekt.gruppe30.Model.*;
 import org.json.JSONObject;
 
 import fellesprosjekt.gruppe30.Client;
-import fellesprosjekt.gruppe30.Model.Alarm;
-import fellesprosjekt.gruppe30.Model.Appointment;
-import fellesprosjekt.gruppe30.Model.MeetingRoom;
-import fellesprosjekt.gruppe30.Model.User;
 
 
 public class ClientNetwork extends Network {
@@ -78,7 +75,7 @@ public class ClientNetwork extends Network {
 					String lastName = message.getString("lastName");
 					String email = message.getString("email");
 
-					User user = new User(firstName, lastName, username, email);
+					InternalUser user = new InternalUser(firstName, lastName, username, email);
 					user.setId(id);
 
 					client.addUser(user);
@@ -207,7 +204,7 @@ public class ClientNetwork extends Network {
 
 						long time = message.getLong("time");
 						Date date = new Date(time);
-						User user = client.getUserById(userId);
+						InternalUser user = client.getUserById(userId);
 						Appointment appointment = client.getAppointmentById(appointmentId);
 						Alarm alarm = new Alarm(user, appointment, date);
 						client.addAlarm(alarm);
