@@ -63,11 +63,9 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			e.printStackTrace();
-
 			query = "UPDATE users ";
-			query += "SET  email = '?') ";
-			query += "WHERE email = '?';";
+			query += "SET email = ? ";
+			query += "WHERE email = ?;";
 
 			try {
 				PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -105,7 +103,6 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			e.printStackTrace();
 			return this.updateInternalUser(user);
 		}
 
@@ -115,8 +112,8 @@ public class Database {
 	private boolean updateInternalUser(InternalUser user) {
 		String query;
 		query = "UPDATE internal_users ";
-		query += "SET  email = '?', password = '?', first_name = '?', last_name = '?') ";
-		query += "WHERE email = '?';";
+		query += "SET email = ?, password = ?, first_name = ?, last_name = ? ";
+		query += "WHERE email = ?;";
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -149,7 +146,6 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			e.printStackTrace();
 			return this.updateExternalUser(user);
 		}
 
@@ -159,8 +155,8 @@ public class Database {
 	private boolean updateExternalUser(ExternalUser user) {
 		String query;
 		query = "UPDATE external_users ";
-		query += "SET email = '?') ";
-		query += "WHERE email = '?';";
+		query += "SET email = ? ";
+		query += "WHERE email = ?;";
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -196,8 +192,6 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			e.printStackTrace();
-			System.out.println("Alarm (probably) already existed, updating instead of inserting...");
 			this.updateAlarm(alarm.getUser().getEmail(), alarm.getAppointment().getId(), alarm.getDate());
 			return;
 		}
@@ -206,8 +200,8 @@ public class Database {
 	private void updateAlarm(String userEmail, int appointmentId, java.util.Date date) {
 		String query;
 		query = "UPDATE alarms ";
-		query += "SET time = '?' ";
-		query += "WHERE appointment_id = '?' AND user_email = '?';";
+		query += "SET time = ? ";
+		query += "WHERE appointment_id = ? AND user_email = ?;";
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -264,12 +258,9 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			e.printStackTrace();
-			System.out.println("Attendant (probably) already existed, updating instead of inserting...");
-
 			query = "UPDATE attendants ";
-			query += "SET status = '?') ";
-			query += "WHERE user_email = '?' AND appointment_id = '?';";
+			query += "SET status = ? ";
+			query += "WHERE user_email = ? AND appointment_id = ?;";
 
 			try {
 				PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -313,8 +304,6 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			e.printStackTrace();
-			System.out.println("Attendant (probably) already existed, updating instead of inserting...");
 			return this.updateInternalAttendant(attendant);
 		}
 		return true;
@@ -323,8 +312,8 @@ public class Database {
 	private boolean updateInternalAttendant(InternalAttendant internalAttendant) {
 		String query;
 		query = "UPDATE internal_attendants ";
-		query += "SET last_checked = '?', is_visible = '?') ";
-		query += "WHERE user_email = '?' AND appointment_id = '?';";
+		query += "SET last_checked = ?, is_visible = ? ";
+		query += "WHERE user_email = ? AND appointment_id = ?;";
 
 		try {
 			int isVisible = internalAttendant.getVisibleOnCalendar() ? 1 : 0;
@@ -361,8 +350,6 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			e.printStackTrace();
-			System.out.println("Attendant (probably) already existed, updating instead of inserting...");
 			return this.updateExternalAttendant(attendant);
 		}
 		return true;
@@ -371,12 +358,13 @@ public class Database {
 	private boolean updateExternalAttendant(ExternalAttendant externalAttendant) {
 		String query;
 		query = "UPDATE external_attendants ";
-		query += "SET user_email = ?";
-		query += "WHERE user_email = '?';";
+		query += "SET user_email = ? ";
+		query += "WHERE user_email = ?;";
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
 			preparedStatement.setString(1, externalAttendant.getUser().getEmail());
+			preparedStatement.setString(2, externalAttendant.getUser().getEmail());
 			preparedStatement.executeUpdate();
 
 			preparedStatement.close();
@@ -406,7 +394,7 @@ public class Database {
 
 		String query;
 		query = "INSERT INTO appointments ";
-		query += "(name, description, start_date, end_date, place, last_updated, owner_email) ";
+		query += "(title, description, start_date, end_date, place, last_updated, owner_email) ";
 		query += "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
 		try {
@@ -438,11 +426,12 @@ public class Database {
 			e.printStackTrace();
 		}
 
+		appointment.setId(newAppointmentId);
+
 		if(appointment.getMeetingRoom() != null) {
 			this.insertMeetingRoomReservation(appointment.getMeetingRoom(), appointment);
 		}
 
-		appointment.setId(newAppointmentId);
 		for(Attendant attendant : appointment.getAttendants()) {
 			this.insertAttendant(attendant);
 		}
@@ -454,9 +443,9 @@ public class Database {
 	private void updateAppointment(Appointment appointment) {
 		String query;
 		query = "UPDATE appointments ";
-		query += "SET name = '?', description = '?', start_date = '?', end_date = '?', ";
-		query += "place = '?', last_updated = '?', owner_email = '?') ";
-		query += "WHERE id = '?';";
+		query += "SET title = ?, description = ?, start_date = ?, end_date = ? ";
+		query += "place = ?, last_updated = ?, owner_email = ? ";
+		query += "WHERE id = ?;";
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -525,8 +514,8 @@ public class Database {
 	private void updateMeetingRoom(MeetingRoom meetingRoom) {
 		String query;
 		query = "UPDATE meeting_rooms ";
-		query += "SET capacity = '?' ";
-		query += "WHERE id = '?';";
+		query += "SET capacity = ? ";
+		query += "WHERE id = ?;";
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -751,7 +740,7 @@ public class Database {
 			while(results.next()) {
 				try {
 					int appointmentId = results.getInt("id");
-					String name = results.getString("name");
+					String title = results.getString("title");
 					String description = results.getString("description");
 					java.sql.Timestamp startTimestamp = results.getTimestamp("start_date");
 					java.sql.Timestamp endTimestamp = results.getTimestamp("end_date");
@@ -770,7 +759,7 @@ public class Database {
 						continue;
 					}
 
-					Appointment appointment = new Appointment(owner, name, description, startDate, endDate, null, null);
+					Appointment appointment = new Appointment(owner, title, description, startDate, endDate, null, null);
 					appointment.setId(appointmentId);
 					appointment.setLastUpdated(lastUpdatedDate);
 
@@ -876,13 +865,14 @@ public class Database {
 		 */
 		InternalUser anders = new InternalUser("anders@wenhaug.no", "Anders", "Wenhaug");
 		InternalUser emil = new InternalUser("emil.schroeder@gmail.com", "Emil", "Jakobus Schroeder");
+		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
 		anders.setPassword("password");
 		emil.setPassword("password");
 		MeetingRoom meetingRoom = new MeetingRoom(8);
 		Appointment appointment = new Appointment(anders, "Test-appointment", "Test-description", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), meetingRoom);
 		InternalAttendant andersAttendant = new InternalAttendant(anders, appointment);
 		InternalAttendant emilAttendant = new InternalAttendant(emil, appointment);
-		ExternalAttendant espenAttendant = new ExternalAttendant(new ExternalUser("espstr@stud.ntnu.no"), appointment);
+		ExternalAttendant espenAttendant = new ExternalAttendant(espen, appointment);
 
 		appointment.addAttendant(andersAttendant);
 		appointment.addAttendant(emilAttendant);
