@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -43,7 +44,7 @@ public class PersonRenderer implements ListCellRenderer{
 		label.setIcon(accept);
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		label.setIconTextGap(40 - label.getText().length());
+		//label.setIconTextGap(40 - label.getText().length());
 		
 		
 		

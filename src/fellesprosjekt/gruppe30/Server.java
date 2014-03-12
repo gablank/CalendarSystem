@@ -18,7 +18,6 @@ public class Server {
     private final Thread alarmController;
     private final Thread serverListener;
 
-
     public Server() {
         this.loadDatabase();
 		

@@ -150,6 +150,7 @@ public class Appointment {
 		obj.put("meetingRoom", this.room.getId());
 		obj.put("lastUpdated", this.lastUpdated.getTime());
 		obj.put("ownerEmail", this.owner.getEmail());
+		obj.put("owner", this.owner.getEmail());
 		return obj;
 	}
 }

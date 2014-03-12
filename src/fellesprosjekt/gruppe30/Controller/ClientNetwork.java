@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.Date;
 
 import fellesprosjekt.gruppe30.Model.*;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import fellesprosjekt.gruppe30.Client;
@@ -64,18 +66,27 @@ public class ClientNetwork extends Network {
 
 				break;
 
-			case "user":
-				if (message.has("id") && message.has("username")
-						&& message.has("firstName") && message.has("lastName")
+			case "internalUser":
+				if (message.has("firstName") && message.has("lastName")
 						&& message.has("email")) {
 
-					int id = message.getInt("id");
-					String username = message.getString("username");
 					String firstName = message.getString("firstName");
 					String lastName = message.getString("lastName");
 					String email = message.getString("email");
 
-					InternalUser user = new InternalUser(firstName, lastName, username, email);
+					InternalUser user = new InternalUser(firstName, lastName, email);
+
+					client.addUser(user);
+				}
+				
+				break;
+				
+			case "externalUser":
+				if (message.has("email")) {
+
+					String email = message.getString("email");
+
+					ExternalUser user = new ExternalUser(email);
 
 					client.addUser(user);
 				}
@@ -97,70 +108,79 @@ public class ClientNetwork extends Network {
 						&& message.has("owner")
 						&& message.has("meetingRoom")) {
 					
-				// String title = message.getString("title");
-				// String description = message.getString("description");
-				// long start = message.getLong("start");
-				// long end = message.getLong("end");
-				// String meetingPlace = message.getString("meetingPlace");
-				// String attendants = message.getString("attendants");
-				// int ownerId = message.getInt("owner");
-				// int meetingRoomId = message.getInt("meetingRoom");
-				//
-				//
-				// User owner = server.getUserById(ownerId);
-				//
-				// if(owner == null){
-				// System.out.println("failed handling an appointment message, owner was not found. Message: "
-				// + message.toString());
-				// return;
-				// }
-				//
-				// Date startDate = new Date(start);
-				// Date endDate = new Date(end);
-				//
-				// MeetingRoom meetingRoom =
-				// server.getMeetingRoomById(meetingRoomId);
-				//
-				// //
-				// // todo: parse, look up and add attendants
-				// //
-				//
-				// Appointment appointment = null;
-				//
-				// if(meetingRoom == null && meetingPlace.isEmpty()){
-				// System.out.println("failed handling an appointment message, no meetingPlace or valid meetingRoom was set. Message: "
-				// + message.toString());
-				// return;
-				//
-				// }else if(meetingRoom != null && !meetingPlace.isEmpty()){
-				// System.out.println("failed handling an appointment message, both meetingPlace and meetingRoom were set. Message: "
-				// + message.toString());
-				// return;
-				//
-				// }else if(meetingRoom != null){
-				// appointment = new Appointment(owner, title, description,
-				// startDate, endDate, meetingRoom);
-				//
-				// }else{
-				// appointment = new Appointment(owner, title, description,
-				// startDate, endDate, meetingPlace);
-				//
-				// }
-				//
-				// if(action == "change"){
-				// int id = message.getInt("id");
-				// appointment.setId(id);
-				// if(server.getAppointmentById(id) == null){
-				// System.out.println("failed handling an change appointment message, the appointment with specified id could not be found.");
-				// }
-				// }
-				//
-				// server.insertAppointment(appointment);
+					String title         = message.getString("title");
+					String description   = message.getString("description");
+					long start           = message.getLong("start");
+					long end             = message.getLong("end");
+					String meetingPlace  = message.getString("meetingPlace");
+					String attendantsStr = message.getString("attendants");
+					String ownerEmail    = message.getString("owner");
+					int meetingRoomId    = message.getInt("meetingRoom");
+				
+				
+					InternalUser owner = (InternalUser) client.getUserByEmail(ownerEmail);
 					
+					if (owner == null) {
+						System.out.println("failed handling an appointment message, owner was not found or not internal. Message: " + message.toString());
+						return;
+					}
+
+					Date startDate = new Date(start);
+					Date endDate = new Date(end);
+					
+					MeetingRoom meetingRoom = client.getMeetingRoomById(meetingRoomId);
+					
+					// obj.put("type", "externalAttendant");
+					// obj.put("email", this.user.getEmail());
+					// obj.put("appointmentid", this.appointment.getId());
+					// obj.put("status", this.status);
+					//
+					// obj.put("type", "internalAttendant");
+					// obj.put("email", this.user.getEmail());
+					// obj.put("appointmentid", this.appointment.getId());
+					// obj.put("status", this.status);
+					// obj.put("visibleOnCalendar", this.visibleOnCalendar);
+					// obj.put("lastChecked", this.lastChecked);
+
+					JSONArray attendants = new JSONArray(attendantsStr);
+
+					for (int i = 0; i < attendants.length(); i++) {
+						Attendant attendant = attendants.getJSONObject(i);
+					}
+
+					Appointment appointment = null;
+
+					if (meetingRoom == null && meetingPlace.isEmpty()) {
+						System.out.println("failed handling an appointment message, no meetingPlace or valid meetingRoom was set. Message: " + message.toString());
+						return;
+
+					} else if (meetingRoom != null && !meetingPlace.isEmpty()) {
+						System.out.println("failed handling an appointment message, both meetingPlace and meetingRoom were set. Message: " + message.toString());
+						return;
+
+					} else if (meetingRoom != null) {
+						appointment = new Appointment(owner, title, description, startDate, endDate, meetingRoom);
+
+					} else {
+						appointment = new Appointment(owner, title, description, startDate, endDate, meetingPlace);
+
+					}
+
+					if (action == "change") {
+						int id = message.getInt("id");
+						appointment.setId(id);
+						if (client.getAppointmentById(id) == null) {
+							System.out.println("failed handling an change appointment message, the appointment with specified id could not be found.");
+						}
+					}
+
+					client.addAppointment(appointment);
+
 				} else if (action == "remove" && message.has("id")) {
 					int id = message.getInt("id");
-
-					client.removeAppointment(id);
+					
+					Appointment appointment = client.getAppointmentById(id);
+					client.removeAppointment(appointment);
 
 				} else {
 					System.out.println("an appointment message did not have the required fields: " + message.toString());
@@ -169,8 +189,7 @@ public class ClientNetwork extends Network {
 				 break;
 
 			case "meetingRoom":
-				if (message.has("id") 
-						&& message.has("id")
+				if (message.has("id")
 						&& message.has("roomSize")) {
 
 					int id       = message.getInt("id");
@@ -188,11 +207,14 @@ public class ClientNetwork extends Network {
 				if (message.has("action"))
 					action = message.getString("action");
 				
-				if (message.has("userId")
+				if (message.has("userEmail")
 						&& message.has("appointmentId")) {
 					
-					int userId        = message.getInt("userId");
+					String userEmail  = message.getString("userEmail");
 					int appointmentId = message.getInt("appointmentId");
+
+					InternalUser user = (InternalUser) client.getUserByEmail(userEmail);
+					Appointment appointment = client.getAppointmentById(appointmentId);
 
 					
 					if(action == "new"){
@@ -203,8 +225,6 @@ public class ClientNetwork extends Network {
 
 						long time = message.getLong("time");
 						Date date = new Date(time);
-						InternalUser user = client.getUserById(userId);
-						Appointment appointment = client.getAppointmentById(appointmentId);
 						Alarm alarm = new Alarm(user, appointment, date);
 						client.addAlarm(alarm);
 
@@ -216,12 +236,13 @@ public class ClientNetwork extends Network {
 
 						long time = message.getLong("time");
 						Date date = new Date(time);
+						
 
-						client.getAlarmByIds(userId, appointmentId).setDate(date);
+						client.getAlarm(appointment, user).setDate(date);
 					
 					
 					} else if (action == "remove") {
-						client.removeAlarm(userId, appointmentId);
+						client.removeAlarm(appointment, user);
 					
 
 					} else {

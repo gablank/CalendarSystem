@@ -1,9 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,16 +10,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.GregorianCalendar;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -52,7 +47,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	protected JComboBox<User> participantList;
 	protected JList<User> participants;
 	protected JButton addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
-	protected JScrollPane scrollpane;
+	protected JScrollPane participantScroller, descriptionScroller;
 	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame frame;
 	protected Appointment model;
@@ -65,9 +60,12 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		
 		//set appearance of all buttons
 		titleField = new JTextField("Title", 13);
-		description = new JTextArea(5,13);
-		description.setText("Description");
+		description = new JTextArea("Description", 5,13);
 		description.setBorder(titleField.getBorder());
+		description.setLineWrap(true);
+		description.setWrapStyleWord(true);
+		descriptionScroller = new JScrollPane(description);
+		
 		
 		meetingRoomField = new JTextField("Place", 10);
 		emailField = new JTextField("Email", 1);
@@ -120,9 +118,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		listrenderer = new PersonRenderer();
 		participants.setCellRenderer(listrenderer);
 		
-		scrollpane = new JScrollPane(participants);
-		scrollpane.setFocusable(true);
-		scrollpane.setPreferredSize(new Dimension(150, 150));
+		participantScroller = new JScrollPane(participants);
+		participantScroller.setFocusable(true);
+		participantScroller.setPreferredSize(new Dimension(150, 150));
 		participantLabel = new JLabel("Participants");
 		participantLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -145,7 +143,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		add(titleField, cLeft);
 		cLeft.gridy = 1;
 		
-		add(description, cLeft);
+		add(descriptionScroller, cLeft);
 		cLeft.gridy = 2;
 		
 		JPanel datePanel = new JPanel();
@@ -202,7 +200,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		JPanel participantPanel = new JPanel();
 		participantPanel.setLayout(new BoxLayout(participantPanel, BoxLayout.Y_AXIS));
 		participantPanel.add(participantLabel);
-		participantPanel.add(scrollpane);
+		participantPanel.add(participantScroller);
 		add(participantPanel, cRight);
 		cRight.gridy = 4;
 		
@@ -241,12 +239,12 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		
 		//test code:
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		personListModel = new PersonListModel();
-		personListModel.addElement(new InternalUser("Jonathan", "Strømjordet", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("Jonathan", "Shaky", "Cinderella", "email"));
 		for (int i=0; i<10; i++){
 		personListModel.addElement(new InternalUser("Emil", "Heien", "uberjew", "email"));
 		}
