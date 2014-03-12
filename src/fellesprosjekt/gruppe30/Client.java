@@ -15,6 +15,7 @@ import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
 import fellesprosjekt.gruppe30.View.CalendarView;
 import fellesprosjekt.gruppe30.View.LoginView;
 import fellesprosjekt.gruppe30.View.ViewAppointmentView;
+
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -167,16 +168,8 @@ public class Client {
     	System.exit(i);
     }
     
-	public void addUser(InternalUser user) {
+	public void addUser(User user) {
 		users.add(user);
-	}
-
-	public void addMeetingRoom(MeetingRoom meetingRoom) {
-		meetingRooms.add(meetingRoom);
-	}
-
-	public void removeAppointment(Appointment appointment) {
-		appointments.remove(appointment);
 	}
 
 	public InternalUser getLoggedInUser() {
@@ -210,6 +203,14 @@ public class Client {
 		return null;
 	}
 
+	public void addAppointment(Appointment appointment) {
+		appointments.add(appointment);
+	}
+
+	public void removeAppointment(Appointment appointment) {
+		appointments.remove(appointment);
+	}
+
 	public MeetingRoom getMeetingRoomById(int id) {
 		for (MeetingRoom meetingRoom : meetingRooms) {
 			if (meetingRoom.getId() == id)
@@ -217,6 +218,10 @@ public class Client {
 		}
 
 		return null;
+	}
+
+	public void addMeetingRoom(MeetingRoom meetingRoom) {
+		meetingRooms.add(meetingRoom);
 	}
 
 	public Alarm getAlarm(Appointment appointment, User user) {
@@ -236,4 +241,5 @@ public class Client {
 		Alarm alarm = getAlarm(appointment, user);
 		alarms.remove(alarm);
 	}
+
 }
