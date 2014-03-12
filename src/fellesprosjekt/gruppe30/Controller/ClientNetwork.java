@@ -6,6 +6,7 @@ import java.util.Date;
 
 import fellesprosjekt.gruppe30.Model.*;
 
+import fellesprosjekt.gruppe30.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -122,7 +123,7 @@ public class ClientNetwork extends Network {
 					long lastUpdated     = message.getLong("lastUpdated");
 				
 				
-					InternalUser owner = (InternalUser) client.getUserByEmail(ownerEmail);
+					InternalUser owner = (InternalUser) Utilities.getUserByEmail(ownerEmail, client.getUsers());
 					
 					if (owner == null) {
 						System.out.println("failed handling an appointment message, owner was not found or not internal. Message: " + message.toString());
@@ -166,7 +167,7 @@ public class ClientNetwork extends Network {
 							int appointmentId = attendantObj.getInt("type");
 							int attendantStatus = attendantObj.getInt("status");
 							
-							User user = client.getUserByEmail(attendantEmail);
+							User user = Utilities.getUserByEmail(attendantEmail, client.getUsers());
 							
 							if (appointmentId != appointment.getId()) {
 								System.out.println("failed handling an appointment message, an attendant had no type: " + message.toString());
@@ -210,7 +211,7 @@ public class ClientNetwork extends Network {
 					if (action == "change") {
 						int id = message.getInt("id");
 						appointment.setId(id);
-						if (client.getAppointmentById(id) == null) {
+						if (Utilities.getAppointmentById(id, client.getAppointments()) == null) {
 							System.out.println("failed handling an change appointment message, the appointment with specified id could not be found.");
 						}
 					}
@@ -221,7 +222,7 @@ public class ClientNetwork extends Network {
 				} else if (action == "remove" && message.has("id")) {
 					int id = message.getInt("id");
 					
-					Appointment appointment = client.getAppointmentById(id);
+					Appointment appointment = Utilities.getAppointmentById(id, client.getAppointments());
 					client.removeAppointment(appointment);
 
 				} else {
@@ -255,8 +256,8 @@ public class ClientNetwork extends Network {
 					String userEmail  = message.getString("userEmail");
 					int appointmentId = message.getInt("appointmentId");
 
-					InternalUser user = (InternalUser) client.getUserByEmail(userEmail);
-					Appointment appointment = client.getAppointmentById(appointmentId);
+					InternalUser user = (InternalUser) Utilities.getUserByEmail(userEmail, client.getUsers());
+					Appointment appointment = Utilities.getAppointmentById(appointmentId, client.getAppointments());
 
 					
 					if(action == "new"){
@@ -280,7 +281,7 @@ public class ClientNetwork extends Network {
 						Date date = new Date(time);
 						
 
-						client.getAlarm(appointment, user).setDate(date);
+						Utilities.getAlarm(appointment, user, client.getAlarms()).setDate(date);
 					
 					
 					} else if (action == "remove") {

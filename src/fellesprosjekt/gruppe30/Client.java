@@ -37,6 +37,47 @@ public class Client {
 	private List<Appointment> appointments;
 	private List<MeetingRoom> meetingRooms;
 	private List<Alarm> alarms;
+
+	public User getLoggedInUser() {
+		return loggedInUser;
+	}
+
+	public void setLoggedInUser(User loggedInUser) {
+		this.loggedInUser = loggedInUser;
+	}
+
+	public List<Alarm> getAlarms() {
+		return alarms;
+	}
+
+	public void setAlarms(List<Alarm> alarms) {
+		this.alarms = alarms;
+	}
+
+	public List<MeetingRoom> getMeetingRooms() {
+		return meetingRooms;
+	}
+
+	public void setMeetingRooms(List<MeetingRoom> meetingRooms) {
+		this.meetingRooms = meetingRooms;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
 	private User loggedInUser = null;
 
 	public Client() {
