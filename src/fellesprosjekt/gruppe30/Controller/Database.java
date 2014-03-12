@@ -529,6 +529,100 @@ public class Database {
 		}
 	}
 
+	public void deleteUser(User user) {
+		String query = "DELETE FROM users WHERE email = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setString(1, user.getEmail());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete user with email: " + user.getEmail());
+		}
+	}
+
+	public void deleteMeetingRoom(MeetingRoom meetingRoom) {
+		String query = "DELETE FROM meeting_rooms WHERE id = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setInt(1, meetingRoom.getId());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete meeting room with id: " + meetingRoom.getId());
+		}
+	}
+
+	public void deleteGroup(Group group) {
+		String query = "DELETE FROM groups WHERE name = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setString(1, group.getName());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete group with name: " + group.getName());
+		}
+	}
+
+	public void deleteGroupMember(Group group, User user) {
+		String query = "DELETE FROM group_members WHERE user_email = ? AND group_id = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setString(1, user.getEmail());
+			preparedStatement.setInt   (2, group.getId()  );
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete group member with email: " + user.getEmail());
+		}
+	}
+
+	public void deleteAppointment(Appointment appointment) {
+		String query = "DELETE FROM appointments WHERE id = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setInt(1, appointment.getId());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete appointment with id: " + Integer.toString(appointment.getId()));
+		}
+	}
+
+	private void deleteMeetingRoomReservation(Appointment appointment) {
+		String query = "DELETE FROM meeting_room_reservations WHERE meeting_room_id = ? AND appointment_id = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setInt(1, appointment.getMeetingRoom().getId());
+			preparedStatement.setInt(2, appointment.getId()                 );
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete meeting room reservation for appointment with id: " + Integer.toString(appointment.getId()));
+		}
+	}
+
+	private void deleteAttendant(Attendant attendant) {
+		String query = "DELETE FROM attendants WHERE user_email = ? AND appointment_id = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setString(1, attendant.getUser().getEmail()    );
+			preparedStatement.setInt   (2, attendant.getAppointment().getId());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete attendant with user_email: " + attendant.getUser().getEmail());
+		}
+	}
+
+	public void deleteAlarm(Alarm alarm) {
+		String query = "DELETE FROM alarms WHERE user_email = ? AND appointment_id = ?;";
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setString(1, alarm.getUser().getEmail()    );
+			preparedStatement.setInt   (2, alarm.getAppointment().getId());
+			preparedStatement.execute();
+		} catch(SQLException e) {
+			System.out.println("Could not delete alarm for user " + alarm.getUser().getEmail());
+		}
+	}
+
+
+
 	private java.sql.Timestamp dateToSqlTimestamp(java.util.Date date) {
 		return new java.sql.Timestamp(date.getTime());
 	}
