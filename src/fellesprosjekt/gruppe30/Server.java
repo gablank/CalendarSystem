@@ -117,16 +117,16 @@ public class Server {
 		return false;
 	}
 
-
-	public static void main(String[] args) {
-		Server server = new Server();
-	}
-
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
 
 	public List<Group> getGroups() {
 		return groups;
+	}
+
+
+	public static void main(String[] args) {
+		Server server = new Server();
 	}
 }
