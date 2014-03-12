@@ -15,10 +15,10 @@ public class BookMeetingRoomView extends JPanel {
 	//Salvador Fali aka Kush Wagner
 	private JList               roomList;
 	private JFormattedTextField startText, endText, dateText, capacityText;
-	private JLabel startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
-	private JScrollPane roomListScroll;
-	private JButton     okButton, quitButton;
-	private JFrame frame;
+	private JLabel              startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
+	private JScrollPane         roomListScroll;
+	private JButton             okButton, quitButton;
+	private JFrame              frame;
 
 	public BookMeetingRoomView() {
 		// gridbag og gridconstraints deklarasjon.

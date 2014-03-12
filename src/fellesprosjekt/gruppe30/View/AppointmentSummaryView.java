@@ -10,12 +10,13 @@ import java.io.File;
 
 public class AppointmentSummaryView extends JPanel {
 
-	private JLabel titleLabel, timeLabel, yesLabel, noLabel, creatorLabel, unanswered;
+	private JLabel 			titleLabel, timeLabel, yesLabel, noLabel, creatorLabel, unanswered;
 	private JFrame          frame;
 	private JList<User>     participants;
 	private PersonRenderer  listrenderer;
 	private PersonListModel personListModel;
-	private int userCount = 3;
+	private int             userCount = 3;
+	//userCount should be (participants.getModel().getSize());
 
 	public AppointmentSummaryView() {
 		GridBagConstraints c = new GridBagConstraints();

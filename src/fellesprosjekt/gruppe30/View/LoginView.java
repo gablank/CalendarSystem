@@ -7,11 +7,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class LoginView extends JPanel {
-	private JLabel usernameLabel, passwordLabel, spaceLabel, notifier;
+	private JLabel         usernameLabel, passwordLabel, spaceLabel, notifier;
 	private JTextField     usernameTextField;
 	private JPasswordField passwordTextField;
 	public  JButton        loginButton, quitButton;
-	private JFrame frame;
+	private JFrame         frame;
 
 	public LoginView() {
 		GridBagLayout gridBag = new GridBagLayout();
