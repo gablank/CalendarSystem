@@ -77,6 +77,8 @@ public class Client {
 		// test code
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<User>();
+		meetingRooms = new ArrayList<MeetingRoom>();
+		alarms = new ArrayList<Alarm>();
 		InternalUser test = new InternalUser("Anders", "Wenhaug", "anders@wenhaug.no");
 		users.add(test);
 		// end test code
