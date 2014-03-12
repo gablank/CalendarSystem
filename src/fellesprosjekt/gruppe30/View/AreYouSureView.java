@@ -12,8 +12,8 @@ public class AreYouSureView extends JPanel {
 	public static final long serialVersionUID = 1L;
 
 	// Fields
-	private JLabel  label;
-	private JButton yesButton, noButton;
+	private JLabel     label;
+	private JButton    yesButton, noButton;
 	GridBagConstraints gbc = new GridBagConstraints();
 
 	// Constructor

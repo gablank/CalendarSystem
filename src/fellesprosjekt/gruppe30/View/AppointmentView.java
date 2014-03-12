@@ -17,19 +17,19 @@ import java.text.ParseException;
 import java.util.EventListener;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, MouseListener {
-	protected PersonRenderer  listrenderer;
-	protected PersonListModel personListModel;
-	protected JTextField      titleField, meetingRoomField, emailField;
+	protected PersonRenderer      listrenderer;
+	protected PersonListModel     personListModel;
+	protected JTextField          titleField, meetingRoomField, emailField;
 	protected JTextArea           description;
 	protected JFormattedTextField dateField, startTimeField, endTimeField, alarmTimeField;
-	protected JCheckBox useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
-	protected JComboBox<User> participantList;
-	protected JList<User>     participants;
-	protected JButton         addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
-	protected JScrollPane participantScroller, descriptionScroller;
-	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
-	protected JFrame      frame;
-	protected Appointment model;
+	protected JCheckBox           useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
+	protected JComboBox<User>     participantList;
+	protected JList<User>         participants;
+	protected JButton             addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
+	protected JScrollPane         participantScroller, descriptionScroller;
+	protected JLabel              participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
+	protected JFrame              frame;
+	protected Appointment         model;
 
 
 	public AppointmentView() {

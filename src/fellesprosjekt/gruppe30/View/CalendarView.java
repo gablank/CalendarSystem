@@ -13,11 +13,11 @@ import java.util.EventListener;
 public class CalendarView extends JPanel {
 	private PersonRenderer listrenderer;
 	private JButton        addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
-	private JComboBox users;
-	private JLabel    weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
-	private JList<User> userCalendars;
-	private JPanel      monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
-	private JFrame frame;
+	private JComboBox 	   users;
+	private JLabel    	   weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
+	private JList<User>    userCalendars;
+	private JPanel         monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
+	private JFrame         frame;
 
 	public CalendarView() {
 		GridBagConstraints c = new GridBagConstraints();
