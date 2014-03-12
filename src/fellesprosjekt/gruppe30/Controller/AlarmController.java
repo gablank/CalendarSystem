@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public class AlarmController implements Runnable {
-    private Server server;
+    private Server  server;
     private boolean run;
 
     public AlarmController(Server server) {
@@ -21,16 +21,16 @@ public class AlarmController implements Runnable {
     public void run() {
         System.out.println("I'm alive!");
         List<Alarm> alarms;
-        while(this.run) {
+        while (this.run) {
             System.out.println("Checking for alarms!");
 
             alarms = server.getAlarms();
             Date curTime = new Date(new Date().getTime() + 30 * 000);
             Date oneMinBeforeCurTime = new Date(new Date().getTime() - 30 * 000);
 
-            for(int i = 0; i < alarms.size(); i++) {
+            for (int i = 0; i < alarms.size(); i++) {
                 // If now is after alarm date, send mail
-                if(curTime.after(alarms.get(i).getDate()) && oneMinBeforeCurTime.before(alarms.get(i).getDate())) {
+                if (curTime.after(alarms.get(i).getDate()) && oneMinBeforeCurTime.before(alarms.get(i).getDate())) {
                     this.server.sendMail(alarms.get(i).getUser().getEmail(), "ALARM!", "This is an alarm!!!!!");
                 }
             }
@@ -41,7 +41,7 @@ public class AlarmController implements Runnable {
                 Thread.sleep(60000 - now.getTime() % 60000);
 
                 // Server is shutting down
-            } catch(InterruptedException e) {
+            } catch (InterruptedException e) {
                 System.out.println("AlarmController shutting down!");
                 return;
             }

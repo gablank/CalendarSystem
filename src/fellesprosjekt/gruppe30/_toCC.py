@@ -19,7 +19,7 @@ for root, _, files in os.walk(dirtocheck):
                 newLine = ""
                 upperNext = False
                 for i in range(len(line)):
-                    if line[i] == '_' and i + 1 < len(line) and line[i+1].lower() == line[i+1]:
+                    if line[i] == '_' and i + 1 < len(line) and line[i + 1].lower() == line[i + 1]:
                         upperNext = True
                     else:
                         if upperNext:

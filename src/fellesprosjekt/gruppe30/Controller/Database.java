@@ -5,7 +5,9 @@ import fellesprosjekt.gruppe30.Server;
 import fellesprosjekt.gruppe30.Utilities;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 
 public class Database {
@@ -18,184 +20,182 @@ public class Database {
     private Database() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch(ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return;
         }
 
         Properties loginCredentials = new Properties();
-        loginCredentials.put("user",     this.username);
+        loginCredentials.put("user", this.username);
         loginCredentials.put("password", this.password);
 
         try {
             this.connection = DriverManager.getConnection("jdbc:mysql://localhost/calendar_system", loginCredentials);
             System.out.println("Connected to database!");
 
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Could not get database connection.");
         }
     }
 
     public static Database getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Database();
         }
         return instance;
     }
 
     /**
-     *
      * @param user the user to insert into the database
      * @return true if success
      */
     public boolean insertUser(User user) {
-		String query;
-		query =  "INSERT INTO users ";
-		query += "(email) ";
-		query += "VALUES (?);";
+        String query;
+        query = "INSERT INTO users ";
+        query += "(email) ";
+        query += "VALUES (?);";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
 
-			query =  "UPDATE users ";
-			query += "SET  email = '?') ";
-			query += "WHERE email = '?';";
+            query = "UPDATE users ";
+            query += "SET  email = '?') ";
+            query += "WHERE email = '?';";
 
-			try {
-				PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-				preparedStatement.setString(1, user.getEmail());
-				preparedStatement.setString(2, user.getEmail());
-				preparedStatement.executeUpdate();
+            try {
+                PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+                preparedStatement.setString(1, user.getEmail());
+                preparedStatement.setString(2, user.getEmail());
+                preparedStatement.executeUpdate();
 
-				preparedStatement.close();
-			} catch(SQLException a) {
-				a.printStackTrace();
-				return false;
-			}
-		}
+                preparedStatement.close();
+            } catch (SQLException a) {
+                a.printStackTrace();
+                return false;
+            }
+        }
 
-		if(user instanceof InternalUser) {
-			return this.insertInternalUser((InternalUser) user);
-		} else {
-			return this.insertExternalUser((ExternalUser) user);
-		}
-	}
+        if (user instanceof InternalUser) {
+            return this.insertInternalUser((InternalUser) user);
+        } else {
+            return this.insertExternalUser((ExternalUser) user);
+        }
+    }
 
-	private boolean insertInternalUser(InternalUser user) {
-		String query;
-		query =  "INSERT INTO internal_users ";
-		query += "(email, password, first_name, last_name) ";
-		query += "VALUES (?, ?, ?, ?);";
+    private boolean insertInternalUser(InternalUser user) {
+        String query;
+        query = "INSERT INTO internal_users ";
+        query += "(email, password, first_name, last_name) ";
+        query += "VALUES (?, ?, ?, ?);";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString(1, user.getEmail()    );
-			preparedStatement.setString(2, user.getPassword() );
-			preparedStatement.setString(3, user.getFirstName());
-			preparedStatement.setString(4, user.getLastName() );
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getFirstName());
+            preparedStatement.setString(4, user.getLastName());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return this.updateInternalUser(user);
-		}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return this.updateInternalUser(user);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private boolean updateInternalUser(InternalUser user) {
-		String query;
-		query =  "UPDATE internal_users ";
-		query += "SET  email = '?', password = '?', first_name = '?', last_name = '?') ";
-		query += "WHERE email = '?';";
+    private boolean updateInternalUser(InternalUser user) {
+        String query;
+        query = "UPDATE internal_users ";
+        query += "SET  email = '?', password = '?', first_name = '?', last_name = '?') ";
+        query += "WHERE email = '?';";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString(1, user.getEmail()    );
-			preparedStatement.setString(2, user.getPassword() );
-			preparedStatement.setString(3, user.getFirstName());
-			preparedStatement.setString(4, user.getLastName() );
-			preparedStatement.setString(5, user.getEmail()    );
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getFirstName());
+            preparedStatement.setString(4, user.getLastName());
+            preparedStatement.setString(5, user.getEmail());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private boolean insertExternalUser(ExternalUser user) {
-		String query;
-		query =  "INSERT INTO external_users ";
-		query += "(email) ";
-		query += "VALUES (?);";
+    private boolean insertExternalUser(ExternalUser user) {
+        String query;
+        query = "INSERT INTO external_users ";
+        query += "(email) ";
+        query += "VALUES (?);";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return this.updateExternalUser(user);
-		}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return this.updateExternalUser(user);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private boolean updateExternalUser(ExternalUser user) {
-		String query;
-		query =  "UPDATE external_users ";
-		query += "SET email = '?') ";
-		query += "WHERE email = '?';";
+    private boolean updateExternalUser(ExternalUser user) {
+        String query;
+        query = "UPDATE external_users ";
+        query += "SET email = '?') ";
+        query += "WHERE email = '?';";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, user.getEmail());
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     /**
-     *
      * @param alarm object to insert into (or update) db
      */
     private void insertAlarm(Alarm alarm) {
-		this.insertUser(alarm.getUser());
+        this.insertUser(alarm.getUser());
         String query;
-        query =  "INSERT INTO alarms ";
+        query = "INSERT INTO alarms ";
         query += "(appointment_id, user_email, time) ";
         query += "VALUES (?, ?, ?);";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setInt      (1, alarm.getAppointment().getId()          );
+            preparedStatement.setInt(1, alarm.getAppointment().getId());
             preparedStatement.setString(2, alarm.getUser().getEmail());
             preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(alarm.getDate()));
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Alarm (probably) already existed, updating instead of inserting...");
             this.updateAlarm(alarm.getUser().getEmail(), alarm.getAppointment().getId(), alarm.getDate());
@@ -205,31 +205,30 @@ public class Database {
 
     private void updateAlarm(String userEmail, int appointmentId, java.util.Date date) {
         String query;
-        query =  "UPDATE alarms ";
+        query = "UPDATE alarms ";
         query += "SET time = '?' ";
         query += "WHERE appointment_id = '?' AND user_email = '?';";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setTimestamp(1, this.dateToSqlTimestamp(date));
-            preparedStatement.setInt      (2, appointmentId                );
-            preparedStatement.setString   (3, userEmail                    );
+            preparedStatement.setInt(2, appointmentId);
+            preparedStatement.setString(3, userEmail);
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     *
      * @param meetingRoom the MeetingRoom to insert into the database
      * @param appointment Appointment to insert into the database
      */
     private void insertMeetingRoomReservation(MeetingRoom meetingRoom, Appointment appointment) {
         String query;
-        query =  "INSERT INTO meeting_room_reservations ";
+        query = "INSERT INTO meeting_room_reservations ";
         query += "(meeting_room_id, appointment_id) ";
         query += "VALUES (?, ?);";
 
@@ -240,189 +239,185 @@ public class Database {
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-	/**
-	 *
-	 * @param attendant attendant to insert into db
-	 * @return true if success
-	 */
-	private boolean insertAttendant(Attendant attendant) {
-		this.insertUser(attendant.getUser());
-		String query;
-		query =  "INSERT INTO attendants ";
-		query += "(user_email, appointment_id, status) ";
-		query += "VALUES (?, ?, ?);";
+    /**
+     * @param attendant attendant to insert into db
+     * @return true if success
+     */
+    private boolean insertAttendant(Attendant attendant) {
+        this.insertUser(attendant.getUser());
+        String query;
+        query = "INSERT INTO attendants ";
+        query += "(user_email, appointment_id, status) ";
+        query += "VALUES (?, ?, ?);";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString(1, attendant.getUser().getEmail()    );
-			preparedStatement.setInt   (2, attendant.getAppointment().getId());
-			preparedStatement.setInt   (3, attendant.getStatus()             );
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, attendant.getUser().getEmail());
+            preparedStatement.setInt(2, attendant.getAppointment().getId());
+            preparedStatement.setInt(3, attendant.getStatus());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			System.out.println("Attendant (probably) already existed, updating instead of inserting...");
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Attendant (probably) already existed, updating instead of inserting...");
 
-			query =  "UPDATE attendants ";
-			query += "SET status = '?') ";
-			query += "WHERE user_email = '?' AND appointment_id = '?';";
+            query = "UPDATE attendants ";
+            query += "SET status = '?') ";
+            query += "WHERE user_email = '?' AND appointment_id = '?';";
 
-			try {
-				PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-				preparedStatement.setInt      (1, attendant.getStatus()             );
-				preparedStatement.setString   (2, attendant.getUser().getEmail()    );
-				preparedStatement.setInt      (3, attendant.getAppointment().getId());
-				preparedStatement.executeUpdate();
+            try {
+                PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+                preparedStatement.setInt(1, attendant.getStatus());
+                preparedStatement.setString(2, attendant.getUser().getEmail());
+                preparedStatement.setInt(3, attendant.getAppointment().getId());
+                preparedStatement.executeUpdate();
 
-				preparedStatement.close();
-			} catch(SQLException a) {
-				a.printStackTrace();
-			}
-		}
+                preparedStatement.close();
+            } catch (SQLException a) {
+                a.printStackTrace();
+            }
+        }
 
-		if(attendant instanceof InternalAttendant) {
-			return this.insertInternalAttendant((InternalAttendant) attendant);
-		} else {
-			return this.insertExternalAttendant((ExternalAttendant) attendant);
-		}
-	}
+        if (attendant instanceof InternalAttendant) {
+            return this.insertInternalAttendant((InternalAttendant) attendant);
+        } else {
+            return this.insertExternalAttendant((ExternalAttendant) attendant);
+        }
+    }
 
-	/**
-	 *
-	 * @param attendant the InternalAttendant to insert into the database
-	 * @return true if success
-	 */
-	private boolean insertInternalAttendant(InternalAttendant attendant) {
-		String query;
-		query =  "INSERT INTO internal_attendants ";
-		query += "(user_email, appointment_id, last_checked, is_visible) ";
-		query += "VALUES (?, ?, ?, ?);";
+    /**
+     * @param attendant the InternalAttendant to insert into the database
+     * @return true if success
+     */
+    private boolean insertInternalAttendant(InternalAttendant attendant) {
+        String query;
+        query = "INSERT INTO internal_attendants ";
+        query += "(user_email, appointment_id, last_checked, is_visible) ";
+        query += "VALUES (?, ?, ?, ?);";
 
-		try {
-			int isVisible = attendant.getVisibleOnCalendar() ? 1 : 0;
+        try {
+            int isVisible = attendant.getVisibleOnCalendar() ? 1 : 0;
 
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString   (1, attendant.getUser().getEmail()                );
-			preparedStatement.setInt      (2, attendant.getAppointment().getId()            );
-			preparedStatement.setTimestamp(3, dateToSqlTimestamp(attendant.getLastChecked()));
-			preparedStatement.setInt      (4, isVisible                                     );
-			preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, attendant.getUser().getEmail());
+            preparedStatement.setInt(2, attendant.getAppointment().getId());
+            preparedStatement.setTimestamp(3, dateToSqlTimestamp(attendant.getLastChecked()));
+            preparedStatement.setInt(4, isVisible);
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			System.out.println("Attendant (probably) already existed, updating instead of inserting...");
-			return this.updateInternalAttendant(attendant);
-		}
-		return true;
-	}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Attendant (probably) already existed, updating instead of inserting...");
+            return this.updateInternalAttendant(attendant);
+        }
+        return true;
+    }
 
-	private boolean updateInternalAttendant(InternalAttendant internalAttendant) {
-		String query;
-		query =  "UPDATE internal_attendants ";
-		query += "SET last_checked = '?', is_visible = '?') ";
-		query += "WHERE user_email = '?' AND appointment_id = '?';";
+    private boolean updateInternalAttendant(InternalAttendant internalAttendant) {
+        String query;
+        query = "UPDATE internal_attendants ";
+        query += "SET last_checked = '?', is_visible = '?') ";
+        query += "WHERE user_email = '?' AND appointment_id = '?';";
 
-		try {
-			int isVisible = internalAttendant.getVisibleOnCalendar() ? 1 : 0;
+        try {
+            int isVisible = internalAttendant.getVisibleOnCalendar() ? 1 : 0;
 
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setTimestamp(1, dateToSqlTimestamp(internalAttendant.getLastChecked()));
-			preparedStatement.setInt      (2, isVisible                                             );
-			preparedStatement.setString   (3, internalAttendant.getUser().getEmail()                );
-			preparedStatement.setInt      (4, internalAttendant.getAppointment().getId()            );
-			preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setTimestamp(1, dateToSqlTimestamp(internalAttendant.getLastChecked()));
+            preparedStatement.setInt(2, isVisible);
+            preparedStatement.setString(3, internalAttendant.getUser().getEmail());
+            preparedStatement.setInt(4, internalAttendant.getAppointment().getId());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 *
-	 * @param attendant the ExternalAttendant to insert into the database
-	 * @return true if success
-	 */
-	private boolean insertExternalAttendant(ExternalAttendant attendant) {
-		String query;
-		query =  "INSERT INTO external_attendants ";
-		query += "(user_email) ";
-		query += "VALUES (?);";
+    /**
+     * @param attendant the ExternalAttendant to insert into the database
+     * @return true if success
+     */
+    private boolean insertExternalAttendant(ExternalAttendant attendant) {
+        String query;
+        query = "INSERT INTO external_attendants ";
+        query += "(user_email) ";
+        query += "VALUES (?);";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString   (1, attendant.getUser().getEmail()                );
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, attendant.getUser().getEmail());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			System.out.println("Attendant (probably) already existed, updating instead of inserting...");
-			return this.updateExternalAttendant(attendant);
-		}
-		return true;
-	}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Attendant (probably) already existed, updating instead of inserting...");
+            return this.updateExternalAttendant(attendant);
+        }
+        return true;
+    }
 
-	private boolean updateExternalAttendant(ExternalAttendant externalAttendant) {
-		String query;
-		query =  "UPDATE external_attendants ";
-		query += "SET user_email = ?";
-		query += "WHERE user_email = '?';";
+    private boolean updateExternalAttendant(ExternalAttendant externalAttendant) {
+        String query;
+        query = "UPDATE external_attendants ";
+        query += "SET user_email = ?";
+        query += "WHERE user_email = '?';";
 
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setString(1, externalAttendant.getUser().getEmail());
-			preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, externalAttendant.getUser().getEmail());
+            preparedStatement.executeUpdate();
 
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
 
     /**
-     *
      * @param appointment the appointment to insert into the database
      * @return the database id of the appointment; if an exception happened it returns -1
      */
     public int insertAppointment(Appointment appointment) {
-        if(appointment.getId() != -1) {
+        if (appointment.getId() != -1) {
             this.updateAppointment(appointment);
 
-			for(Attendant attendant : appointment.getAttendants()) {
-				this.insertAttendant(attendant);
-			}
+            for (Attendant attendant : appointment.getAttendants()) {
+                this.insertAttendant(attendant);
+            }
 
             return appointment.getId();
         }
         int newAppointmentId = -1;
 
         String query;
-        query =  "INSERT INTO appointments ";
+        query = "INSERT INTO appointments ";
         query += "(name, description, start_date, end_date, place, last_updated, owner_email) ";
         query += "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString   (1, appointment.getTitle()                               );
-            preparedStatement.setString   (2, appointment.getDescription()                         );
-            preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(appointment.getStart())      );
-            preparedStatement.setTimestamp(4, this.dateToSqlTimestamp(appointment.getEnd())        );
-            preparedStatement.setString   (5, appointment.getMeetingPlace()                        );
+            preparedStatement.setString(1, appointment.getTitle());
+            preparedStatement.setString(2, appointment.getDescription());
+            preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(appointment.getStart()));
+            preparedStatement.setTimestamp(4, this.dateToSqlTimestamp(appointment.getEnd()));
+            preparedStatement.setString(5, appointment.getMeetingPlace());
             preparedStatement.setTimestamp(6, this.dateToSqlTimestamp(appointment.getLastUpdated()));
-            preparedStatement.setString   (7, appointment.getOwner().getEmail()                    );
+            preparedStatement.setString(7, appointment.getOwner().getEmail());
             preparedStatement.executeUpdate();
 
             ResultSet appointmentId = preparedStatement.getGeneratedKeys();
@@ -439,18 +434,18 @@ public class Database {
             newAppointmentId = appointmentId.getInt(1);
 
             preparedStatement.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if(appointment.getMeetingRoom() != null) {
+        if (appointment.getMeetingRoom() != null) {
             this.insertMeetingRoomReservation(appointment.getMeetingRoom(), appointment);
         }
 
-		appointment.setId(newAppointmentId);
-		for(Attendant attendant : appointment.getAttendants()) {
-			this.insertAttendant(attendant);
-		}
+        appointment.setId(newAppointmentId);
+        for (Attendant attendant : appointment.getAttendants()) {
+            this.insertAttendant(attendant);
+        }
 
         return newAppointmentId;
     }
@@ -458,47 +453,46 @@ public class Database {
 
     private void updateAppointment(Appointment appointment) {
         String query;
-        query =  "UPDATE appointments ";
+        query = "UPDATE appointments ";
         query += "SET name = '?', description = '?', start_date = '?', end_date = '?', ";
         query += "place = '?', last_updated = '?', owner_email = '?') ";
         query += "WHERE id = '?';";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setString   (1, appointment.getTitle()                               );
-            preparedStatement.setString   (2, appointment.getDescription()                         );
-            preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(appointment.getStart())      );
-            preparedStatement.setTimestamp(4, this.dateToSqlTimestamp(appointment.getEnd())        );
-            preparedStatement.setString   (5, appointment.getMeetingPlace()                        );
+            preparedStatement.setString(1, appointment.getTitle());
+            preparedStatement.setString(2, appointment.getDescription());
+            preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(appointment.getStart()));
+            preparedStatement.setTimestamp(4, this.dateToSqlTimestamp(appointment.getEnd()));
+            preparedStatement.setString(5, appointment.getMeetingPlace());
             preparedStatement.setTimestamp(6, this.dateToSqlTimestamp(appointment.getLastUpdated()));
-            preparedStatement.setString   (7, appointment.getOwner().getEmail()                    );
-            preparedStatement.setInt      (8, appointment.getId()                                  );
+            preparedStatement.setString(7, appointment.getOwner().getEmail());
+            preparedStatement.setInt(8, appointment.getId());
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if(appointment.getMeetingRoom() != null) {
+        if (appointment.getMeetingRoom() != null) {
             this.insertMeetingRoomReservation(appointment.getMeetingRoom(), appointment);
         }
     }
 
     /**
-     *
      * @param meetingRoom meeting room to insert into db
      * @return id of the meeting room in the database; if exception happens returns -1
      */
     public int insertMeetingRoom(MeetingRoom meetingRoom) {
-        if(meetingRoom.getId() != -1) {
+        if (meetingRoom.getId() != -1) {
             this.updateMeetingRoom(meetingRoom);
             return meetingRoom.getId();
         }
         int newMeetingRoomId = -1;
 
         String query;
-        query =  "INSERT INTO meeting_rooms ";
+        query = "INSERT INTO meeting_rooms ";
         query += "(capacity) ";
         query += "VALUES (?);";
 
@@ -521,7 +515,7 @@ public class Database {
             newMeetingRoomId = meetingRoomId.getInt(1);
 
             preparedStatement.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -530,18 +524,18 @@ public class Database {
 
     private void updateMeetingRoom(MeetingRoom meetingRoom) {
         String query;
-        query =  "UPDATE meeting_rooms ";
+        query = "UPDATE meeting_rooms ";
         query += "SET capacity = '?' ";
         query += "WHERE id = '?';";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, meetingRoom.getRoomSize());
-            preparedStatement.setInt(2, meetingRoom.getId()      );
+            preparedStatement.setInt(2, meetingRoom.getId());
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -555,108 +549,108 @@ public class Database {
         List<MeetingRoom> meetingRooms;
         List<Appointment> appointments;
         List<Alarm> alarms;
-		List<Group> groups;
+        List<Group> groups;
 
-        users        = this.getUsers();
+        users = this.getUsers();
         meetingRooms = this.getMeetingRooms();
         appointments = this.getAppointments(users, meetingRooms);
-        alarms       = this.getAlarms(users, appointments);
-		groups       = this.getGroups(users);
+        alarms = this.getAlarms(users, appointments);
+        groups = this.getGroups(users);
 
         server.setUsers(users);
         server.setAppointments(appointments);
         server.setMeetingRooms(meetingRooms);
         server.setAlarms(alarms);
-		server.setGroups(groups);
+        server.setGroups(groups);
 
         return true;
     }
 
-	private List<Group> getGroups(List<User> users) {
-		List<Group> groups = new ArrayList<Group>();
-		String query = "SELECT * FROM groups;";
-		ResultSet results = this.query(query);
-		if(results == null) {
-			return groups;
-		}
-		try {
-			while(results.next()) {
-				try {
-					int groupId = results.getInt("id");
-					String name = results.getString("name");
-					query = "SELECT * FROM group_members WHERE group_id = ?;";
-					PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-					preparedStatement.setInt(1, groupId);
-					ResultSet members = preparedStatement.executeQuery();
+    private List<Group> getGroups(List<User> users) {
+        List<Group> groups = new ArrayList<Group>();
+        String query = "SELECT * FROM groups;";
+        ResultSet results = this.query(query);
+        if (results == null) {
+            return groups;
+        }
+        try {
+            while (results.next()) {
+                try {
+                    int groupId = results.getInt("id");
+                    String name = results.getString("name");
+                    query = "SELECT * FROM group_members WHERE group_id = ?;";
+                    PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+                    preparedStatement.setInt(1, groupId);
+                    ResultSet members = preparedStatement.executeQuery();
 
-					Group newGroup = null;
+                    Group newGroup = null;
 
-					if(members != null) {
-						newGroup = new Group(name);
+                    if (members != null) {
+                        newGroup = new Group(name);
 
-						User newMember;
-						String userEmail;
-						while(members.next()) {
-							userEmail = members.getString("user_email");
-							newMember = Utilities.getUserByEmail(userEmail, users);
-							newGroup.addMember(newMember);
-						}
-					}
+                        User newMember;
+                        String userEmail;
+                        while (members.next()) {
+                            userEmail = members.getString("user_email");
+                            newMember = Utilities.getUserByEmail(userEmail, users);
+                            newGroup.addMember(newMember);
+                        }
+                    }
 
-					if(newGroup != null) {
-						groups.add(newGroup);
-					}
+                    if (newGroup != null) {
+                        groups.add(newGroup);
+                    }
 
-				} catch(SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return groups;
-	}
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return groups;
+    }
 
-	public List<Alarm> getAlarms(List<User> users, List<Appointment> appointments) {
+    public List<Alarm> getAlarms(List<User> users, List<Appointment> appointments) {
         List<Alarm> alarms = new ArrayList<Alarm>();
         String query = "SELECT * FROM alarms;";
         ResultSet results = this.query(query);
-        if(results == null) {
+        if (results == null) {
             return alarms;
         }
         try {
-            while(results.next()) {
+            while (results.next()) {
                 try {
                     String userEmail = results.getString("user_email");
                     int appointmentId = results.getInt("appointment_id");
                     java.sql.Timestamp date = results.getTimestamp("time");
                     java.util.Date date_ = new java.util.Date(date.getTime());
 
-					InternalUser user = null;
-                    for(int i = 0; i < users.size(); i++) {
-                        if(users.get(i) instanceof InternalUser && users.get(i).getEmail().equals(userEmail)) {
+                    InternalUser user = null;
+                    for (int i = 0; i < users.size(); i++) {
+                        if (users.get(i) instanceof InternalUser && users.get(i).getEmail().equals(userEmail)) {
                             user = (InternalUser) users.get(i);
                             break;
                         }
                     }
                     Appointment appointment = null;
-                    for(int i = 0; i < appointments.size(); i++) {
-                        if(appointments.get(i).getId() == appointmentId) {
+                    for (int i = 0; i < appointments.size(); i++) {
+                        if (appointments.get(i).getId() == appointmentId) {
                             appointment = appointments.get(i);
                             break;
                         }
                     }
-                    if(user == null || appointment == null) {
+                    if (user == null || appointment == null) {
                         System.out.println("Couldn't find user or appointment for alarm!");
                         return null;
                     }
                     alarms.add(new Alarm(user, appointment, date_));
 
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return alarms;
@@ -664,54 +658,54 @@ public class Database {
 
     public List<User> getUsers() {
         List<User> users = new ArrayList<User>();
-		String query;
-		ResultSet results;
+        String query;
+        ResultSet results;
 
-		// First get all internal users
-		query = "SELECT * FROM internal_users;";
-		results = this.query(query);
-		if(results != null) {
-			try {
-				while(results.next()) {
-					try {
-						String email     = results.getString("email");
-						String password  = results.getString("password");
-						String firstName = results.getString("first_name");
-						String lastName  = results.getString("last_name");
+        // First get all internal users
+        query = "SELECT * FROM internal_users;";
+        results = this.query(query);
+        if (results != null) {
+            try {
+                while (results.next()) {
+                    try {
+                        String email = results.getString("email");
+                        String password = results.getString("password");
+                        String firstName = results.getString("first_name");
+                        String lastName = results.getString("last_name");
 
-						InternalUser user = new InternalUser(email, firstName, lastName);
-						user.setPassword(password);
-						users.add(user);
-					} catch(SQLException e) {
-						e.printStackTrace();
-					}
-				}
-				results.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+                        InternalUser user = new InternalUser(email, firstName, lastName);
+                        user.setPassword(password);
+                        users.add(user);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                results.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
-		// Then get all external users
-		query = "SELECT * FROM external_users;";
-		results = this.query(query);
-		if(results != null) {
-			try {
-				while(results.next()) {
-					try {
-						String email     = results.getString("email");
+        // Then get all external users
+        query = "SELECT * FROM external_users;";
+        results = this.query(query);
+        if (results != null) {
+            try {
+                while (results.next()) {
+                    try {
+                        String email = results.getString("email");
 
-						ExternalUser user = new ExternalUser(email);
-						users.add(user);
-					} catch(SQLException e) {
-						e.printStackTrace();
-					}
-				}
-				results.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+                        ExternalUser user = new ExternalUser(email);
+                        users.add(user);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                results.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
         return users;
     }
@@ -720,11 +714,11 @@ public class Database {
         List<MeetingRoom> meetingRooms = new ArrayList<MeetingRoom>();
         String query = "SELECT * FROM meeting_rooms;";
         ResultSet results = this.query(query);
-        if(results == null) {
+        if (results == null) {
             return null;
         }
         try {
-            while(results.next()) {
+            while (results.next()) {
                 try {
                     int meeting_room_id = results.getInt("id");
                     int capacity = results.getInt("capacity");
@@ -734,11 +728,11 @@ public class Database {
 
                     meetingRooms.add(meetingRoom);
 
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return meetingRooms;
@@ -750,55 +744,55 @@ public class Database {
         String query = "SELECT * FROM appointments;";
         ResultSet results = this.query(query);
 
-        if(results == null) {
+        if (results == null) {
             return appointments;
         }
         try {
-            while(results.next()) {
+            while (results.next()) {
                 try {
-                    int appointmentId                       = results.getInt("id");
-                    String name                             = results.getString("name");
-                    String description                      = results.getString("description");
-                    java.sql.Timestamp startTimestamp       = results.getTimestamp("start_date");
-                    java.sql.Timestamp endTimestamp         = results.getTimestamp("end_date");
-                    String place                            = results.getString("place");
+                    int appointmentId = results.getInt("id");
+                    String name = results.getString("name");
+                    String description = results.getString("description");
+                    java.sql.Timestamp startTimestamp = results.getTimestamp("start_date");
+                    java.sql.Timestamp endTimestamp = results.getTimestamp("end_date");
+                    String place = results.getString("place");
                     java.sql.Timestamp lastUpdatedTimestamp = results.getTimestamp("last_updated");
-                    java.util.Date startDate                = new java.util.Date(startTimestamp.getTime());
-                    java.util.Date endDate                  = new java.util.Date(endTimestamp.getTime());
-                    java.util.Date lastUpdatedDate          = new java.util.Date(lastUpdatedTimestamp.getTime());
+                    java.util.Date startDate = new java.util.Date(startTimestamp.getTime());
+                    java.util.Date endDate = new java.util.Date(endTimestamp.getTime());
+                    java.util.Date lastUpdatedDate = new java.util.Date(lastUpdatedTimestamp.getTime());
 
                     String ownerEmail = results.getString("owner_email");
 
-					InternalUser owner = (InternalUser) Utilities.getUserByEmail(ownerEmail, users);
+                    InternalUser owner = (InternalUser) Utilities.getUserByEmail(ownerEmail, users);
 
-                    if(owner == null) {
+                    if (owner == null) {
                         System.out.println("Error: the user with id " + ownerEmail + " does not exist!");
-						continue;
+                        continue;
                     }
 
                     Appointment appointment = new Appointment(owner, name, description, startDate, endDate, null, null);
-					appointment.setId(appointmentId);
-					appointment.setLastUpdated(lastUpdatedDate);
+                    appointment.setId(appointmentId);
+                    appointment.setLastUpdated(lastUpdatedDate);
 
-                    if(place == null) {
+                    if (place == null) {
                         MeetingRoom meetingRoom = this.getMeetingRoomForAppointment(appointment, meetingRooms);
 
-                        if(meetingRoom == null) {
+                        if (meetingRoom == null) {
                             System.out.println("Did not find meeting room for appointment " + Integer.toString(appointmentId));
                         }
-						appointment.setMeetingRoom(meetingRoom);
+                        appointment.setMeetingRoom(meetingRoom);
                     } else {
-						appointment.setMeetingPlace(place);
+                        appointment.setMeetingPlace(place);
                     }
 
                     List<Attendant> attendants = this.getAttendants(appointment, users);
                     appointment.setAttendants(attendants);
                     appointments.add(appointment);
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return appointments;
@@ -812,23 +806,23 @@ public class Database {
             preparedStatement.setInt(1, appointment.getId());
             ResultSet results = preparedStatement.executeQuery();
 
-            if(results == null) {
+            if (results == null) {
                 return null;
             }
-            while(results.next()) {
+            while (results.next()) {
                 try {
                     String userEmail = results.getString("user_email");
-					User user = Utilities.getUserByEmail(userEmail, users);
-					if(user instanceof InternalUser) {
-						attendants.add(new InternalAttendant((InternalUser) user, appointment));
-					} else {
-						attendants.add(new ExternalAttendant((ExternalUser) user, appointment));
-					}
-                } catch(SQLException e) {
+                    User user = Utilities.getUserByEmail(userEmail, users);
+                    if (user instanceof InternalUser) {
+                        attendants.add(new InternalAttendant((InternalUser) user, appointment));
+                    } else {
+                        attendants.add(new ExternalAttendant((ExternalUser) user, appointment));
+                    }
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return attendants;
@@ -837,21 +831,21 @@ public class Database {
     private MeetingRoom getMeetingRoomForAppointment(Appointment appointment, List<MeetingRoom> meetingRooms) {
         String query = "SELECT * FROM meeting_room_reservations;";
         ResultSet results = this.query(query);
-        if(results == null) {
+        if (results == null) {
             return null;
         }
         try {
-            while(results.next()) {
+            while (results.next()) {
                 try {
                     int meeting_room_id = results.getInt("meeting_room_id");
-                    if(results.getInt("appointment_id") == appointment.getId()) {
+                    if (results.getInt("appointment_id") == appointment.getId()) {
                         return Utilities.getMeetingRoomById(meeting_room_id, meetingRooms);
                     }
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -862,7 +856,7 @@ public class Database {
             Statement statement = this.connection.createStatement();
 
             return statement.executeQuery(query);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
@@ -871,7 +865,7 @@ public class Database {
     public void close() {
         try {
             this.connection.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -880,10 +874,10 @@ public class Database {
         /**
          * Test data
          */
-		InternalUser anders = new InternalUser("anders@wenhaug.no", "Anders", "Wenhaug");
-		InternalUser emil = new InternalUser("emil.schroeder@gmail.com", "Emil", "Jakobus Schroeder");
-		anders.setPassword("password");
-		emil.setPassword("password");
+        InternalUser anders = new InternalUser("anders@wenhaug.no", "Anders", "Wenhaug");
+        InternalUser emil = new InternalUser("emil.schroeder@gmail.com", "Emil", "Jakobus Schroeder");
+        anders.setPassword("password");
+        emil.setPassword("password");
         MeetingRoom meetingRoom = new MeetingRoom(8);
         Appointment appointment = new Appointment(
                 anders,
@@ -895,14 +889,14 @@ public class Database {
         );
         InternalAttendant andersAttendant = new InternalAttendant(anders, appointment);
         InternalAttendant emilAttendant = new InternalAttendant(emil, appointment);
-		ExternalAttendant espenAttendant = new ExternalAttendant(new ExternalUser("espstr@stud.ntnu.no"), appointment);
+        ExternalAttendant espenAttendant = new ExternalAttendant(new ExternalUser("espstr@stud.ntnu.no"), appointment);
 
-		appointment.addAttendant(andersAttendant);
-		appointment.addAttendant(emilAttendant);
-		appointment.addAttendant(espenAttendant);
+        appointment.addAttendant(andersAttendant);
+        appointment.addAttendant(emilAttendant);
+        appointment.addAttendant(espenAttendant);
 
         Database database = new Database();
-		database.insertUser(anders);
+        database.insertUser(anders);
         meetingRoom.setId(database.insertMeetingRoom(meetingRoom));
         appointment.setId(database.insertAppointment(appointment));
         database.close();

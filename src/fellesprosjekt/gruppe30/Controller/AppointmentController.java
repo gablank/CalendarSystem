@@ -19,19 +19,19 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
         String cmd = actionEvent.getActionCommand().toLowerCase();
 
         System.out.println(cmd);
-        if(cmd.equals("save")) {
+        if (cmd.equals("save")) {
             // Save
-        } else if(cmd.equals("select...")) {
+        } else if (cmd.equals("select...")) {
             client.open(Client.ViewEnum.BOOKMEETINGROOM);
-        } else if(cmd.equals("cancel")) {
+        } else if (cmd.equals("cancel")) {
             client.close(Client.ViewEnum.APPOINTMENT);
-        } else if(cmd.equals("cancel")) {
+        } else if (cmd.equals("cancel")) {
 
-        } else if(cmd.equals("cancel")) {
+        } else if (cmd.equals("cancel")) {
 
-        } else if(cmd.equals("cancel")) {
+        } else if (cmd.equals("cancel")) {
 
-        } else if(cmd.equals("cancel")) {
+        } else if (cmd.equals("cancel")) {
 
         }
     }

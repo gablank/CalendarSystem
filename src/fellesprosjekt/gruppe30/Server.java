@@ -12,30 +12,30 @@ import java.util.List;
 
 public class Server {
     private final Database database = Database.getInstance();
-    private List<User> users;
-    private List<Appointment> appointments;
-    private List<MeetingRoom> meetingRooms;
-    private List<Alarm> alarms;
-    private final Thread alarmController;
-    private final Thread serverListener;
-	private List<Group> groups;
+    private       List<User>        users;
+    private       List<Appointment> appointments;
+    private       List<MeetingRoom> meetingRooms;
+    private       List<Alarm>       alarms;
+    private final Thread            alarmController;
+    private final Thread            serverListener;
+    private       List<Group>       groups;
 
-	public Server() {
+    public Server() {
         this.loadDatabase();
-		
+
         serverListener = new Thread(new ServerListener(this));
-		serverListener.start();
+        serverListener.start();
 
         alarmController = new Thread(new AlarmController(this));
         alarmController.start();
-        
-		try {
-			serverListener.join();
+
+        try {
+            serverListener.join();
             alarmController.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void loadDatabase() {
@@ -43,7 +43,7 @@ public class Server {
     }
 
     public synchronized List<Alarm> getAlarms() {
-        return (List<Alarm>) ((ArrayList<Alarm>)this.alarms).clone();
+        return (List<Alarm>) ((ArrayList<Alarm>) this.alarms).clone();
     }
 
     public synchronized void sendMail(String recipient, String subject, String body) {
@@ -74,40 +74,40 @@ public class Server {
     public List<Appointment> getAppointments() {
         return appointments;
     }
-    
-    public void insertAppointment(Appointment appointment){
-   		int id = database.insertAppointment(appointment);
 
-		if(appointment.getId() == -1){
-			appointment.setId(id);
-			appointments.add(appointment);
-		}else{
-			Appointment oldAppointment = Utilities.getAppointmentById(id, appointments);
-			
-			oldAppointment.setDescription(appointment.getDescription());
-			oldAppointment.setEnd(appointment.getEnd());
-			oldAppointment.setLastUpdated(new Date());
-			oldAppointment.setMeetingPlace(appointment.getMeetingPlace());
-			oldAppointment.setOwner(appointment.getOwner());
-			oldAppointment.setMeetingRoom(appointment.getMeetingRoom());
-			oldAppointment.setStart(appointment.getStart());
-			oldAppointment.setTitle(appointment.getTitle());
-			oldAppointment.setAttendants(appointment.getAttendants());
-		}
-		
+    public void insertAppointment(Appointment appointment) {
+        int id = database.insertAppointment(appointment);
+
+        if (appointment.getId() == -1) {
+            appointment.setId(id);
+            appointments.add(appointment);
+        } else {
+            Appointment oldAppointment = Utilities.getAppointmentById(id, appointments);
+
+            oldAppointment.setDescription(appointment.getDescription());
+            oldAppointment.setEnd(appointment.getEnd());
+            oldAppointment.setLastUpdated(new Date());
+            oldAppointment.setMeetingPlace(appointment.getMeetingPlace());
+            oldAppointment.setOwner(appointment.getOwner());
+            oldAppointment.setMeetingRoom(appointment.getMeetingRoom());
+            oldAppointment.setStart(appointment.getStart());
+            oldAppointment.setTitle(appointment.getTitle());
+            oldAppointment.setAttendants(appointment.getAttendants());
+        }
+
     }
-    
-    public void removeAppointment(int id){
-    	
-    	// todo: database.remove...
-    	
-		appointments.remove(Utilities.getAppointmentById(id, appointments));
+
+    public void removeAppointment(int id) {
+
+        // todo: database.remove...
+
+        appointments.remove(Utilities.getAppointmentById(id, appointments));
     }
 
     public boolean verifyLogin(String username, String password) {
-        for(User user : users) {
-            if(user instanceof InternalUser && user.getEmail().equals(username)) {
-                if(((InternalUser) user).getPassword().equals(password)) {
+        for (User user : users) {
+            if (user instanceof InternalUser && user.getEmail().equals(username)) {
+                if (((InternalUser) user).getPassword().equals(password)) {
                     return true;
                 }
             } else {
@@ -122,11 +122,11 @@ public class Server {
         Server server = new Server();
     }
 
-	public void setGroups(List<Group> groups) {
-		this.groups = groups;
-	}
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
 
-	public List<Group> getGroups() {
-		return groups;
-	}
+    public List<Group> getGroups() {
+        return groups;
+    }
 }

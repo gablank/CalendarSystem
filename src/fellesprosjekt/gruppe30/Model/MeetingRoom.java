@@ -4,11 +4,11 @@ import org.json.JSONObject;
 
 public class MeetingRoom {
     private int id;
-	int roomSize;
-	
-	public MeetingRoom(int roomSize) {
+    private int roomSize;
+
+    public MeetingRoom(int roomSize) {
         this.id = -1;
-		this.roomSize = roomSize;
+        this.roomSize = roomSize;
     }
 
     public int getId() {
@@ -19,15 +19,19 @@ public class MeetingRoom {
         this.id = id;
     }
 
-	public int getRoomSize() {
-		return roomSize;
+    public void setRoomSize(int roomSize) {
+        this.roomSize = roomSize;
     }
 
-	public JSONObject getJSON() {
-		JSONObject obj = new JSONObject();
-		obj.put("type", "meetingRoom");
-		obj.put("id", this.id);
-		obj.put("roomSize", this.roomSize);
-		return obj;
-	}
+    public int getRoomSize() {
+        return roomSize;
+    }
+
+    public JSONObject getJSON() {
+        JSONObject obj = new JSONObject();
+        obj.put("type", "meetingRoom");
+        obj.put("id", this.id);
+        obj.put("roomSize", this.roomSize);
+        return obj;
+    }
 }

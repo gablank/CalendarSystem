@@ -1,37 +1,36 @@
 package fellesprosjekt.gruppe30.Controller;
 
+import fellesprosjekt.gruppe30.Client;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import fellesprosjekt.gruppe30.Client;
-
 public class CalendarController implements ActionListener {
-	private final Client client;
-	
-	public CalendarController(Client client) {
-		this.client = client;
-	}
+    private final Client client;
 
-	public void actionPerformed(ActionEvent actionEvent) {
+    public CalendarController(Client client) {
+        this.client = client;
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
         String cmd = actionEvent.getActionCommand();
-		
+
         if (cmd.equalsIgnoreCase("log out")) {
-        	client.logout();
+            client.logout();
         } else if (cmd.equalsIgnoreCase(">")) {
-        	client.getCalendar().nextWeek();
+            client.getCalendar().nextWeek();
         } else if (cmd.equalsIgnoreCase("<")) {
-        	client.getCalendar().previousWeek();
+            client.getCalendar().previousWeek();
         } else if (cmd.equalsIgnoreCase("new appointment")) {
-        	client.newAppointment();
+            client.newAppointment();
         } else if (cmd.equalsIgnoreCase("add")) {
-        	//client.getCalendar().addUser(client.getCalendarView().getUser());
+            //client.getCalendar().addUser(client.getCalendarView().getUser());
         } else if (cmd.equalsIgnoreCase("remove")) {
-        	//client.getCalendar().removeUser(client.getCalendarView().getUser());
+            //client.getCalendar().removeUser(client.getCalendarView().getUser());
         } else if (cmd.equalsIgnoreCase("AppointmentSummaryView")) {
-        	client.open(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
+            client.open(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
         }
-	}
-	
-	
+    }
+
 
 }
