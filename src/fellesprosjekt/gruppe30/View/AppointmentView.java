@@ -8,11 +8,15 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EventListener;
+import java.util.GregorianCalendar;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -30,9 +34,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
+
+import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.User;
 
-public class AppointmentView extends JPanel implements ActionListener {
+public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener {
 	protected PersonRenderer listrenderer;
 	protected JTextField titleField, meetingRoomField, emailField;
 	protected JTextArea description;
@@ -44,8 +50,9 @@ public class AppointmentView extends JPanel implements ActionListener {
 	protected JScrollPane scrollpane;
 	protected JLabel participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame frame;
-	
-	private User me = new User("Emil", "Heien", "uberjew", "email");
+	protected Appointment model;
+
+
 	public AppointmentView() {
 		GridBagConstraints cLeft = new GridBagConstraints() ;
 		GridBagConstraints cRight = new GridBagConstraints() ;
@@ -305,8 +312,62 @@ public class AppointmentView extends JPanel implements ActionListener {
 		this.frame.setVisible(visible);
 	}
 
+	public void setModel(Appointment model) {
+		this.model = model;
+		updateFields();
+	}
+
+	private void updateFields() {
+		titleField.setText(model.getTitle());
+		description.setText(model.getDescription());
+		dateField.setValue(dateToFormattedString(model.getStart()));
+		startTimeField.setValue(timeToFormattedString(model.getStart()));
+		endTimeField.setValue(timeToFormattedString(model.getEnd()));
+		if(model.getRoom() != null) {
+			useMeetingRoom.setSelected(true);
+
+		} else {
+			useMeetingRoom.setSelected(false);
+			selectRoom.setText("Room # " + Integer.toString(model.getRoom().getId()));
+		}
+	}
+
+	private String dateToFormattedString(Date date) {
+		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+		gregorianCalendar.setTime(date);
+		String day = Integer.toString(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
+		if(day.length() == 1) {
+			day = "0" + day;
+		}
+		String month = Integer.toString(gregorianCalendar.get(Calendar.MONTH));
+		if(month.length() == 1) {
+			month = "0" + month;
+		}
+		String year = Integer.toString(gregorianCalendar.get(Calendar.YEAR) - 2000);
+		return day + "." + month + "." + year;
+	}
+
+	private String timeToFormattedString(Date date) {
+		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+		gregorianCalendar.setTime(date);
+		String hour = Integer.toString(gregorianCalendar.get(Calendar.HOUR_OF_DAY));
+		if(hour.length() == 1) {
+			hour = "0" + hour;
+		}
+		String minute = Integer.toString(gregorianCalendar.get(Calendar.MINUTE));
+		if(minute.length() == 1) {
+			minute = "0" + minute;
+		}
+		return hour + ":" + minute;
+	}
+
 	public static void main(String[] args) {
 		AppointmentView view = new AppointmentView();
 		view.setVisible(true);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+		this.updateFields();
 	}
 }
