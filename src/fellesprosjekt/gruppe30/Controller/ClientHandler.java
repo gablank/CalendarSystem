@@ -96,6 +96,7 @@ class ClientHandler extends Network {
                             return;
                         }
 
+                        
                         Date startDate = new Date(start);
                         Date endDate = new Date(end);
 
