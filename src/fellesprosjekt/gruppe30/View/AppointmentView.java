@@ -1,7 +1,9 @@
 package fellesprosjekt.gruppe30.View;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -57,7 +59,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		description.setText("Description");
 		description.setBorder(titleField.getBorder());
 		
-		meetingRoomField = new JTextField("Place", 11);
+		meetingRoomField = new JTextField("Place", 10);
 		emailField = new JTextField("Email", 1);
 		
 		
@@ -69,7 +71,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		try {
 			dateformatter = new MaskFormatter("##.##.####");
 			dateField = new JFormattedTextField(dateformatter);
-			dateField.setPreferredSize(new Dimension(100,20));
+			dateField.setPreferredSize(new Dimension(80,20));
 			dateField.setValue("03.07.2014");
 			dateField.setHorizontalAlignment(dateField.CENTER);
 		} catch (ParseException e) {
@@ -98,7 +100,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 
 		
 		useMeetingRoom = new JCheckBox("Use meeting room");
-		hideFromCalendar = new JCheckBox("Hide from calendar                                             ");
+		hideFromCalendar = new JCheckBox("Hide from calendar");
 		setAlarm = new JCheckBox("Alarm");
 		inviteByEmail = new JCheckBox("Invite by email");
 		
@@ -109,7 +111,8 @@ public class AppointmentView extends JPanel implements ActionListener {
 		scrollpane = new JScrollPane(participants);
 		scrollpane.setFocusable(true);
 		scrollpane.setPreferredSize(new Dimension(150, 150));
-		participantLabel = new JLabel("              Participants");
+		participantLabel = new JLabel("Participants");
+		participantLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		addButton = new JButton("Add        ");
 		addButton.setPreferredSize(new Dimension(80,25));
@@ -168,7 +171,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		
 		cRight.gridx = 2;
 		cRight.gridy = 0;
-		cRight.insets = new Insets (5,5,5,5);
+		cRight.insets = new Insets (5,50,5,5);
 		
 		JPanel alarmPanel = new JPanel();
 		alarmPanel.add(setAlarm);
@@ -177,6 +180,7 @@ public class AppointmentView extends JPanel implements ActionListener {
 		alarmPanel.add(alarmLabel);
 		JPanel calendarAndAlarm = new JPanel();
 		calendarAndAlarm.setLayout(new BoxLayout(calendarAndAlarm, BoxLayout.Y_AXIS));
+		alarmPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		calendarAndAlarm.add(hideFromCalendar);
 		calendarAndAlarm.add(alarmPanel);
 		add(calendarAndAlarm, cRight);
@@ -206,8 +210,6 @@ public class AppointmentView extends JPanel implements ActionListener {
 		add(personAddRemove, cRight);
 
 		cRight.gridy = 8;
-		cRight.gridx = 2;
-		cRight.anchor=GridBagConstraints.CENTER;
 		
 		JPanel saveDelete = new JPanel();
 		saveDelete.add(saveButton);
