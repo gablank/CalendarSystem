@@ -341,12 +341,12 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		dateField.setValue(dateToFormattedString(model.getStart()));
 		startTimeField.setValue(timeToFormattedString(model.getStart()));
 		endTimeField.setValue(timeToFormattedString(model.getEnd()));
-		if(model.getRoom() != null) {
+		if(model.getMeetingRoom() != null) {
 			useMeetingRoom.setSelected(true);
 
 		} else {
 			useMeetingRoom.setSelected(false);
-			selectRoom.setText("Room # " + Integer.toString(model.getRoom().getId()));
+			selectRoom.setText("Room # " + Integer.toString(model.getMeetingRoom().getId()));
 		}
 	}
 
