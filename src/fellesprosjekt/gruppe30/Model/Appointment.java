@@ -149,7 +149,7 @@ public class Appointment {
 		obj.put("attendants", this.internalAttendants);
 		obj.put("meetingRoom", this.room.getId());
 		obj.put("lastUpdated", this.lastUpdated.getTime());
-		obj.put("owner", this.owner.getId());
+		obj.put("owner", this.owner.getEmail());
 		return obj;
 	}
 }
