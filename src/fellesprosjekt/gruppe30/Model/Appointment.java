@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Appointment {
     private int id;
@@ -13,7 +14,7 @@ public class Appointment {
 	private Date start;
 	private Date end;
 	private String meetingPlace;
-    private ArrayList<Attendant> attendants;
+    private List<Attendant> attendants;
 	private MeetingRoom room;
     private Date lastUpdated;
     private InternalUser owner;
@@ -52,11 +53,11 @@ public class Appointment {
         this.attendants.remove(internalAttendant);
     }
     
-    public void setAttendants(ArrayList<Attendant> attendants){
+    public void setAttendants(List<Attendant> attendants){
     	this.attendants = attendants;
     }
 
-    public ArrayList<Attendant> getAttendants() {
+    public List<Attendant> getAttendants() {
         return this.attendants;
     }
 
@@ -108,11 +109,11 @@ public class Appointment {
 		this.meetingPlace = meetingPlace;
 	}
 
-	public MeetingRoom getRoom() {
+	public MeetingRoom getMeetingRoom() {
 		return room;
 	}
 
-	public void setRoom(MeetingRoom room) {
+	public void setMeetingRoom(MeetingRoom room) {
 		this.room = room;
 	}
 
