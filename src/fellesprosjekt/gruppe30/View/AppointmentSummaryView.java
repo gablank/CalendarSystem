@@ -100,10 +100,10 @@ public class AppointmentSummaryView extends JPanel {
 		frame = new JFrame();
 		frame.add(this);
 		this.setMinimumSize(this.getPreferredSize());
-		this.setMaximumSize(new Dimension(160, 80+20*userCount)); //was 160
+		this.setMaximumSize(new Dimension(160, 80+20*userCount));
 		frame.pack();
 		frame.setVisible(false);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,6 +116,7 @@ public class AppointmentSummaryView extends JPanel {
 		personListModel.addElement(new InternalUser("email" ,"Emil", "Heien"));
 		}
 		this.setPersonListModel(personListModel);
+		frame.pack();
 		//System.out.println(participants.getModel().getSize());
 		//end test code
 		

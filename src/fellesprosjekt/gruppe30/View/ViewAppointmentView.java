@@ -1,7 +1,5 @@
 package fellesprosjekt.gruppe30.View;
 
-import java.awt.Color;
-
 public class ViewAppointmentView extends AppointmentView{
 
 	
@@ -14,6 +12,7 @@ public class ViewAppointmentView extends AppointmentView{
 		startTimeField.setEditable(false);
 		endTimeField.setEditable(false);
 		meetingRoomField.setEditable(false);
+		participants.setEnabled(false);
 		
 		useMeetingRoom.setVisible(false);
 		addButton.setVisible(false);

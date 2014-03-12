@@ -76,7 +76,8 @@ public class ClientNetwork extends Network {
 
 					InternalUser user = new InternalUser(firstName, lastName, email);
 
-					client.addUser(user);
+					// client.addUser(user);
+					System.out.println("successfully added internal user!");
 				}
 				
 				break;
@@ -88,7 +89,8 @@ public class ClientNetwork extends Network {
 
 					ExternalUser user = new ExternalUser(email);
 
-					client.addUser(user);
+					// client.addUser(user);
+					System.out.println("successfully added external user!");
 				}
 				
 				break;
@@ -97,7 +99,7 @@ public class ClientNetwork extends Network {
 				if (message.has("action"))
 					action = message.getString("action");
 				
-				if ((action == "new" || action == "change")
+				if (("new".equals(action) || "change".equals(action))
 						&& message.has("id")
 						&& message.has("title")
 						&& message.has("description")
@@ -106,6 +108,7 @@ public class ClientNetwork extends Network {
 						&& message.has("meetingPlace")
 						&& message.has("attendants")
 						&& message.has("owner")
+						&& message.has("lastUpdated")
 						&& message.has("meetingRoom")) {
 					
 					String title         = message.getString("title");
@@ -113,9 +116,10 @@ public class ClientNetwork extends Network {
 					long start           = message.getLong("start");
 					long end             = message.getLong("end");
 					String meetingPlace  = message.getString("meetingPlace");
-					String attendantsStr = message.getString("attendants");
+					JSONArray attendants = message.getJSONArray("attendants");
 					String ownerEmail    = message.getString("owner");
 					int meetingRoomId    = message.getInt("meetingRoom");
+					long lastUpdated     = message.getLong("lastUpdated");
 				
 				
 					InternalUser owner = (InternalUser) client.getUserByEmail(ownerEmail);
@@ -128,25 +132,8 @@ public class ClientNetwork extends Network {
 					Date startDate = new Date(start);
 					Date endDate = new Date(end);
 					
-					MeetingRoom meetingRoom = client.getMeetingRoomById(meetingRoomId);
-					
-					// obj.put("type", "externalAttendant");
-					// obj.put("email", this.user.getEmail());
-					// obj.put("appointmentid", this.appointment.getId());
-					// obj.put("status", this.status);
-					//
-					// obj.put("type", "internalAttendant");
-					// obj.put("email", this.user.getEmail());
-					// obj.put("appointmentid", this.appointment.getId());
-					// obj.put("status", this.status);
-					// obj.put("visibleOnCalendar", this.visibleOnCalendar);
-					// obj.put("lastChecked", this.lastChecked);
-
-					JSONArray attendants = new JSONArray(attendantsStr);
-
-					for (int i = 0; i < attendants.length(); i++) {
-						Attendant attendant = attendants.getJSONObject(i);
-					}
+					// MeetingRoom meetingRoom = client.getMeetingRoomById(meetingRoomId);
+					MeetingRoom meetingRoom = null;
 
 					Appointment appointment = null;
 
@@ -166,6 +153,60 @@ public class ClientNetwork extends Network {
 
 					}
 
+					for (int i = 0; i < attendants.length(); i++) {
+						JSONObject attendantObj = attendants.getJSONObject(i);
+						
+						if (attendantObj.has("type") 
+								&& attendantObj.has("email") 
+								&& attendantObj.has("appointmentid") 
+								&& attendantObj.has("status")) {
+
+							String attendantType = attendantObj.getString("type");
+							String attendantEmail = attendantObj.getString("type");
+							int appointmentId = attendantObj.getInt("type");
+							int attendantStatus = attendantObj.getInt("status");
+							
+							User user = client.getUserByEmail(attendantEmail);
+							
+							if (appointmentId != appointment.getId()) {
+								System.out.println("failed handling an appointment message, an attendant had no type: " + message.toString());
+							}
+
+							if (attendantType.equals("externalAttendant")) {
+								ExternalAttendant externalAttendant = new ExternalAttendant((ExternalUser) user, appointment);
+								externalAttendant.setStatus(attendantStatus);
+								appointment.addAttendant(externalAttendant);
+
+							} else if (attendantType.equals("internalAttendant")) {
+								if (attendantObj.has("visibleOnCalendar") && attendantObj.has("lastChecked")) {
+									boolean visibleOnCalendar = attendantObj.getBoolean("visibleOnCalendar");
+									long lastChecked = attendantObj.getLong("lastChecked");
+									
+									Date lastCheckedDate = new Date(lastChecked);
+
+									InternalAttendant internalAttendant = new InternalAttendant((InternalUser) user, appointment);
+									internalAttendant.setStatus(attendantStatus);
+									internalAttendant.setLastChecked(lastCheckedDate);
+									internalAttendant.setVisibleOnCalendar(visibleOnCalendar);
+									appointment.addAttendant(internalAttendant);
+
+								} else {
+									System.out.println("failed handling an appointment message, an internal attendant did not have the required fields: " + attendantObj.toString());
+									return;
+								}
+
+							} else {
+								System.out.println("failed handling an appointment message, an attendant had no type: " + message.toString());
+								return;
+							}
+							
+						}else{
+							System.out.println("failed handling an appointment message, an attendant did not have the required fields: " + attendantObj.toString());
+							return;
+						}
+					}
+
+
 					if (action == "change") {
 						int id = message.getInt("id");
 						appointment.setId(id);
@@ -174,7 +215,8 @@ public class ClientNetwork extends Network {
 						}
 					}
 
-					client.addAppointment(appointment);
+					// client.addAppointment(appointment);
+					System.out.println("successfully added appointment!");
 
 				} else if (action == "remove" && message.has("id")) {
 					int id = message.getInt("id");

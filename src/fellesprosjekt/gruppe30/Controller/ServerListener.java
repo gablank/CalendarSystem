@@ -13,11 +13,20 @@ public class ServerListener implements Runnable {
 	int listenerPort = 11223;
 	List<ClientHandler> clientHandlers = new ArrayList<ClientHandler>();
 	Server server;
+	public boolean running = true;
 
 	public ServerListener(Server server) {
 		this.server = server;
 	}
 	
+	public ClientHandler getFirstHandler() {
+		if (clientHandlers.isEmpty()) {
+			return null;
+		} else {
+			return clientHandlers.get(0);
+		}
+	}
+
 	@Override
 	public void run() {
 		ServerSocket listenerSocket = null;
@@ -36,7 +45,6 @@ public class ServerListener implements Runnable {
 		}
 		
 		
-		boolean running = true;
 		while(running){
 			Socket connectionSocket = null;
 			
