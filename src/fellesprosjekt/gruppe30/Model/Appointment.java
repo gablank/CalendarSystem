@@ -147,7 +147,7 @@ public class Appointment {
 		for(Attendant attendant : this.attendants) {
 			attendants.put(attendant.getJSON());
 		}
-		obj.put("attendants", this.attendants);
+		obj.put("attendants", attendants);
 		if(this.room == null) {
 			obj.put("meetingRoom", -1);
 		} else {

@@ -44,7 +44,7 @@ public class InternalAttendant extends Attendant {
 		obj.put("appointmentId", this.appointment.getId());
 		obj.put("status", this.status);
 		obj.put("visibleOnCalendar", this.visibleOnCalendar);
-		obj.put("lastChecked", this.lastChecked);
+		obj.put("lastChecked", this.lastChecked.getTime());
 		return obj;
 	}
 }

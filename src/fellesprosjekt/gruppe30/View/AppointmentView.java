@@ -17,7 +17,7 @@ import java.text.ParseException;
 import java.util.EventListener;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, MouseListener {
-	protected PersonRenderer      listrenderer;
+	protected PersonRenderer      listRenderer;
 	protected PersonListModel     personListModel;
 	protected JTextField          titleField, meetingRoomField, emailField;
 	protected JTextArea           description;
@@ -60,10 +60,10 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		selectRoom.setPreferredSize(new Dimension(100, 25));
 
 
-		MaskFormatter dateformatter;
+		MaskFormatter dateFormatter;
 		try {
-			dateformatter = new MaskFormatter("##.##.####");
-			dateField = new JFormattedTextField(dateformatter);
+			dateFormatter = new MaskFormatter("##.##.####");
+			dateField = new JFormattedTextField(dateFormatter);
 			dateField.setPreferredSize(new Dimension(80, 20));
 			dateField.setValue("03.07.2014");
 			dateField.addMouseListener(this);
@@ -72,20 +72,20 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			e.printStackTrace();
 		}
 
-		MaskFormatter timeformatter;
+		MaskFormatter timeFormatter;
 		try {
-			timeformatter = new MaskFormatter("##:##");
-			startTimeField = new JFormattedTextField(timeformatter);
+			timeFormatter = new MaskFormatter("##:##");
+			startTimeField = new JFormattedTextField(timeFormatter);
 			startTimeField.setPreferredSize(new Dimension(50, 20));
 			startTimeField.setValue("08:40");
 			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			startTimeField.addMouseListener(this);
-			endTimeField = new JFormattedTextField(timeformatter);
+			endTimeField = new JFormattedTextField(timeFormatter);
 			endTimeField.setPreferredSize(new Dimension(50, 20));
 			endTimeField.setValue("10:40");
 			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			endTimeField.addMouseListener(this);
-			alarmTimeField = new JFormattedTextField(timeformatter);
+			alarmTimeField = new JFormattedTextField(timeFormatter);
 			alarmTimeField.setPreferredSize(new Dimension(40, 20));
 			alarmTimeField.setValue("00:30");
 			alarmTimeField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -104,8 +104,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		participantList = new JComboBox<User>();
 		participantList.setPreferredSize(new Dimension(40, 25));
 		participants = new JList<User>();
-		listrenderer = new PersonRenderer();
-		participants.setCellRenderer(listrenderer);
+		listRenderer = new PersonRenderer();
+		participants.setCellRenderer(listRenderer);
 
 		participantScroller = new JScrollPane(participants);
 		participantScroller.setFocusable(true);
@@ -216,8 +216,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		saveDelete.add(cancelButton);
 		add(saveDelete, cRight);
 
-		listrenderer = new PersonRenderer();
-		participants.setCellRenderer(listrenderer);
+		listRenderer = new PersonRenderer();
+		participants.setCellRenderer(listRenderer);
 
 		frame = new JFrame("Appointment view");
 		frame.add(this);
