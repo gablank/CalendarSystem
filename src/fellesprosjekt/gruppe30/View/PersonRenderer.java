@@ -45,6 +45,8 @@ public class PersonRenderer implements ListCellRenderer{
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		label.setIconTextGap(40 - label.getText().length());
 		
+		
+		
 		return label;
 	}
 
