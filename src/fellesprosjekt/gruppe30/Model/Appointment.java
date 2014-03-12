@@ -20,6 +20,10 @@ public class Appointment {
     private User owner;
 
 
+	public Appointment(User owner) {
+		this(owner, "Title", "Description", new Date(), new Date(), null, null);
+	}
+
     public Appointment(User owner, String title, String description, Date start, Date end, String meetingPlace) {
         this(owner, title, description, start, end, meetingPlace, null);
     }
