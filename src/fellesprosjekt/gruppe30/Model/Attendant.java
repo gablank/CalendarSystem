@@ -1,89 +1,34 @@
 package fellesprosjekt.gruppe30.Model;
 
+
 import org.json.JSONObject;
 
-import java.util.Date;
+public abstract class Attendant {
+	protected User user;
+	protected Appointment appointment;
+	protected int status;
 
-public class Attendant {
-	public InternalUser user;
-	public ExternalUser externalUser;
-	public Appointment appointment;
-	private Date alarmClock;
-	public int status;
-	private boolean visibleOnCalendar;
-    private java.util.Date lastChecked;
 
-    public Attendant(InternalUser user, Appointment appointment) {
-        this.appointment = appointment;
+	public Attendant(User user, Appointment appointment) {
 		this.user = user;
-		alarmClock = null;
-		status = Status.NOT_ANSWERED;
-		visibleOnCalendar = true;
-        lastChecked = new Date(0);
+		this.appointment = appointment;
+		status = InternalAttendant.Status.NOT_ANSWERED;
 	}
 
-    // Set last checked to now
-    public void setLastChecked() {
-        this.lastChecked = new Date();
-    }
+	public User getUser() {
+		return this.user;
+	}
 
-    public java.util.Date getLastChecked() {
-        return lastChecked;
-    }
+	public Appointment getAppointment() {
+		return appointment;
+	}
 
-    public static class Status {
+	public abstract JSONObject getJSON();
+
+
+	public static class Status {
 		public static final int ATTENDTING = 0;
-        public static final int NOT_ATTENDING = 1;
-        public static final int NOT_ANSWERED = 2;
-	}
-	
-	public boolean getAlarmStatus() {
-		return alarmClock != null;
-	}
-	
-	public void setAlarm(Date alarmTime) {
-		this.alarmClock = alarmTime;
-	}
-	
-	public Date getAlarmClock() {
-		return alarmClock;
-	}
-	
-	public void setAlarmClock(Date time) {
-		alarmClock.setTime(time.getTime());
-	}
-	
-	public boolean getVisibleOnCalendar() {
-		return visibleOnCalendar;
-	}
-	
-	public void setVisibleOnCalendar(boolean show) {
-		visibleOnCalendar = show;
-	}
-
-    public InternalUser getUser() {
-        return user;
-    }
-
-    public Appointment getAppointment() {
-        return appointment;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-
-	public JSONObject getJSON() {
-		JSONObject obj = new JSONObject();
-		obj.put("userid", this.user.getId());
-		obj.put("appointmentid", this.appointment.getId());
-		obj.put("alarmClock", this.alarmClock.getTime());
-		obj.put("status", this.status);
-		obj.put("visibleOnCalendar", this.visibleOnCalendar);
-		obj.put("lastChecked", this.lastChecked);
-		return obj;
+		public static final int NOT_ATTENDING = 1;
+		public static final int NOT_ANSWERED = 2;
 	}
 }
-
-

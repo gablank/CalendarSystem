@@ -76,7 +76,6 @@ public class ClientNetwork extends Network {
 					String email = message.getString("email");
 
 					InternalUser user = new InternalUser(firstName, lastName, username, email);
-					user.setId(id);
 
 					client.addUser(user);
 				}

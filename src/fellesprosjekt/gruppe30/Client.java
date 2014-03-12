@@ -192,9 +192,9 @@ public class Client {
 		return loginController;
 	}
 
-	public InternalUser getUserById(int id) {
+	public InternalUser getUserByEmail(String email) {
 		for (InternalUser user : users) {
-			if (user.getId() == id)
+			if (user.getEmail() == email)
 				return user;
 		}
 
@@ -219,9 +219,9 @@ public class Client {
 		return null;
 	}
 
-	public Alarm getAlarmByIds(int appointmentId, int userId) {
+	public Alarm getAlarmByIds(Appointment appointment, User user) {
 		for (Alarm alarm : alarms) {
-			if (alarm.getAppointment().getId() == appointmentId && alarm.getUser().getId() == userId)
+			if (alarm.getAppointment() == appointment && alarm.getUser() == user)
 				return alarm;
 		}
 
@@ -232,8 +232,8 @@ public class Client {
 		alarms.add(alarm);
 	}
 
-	public void removeAlarm(int userId, int appointmentId) {
-		Alarm alarm = getAlarmByIds(appointmentId, userId);
+	public void removeAlarm(Appointment appointment, User user) {
+		Alarm alarm = getAlarmByIds(appointment, user);
 		alarms.remove(alarm);
 	}
 }

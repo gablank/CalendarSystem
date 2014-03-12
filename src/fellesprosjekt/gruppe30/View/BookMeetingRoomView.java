@@ -69,7 +69,7 @@ public class BookMeetingRoomView extends JPanel {
 			startFormatter = new MaskFormatter("##:##");
 			startFormatter.setPlaceholder("00000");
 			startText = new JFormattedTextField(startFormatter);
-			startText.setHorizontalAlignment(startText.CENTER);
+			startText.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch(ParseException e) {
 			startText.setText("hei");
 		}
@@ -81,7 +81,7 @@ public class BookMeetingRoomView extends JPanel {
 			endFormatter = new MaskFormatter("##:##");
 			endFormatter.setPlaceholder("00000");
 			endText = new JFormattedTextField(endFormatter);
-			endText.setHorizontalAlignment(endText.CENTER);
+			endText.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -105,7 +105,7 @@ public class BookMeetingRoomView extends JPanel {
 			capacityFormatter = new MaskFormatter("##");
 			capacityFormatter.setPlaceholder("0");
 			capacityText = new JFormattedTextField(capacityFormatter);
-			capacityText.setHorizontalAlignment(capacityText.CENTER);
+			capacityText.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch (ParseException e) {
 			capacityText.setText("hei");
 		}

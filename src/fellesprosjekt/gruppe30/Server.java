@@ -91,7 +91,7 @@ public class Server {
 			oldAppointment.setRoom(appointment.getRoom());
 			oldAppointment.setStart(appointment.getStart());
 			oldAppointment.setTitle(appointment.getTitle());
-			oldAppointment.setAttendants(appointment.getAttendants());
+			oldAppointment.setInternalAttendants(appointment.getInternalAttendants());
 			
 			
 //			appointments.remove(getAppointmentById(id));
@@ -107,12 +107,12 @@ public class Server {
 		appointments.remove(getAppointmentById(id));
     }
 
-	public InternalUser getUserById(int id) {
-		for (InternalUser user : users){
-			if(user.getId() == id)
+	public InternalUser getUserByEmail(String email) {
+		for (InternalUser user : users) {
+			if (user.getEmail() == email)
 				return user;
 		}
-		
+
 		return null;
 	}
 	

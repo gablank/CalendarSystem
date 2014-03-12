@@ -31,7 +31,7 @@ public class AlarmController implements Runnable {
             for(int i = 0; i < alarms.size(); i++) {
                 // If now is after alarm date, send mail
                 if(curTime.after(alarms.get(i).getDate()) && oneMinBeforeCurTime.before(alarms.get(i).getDate())) {
-                    this.server.sendMail(Integer.toString(alarms.get(i).getUser().getId()), "ALARM!", "This is an alarm!!!!!");
+                    this.server.sendMail(alarms.get(i).getUser().getEmail(), "ALARM!", "This is an alarm!!!!!");
                 }
             }
 

@@ -81,7 +81,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			dateField = new JFormattedTextField(dateformatter);
 			dateField.setPreferredSize(new Dimension(80,20));
 			dateField.setValue("03.07.2014");
-			dateField.setHorizontalAlignment(dateField.CENTER);
+			dateField.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

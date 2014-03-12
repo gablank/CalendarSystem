@@ -6,48 +6,38 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 
 public class InternalUser extends User {
-	private int id;
-	private String firstname;
-	private String lastname;
+	private String firstName;
+	private String lastName;
 	private String username;
 	private String password;
 
 
-	public InternalUser(String firstname, String lastname, String username, String email) {
+	public InternalUser(String firstName, String lastname, String username, String email) {
 		super(email);
 
-		this.id = -1;
-		this.firstname = firstname;
-		this.lastname = lastname;
+		this.firstName = firstName;
+		this.lastName = lastname;
 		this.username = username;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
-		return this.getFirstname() + " " + this.getLastname();
+		return this.getFirstName() + " " + this.getLastName();
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getUsername() {
@@ -85,17 +75,16 @@ public class InternalUser extends User {
 	public JSONObject getJSON() {
 		JSONObject obj = new JSONObject();
 		obj.put("type", "internalUser");
-		obj.put("id", this.id);
-		obj.put("username", this.username);
-		obj.put("firstName", this.firstname);
-		obj.put("lastName", this.id);
 		obj.put("email", this.email);
+		obj.put("username", this.username);
+		obj.put("firstName", this.firstName);
+		obj.put("lastName", this.lastName);
 		return obj;
 	}
 
 	public static void main(String[] args) {
 		InternalUser me = new InternalUser("Emil", "Heien", "uberjew", "email");
-		System.out.println("ID: " + me.getId() + "\nName: " + me.getFirstname() + " " +
-				me.getLastname() + "\nUsername: " + me.getUsername() + "\nEmail: " + me.getEmail());
+		System.out.println("\nName: " + me.getFirstName() + " " +
+				me.getLastName() + "\nUsername: " + me.getUsername() + "\nEmail: " + me.getEmail());
 	}
 }

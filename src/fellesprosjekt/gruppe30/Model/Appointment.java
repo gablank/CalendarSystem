@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Appointment {
     private int id;
@@ -14,7 +13,7 @@ public class Appointment {
 	private Date start;
 	private Date end;
 	private String meetingPlace;
-    private ArrayList<Attendant> attendants;
+    private ArrayList<InternalAttendant> internalAttendants;
 	private MeetingRoom room;
     private Date lastUpdated;
     private InternalUser owner;
@@ -41,24 +40,24 @@ public class Appointment {
 		this.end = end;
         this.meetingPlace = meetingPlace;
         this.room = room;
-        attendants = new ArrayList<Attendant>();
+        internalAttendants = new ArrayList<InternalAttendant>();
         this.lastUpdated = new Date();
     }
 
-    public void addAttendant(Attendant attendant) {
-        this.attendants.add(attendant);
+    public void addAttendant(InternalAttendant internalAttendant) {
+        this.internalAttendants.add(internalAttendant);
     }
 
-    public void removeAttendant(Attendant attendant) {
-        this.attendants.remove(attendant);
+    public void removeAttendant(InternalAttendant internalAttendant) {
+        this.internalAttendants.remove(internalAttendant);
     }
     
-    public void setAttendants(ArrayList<Attendant> attendants){
-    	this.attendants = attendants;
+    public void setInternalAttendants(ArrayList<InternalAttendant> internalAttendants){
+    	this.internalAttendants = internalAttendants;
     }
 
-    public ArrayList<Attendant> getAttendants() {
-        return this.attendants;
+    public ArrayList<InternalAttendant> getInternalAttendants() {
+        return this.internalAttendants;
     }
 
     public int getId() {
@@ -144,10 +143,10 @@ public class Appointment {
 		obj.put("end", this.end.getTime());
 		obj.put("meetingPlace", this.meetingPlace);
 		JSONArray attendants = new JSONArray();
-		for(Attendant attendant : this.attendants) {
-			attendants.put(attendant.getJSON());
+		for(InternalAttendant internalAttendant : this.internalAttendants) {
+			attendants.put(internalAttendant.getJSON());
 		}
-		obj.put("attendants", this.attendants);
+		obj.put("attendants", this.internalAttendants);
 		obj.put("meetingRoom", this.room.getId());
 		obj.put("lastUpdated", this.lastUpdated.getTime());
 		obj.put("owner", this.owner.getId());

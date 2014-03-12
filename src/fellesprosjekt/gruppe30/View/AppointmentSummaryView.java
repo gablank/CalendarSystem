@@ -87,11 +87,11 @@ public class AppointmentSummaryView extends JPanel {
 		
 		JPanel statusPanel = new JPanel();
 		statusPanel.add(yesLabel);
-		yesLabel.setHorizontalAlignment(yesLabel.CENTER);
+		yesLabel.setHorizontalAlignment(JLabel.CENTER);
 		statusPanel.add(noLabel);
-		noLabel.setHorizontalAlignment(noLabel.CENTER);
+		noLabel.setHorizontalAlignment(JLabel.CENTER);
 		statusPanel.add(unanswered);
-		unanswered.setHorizontalAlignment(unanswered.CENTER);
+		unanswered.setHorizontalAlignment(JLabel.CENTER);
 		statusPanel.setPreferredSize(new Dimension(130,40));
 		add(statusPanel, c);
 		
