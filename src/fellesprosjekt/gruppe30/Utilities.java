@@ -6,6 +6,9 @@ import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import fellesprosjekt.gruppe30.Model.User;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Utilities {
@@ -45,5 +48,34 @@ public class Utilities {
 		}
 
 		return null;
+	}
+
+	public static String dateToFormattedString(Date date) {
+		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+		gregorianCalendar.setTime(date);
+		String day = Integer.toString(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
+		if(day.length() == 1) {
+			day = "0" + day;
+		}
+		String month = Integer.toString(gregorianCalendar.get(Calendar.MONTH));
+		if(month.length() == 1) {
+			month = "0" + month;
+		}
+		String year = Integer.toString(gregorianCalendar.get(Calendar.YEAR) - 2000);
+		return day + "." + month + "." + year;
+	}
+
+	public static String timeToFormattedString(Date date) {
+		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+		gregorianCalendar.setTime(date);
+		String hour = Integer.toString(gregorianCalendar.get(Calendar.HOUR_OF_DAY));
+		if(hour.length() == 1) {
+			hour = "0" + hour;
+		}
+		String minute = Integer.toString(gregorianCalendar.get(Calendar.MINUTE));
+		if(minute.length() == 1) {
+			minute = "0" + minute;
+		}
+		return hour + ":" + minute;
 	}
 }

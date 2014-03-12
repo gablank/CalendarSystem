@@ -38,6 +38,7 @@ import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
+import fellesprosjekt.gruppe30.Utilities;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, MouseListener {
 	protected PersonRenderer listrenderer;
@@ -394,9 +395,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	private void updateFields() {
 		titleField.setText(model.getTitle());
 		description.setText(model.getDescription());
-		dateField.setValue(dateToFormattedString(model.getStart()));
-		startTimeField.setValue(timeToFormattedString(model.getStart()));
-		endTimeField.setValue(timeToFormattedString(model.getEnd()));
+		dateField.setValue(Utilities.dateToFormattedString(model.getStart()));
+		startTimeField.setValue(Utilities.timeToFormattedString(model.getStart()));
+		endTimeField.setValue(Utilities.timeToFormattedString(model.getEnd()));
 		if(model.getMeetingRoom() != null) {
 			useMeetingRoom.setSelected(true);
 
@@ -404,35 +405,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			useMeetingRoom.setSelected(false);
 			selectRoom.setText("Room # " + Integer.toString(model.getMeetingRoom().getId()));
 		}
-	}
-
-	private String dateToFormattedString(Date date) {
-		GregorianCalendar gregorianCalendar = new GregorianCalendar();
-		gregorianCalendar.setTime(date);
-		String day = Integer.toString(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
-		if(day.length() == 1) {
-			day = "0" + day;
-		}
-		String month = Integer.toString(gregorianCalendar.get(Calendar.MONTH));
-		if(month.length() == 1) {
-			month = "0" + month;
-		}
-		String year = Integer.toString(gregorianCalendar.get(Calendar.YEAR) - 2000);
-		return day + "." + month + "." + year;
-	}
-
-	private String timeToFormattedString(Date date) {
-		GregorianCalendar gregorianCalendar = new GregorianCalendar();
-		gregorianCalendar.setTime(date);
-		String hour = Integer.toString(gregorianCalendar.get(Calendar.HOUR_OF_DAY));
-		if(hour.length() == 1) {
-			hour = "0" + hour;
-		}
-		String minute = Integer.toString(gregorianCalendar.get(Calendar.MINUTE));
-		if(minute.length() == 1) {
-			minute = "0" + minute;
-		}
-		return hour + ":" + minute;
 	}
 	
 	public void setPersonListModel(PersonListModel model) {
