@@ -14,11 +14,21 @@ CREATE TABLE IF NOT EXISTS internal_users (
   first_name CHAR(50) NOT NULL,
   last_name  CHAR(50) NOT NULL,
 
+  FOREIGN KEY (email)
+  REFERENCES users(email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+
   PRIMARY KEY (email)
 );
 
 CREATE TABLE IF NOT EXISTS external_users (
   email CHAR(50) NOT NULL,
+
+  FOREIGN KEY (email)
+    REFERENCES users(email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 
   PRIMARY KEY(email)
 );
