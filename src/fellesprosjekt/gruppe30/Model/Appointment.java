@@ -147,9 +147,12 @@ public class Appointment {
 			attendants.put(attendant.getJSON());
 		}
 		obj.put("attendants", this.attendants);
-		obj.put("meetingRoom", this.room.getId());
+		if (this.room == null) {
+			obj.put("meetingRoom", -1);
+		} else {
+			obj.put("meetingRoom", this.room.getId());
+		}
 		obj.put("lastUpdated", this.lastUpdated.getTime());
-		obj.put("ownerEmail", this.owner.getEmail());
 		obj.put("owner", this.owner.getEmail());
 		return obj;
 	}
