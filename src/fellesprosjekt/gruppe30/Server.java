@@ -7,6 +7,7 @@ import fellesprosjekt.gruppe30.Controller.ServerListener;
 import fellesprosjekt.gruppe30.Model.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Server {
@@ -17,8 +18,9 @@ public class Server {
     private List<Alarm> alarms;
     private final Thread alarmController;
     private final Thread serverListener;
+	private List<Group> groups;
 
-    public Server() {
+	public Server() {
         this.loadDatabase();
 		
         serverListener = new Thread(new ServerListener(this));
@@ -80,21 +82,17 @@ public class Server {
 			appointment.setId(id);
 			appointments.add(appointment);
 		}else{
-			Appointment oldAppointment = getAppointmentById(id);
+			Appointment oldAppointment = Utilities.getAppointmentById(id, appointments);
 			
 			oldAppointment.setDescription(appointment.getDescription());
 			oldAppointment.setEnd(appointment.getEnd());
-//			oldAppointment.setLastUpdated(lastUpdated);
+			oldAppointment.setLastUpdated(new Date());
 			oldAppointment.setMeetingPlace(appointment.getMeetingPlace());
-//			oldAppointment.setOwner(owner);
-			oldAppointment.setRoom(appointment.getRoom());
+			oldAppointment.setOwner(appointment.getOwner());
+			oldAppointment.setMeetingRoom(appointment.getMeetingRoom());
 			oldAppointment.setStart(appointment.getStart());
 			oldAppointment.setTitle(appointment.getTitle());
 			oldAppointment.setAttendants(appointment.getAttendants());
-			
-			
-//			appointments.remove(getAppointmentById(id));
-//			appointments.add(appointment);
 		}
 		
     }
@@ -103,35 +101,8 @@ public class Server {
     	
     	// todo: database.remove...
     	
-		appointments.remove(getAppointmentById(id));
+		appointments.remove(Utilities.getAppointmentById(id, appointments));
     }
-
-	public User getUserByEmail(String email) {
-		for (User user : users) {
-			if (user.getEmail() == email)
-				return user;
-		}
-
-		return null;
-	}
-	
-	public Appointment getAppointmentById(int id) {
-		for (Appointment appointment : appointments){
-			if(appointment.getId() == id)
-				return appointment;
-		}
-		
-		return null;
-	}
-
-	public MeetingRoom getMeetingRoomById(int id) {
-		for (MeetingRoom meetingRoom : meetingRooms){
-			if(meetingRoom.getId() == id)
-				return meetingRoom;
-		}
-		
-		return null;
-	}
 
     public boolean verifyLogin(String username, String password) {
         for(User user : users) {
@@ -150,4 +121,12 @@ public class Server {
     public static void main(String[] args) {
         Server server = new Server();
     }
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
+
+	public List<Group> getGroups() {
+		return groups;
+	}
 }

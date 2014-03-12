@@ -32,14 +32,14 @@ public class Client {
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
     public  final ClientNetwork network;
-	private String email = null;
 
 	private List<User> users;
 	private List<Appointment> appointments;
 	private List<MeetingRoom> meetingRooms;
 	private List<Alarm> alarms;
+	private User loggedInUser = null;
 
-    public Client() {
+	public Client() {
 		// test code
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<User>();
@@ -141,11 +141,11 @@ public class Client {
 	public void setLoggedin(String email) {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
-		this.email = email;
+		this.loggedInUser = Utilities.getUserByEmail(email, users);
 	}
 
 	public void logout() {
-		this.email = null;
+		this.loggedInUser = null;
 		JSONObject obj = new JSONObject();
 		obj.put("type", "logout");
 		this.network.send(obj);
@@ -155,7 +155,7 @@ public class Client {
 
 	public void newAppointment() {
 		open(Client.ViewEnum.APPOINTMENT);
-		Appointment newAppointment = new Appointment(getLoggedInUser());
+		Appointment newAppointment = new Appointment((InternalUser) this.loggedInUser);
 		this.appointments.add(newAppointment);
 		getAppointmentView().setModel(newAppointment);
 	}
@@ -172,35 +172,8 @@ public class Client {
 		users.add(user);
 	}
 
-	public InternalUser getLoggedInUser() {
-		for (User user : users) {
-			if (user.getEmail().equals(email)) {
-				return (InternalUser) user;
-			}
-		}
-		return null;
-	}
-
 	public LoginController getLoginController() {
 		return loginController;
-	}
-
-	public User getUserByEmail(String email) {
-		for (User user : users) {
-			if (user.getEmail() == email)
-				return user;
-		}
-
-		return null;
-	}
-
-	public Appointment getAppointmentById(int id) {
-		for (Appointment appointment : appointments) {
-			if (appointment.getId() == id)
-				return appointment;
-		}
-
-		return null;
 	}
 
 	public void addAppointment(Appointment appointment) {
@@ -211,26 +184,8 @@ public class Client {
 		appointments.remove(appointment);
 	}
 
-	public MeetingRoom getMeetingRoomById(int id) {
-		for (MeetingRoom meetingRoom : meetingRooms) {
-			if (meetingRoom.getId() == id)
-				return meetingRoom;
-		}
-
-		return null;
-	}
-
 	public void addMeetingRoom(MeetingRoom meetingRoom) {
 		meetingRooms.add(meetingRoom);
-	}
-
-	public Alarm getAlarm(Appointment appointment, User user) {
-		for (Alarm alarm : alarms) {
-			if (alarm.getAppointment() == appointment && alarm.getUser() == user)
-				return alarm;
-		}
-
-		return null;
 	}
 
 	public void addAlarm(Alarm alarm) {
@@ -238,8 +193,7 @@ public class Client {
 	}
 
 	public void removeAlarm(Appointment appointment, User user) {
-		Alarm alarm = getAlarm(appointment, user);
+		Alarm alarm = Utilities.getAlarm(appointment, user, this.alarms);
 		alarms.remove(alarm);
 	}
-
 }
