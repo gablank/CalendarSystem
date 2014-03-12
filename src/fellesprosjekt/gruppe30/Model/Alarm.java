@@ -31,7 +31,7 @@ public class Alarm {
 	public JSONObject getJSON() {
 		JSONObject obj = new JSONObject();
 		obj.put("type", "alarm");
-		obj.put("useEmail", this.user.getEmail());
+		obj.put("userEmail", this.user.getEmail());
 		obj.put("appointmentId", this.appointment.getId());
 		obj.put("time", this.date.getTime());
 		return obj;
