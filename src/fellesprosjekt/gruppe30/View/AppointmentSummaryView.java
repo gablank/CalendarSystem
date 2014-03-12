@@ -10,15 +10,11 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
@@ -62,7 +58,7 @@ public class AppointmentSummaryView extends JPanel {
 		unanswered.setIcon(unanswer);
 		
 		participants = new JList<User>();
-		participants.setMinimumSize(new Dimension(130, 20*userCount));
+		participants.setMinimumSize(new Dimension(120, 20*userCount));
 		participants.setLayout(new BoxLayout(participants, BoxLayout.Y_AXIS));
 		participants.setVisibleRowCount(4);
 		participants.setBackground(Color.WHITE);
@@ -103,8 +99,8 @@ public class AppointmentSummaryView extends JPanel {
 
 		frame = new JFrame();
 		frame.add(this);
-		//this.setMinimumSize(this.getPreferredSize());
-		this.setMaximumSize(new Dimension(160, 80+20*userCount));
+		this.setMinimumSize(this.getPreferredSize());
+		this.setMaximumSize(new Dimension(160, 80+20*userCount)); //was 160
 		frame.pack();
 		frame.setVisible(false);
 		frame.setResizable(false);
@@ -120,6 +116,7 @@ public class AppointmentSummaryView extends JPanel {
 		personListModel.addElement(new InternalUser("Emil", "Heien", "uberjew", "email"));
 		}
 		this.setPersonListModel(personListModel);
+		//System.out.println(participants.getModel().getSize());
 		//end test code
 		
 	}

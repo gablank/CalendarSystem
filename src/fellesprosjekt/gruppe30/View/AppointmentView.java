@@ -39,10 +39,12 @@ import javax.swing.text.MaskFormatter;
 
 import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.InternalUser;
+import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener {
 	protected PersonRenderer listrenderer;
+	protected PersonListModel personListModel;
 	protected JTextField titleField, meetingRoomField, emailField;
 	protected JTextArea description;
 	protected JFormattedTextField dateField, startTimeField, endTimeField, alarmTimeField;
@@ -115,6 +117,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		participantList = new JComboBox<User>();
 		participantList.setPreferredSize(new Dimension(40, 25));
 		participants = new JList<User>();
+		listrenderer = new PersonRenderer();
+		participants.setCellRenderer(listrenderer);
 		
 		scrollpane = new JScrollPane(participants);
 		scrollpane.setFocusable(true);
@@ -137,7 +141,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		cLeft.gridx = 0;
 		cLeft.gridy = 0;
 		cLeft.insets = new Insets(5,5,5,5);
-		
+	
 		add(titleField, cLeft);
 		cLeft.gridy = 1;
 		
@@ -237,15 +241,16 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		
 		//test code:
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		//why this shit dont work?
-		DefaultListModel<User> model = new DefaultListModel<User>();
-		participants = new JList<User>(model);
-		model.add(0, new InternalUser("Emil", "Heien", "uberjew", "email"));
+		personListModel = new PersonListModel();
+		personListModel.addElement(new InternalUser("Jonathan", "Strømjordet", "uberjew", "email"));
+		for (int i=0; i<10; i++){
+		personListModel.addElement(new InternalUser("Emil", "Heien", "uberjew", "email"));
+		}
+		this.setPersonListModel(personListModel);
 		//end test code
 	}
 	
@@ -363,14 +368,20 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 		return hour + ":" + minute;
 	}
-
-	public static void main(String[] args) {
-		AppointmentView view = new AppointmentView();
-		view.setVisible(true);
+	
+	public void setPersonListModel(PersonListModel model) {
+		this.personListModel = model;
+		participants.setModel(model);
 	}
+
 
 	@Override
 	public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
 		this.updateFields();
+	}
+	
+	public static void main(String[] args) {
+		AppointmentView view = new AppointmentView();
+		view.setVisible(true);
 	}
 }

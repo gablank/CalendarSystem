@@ -1,10 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -47,6 +44,8 @@ public class PersonRenderer implements ListCellRenderer{
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		label.setIconTextGap(40 - label.getText().length());
+		
+		
 		
 		return label;
 	}
