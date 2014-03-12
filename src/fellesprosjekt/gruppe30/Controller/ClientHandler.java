@@ -87,6 +87,7 @@ class ClientHandler extends Network {
                         int    ownerId       = message.getInt("owner");
                         int    meetingRoomId = message.getInt("meetingRoom");
 
+                        
 
 						InternalUser owner = server.getUserById(ownerId);
 
@@ -95,6 +96,7 @@ class ClientHandler extends Network {
                             return;
                         }
 
+                        
                         Date startDate = new Date(start);
                         Date endDate = new Date(end);
 
