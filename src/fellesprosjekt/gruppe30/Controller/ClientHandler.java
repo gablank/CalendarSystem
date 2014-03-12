@@ -87,6 +87,7 @@ class ClientHandler extends Network {
                         int    ownerId       = message.getInt("owner");
                         int    meetingRoomId = message.getInt("meetingRoom");
 
+                        
 
 						InternalUser owner = server.getUserById(ownerId);
 
