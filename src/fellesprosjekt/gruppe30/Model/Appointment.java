@@ -29,7 +29,7 @@ public class Appointment {
 	}
 
 	public Appointment(InternalUser owner, String title, String description, Date start, Date end, MeetingRoom meetingRoom) {
-		this(owner, title, description, start, end, null, meetingRoom);
+		this(owner, title, description, start, end, "", meetingRoom);
 	}
 
 	public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace, MeetingRoom room) {
