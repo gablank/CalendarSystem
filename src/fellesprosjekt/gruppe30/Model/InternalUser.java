@@ -8,16 +8,14 @@ import java.security.MessageDigest;
 public class InternalUser extends User {
 	private String firstName;
 	private String lastName;
-	private String username;
 	private String password;
 
 
-	public InternalUser(String firstName, String lastname, String username, String email) {
+	public InternalUser(String firstName, String lastname, String email) {
 		super(email);
 
 		this.firstName = firstName;
 		this.lastName = lastname;
-		this.username = username;
 	}
 
 	public String getName() {
@@ -38,14 +36,6 @@ public class InternalUser extends User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	// Should only be used by the server!
@@ -76,15 +66,14 @@ public class InternalUser extends User {
 		JSONObject obj = new JSONObject();
 		obj.put("type", "internalUser");
 		obj.put("email", this.email);
-		obj.put("username", this.username);
 		obj.put("firstName", this.firstName);
 		obj.put("lastName", this.lastName);
 		return obj;
 	}
 
 	public static void main(String[] args) {
-		InternalUser me = new InternalUser("Emil", "Heien", "uberjew", "email");
+		InternalUser me = new InternalUser("Emil", "Heien", "email");
 		System.out.println("\nName: " + me.getFirstName() + " " +
-				me.getLastName() + "\nUsername: " + me.getUsername() + "\nEmail: " + me.getEmail());
+ me.getLastName() + "\nEmail: " + me.getEmail());
 	}
 }
