@@ -242,19 +242,17 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		listrenderer = new PersonRenderer();
 		participants.setCellRenderer(listrenderer);
 		
-		//testing purposes, REMOVE this following code later:
-		useMeetingRoom.addActionListener(this);
-		inviteByEmail.addActionListener(this);
-		//end of testing Code
-		
 		frame = new JFrame("Appointment view");
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);
 		frame.setResizable(false);
 		
-		//test code:
+		//test code, REMOVE this following code later:
+		useMeetingRoom.addActionListener(this);
+		inviteByEmail.addActionListener(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		personListModel = new PersonListModel();
 		personListModel.addElement(new InternalUser("email", "Jonathan","Cinderella"));
 		for (int i=0; i<10; i++){
@@ -326,6 +324,64 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		
 	}
 	
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == titleField) {
+			if (titleField.getText().equals("Title")){
+				titleField.setText("");			
+			}	
+		}
+		else if (e.getSource() == description) {
+			if (description.getText().equals("Description")){
+				description.setText("");			
+			}	
+		}
+		else if (e.getSource() == meetingRoomField){
+			if (meetingRoomField.getText().equals("Place")){
+				meetingRoomField.setText("");
+			}
+		}
+		else if (e.getSource() == emailField){
+			if (emailField.getText().equals("Email")){
+				emailField.setText("");
+			}
+		}
+		else if (e.getSource() == dateField){
+			if (dateField.getText().equals("03.07.2014")){
+				dateField.setText("");
+			}
+		}
+		else if (e.getSource() == startTimeField){
+			if (startTimeField.getText().equals("08:40")){
+				startTimeField.setText(":");
+			}
+		}
+		else if (e.getSource() == endTimeField){
+			if (endTimeField.getText().equals("10:40")){
+				endTimeField.setText(":");
+			}
+		}
+		else if (e.getSource() == alarmTimeField){
+			if (alarmTimeField.getText().equals("00:30")){
+				alarmTimeField.setText("");
+			}
+		}
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+	}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {	
+	}
+	
 	public void setVisible(boolean visible){
 		this.frame.setVisible(visible);
 	}
@@ -388,63 +444,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	@Override
 	public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
 		this.updateFields();
-	}
-	
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == titleField) {
-			if (titleField.getText().equals("Title")){
-				titleField.setText("");			
-			}	
-		}
-		else if (e.getSource() == description) {
-			if (description.getText().equals("Description")){
-				description.setText("");			
-			}	
-		}
-		else if (e.getSource() == meetingRoomField){
-			if (meetingRoomField.getText().equals("Place")){
-				meetingRoomField.setText("");
-			}
-		}
-		else if (e.getSource() == emailField){
-			if (emailField.getText().equals("Email")){
-				emailField.setText("");
-			}
-		}
-		else if (e.getSource() == dateField){
-			if (dateField.getText().equals("03.07.2014")){
-				dateField.setText("");
-			}
-		}
-		else if (e.getSource() == startTimeField){
-			if (startTimeField.getText().equals("08:40")){
-				startTimeField.setText("");
-			}
-		}
-		else if (e.getSource() == endTimeField){
-			if (endTimeField.getText().equals("10:40")){
-				endTimeField.setText("");
-			}
-		}
-		else if (e.getSource() == alarmTimeField){
-			if (alarmTimeField.getText().equals("00:30")){
-				alarmTimeField.setText("");
-			}
-		}
-	}
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-	}
-	@Override
-	public void mouseReleased(MouseEvent arg0) {	
 	}
 	
 	public static void main(String[] args) {
