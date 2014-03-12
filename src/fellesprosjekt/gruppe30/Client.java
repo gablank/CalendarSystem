@@ -33,7 +33,7 @@ public class Client {
     public  final ClientNetwork network;
 	private String email = null;
 
-	private List<InternalUser> users;
+	private List<User> users;
 	private List<Appointment> appointments;
 	private List<MeetingRoom> meetingRooms;
 	private List<Alarm> alarms;
@@ -41,7 +41,7 @@ public class Client {
     public Client() {
 		// test code
 		appointments = new ArrayList<Appointment>();
-		users = new ArrayList<InternalUser>();
+		users = new ArrayList<User>();
 		InternalUser test = new InternalUser("Anders", "Wenhaug", "anders@wenhaug.no");
 		users.add(test);
 		// end test code
@@ -154,7 +154,7 @@ public class Client {
 
 	public void newAppointment() {
 		open(Client.ViewEnum.APPOINTMENT);
-		Appointment newAppointment = new Appointment(getUser());
+		Appointment newAppointment = new Appointment(getLoggedInUser());
 		this.appointments.add(newAppointment);
 		getAppointmentView().setModel(newAppointment);
 	}
@@ -176,13 +176,13 @@ public class Client {
 	}
 
 	public void removeAppointment(Appointment appointment) {
-//		appointments.remove(o)
+		appointments.remove(appointment);
 	}
 
-	public InternalUser getUser() {
-		for(InternalUser user : users) {
+	public InternalUser getLoggedInUser() {
+		for (User user : users) {
 			if (user.getEmail().equals(email)) {
-				return user;
+				return (InternalUser) user;
 			}
 		}
 		return null;
@@ -192,8 +192,8 @@ public class Client {
 		return loginController;
 	}
 
-	public InternalUser getUserByEmail(String email) {
-		for (InternalUser user : users) {
+	public User getUserByEmail(String email) {
+		for (User user : users) {
 			if (user.getEmail() == email)
 				return user;
 		}

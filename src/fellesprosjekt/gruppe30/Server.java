@@ -11,13 +11,12 @@ import java.util.List;
 
 public class Server {
     private final Database database = Database.getInstance();
-    private List<InternalUser> users;
+	private List<User> users;
     private List<Appointment> appointments;
     private List<MeetingRoom> meetingRooms;
     private List<Alarm> alarms;
     private final Thread alarmController;
     private final Thread serverListener;
-
 
     public Server() {
         this.loadDatabase();
@@ -54,7 +53,7 @@ public class Server {
         this.serverListener.interrupt();
     }
 
-    public void setUsers(List<InternalUser> users) {
+	public void setUsers(List<User> users) {
         this.users = users;
     }
 
@@ -107,8 +106,8 @@ public class Server {
 		appointments.remove(getAppointmentById(id));
     }
 
-	public InternalUser getUserByEmail(String email) {
-		for (InternalUser user : users) {
+	public User getUserByEmail(String email) {
+		for (User user : users) {
 			if (user.getEmail() == email)
 				return user;
 		}
@@ -135,9 +134,11 @@ public class Server {
 	}
 
     public boolean verifyLogin(String username, String password) {
-        for(InternalUser user : users) {
-            if(user.getUsername().equals(username)) {
-                if(user.getPassword().equals(password)) {
+        for(User user : users) {
+			InternalUser internalUser = (InternalUser) user;
+        	
+			if (internalUser.getEmail().equals(username)) {
+				if (internalUser.getPassword().equals(password)) {
                     return true;
                 }
             } else {
