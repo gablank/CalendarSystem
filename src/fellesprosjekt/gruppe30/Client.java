@@ -1,6 +1,8 @@
 package fellesprosjekt.gruppe30;
 
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import fellesprosjekt.gruppe30.Controller.AppointmentController;
@@ -41,6 +43,13 @@ public class Client {
 	private List<Alarm> alarms;
 
     public Client() {
+		// test code
+		appointments = new ArrayList<Appointment>();
+		users = new ArrayList<User>();
+		User test = new User("Anders", "Wenhaug", "andersw", "anders@wenhaug.no");
+		users.add(test);
+		// end test code
+
     	this.loginController = new LoginController(this);
         this.loginView = new LoginView();
 		this.loginView.addListener(loginController);
@@ -147,6 +156,13 @@ public class Client {
 		open(ViewEnum.LOGIN);
 	}
 
+	public void newAppointment() {
+		open(Client.ViewEnum.APPOINTMENT);
+		Appointment newAppointment = new Appointment(getUs());
+		this.appointments.add(newAppointment);
+		getAppointmentView().setModel(newAppointment);
+	}
+
 	public static enum ViewEnum {
         ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW
     }
@@ -165,6 +181,15 @@ public class Client {
 
 	public void removeAppointment(int id) {
 //		appointments.remove(o)
+	}
+
+	public User getUs() {
+		for(User user : users) {
+			if(user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		return null;
 	}
 
 	public LoginController getLoginController() {
