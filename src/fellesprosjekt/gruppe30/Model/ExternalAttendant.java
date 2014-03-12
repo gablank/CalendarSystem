@@ -5,16 +5,16 @@ import org.json.JSONObject;
 
 public class ExternalAttendant extends Attendant {
 
-    public ExternalAttendant(ExternalUser user, Appointment appointment) {
-        super(user, appointment);
-    }
+	public ExternalAttendant(ExternalUser user, Appointment appointment) {
+		super(user, appointment);
+	}
 
-    public JSONObject getJSON() {
-        JSONObject obj = new JSONObject();
-        obj.put("type", "externalAttendant");
-        obj.put("email", this.user.getEmail());
-        obj.put("appointmentId", this.appointment.getId());
-        obj.put("status", this.status);
-        return obj;
-    }
+	public JSONObject getJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("type", "externalAttendant");
+		obj.put("email", this.user.getEmail());
+		obj.put("appointmentId", this.appointment.getId());
+		obj.put("status", this.status);
+		return obj;
+	}
 }

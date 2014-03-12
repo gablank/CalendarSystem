@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class PersonListModel extends DefaultListModel {
 
-    public void firePersonChanged(InternalUser user) {
-        fireContentsChanged(this, indexOf(user), indexOf(user));
-    }
+	public void firePersonChanged(InternalUser user) {
+		fireContentsChanged(this, indexOf(user), indexOf(user));
+	}
 }

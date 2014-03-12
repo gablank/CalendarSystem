@@ -6,57 +6,59 @@ import java.util.ArrayList;
 
 public class Calendar {
 
-    private int                     week;
-    private ArrayList<InternalUser> otherCalendars;
-    private ArrayList<Appointment>  appointments;
+	private int                     week;
+	private ArrayList<InternalUser> otherCalendars;
+	private ArrayList<Appointment>  appointments;
 
-    PropertyChangeSupport pcs;
+	PropertyChangeSupport pcs;
 
-    public Calendar() {
-        appointments = new ArrayList<Appointment>();
-        /*
+	public Calendar() {
+		appointments = new ArrayList<Appointment>();
+		/*
 		 * TODO get appointments
 		 */
-        week = java.util.Calendar.getInstance().get(java.util.Calendar.WEEK_OF_YEAR);
-        pcs = new PropertyChangeSupport(this);
-    }
+		week = java.util.Calendar.getInstance().get(java.util.Calendar.WEEK_OF_YEAR);
+		pcs = new PropertyChangeSupport(this);
+	}
 
-    public void nextWeek() {
-        week++;
-        if (week > 52) {
-            week = 1;
-            pcs.firePropertyChange("next week", 52, week);
-        } else pcs.firePropertyChange("new week", week - 1, week);
-    }
+	public void nextWeek() {
+		week++;
+		if(week > 52) {
+			week = 1;
+			pcs.firePropertyChange("next week", 52, week);
+		} else
+			pcs.firePropertyChange("new week", week - 1, week);
+	}
 
-    /*
-     * Yea... these are failing as well
-     */
-    public void previousWeek() {
-        week--;
-        if (week < 1) {
-            week = 52;
-            pcs.firePropertyChange("next week", 1, week);
-        } else pcs.firePropertyChange("new week", week + 1, week);
-    }
+	/*
+	 * Yea... these are failing as well
+	 */
+	public void previousWeek() {
+		week--;
+		if(week < 1) {
+			week = 52;
+			pcs.firePropertyChange("next week", 1, week);
+		} else
+			pcs.firePropertyChange("new week", week + 1, week);
+	}
 
-    public void addPropertyChangeSuppertListener(PropertyChangeListener listener) {
-        pcs.addPropertyChangeListener(listener);
-    }
+	public void addPropertyChangeSuppertListener(PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
+	}
 
-    public void addUser(InternalUser user) {
-        otherCalendars.add(user);
-    }
+	public void addUser(InternalUser user) {
+		otherCalendars.add(user);
+	}
 
-    public void removeUser(InternalUser user) {
-        otherCalendars.remove(user);
-    }
+	public void removeUser(InternalUser user) {
+		otherCalendars.remove(user);
+	}
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        Calendar calendar = new Calendar();
+		Calendar calendar = new Calendar();
 
-        System.out.print(calendar.week);
+		System.out.print(calendar.week);
 
-    }
+	}
 }
