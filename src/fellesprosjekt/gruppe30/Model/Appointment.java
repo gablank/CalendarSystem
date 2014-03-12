@@ -13,7 +13,7 @@ public class Appointment {
 	private Date start;
 	private Date end;
 	private String meetingPlace;
-    private ArrayList<InternalAttendant> internalAttendants;
+    private ArrayList<Attendant> attendants;
 	private MeetingRoom room;
     private Date lastUpdated;
     private InternalUser owner;
@@ -40,24 +40,24 @@ public class Appointment {
 		this.end = end;
         this.meetingPlace = meetingPlace;
         this.room = room;
-        internalAttendants = new ArrayList<InternalAttendant>();
+        attendants = new ArrayList<Attendant>();
         this.lastUpdated = new Date();
     }
 
-    public void addAttendant(InternalAttendant internalAttendant) {
-        this.internalAttendants.add(internalAttendant);
+    public void addAttendant(Attendant attendant) {
+        this.attendants.add(attendant);
     }
 
     public void removeAttendant(InternalAttendant internalAttendant) {
-        this.internalAttendants.remove(internalAttendant);
+        this.attendants.remove(internalAttendant);
     }
     
-    public void setInternalAttendants(ArrayList<InternalAttendant> internalAttendants){
-    	this.internalAttendants = internalAttendants;
+    public void setAttendants(ArrayList<Attendant> attendants){
+    	this.attendants = attendants;
     }
 
-    public ArrayList<InternalAttendant> getInternalAttendants() {
-        return this.internalAttendants;
+    public ArrayList<Attendant> getAttendants() {
+        return this.attendants;
     }
 
     public int getId() {
@@ -143,13 +143,13 @@ public class Appointment {
 		obj.put("end", this.end.getTime());
 		obj.put("meetingPlace", this.meetingPlace);
 		JSONArray attendants = new JSONArray();
-		for(InternalAttendant internalAttendant : this.internalAttendants) {
-			attendants.put(internalAttendant.getJSON());
+		for(Attendant attendant : this.attendants) {
+			attendants.put(attendant.getJSON());
 		}
-		obj.put("attendants", this.internalAttendants);
+		obj.put("attendants", this.attendants);
 		obj.put("meetingRoom", this.room.getId());
 		obj.put("lastUpdated", this.lastUpdated.getTime());
-		obj.put("owner", this.owner.getId());
+		obj.put("ownerEmail", this.owner.getEmail());
 		return obj;
 	}
 }

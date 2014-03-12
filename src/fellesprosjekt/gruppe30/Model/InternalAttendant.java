@@ -32,16 +32,12 @@ public class InternalAttendant extends Attendant {
 		visibleOnCalendar = show;
 	}
 
-    public int getStatus() {
-        return status;
-    }
-
 
 	public JSONObject getJSON() {
 		JSONObject obj = new JSONObject();
 		obj.put("type", "internalAttendant");
 		obj.put("email", this.user.getEmail());
-		obj.put("appointmentid", this.appointment.getId());
+		obj.put("appointmentId", this.appointment.getId());
 		obj.put("status", this.status);
 		obj.put("visibleOnCalendar", this.visibleOnCalendar);
 		obj.put("lastChecked", this.lastChecked);

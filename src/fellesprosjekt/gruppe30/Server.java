@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Server {
     private final Database database = Database.getInstance();
-    private List<InternalUser> users;
+    private List<User> users;
     private List<Appointment> appointments;
     private List<MeetingRoom> meetingRooms;
     private List<Alarm> alarms;
@@ -54,7 +54,7 @@ public class Server {
         this.serverListener.interrupt();
     }
 
-    public void setUsers(List<InternalUser> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
@@ -91,7 +91,7 @@ public class Server {
 			oldAppointment.setRoom(appointment.getRoom());
 			oldAppointment.setStart(appointment.getStart());
 			oldAppointment.setTitle(appointment.getTitle());
-			oldAppointment.setInternalAttendants(appointment.getInternalAttendants());
+			oldAppointment.setAttendants(appointment.getAttendants());
 			
 			
 //			appointments.remove(getAppointmentById(id));
@@ -107,8 +107,8 @@ public class Server {
 		appointments.remove(getAppointmentById(id));
     }
 
-	public InternalUser getUserByEmail(String email) {
-		for (InternalUser user : users) {
+	public User getUserByEmail(String email) {
+		for (User user : users) {
 			if (user.getEmail() == email)
 				return user;
 		}
@@ -135,9 +135,9 @@ public class Server {
 	}
 
     public boolean verifyLogin(String username, String password) {
-        for(InternalUser user : users) {
-            if(user.getUsername().equals(username)) {
-                if(user.getPassword().equals(password)) {
+        for(User user : users) {
+            if(user instanceof InternalUser && user.getEmail().equals(username)) {
+                if(((InternalUser) user).getPassword().equals(password)) {
                     return true;
                 }
             } else {

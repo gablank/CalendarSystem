@@ -12,7 +12,7 @@ public abstract class Attendant {
 	public Attendant(User user, Appointment appointment) {
 		this.user = user;
 		this.appointment = appointment;
-		status = InternalAttendant.Status.NOT_ANSWERED;
+		status = Status.NOT_ANSWERED;
 	}
 
 	public User getUser() {
@@ -21,6 +21,14 @@ public abstract class Attendant {
 
 	public Appointment getAppointment() {
 		return appointment;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getStatus() {
+		return status;
 	}
 
 	public abstract JSONObject getJSON();
