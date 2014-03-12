@@ -100,10 +100,10 @@ public class AppointmentSummaryView extends JPanel {
 		frame = new JFrame();
 		frame.add(this);
 		this.setMinimumSize(this.getPreferredSize());
-		this.setMaximumSize(new Dimension(160, 80+20*userCount)); //was 160
+		this.setMaximumSize(new Dimension(160, 80+20*userCount));
 		frame.pack();
 		frame.setVisible(false);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,11 +111,12 @@ public class AppointmentSummaryView extends JPanel {
 		timeLabel.setText("12:15 - 12:45");
 		
 		personListModel = new PersonListModel();
-		personListModel.addElement(new InternalUser("Jonathan", "Strømjordet", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("email" ,"Jonathan", "Cinderella"));
 		for (int i=0; i<userCount-1; i++){
-		personListModel.addElement(new InternalUser("Emil", "Heien", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("email" ,"Emil", "Heien"));
 		}
 		this.setPersonListModel(personListModel);
+		frame.pack();
 		//System.out.println(participants.getModel().getSize());
 		//end test code
 		

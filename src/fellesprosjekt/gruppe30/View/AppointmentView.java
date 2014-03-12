@@ -8,6 +8,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
@@ -37,7 +39,7 @@ import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
 
-public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener {
+public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, MouseListener {
 	protected PersonRenderer listrenderer;
 	protected PersonListModel personListModel;
 	protected JTextField titleField, meetingRoomField, emailField;
@@ -60,15 +62,21 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		
 		//set appearance of all buttons
 		titleField = new JTextField("Title", 13);
+        titleField.addMouseListener(this);
+
+		
 		description = new JTextArea("Description", 5,13);
 		description.setBorder(titleField.getBorder());
 		description.setLineWrap(true);
 		description.setWrapStyleWord(true);
+		description.addMouseListener(this);
 		descriptionScroller = new JScrollPane(description);
 		
 		
 		meetingRoomField = new JTextField("Place", 10);
+		meetingRoomField.addMouseListener(this);
 		emailField = new JTextField("Email", 1);
+		emailField.addMouseListener(this);
 		
 		
 		selectRoom = new JButton("Select...");
@@ -81,6 +89,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			dateField = new JFormattedTextField(dateformatter);
 			dateField.setPreferredSize(new Dimension(80,20));
 			dateField.setValue("03.07.2014");
+			dateField.addMouseListener(this);
 			dateField.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -93,14 +102,17 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			startTimeField.setPreferredSize(new Dimension(50,20));
 			startTimeField.setValue("08:40");
 			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
+			startTimeField.addMouseListener(this);
 			endTimeField = new JFormattedTextField(timeformatter);
 			endTimeField.setPreferredSize(new Dimension(50,20));
 			endTimeField.setValue("10:40");
 			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
+			endTimeField.addMouseListener(this);
 			alarmTimeField = new JFormattedTextField(timeformatter);
 			alarmTimeField.setPreferredSize(new Dimension(40,20));
 			alarmTimeField.setValue("00:30");
 			alarmTimeField.setHorizontalAlignment(SwingConstants.CENTER);
+			alarmTimeField.addMouseListener(this);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -230,23 +242,21 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		listrenderer = new PersonRenderer();
 		participants.setCellRenderer(listrenderer);
 		
-		//testing purposes, REMOVE this following code later:
-		useMeetingRoom.addActionListener(this);
-		inviteByEmail.addActionListener(this);
-		//end of testing Code
-		
 		frame = new JFrame("Appointment view");
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);
 		frame.setResizable(false);
 		
-		//test code:
+		//test code, REMOVE this following code later:
+		useMeetingRoom.addActionListener(this);
+		inviteByEmail.addActionListener(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		personListModel = new PersonListModel();
-		personListModel.addElement(new InternalUser("Jonathan", "Shaky", "Cinderella", "email"));
+		personListModel.addElement(new InternalUser("email", "Jonathan","Cinderella"));
 		for (int i=0; i<10; i++){
-		personListModel.addElement(new InternalUser("Emil", "Heien", "uberjew", "email"));
+		personListModel.addElement(new InternalUser("email", "Emil", "Heien"));
 		}
 		this.setPersonListModel(personListModel);
 		//end test code
@@ -312,6 +322,64 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			}
 		}
 		
+	}
+	
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == titleField) {
+			if (titleField.getText().equals("Title")){
+				titleField.setText("");			
+			}	
+		}
+		else if (e.getSource() == description) {
+			if (description.getText().equals("Description")){
+				description.setText("");			
+			}	
+		}
+		else if (e.getSource() == meetingRoomField){
+			if (meetingRoomField.getText().equals("Place")){
+				meetingRoomField.setText("");
+			}
+		}
+		else if (e.getSource() == emailField){
+			if (emailField.getText().equals("Email")){
+				emailField.setText("");
+			}
+		}
+		else if (e.getSource() == dateField){
+			if (dateField.getText().equals("03.07.2014")){
+				dateField.setText("");
+			}
+		}
+		else if (e.getSource() == startTimeField){
+			if (startTimeField.getText().equals("08:40")){
+				startTimeField.setText(":");
+			}
+		}
+		else if (e.getSource() == endTimeField){
+			if (endTimeField.getText().equals("10:40")){
+				endTimeField.setText(":");
+			}
+		}
+		else if (e.getSource() == alarmTimeField){
+			if (alarmTimeField.getText().equals("00:30")){
+				alarmTimeField.setText("");
+			}
+		}
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+	}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {	
 	}
 	
 	public void setVisible(boolean visible){
