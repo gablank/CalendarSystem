@@ -375,7 +375,6 @@ public class Database {
 		return true;
 	}
 
-
 	/**
 	 * @param appointment the appointment to insert into the database
 	 * @return the database id of the appointment; if an exception happened it returns -1
@@ -438,7 +437,6 @@ public class Database {
 
 		return newAppointmentId;
 	}
-
 
 	private void updateAppointment(Appointment appointment) {
 		String query;
@@ -620,8 +618,6 @@ public class Database {
 			System.out.println("Could not delete alarm for user " + alarm.getUser().getEmail());
 		}
 	}
-
-
 
 	private java.sql.Timestamp dateToSqlTimestamp(java.util.Date date) {
 		return new java.sql.Timestamp(date.getTime());
