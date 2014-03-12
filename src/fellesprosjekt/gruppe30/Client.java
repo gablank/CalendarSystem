@@ -31,7 +31,7 @@ public class Client {
     private final BookMeetingRoomView bookMeetingRoomView;
     private final AppointmentController appointmentController;
     public  final ClientNetwork network;
-	private String username = null;
+	private String email = null;
 
 	private List<InternalUser> users;
 	private List<Appointment> appointments;
@@ -42,7 +42,7 @@ public class Client {
 		// test code
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<InternalUser>();
-		InternalUser test = new InternalUser("Anders", "Wenhaug", "andersw", "anders@wenhaug.no");
+		InternalUser test = new InternalUser("Anders", "Wenhaug", "anders@wenhaug.no");
 		users.add(test);
 		// end test code
 
@@ -137,14 +137,14 @@ public class Client {
         });
     }
 
-	public void setLoggedin(String username) {
+	public void setLoggedin(String email) {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
-		this.username = username;
+		this.email = email;
 	}
 
 	public void logout() {
-		this.username = null;
+		this.email = null;
 		JSONObject obj = new JSONObject();
 		obj.put("type", "logout");
 		this.network.send(obj);
@@ -154,7 +154,7 @@ public class Client {
 
 	public void newAppointment() {
 		open(Client.ViewEnum.APPOINTMENT);
-		Appointment newAppointment = new Appointment(getUs());
+		Appointment newAppointment = new Appointment(getUser());
 		this.appointments.add(newAppointment);
 		getAppointmentView().setModel(newAppointment);
 	}
@@ -175,13 +175,13 @@ public class Client {
 		meetingRooms.add(meetingRoom);
 	}
 
-	public void removeAppointment(int id) {
+	public void removeAppointment(Appointment appointment) {
 //		appointments.remove(o)
 	}
 
-	public InternalUser getUs() {
+	public InternalUser getUser() {
 		for(InternalUser user : users) {
-			if(user.getUsername().equals(username)) {
+			if (user.getEmail().equals(email)) {
 				return user;
 			}
 		}
@@ -219,7 +219,7 @@ public class Client {
 		return null;
 	}
 
-	public Alarm getAlarmByIds(Appointment appointment, User user) {
+	public Alarm getAlarm(Appointment appointment, User user) {
 		for (Alarm alarm : alarms) {
 			if (alarm.getAppointment() == appointment && alarm.getUser() == user)
 				return alarm;
@@ -233,7 +233,7 @@ public class Client {
 	}
 
 	public void removeAlarm(Appointment appointment, User user) {
-		Alarm alarm = getAlarmByIds(appointment, user);
+		Alarm alarm = getAlarm(appointment, user);
 		alarms.remove(alarm);
 	}
 }
