@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -61,7 +62,7 @@ public class AppointmentSummaryView extends JPanel {
 		unanswered.setIcon(unanswer);
 		
 		participants = new JList<User>();
-		participants.setPreferredSize(new Dimension(100, 20*userCount));
+		participants.setMinimumSize(new Dimension(130, 20*userCount));
 		participants.setLayout(new BoxLayout(participants, BoxLayout.Y_AXIS));
 		participants.setVisibleRowCount(4);
 		participants.setBackground(Color.WHITE);
@@ -76,7 +77,9 @@ public class AppointmentSummaryView extends JPanel {
 		
 		JPanel headerPanel = new JPanel();
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		headerPanel.add(titleLabel);
+		timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		headerPanel.add(timeLabel);
 		headerPanel.setPreferredSize(new Dimension(130,40));
 		add(headerPanel, c);
