@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.Date;
 
 import fellesprosjekt.gruppe30.Model.*;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import fellesprosjekt.gruppe30.Client;
@@ -106,14 +108,14 @@ public class ClientNetwork extends Network {
 						&& message.has("owner")
 						&& message.has("meetingRoom")) {
 					
-					String title = message.getString("title");
-					String description = message.getString("description");
-					long start = message.getLong("start");
-					long end = message.getLong("end");
-					String meetingPlace = message.getString("meetingPlace");
-					String attendants = message.getString("attendants");
-					String ownerEmail = message.getString("owner");
-					int meetingRoomId = message.getInt("meetingRoom");
+					String title         = message.getString("title");
+					String description   = message.getString("description");
+					long start           = message.getLong("start");
+					long end             = message.getLong("end");
+					String meetingPlace  = message.getString("meetingPlace");
+					String attendantsStr = message.getString("attendants");
+					String ownerEmail    = message.getString("owner");
+					int meetingRoomId    = message.getInt("meetingRoom");
 				
 				
 					InternalUser owner = (InternalUser) client.getUserByEmail(ownerEmail);
@@ -128,9 +130,23 @@ public class ClientNetwork extends Network {
 					
 					MeetingRoom meetingRoom = client.getMeetingRoomById(meetingRoomId);
 					
+					// obj.put("type", "externalAttendant");
+					// obj.put("email", this.user.getEmail());
+					// obj.put("appointmentid", this.appointment.getId());
+					// obj.put("status", this.status);
 					//
-					// todo: parse, look up and add attendants
-					//
+					// obj.put("type", "internalAttendant");
+					// obj.put("email", this.user.getEmail());
+					// obj.put("appointmentid", this.appointment.getId());
+					// obj.put("status", this.status);
+					// obj.put("visibleOnCalendar", this.visibleOnCalendar);
+					// obj.put("lastChecked", this.lastChecked);
+
+					JSONArray attendants = new JSONArray(attendantsStr);
+
+					for (int i = 0; i < attendants.length(); i++) {
+						Attendant attendant = attendants.getJSONObject(i);
+					}
 
 					Appointment appointment = null;
 
