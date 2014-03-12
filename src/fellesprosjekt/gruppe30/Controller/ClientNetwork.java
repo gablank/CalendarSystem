@@ -129,24 +129,6 @@ public class ClientNetwork extends Network {
 					Date endDate = new Date(end);
 					
 					MeetingRoom meetingRoom = client.getMeetingRoomById(meetingRoomId);
-					
-					// obj.put("type", "externalAttendant");
-					// obj.put("email", this.user.getEmail());
-					// obj.put("appointmentid", this.appointment.getId());
-					// obj.put("status", this.status);
-					//
-					// obj.put("type", "internalAttendant");
-					// obj.put("email", this.user.getEmail());
-					// obj.put("appointmentid", this.appointment.getId());
-					// obj.put("status", this.status);
-					// obj.put("visibleOnCalendar", this.visibleOnCalendar);
-					// obj.put("lastChecked", this.lastChecked);
-
-					JSONArray attendants = new JSONArray(attendantsStr);
-
-					for (int i = 0; i < attendants.length(); i++) {
-						Attendant attendant = attendants.getJSONObject(i);
-					}
 
 					Appointment appointment = null;
 
@@ -165,6 +147,74 @@ public class ClientNetwork extends Network {
 						appointment = new Appointment(owner, title, description, startDate, endDate, meetingPlace);
 
 					}
+					
+					// obj.put("type", "externalAttendant");
+					// obj.put("email", this.user.getEmail());
+					// obj.put("appointmentid", this.appointment.getId());
+					// obj.put("status", this.status);
+					//
+					// obj.put("type", "internalAttendant");
+					// obj.put("email", this.user.getEmail());
+					// obj.put("appointmentid", this.appointment.getId());
+					// obj.put("status", this.status);
+					// obj.put("visibleOnCalendar", this.visibleOnCalendar);
+					// obj.put("lastChecked", this.lastChecked);
+
+					JSONArray attendants = new JSONArray(attendantsStr);
+
+					for (int i = 0; i < attendants.length(); i++) {
+						JSONObject attendantObj = attendants.getJSONObject(i);
+						
+						if (attendantObj.has("type") 
+								&& attendantObj.has("email") 
+								&& attendantObj.has("appointmentid") 
+								&& attendantObj.has("status")) {
+
+							String attendantType = attendantObj.getString("type");
+							String attendantEmail = attendantObj.getString("type");
+							int appointmentId = attendantObj.getInt("type");
+							int attendantStatus = attendantObj.getInt("status");
+							
+							User user = client.getUserByEmail(attendantEmail);
+							
+							if (appointmentId != appointment.getId()) {
+								System.out.println("failed handling an appointment message, an attendant had no type: " + message.toString());
+							}
+
+							if (attendantType.equals("externalAttendant")) {
+								ExternalAttendant externalAttendant = new ExternalAttendant((ExternalUser) user, appointment);
+								externalAttendant.setStatus(attendantStatus);
+								appointment.addAttendant(externalAttendant);
+
+							} else if (attendantType.equals("internalAttendant")) {
+								if (attendantObj.has("visibleOnCalendar") && attendantObj.has("lastChecked")) {
+									boolean visibleOnCalendar = attendantObj.getBoolean("visibleOnCalendar");
+									long lastChecked = attendantObj.getLong("lastChecked");
+									
+									Date lastCheckedDate = new Date(lastChecked);
+
+									InternalAttendant internalAttendant = new InternalAttendant((InternalUser) user, appointment);
+									internalAttendant.setStatus(attendantStatus);
+									internalAttendant.setLastChecked(lastCheckedDate);
+									internalAttendant.setVisibleOnCalendar(visibleOnCalendar);
+									appointment.addAttendant(internalAttendant);
+
+								} else {
+									System.out.println("failed handling an appointment message, an internal attendant did not have the required fields: " + attendantObj.toString());
+									return;
+								}
+
+							} else {
+								System.out.println("failed handling an appointment message, an attendant had no type: " + message.toString());
+								return;
+							}
+							
+						}else{
+							System.out.println("failed handling an appointment message, an attendant did not have the required fields: " + attendantObj.toString());
+							return;
+						}
+					}
+
 
 					if (action == "change") {
 						int id = message.getInt("id");
