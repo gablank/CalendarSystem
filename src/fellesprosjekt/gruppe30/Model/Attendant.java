@@ -35,7 +35,7 @@ public abstract class Attendant {
 
 
 	public static class Status {
-		public static final int ATTENDTING    = 0;
+		public static final int ATTENDING    = 0;
 		public static final int NOT_ATTENDING = 1;
 		public static final int NOT_ANSWERED  = 2;
 	}
