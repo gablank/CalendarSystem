@@ -326,11 +326,15 @@ public class ClientHandler extends Network {
 		}
 
 		for (Appointment appointment : server.getAppointments()) {
-			send(appointment.getJSON());
+			JSONObject message = appointment.getJSON();
+			message.put("action", "new");
+			send(message);
 		}
 
 		for (Alarm alarm : server.getAlarms()) {
-			send(alarm.getJSON());
+			JSONObject message = alarm.getJSON();
+			message.put("action", "new");
+			send(message);
 		}
 
 		for (Group group : server.getGroups()) {
