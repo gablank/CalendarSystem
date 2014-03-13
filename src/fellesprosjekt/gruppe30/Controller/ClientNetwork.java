@@ -216,13 +216,21 @@ public class ClientNetwork extends Network {
 					if ("change".equals(action)) {
 						int id = message.getInt("id");
 						appointment.setId(id);
+
+						Appointment oldAppointment = Utilities.getAppointmentById(id, client.getAppointments());
 						if (Utilities.getAppointmentById(id, client.getAppointments()) == null) {
 							System.out.println("failed handling an change appointment message, the appointment with specified id could not be found.");
+							return;
 						}
-					}
 
-					client.addAppointment(appointment);
-					System.out.println("successfully added appointment!");
+						oldAppointment.copyAllFrom(appointment);
+						System.out.println("successfully changed an appointment!");
+
+					} else {
+
+						client.addAppointment(appointment);
+						System.out.println("successfully added an appointment!");
+					}
 
 				} else if ("remove".equals(action) && message.has("id")) {
 					int id = message.getInt("id");
@@ -249,6 +257,9 @@ public class ClientNetwork extends Network {
 
 					client.addMeetingRoom(meetingRoom);
 					System.out.println("successfully added meetingroom!");
+
+				} else {
+					System.out.println("a meetingRoom message did not have the required fields: " + message.toString());
 				}
 				
 				break;
@@ -288,11 +299,10 @@ public class ClientNetwork extends Network {
 						long time = message.getLong("time");
 						Date date = new Date(time);
 						
-
+						
 						Utilities.getAlarm(appointment, user, client.getAlarms()).setDate(date);
 						System.out.println("successfully changed alarm!");
-					
-					
+
 					} else if ("remove".equals(action)) {
 						client.removeAlarm(appointment, user);
 						System.out.println("successfully removed alarm!");
@@ -304,6 +314,29 @@ public class ClientNetwork extends Network {
 
 				} else {
 					System.out.println("an alarm message did not have the required fields: " + message.toString());
+				}
+				
+				break;
+				
+			case "group":
+				if (message.has("name") && message.has("members")) {
+
+					String name = message.getString("name");
+					JSONArray memberEmails = message.getJSONArray("members");
+
+					Group group = new Group(name);
+					
+					for (int i = 0; i < memberEmails.length(); i++) {
+						String email = memberEmails.getString(i);
+						User member = Utilities.getUserByEmail(email, client.getUsers());
+						group.addMember(member);
+					}
+
+					client.addGroup(group);
+					System.out.println("successfully added group!");
+
+				} else {
+					System.out.println("a group message did not have the required fields: " + message.toString());
 				}
 				
 				break;

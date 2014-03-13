@@ -7,9 +7,12 @@ import fellesprosjekt.gruppe30.Controller.ClientNetwork;
 import fellesprosjekt.gruppe30.Controller.LoginController;
 import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.View.*;
+
 import org.json.JSONObject;
 
 import javax.swing.*;
+
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,9 @@ public class Client {
 	private List<Appointment> appointments;
 	private List<MeetingRoom> meetingRooms;
 	private List<Alarm>       alarms;
+	private List<Group>       groups;
+
+	private User loggedInUser = null;
 
 	public User getLoggedInUser() {
 		return loggedInUser;
@@ -37,6 +43,10 @@ public class Client {
 
 	public void setLoggedInUser(User loggedInUser) {
 		this.loggedInUser = loggedInUser;
+	}
+
+	public List<Group> getGroups() {
+		return groups;
 	}
 
 	public List<Alarm> getAlarms() {
@@ -71,14 +81,13 @@ public class Client {
 		this.users = users;
 	}
 
-	private User loggedInUser = null;
-
 	public Client() {
 		// test code
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<User>();
 		meetingRooms = new ArrayList<MeetingRoom>();
 		alarms = new ArrayList<Alarm>();
+		groups = new ArrayList<Group>();
 		InternalUser test = new InternalUser("Anders", "Wenhaug", "anders@wenhaug.no");
 		users.add(test);
 		// end test code
@@ -229,5 +238,9 @@ public class Client {
 	public void removeAlarm(Appointment appointment, User user) {
 		Alarm alarm = Utilities.getAlarm(appointment, user, this.alarms);
 		alarms.remove(alarm);
+	}
+
+	public void addGroup(Group group) {
+		groups.add(group);
 	}
 }
