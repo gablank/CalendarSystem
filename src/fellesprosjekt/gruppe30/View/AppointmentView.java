@@ -7,6 +7,7 @@ import fellesprosjekt.gruppe30.Model.User;
 import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
@@ -16,7 +17,7 @@ import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.EventListener;
 
-public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, MouseListener {
+public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, MouseListener, ListSelectionListener {
 	protected PersonRenderer      listRenderer;
 	protected PersonListModel     personListModel;
 	protected JTextField          titleField, meetingRoomField, emailField;
@@ -106,6 +107,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		participants = new JList<User>();
 		listRenderer = new PersonRenderer();
 		participants.setCellRenderer(listRenderer);
+		participants.addListSelectionListener(this);
 
 		participantScroller = new JScrollPane(participants);
 		participantScroller.setFocusable(true);
@@ -353,6 +355,12 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 	}
+	
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		User user = (User) participants.getSelectedValue();
+		
+	}
 
 	public void setVisible(boolean visible) {
 		this.frame.setVisible(visible);
@@ -397,4 +405,5 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	public Appointment getModel() {
 		return model;
 	}
+
 }
