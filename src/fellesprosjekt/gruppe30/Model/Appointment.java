@@ -41,7 +41,7 @@ public class Appointment {
 		this.end = end;
 		this.meetingPlace = meetingPlace;
 		this.room = room;
-		attendants = new ArrayList<Attendant>();
+		this.attendants = new ArrayList<Attendant>();
 		this.lastUpdated = new Date();
 	}
 
@@ -156,5 +156,18 @@ public class Appointment {
 		obj.put("lastUpdated", this.lastUpdated.getTime());
 		obj.put("owner", this.owner.getEmail());
 		return obj;
+	}
+
+	public void copyAllFrom(Appointment appointment) {
+		this.id = appointment.getId();
+		this.owner = appointment.getOwner();
+		this.title = appointment.getTitle();
+		this.description = appointment.getDescription();
+		this.start = appointment.getStart();
+		this.end = appointment.getEnd();
+		this.meetingPlace = appointment.getMeetingPlace();
+		this.room = appointment.getMeetingRoom();
+		this.attendants = appointment.getAttendants();
+		this.lastUpdated = appointment.getLastUpdated();
 	}
 }
