@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Client {
+public class Client extends Application {
 	private final LoginController       loginController;
 	private final LoginView             loginView;
 	private final Calendar              calendar;
@@ -27,13 +27,7 @@ public class Client {
 	private final ViewAppointmentView   viewAppointmentView;
 	private final BookMeetingRoomView   bookMeetingRoomView;
 	private final AppointmentController appointmentController;
-	public final  ClientNetwork         network;
-
-	private List<User>        users;
-	private List<Appointment> appointments;
-	private List<MeetingRoom> meetingRooms;
-	private List<Alarm>       alarms;
-	private List<Group>       groups;
+	public  final ClientNetwork         network;
 
 	private User loggedInUser = null;
 
@@ -43,42 +37,6 @@ public class Client {
 
 	public void setLoggedInUser(User loggedInUser) {
 		this.loggedInUser = loggedInUser;
-	}
-
-	public List<Group> getGroups() {
-		return groups;
-	}
-
-	public List<Alarm> getAlarms() {
-		return alarms;
-	}
-
-	public void setAlarms(List<Alarm> alarms) {
-		this.alarms = alarms;
-	}
-
-	public List<MeetingRoom> getMeetingRooms() {
-		return meetingRooms;
-	}
-
-	public void setMeetingRooms(List<MeetingRoom> meetingRooms) {
-		this.meetingRooms = meetingRooms;
-	}
-
-	public List<Appointment> getAppointments() {
-		return appointments;
-	}
-
-	public void setAppointments(List<Appointment> appointments) {
-		this.appointments = appointments;
-	}
-
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
 	}
 
 	public Client() {
@@ -152,39 +110,33 @@ public class Client {
 		return bookMeetingRoomView;
 	}
 
-	public AppointmentController getAppointmentController() {
-		return appointmentController;
-	}
-
 	public LoginView getLoginView() {
 		return this.loginView;
-	}
-
-	public Calendar getCalendar() {
-		return this.calendar;
 	}
 
 	public CalendarView getCalendarView() {
 		return calendarView;
 	}
 
-
-	/**
-	 * Application entry point
-	 */
-	public static void main(String args[]) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Client client = new Client();
-			}
-		});
+	public Calendar getCalendar() {
+		return this.calendar;
 	}
 
-	public void setLoggedin(String email) {
+	public void setLoggedIn(String email) {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
 		this.loggedInUser = Utilities.getUserByEmail(email, users);
+	}
+
+	public void newAppointment() {
+		open(Client.ViewEnum.APPOINTMENT);
+		Appointment newAppointment = new Appointment((InternalUser) this.loggedInUser);
+		this.appointments.add(newAppointment);
+		getAppointmentView().setModel(newAppointment);
+	}
+
+	public LoginController getLoginController() {
+		return loginController;
 	}
 
 	public void logout() {
@@ -196,51 +148,23 @@ public class Client {
 		open(ViewEnum.LOGIN);
 	}
 
-	public void newAppointment() {
-		open(Client.ViewEnum.APPOINTMENT);
-		Appointment newAppointment = new Appointment((InternalUser) this.loggedInUser);
-		this.appointments.add(newAppointment);
-		getAppointmentView().setModel(newAppointment);
+	public void quit(int i) {
+		System.exit(i);
 	}
 
 	public static enum ViewEnum {
 		ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW
 	}
 
-	public void quit(int i) {
-		System.exit(i);
-	}
-
-	public void addUser(User user) {
-		users.add(user);
-	}
-
-	public LoginController getLoginController() {
-		return loginController;
-	}
-
-	public void addAppointment(Appointment appointment) {
-		appointments.add(appointment);
-	}
-
-	public void removeAppointment(Appointment appointment) {
-		appointments.remove(appointment);
-	}
-
-	public void addMeetingRoom(MeetingRoom meetingRoom) {
-		meetingRooms.add(meetingRoom);
-	}
-
-	public void addAlarm(Alarm alarm) {
-		alarms.add(alarm);
-	}
-
-	public void removeAlarm(Appointment appointment, User user) {
-		Alarm alarm = Utilities.getAlarm(appointment, user, this.alarms);
-		alarms.remove(alarm);
-	}
-
-	public void addGroup(Group group) {
-		groups.add(group);
+	/**
+	 * Application entry point
+	 */
+	public static void main(String args[]) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Client client = new Client();
+			}
+		});
 	}
 }
