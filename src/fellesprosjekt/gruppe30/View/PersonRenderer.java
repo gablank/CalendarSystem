@@ -44,8 +44,8 @@ public class PersonRenderer implements ListCellRenderer {
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		if (isSelected)
-			label.setFont(label.getFont().deriveFont(14L));
-
+			label.setForeground(Color.BLUE);
+		
 		return label;
 	}
 
