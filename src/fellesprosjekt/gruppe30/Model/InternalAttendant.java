@@ -41,7 +41,6 @@ public class InternalAttendant extends Attendant {
 		JSONObject obj = new JSONObject();
 		obj.put("type", "internalAttendant");
 		obj.put("email", this.user.getEmail());
-		obj.put("appointmentId", this.appointment.getId());
 		obj.put("status", this.status);
 		obj.put("visibleOnCalendar", this.visibleOnCalendar);
 		obj.put("lastChecked", this.lastChecked.getTime());

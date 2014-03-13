@@ -21,7 +21,11 @@ public class Appointment {
 
 
 	public Appointment(InternalUser owner) {
-		this(owner, "Title", "Description", new Date(), new Date(), null, null);
+		this(owner, "Title", "Description", new Date(), new Date(), "", null);
+	}
+
+	public Appointment(InternalUser owner, String title, String description, Date start, Date end) {
+		this(owner, title, description, start, end, "", null);
 	}
 
 	public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace) {
@@ -143,6 +147,7 @@ public class Appointment {
 		obj.put("start", this.start.getTime());
 		obj.put("end", this.end.getTime());
 		obj.put("meetingPlace", this.meetingPlace);
+		System.out.println(this.meetingPlace);
 		JSONArray attendants = new JSONArray();
 		for(Attendant attendant : this.attendants) {
 			attendants.put(attendant.getJSON());
