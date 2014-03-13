@@ -159,23 +159,17 @@ public class ClientNetwork extends Network {
 						JSONObject attendantObj = attendants.getJSONObject(i);
 						
 						if (attendantObj.has("type") 
-								&& attendantObj.has("email") 
-								&& attendantObj.has("appointmentId") 
+								&& attendantObj.has("email")
 								&& attendantObj.has("status")) {
 
 							String attendantType = attendantObj.getString("type");
 							String attendantEmail = attendantObj.getString("email");
-							int appointmentId = attendantObj.getInt("appointmentId");
 							int attendantStatus = attendantObj.getInt("status");
 							
-							// User user = Utilities.getUserByEmail(attendantEmail, client.getUsers());
-							
-							if (appointmentId != appointment.getId()) {
-								System.out.println("failed handling an appointment message, an attendant had no type: " + message.toString());
-							}
+							User user = Utilities.getUserByEmail(attendantEmail, client.getUsers());
+
 
 							if (attendantType.equals("externalAttendant")) {
-								User user = new ExternalUser("hei");
 								ExternalAttendant externalAttendant = new ExternalAttendant((ExternalUser) user, appointment);
 								externalAttendant.setStatus(attendantStatus);
 								appointment.addAttendant(externalAttendant);
@@ -188,7 +182,6 @@ public class ClientNetwork extends Network {
 									
 									Date lastCheckedDate = new Date(lastChecked);
 
-									User user = new InternalUser("hei", "pA", "deg");
 									InternalAttendant internalAttendant = new InternalAttendant((InternalUser) user, appointment);
 									internalAttendant.setStatus(attendantStatus);
 									internalAttendant.setLastChecked(lastCheckedDate);
