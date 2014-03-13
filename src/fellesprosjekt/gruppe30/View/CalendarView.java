@@ -206,10 +206,18 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		for(int i = 0; i < 4; i++) {
-			monAppointment.add(new AppointmentSummaryView());
+			AppointmentSummaryView asv = new AppointmentSummaryView();
+			/*
+			 * TODO add MouseListener : asv.addListener(Calendarcontroller cc) || asv.addListener(client.getCalendarController)
+			 */
+			monAppointment.add(asv);
 		}
 		for(int i = 0; i < 5; i++) {
-			tueAppointment.add(new AppointmentSummaryView());
+			AppointmentSummaryView asv = new AppointmentSummaryView();
+			/*
+			 * TODO add MouseListener : asv.addListener(Calendarcontroller cc) || asv.addListener(client.getCalendarController)
+			 */
+			tueAppointment.add(asv);
 		}
 		wedAppointment.add(new AppointmentSummaryView());
 		wedAppointment.add(new AppointmentSummaryView());
@@ -226,6 +234,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		//end test code
 
 
+		
 	}
 
 	public void addListener(EventListener controller) {
