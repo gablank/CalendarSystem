@@ -98,6 +98,10 @@ public class Server {
 
 	}
 
+	public void addAppointment(Appointment appointment) {
+		appointments.add(appointment);
+	}
+
 	public void removeAppointment(Appointment appointment) {
 		database.deleteAppointment(appointment);
 		appointments.remove(appointment);
@@ -139,5 +143,19 @@ public class Server {
 
 	public static void main(String[] args) {
 		Server server = new Server();
+	}
+
+
+	public void addMeetingRoom(MeetingRoom meetingRoom) {
+		meetingRooms.add(meetingRoom);
+	}
+
+	public void removeAlarm(Appointment appointment, User user) {
+		Alarm alarm = Utilities.getAlarm(appointment, user, this.alarms);
+		alarms.remove(alarm);
+	}
+
+	public void addAlarm(Alarm alarm) {
+		alarms.add(alarm);
 	}
 }
