@@ -49,8 +49,20 @@ public class Appointment {
 		this.lastUpdated = new Date();
 	}
 
-	public void addAttendant(Attendant attendant) {
+	public void addUser(User user) {
+		Attendant attendant;
+		if(user instanceof InternalUser) {
+			attendant = new InternalAttendant((InternalUser) user, this);
+		} else {
+			attendant = new ExternalAttendant((ExternalUser) user, this);
+		}
 		this.attendants.add(attendant);
+	}
+
+	public void addGroup(Group group) {
+		for(User user : group.getMembers()) {
+			this.addUser(user);
+		}
 	}
 
 	public void removeAttendant(InternalAttendant internalAttendant) {
