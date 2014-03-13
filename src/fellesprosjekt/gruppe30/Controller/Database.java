@@ -849,11 +849,11 @@ public class Database {
 						continue;
 					}
 
-					Appointment appointment = new Appointment(owner, title, description, startDate, endDate, null, null);
+					Appointment appointment = new Appointment(owner, title, description, startDate, endDate);
 					appointment.setId(appointmentId);
 					appointment.setLastUpdated(lastUpdatedDate);
 
-					if(place == null) {
+					if(place.isEmpty()) {
 						MeetingRoom meetingRoom = this.getMeetingRoomForAppointment(appointment, meetingRooms);
 
 						if(meetingRoom == null) {
