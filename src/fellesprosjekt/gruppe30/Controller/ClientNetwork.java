@@ -322,7 +322,7 @@ public class ClientNetwork extends Network {
 					for (int i = 0; i < memberEmails.length(); i++) {
 						String email = memberEmails.getString(i);
 						User member = Utilities.getUserByEmail(email, client.getUsers());
-						group.addMember(member);
+						group.addMember((InternalUser) member);
 					}
 
 					client.addGroup(group);
