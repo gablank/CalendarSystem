@@ -20,6 +20,8 @@ public class Calendar {
 
 	public Calendar(Client client) {
 		this.client = client;
+		this.otherCalendars = new ArrayList<InternalUser>();
+
 		gregorianCalendar = new GregorianCalendar();
 		gregorianCalendar.setTime(new java.util.Date());
 		gregorianCalendar.setFirstDayOfWeek(java.util.Calendar.MONDAY);
@@ -77,7 +79,8 @@ public class Calendar {
 					if(attendant instanceof ExternalAttendant) {
 						continue;
 					}
-					if(this.otherCalendars.contains((InternalUser) attendant.getUser()) && ((InternalAttendant) attendant).getVisibleOnCalendar()) {
+					InternalUser user = (InternalUser) attendant.getUser();
+					if(this.otherCalendars.contains(user) && attendant instanceof InternalAttendant && ((InternalAttendant) attendant).getVisibleOnCalendar()) {
 						days.get(appointment.getDayOfWeek()).add(appointment);
 					}
 				}
@@ -119,13 +122,13 @@ public class Calendar {
 		return labels;
 	}
 
+	public List<InternalUser> getUsers() {
+		return otherCalendars;
+	}
+
 
 	public static void main(String[] args) {
 
 
-	}
-
-	public List<InternalUser> getUsers() {
-		return otherCalendars;
 	}
 }

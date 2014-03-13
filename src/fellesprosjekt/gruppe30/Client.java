@@ -40,15 +40,11 @@ public class Client extends Application {
 	}
 
 	public Client() {
-		// test code
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<User>();
 		meetingRooms = new ArrayList<MeetingRoom>();
 		alarms = new ArrayList<Alarm>();
 		groups = new ArrayList<Group>();
-		InternalUser test = new InternalUser("Anders", "Wenhaug", "anders@wenhaug.no");
-		users.add(test);
-		// end test code
 
 		this.loginController = new LoginController(this);
 		this.loginView = new LoginView();
@@ -125,12 +121,12 @@ public class Client extends Application {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
 		this.loggedInUser = Utilities.getUserByEmail(email, users);
+		this.calendar.addUser((InternalUser) this.loggedInUser);
 	}
 
 	public void newAppointment() {
 		open(Client.ViewEnum.APPOINTMENT);
 		Appointment newAppointment = new Appointment((InternalUser) this.loggedInUser);
-		// this.appointments.add(newAppointment);
 		getAppointmentView().setModel(newAppointment);
 	}
 
