@@ -9,13 +9,13 @@ import java.util.List;
 
 public class Group {
 	private int        id;
-	private List<User> members;
+	private List<InternalUser> members;
 	private String     name;
 
 
 	public Group(String name) {
 		this.name = name;
-		members = new ArrayList<User>();
+		members = new ArrayList<InternalUser>();
 	}
 
 	public int getId() {
@@ -26,11 +26,11 @@ public class Group {
 		this.id = id;
 	}
 
-	public List<User> getMembers() {
+	public List<InternalUser> getMembers() {
 		return this.members;
 	}
 
-	public void setMembers(List<User> members) {
+	public void setMembers(List<InternalUser> members) {
 		this.members = members;
 	}
 
@@ -42,7 +42,7 @@ public class Group {
 		this.name = name;
 	}
 
-	public void addMember(User newMember) {
+	public void addMember(InternalUser newMember) {
 		this.members.add(newMember);
 	}
 
@@ -51,7 +51,7 @@ public class Group {
 		obj.put("type", "group");
 		obj.put("name", name);
 		JSONArray members = new JSONArray();
-		for (User member : this.members) {
+		for (InternalUser member : this.members) {
 			members.put(member.getEmail());
 		}
 		obj.put("members", members);

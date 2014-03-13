@@ -8,18 +8,15 @@ import java.util.EventListener;
 //Author Kristoffer
 
 public class AreYouSureView extends JPanel {
-	// Removes the class warning
-	public static final long serialVersionUID = 1L;
 
-	// Fields
 	private JLabel     label;
 	private JButton    yesButton, noButton;
-	GridBagConstraints gbc = new GridBagConstraints();
+	private JFrame     frame;
+	
 
-	// Constructor
 	public AreYouSureView() {
 
-		// Sets the layout
+		GridBagConstraints gbc = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 
 		// Creating and adding the label
@@ -38,6 +35,18 @@ public class AreYouSureView extends JPanel {
 		panel.add(yesButton);
 		panel.add(noButton);
 		add(panel, gbc);
+		
+		frame = new JFrame();
+		frame.setTitle("Calendar System");
+		frame.setSize(220, 120);
+		frame.setVisible(false);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.add(this);
+		
+		//test code
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//end test code
 	}
 
 	// listener FEEEST
@@ -49,19 +58,15 @@ public class AreYouSureView extends JPanel {
 		yesButton.addMouseListener(controller);
 		noButton.addMouseListener(controller);
 	}
+	
+	public void setVisible(boolean visible) {
+		this.frame.setVisible(visible);
+	}
 
 	public static void main(String[] args) {
 
 		AreYouSureView view = new AreYouSureView();
-		JFrame frame = new JFrame();
-
-		frame.setTitle("Calendar System");
-		frame.setSize(220, 120);
-		frame.setVisible(true);
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.add(view);
+		view.setVisible(true);
 	}
 
 }
