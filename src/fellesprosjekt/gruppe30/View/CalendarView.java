@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
 
+import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
 import fellesprosjekt.gruppe30.Model.User;
 
@@ -12,6 +13,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Date;
 import java.util.EventListener;
+import java.util.GregorianCalendar;
 
 public class CalendarView extends JPanel implements PropertyChangeListener {
 	private PersonRenderer listrenderer;
@@ -261,26 +263,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	}
 	
 	public void updateView(){
-		List<Appointment> mondayAppointment = this.model.getMonday();
-		List<Appointment> tuesdayAppointment = this.model.getTuesday();
-		List<Appointment> wednesdayAppointment = this.model.getWednesday();
-		List<Appointment> thursdayAppointment = this.model.getThursday();
-		List<Appointment> fridayAppointment = this.model.getFriday();
-		List<Appointment> saturdayAppointment = this.model.getSaturday();
-		List<Appointment> sundayAppointment = this.model.getSunday();
-		List<User> users = this.model.getUsers();
-		int week = this.model.getWeek();
-		Date monday = this.model.getMondayDate();
-		Date tuesday = this.model.getTuesdayDate();
-		Date wednesday = this.model.getWednesdayDate();
-		Date thursday = this.model.getThursdayDate();
-		Date friday = this.model.getFridayDate();
-		Date saturday = this.model.getSaturdayDate();
-		Date sunday = this.model.getSundayDate();
-		
-		this.monLabel.setText(monday);
-		
-		
+		java.util.List<java.util.List<Appointment>> appointments = model.getAppointments();
+		//java.util.List<User> users = this.model.getUsers();
+		//Date[] days = model.getDays();
+		int weekNumber = model.getWeek();
 	}
 	
 	public void setModel (Calendar calendar){

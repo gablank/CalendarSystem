@@ -57,6 +57,19 @@ public class Utilities {
 		return null;
 	}
 
+	public static int getNumberOfWeeksInYear(int year) {
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		cal.set(java.util.Calendar.YEAR, year);
+		cal.set(java.util.Calendar.MONTH, java.util.Calendar.DECEMBER);
+		cal.set(java.util.Calendar.DAY_OF_MONTH, 31);
+
+		int ordinalDay = cal.get(java.util.Calendar.DAY_OF_YEAR);
+		int weekDay = cal.get(java.util.Calendar.DAY_OF_WEEK) - 1; // Sunday = 0
+		int numberOfWeeks = (ordinalDay - weekDay + 10) / 7;
+
+		return numberOfWeeks;
+	}
+
 	public static String dateToFormattedString(Date date) {
 		GregorianCalendar gregorianCalendar = new GregorianCalendar();
 		gregorianCalendar.setTime(date);
