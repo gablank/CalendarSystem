@@ -5,8 +5,10 @@ import fellesprosjekt.gruppe30.Controller.LoginController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class LoginView extends JPanel {
+public class LoginView extends JPanel implements KeyListener {
 	private JLabel         usernameLabel, passwordLabel, spaceLabel, notifier;
 	private JTextField     usernameTextField;
 	private JPasswordField passwordTextField;
@@ -30,12 +32,14 @@ public class LoginView extends JPanel {
 
 		spaceLabel = new JLabel("      ");
 		// username
-		usernameLabel = new JLabel("Username:");
+		usernameLabel = new JLabel("E-mail:");
 		usernameTextField = new JTextField(20);
+		usernameTextField.addKeyListener(this);
 
 		//password
 		passwordLabel = new JLabel("Password:");
 		passwordTextField = new JPasswordField(20);
+		passwordTextField.addKeyListener(this);
 
 		//notifier
 		notifier = new JLabel("     Wrong username/password");
@@ -103,6 +107,25 @@ public class LoginView extends JPanel {
 		notifier.setVisible(true);
 	}
 
+
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {	
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		int key=e.getKeyCode();
+		if (e.getSource().equals(usernameTextField) || e.getSource().equals(passwordTextField)){
+			if(key==KeyEvent.VK_ENTER){
+				loginButton.doClick();
+			}
+		}
+	}
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+	}
+	
 	public static void main(String[] args) {
 		LoginView panel = new LoginView();
 		panel.setVisible(true);
