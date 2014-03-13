@@ -60,6 +60,7 @@ public class ClientHandler extends Network {
 						}
 
 						send(response);
+						sendAllModels();
 
 					} else {
 						System.out.println("a login message did not have the required fields: " + message.toString());
@@ -312,6 +313,28 @@ public class ClientHandler extends Network {
 
 		} else {
 			System.out.println("a message had no type field: " + message.toString());
+		}
+	}
+
+	private void sendAllModels() {
+		for (User user : server.getUsers()) {
+			send(user.getJSON());
+		}
+
+		for (MeetingRoom meetingRoom : server.getMeetingRooms()) {
+			send(meetingRoom.getJSON());
+		}
+
+		for (Appointment appointment : server.getAppointments()) {
+			send(appointment.getJSON());
+		}
+
+		for (Alarm alarm : server.getAlarms()) {
+			send(alarm.getJSON());
+		}
+
+		for (Group group : server.getGroups()) {
+			send(group.getJSON());
 		}
 	}
 }
