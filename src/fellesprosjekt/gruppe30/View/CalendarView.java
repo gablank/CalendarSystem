@@ -1,8 +1,10 @@
 package fellesprosjekt.gruppe30.View;
 
 
+import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
+import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.User;
 
 import javax.swing.*;
@@ -16,14 +18,15 @@ import java.util.EventListener;
 import java.util.GregorianCalendar;
 
 public class CalendarView extends JPanel implements PropertyChangeListener {
-	private PersonRenderer listrenderer;
-	private JButton        addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
-	private JComboBox 	   users;
-	private JLabel    	   weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
-	private JList<User>    userCalendars;
-	private JPanel         monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
-	private JFrame         frame;
-	private Calendar       model;
+	private PersonRenderer      listrenderer;
+	private JButton             addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
+	private JComboBox 	        users;
+	private JLabel    	        weekLabel, showCalendarsFor, monLabel, tueLabel, wedLabel, thuLabel, friLabel, satLabel, sunLabel;
+	private JList<InternalUser> userCalendars;
+	private JPanel              monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
+	private JFrame      		frame;
+	private Calendar      		model;
+	private JScrollPane 		userCalendarsScroller;
 
 	public CalendarView() {
 		GridBagConstraints c = new GridBagConstraints();
@@ -44,15 +47,17 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		logOutButton.setPreferredSize(new Dimension(80, 25));
 
 		leftArrowButton = new JButton("<");
+		leftArrowButton.setName("prev_week");
 		leftArrowButton.setPreferredSize(new Dimension(41, 20));
 
 		rightArrowButton = new JButton(">");
+		rightArrowButton.setName("next_week");
 		rightArrowButton.setPreferredSize(new Dimension(41, 20));
 
-		userCalendars = new JList<User>();
-		JScrollPane userCalendarsScroller = new JScrollPane(userCalendars);
+		userCalendars = new JList<InternalUser>();
+		userCalendarsScroller = new JScrollPane(userCalendars);
 		userCalendarsScroller.setPreferredSize(new Dimension(140, 150));
-		
+
 		users = new JComboBox();
 		users.setPreferredSize(new Dimension(140, 25));
 
@@ -205,25 +210,25 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		for(int i = 0; i < 4; i++) {
-			AppointmentSummaryView asv = new AppointmentSummaryView();
-			/*
-			 * TODO add MouseListener : asv.addListener(Calendarcontroller cc) || asv.addListener(client.getCalendarController)
-			 */
-			monAppointment.add(asv);
-		}
-		for(int i = 0; i < 5; i++) {
-			AppointmentSummaryView asv = new AppointmentSummaryView();
-			/*
-			 * TODO add MouseListener : asv.addListener(Calendarcontroller cc) || asv.addListener(client.getCalendarController)
-			 */
-			tueAppointment.add(asv);
-		}
-		wedAppointment.add(new AppointmentSummaryView());
-		wedAppointment.add(new AppointmentSummaryView());
-		thuAppointment.add(new AppointmentSummaryView());
+//		for(int i = 0; i < 4; i++) {
+//			AppointmentSummaryView asv = new AppointmentSummaryView();
+//			/*
+//			 * TODO add MouseListener : asv.addListener(Calendarcontroller cc) || asv.addListener(client.getCalendarController)
+//			 */
+//			monAppointment.add(asv);
+//		}
+//		for(int i = 0; i < 5; i++) {
+//			AppointmentSummaryView asv = new AppointmentSummaryView();
+//			/*
+//			 * TODO add MouseListener : asv.addListener(Calendarcontroller cc) || asv.addListener(client.getCalendarController)
+//			 */
+//			tueAppointment.add(asv);
+//		}
+//		wedAppointment.add(new AppointmentSummaryView());
+//		wedAppointment.add(new AppointmentSummaryView());
+//		thuAppointment.add(new AppointmentSummaryView());
 		
-		weekLabel.setText("week 10");
+		weekLabel.setText("Week 10");
 		monLabel.setText("Mon 3.3");
 		tueLabel.setText("Tue 4.3");
 		wedLabel.setText("Wed 5.3");
@@ -265,9 +270,53 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	
 	public void updateView(){
 		java.util.List<java.util.List<Appointment>> appointments = model.getAppointments();
-		//java.util.List<User> users = this.model.getUsers();
-		//Date[] days = model.getDays();
+		String[] labels = model.getDays();
 		int weekNumber = model.getWeek();
+
+		weekLabel.setText("Week " + Integer.toString(weekNumber));
+		monLabel.setText(labels[0]);
+		tueLabel.setText(labels[1]);
+		wedLabel.setText(labels[2]);
+		thuLabel.setText(labels[3]);
+		friLabel.setText(labels[4]);
+		satLabel.setText(labels[5]);
+		sunLabel.setText(labels[6]);
+
+		monAppointment.removeAll();
+		tueAppointment.removeAll();
+		wedAppointment.removeAll();
+		thuAppointment.removeAll();
+		friAppointment.removeAll();
+		satAppointment.removeAll();
+		sunAppointment.removeAll();
+
+		for(Appointment appointment : appointments.get(0)) {
+			monAppointment.add(new AppointmentSummaryView(appointment));
+		}
+
+		for(Appointment appointment : appointments.get(1)) {
+			tueAppointment.add(new AppointmentSummaryView(appointment));
+		}
+
+		for(Appointment appointment : appointments.get(2)) {
+			wedAppointment.add(new AppointmentSummaryView(appointment));
+		}
+
+		for(Appointment appointment : appointments.get(3)) {
+			thuAppointment.add(new AppointmentSummaryView(appointment));
+		}
+
+		for(Appointment appointment : appointments.get(4)) {
+			friAppointment.add(new AppointmentSummaryView(appointment));
+		}
+
+		for(Appointment appointment : appointments.get(5)) {
+			satAppointment.add(new AppointmentSummaryView(appointment));
+		}
+
+		for(Appointment appointment : appointments.get(6)) {
+			sunAppointment.add(new AppointmentSummaryView(appointment));
+		}
 	}
 	
 	public void setModel (Calendar calendar){

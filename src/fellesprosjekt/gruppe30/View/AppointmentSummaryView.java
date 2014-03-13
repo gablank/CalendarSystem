@@ -2,9 +2,7 @@ package fellesprosjekt.gruppe30.View;
 
 import fellesprosjekt.gruppe30.Controller.CalendarController;
 import fellesprosjekt.gruppe30.Controller.LoginController;
-import fellesprosjekt.gruppe30.Model.InternalUser;
-import fellesprosjekt.gruppe30.Model.PersonListModel;
-import fellesprosjekt.gruppe30.Model.User;
+import fellesprosjekt.gruppe30.Model.*;
 
 import javax.swing.*;
 
@@ -21,8 +19,11 @@ public class AppointmentSummaryView extends JPanel {
 	private PersonRenderer  listrenderer;
 	private PersonListModel personListModel;
 	private int             userCount = 3;
+	private Appointment     model;
 
-	public AppointmentSummaryView() {
+	public AppointmentSummaryView(Appointment model) {
+		this.model = model;
+
 		GridBagConstraints c = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 
@@ -104,10 +105,13 @@ public class AppointmentSummaryView extends JPanel {
 		timeLabel.setText("12:15 - 12:45");
 
 		personListModel = new PersonListModel();
-		personListModel.addElement(new InternalUser("email", "Jonathan", "Cinderella"));
-		for(int i = 0; i < userCount - 1; i++) {
-			personListModel.addElement(new InternalUser("email", "Emil", "Heien"));
+		for(Attendant attendant : this.model.getAttendants()) {
+			personListModel.addElement(attendant.getUser());
 		}
+
+		/*for(int i = 0; i < userCount - 1; i++) {
+			personListModel.addElement(new InternalUser("email", "Emil", "Heien"));
+		} */
 		this.setPersonListModel(personListModel);
 		frame.pack();
 		//System.out.println(participants.getModel().getSize());
@@ -141,8 +145,8 @@ public class AppointmentSummaryView extends JPanel {
 
 
 	public static void main(String[] args) {
-		AppointmentSummaryView view = new AppointmentSummaryView();
-		view.setVisible(true);
+		//AppointmentSummaryView view = new AppointmentSummaryView();
+		//view.setVisible(true);
 
 	}
 

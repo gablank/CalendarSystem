@@ -3,9 +3,7 @@ package fellesprosjekt.gruppe30.Model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Appointment {
 	private int             id;
@@ -190,5 +188,23 @@ public class Appointment {
 		this.room = appointment.getMeetingRoom();
 		this.attendants = appointment.getAttendants();
 		this.lastUpdated = appointment.getLastUpdated();
+	}
+
+	public int getYear() {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(start);
+		return cal.get(java.util.Calendar.YEAR);
+	}
+
+	public int getWeek() {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(start);
+		return cal.get(java.util.Calendar.WEEK_OF_YEAR);
+	}
+
+	public int getDayOfWeek() {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(start);
+		return cal.get(java.util.Calendar.DAY_OF_WEEK);
 	}
 }

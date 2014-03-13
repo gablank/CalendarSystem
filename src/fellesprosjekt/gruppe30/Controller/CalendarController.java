@@ -2,6 +2,7 @@ package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Client;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -19,10 +20,10 @@ public class CalendarController implements ActionListener, MouseListener {
 
 		if(cmd.equalsIgnoreCase("log out")) {
 			client.logout();
-		} else if(cmd.equalsIgnoreCase(">")) {
-			//client.getCalendar().nextWeek();
-		} else if(cmd.equalsIgnoreCase("<")) {
-			//client.getCalendar().previousWeek();
+		} else if(actionEvent.getSource() instanceof JButton && ((JButton) actionEvent.getSource()).getName().equals("next_week")) {
+			client.getCalendar().nextWeek();
+		} else if(actionEvent.getSource() instanceof JButton && ((JButton) actionEvent.getSource()).getName().equals("prev_week")) {
+			client.getCalendar().previousWeek();
 		} else if(cmd.equalsIgnoreCase("new appointment")) {
 			client.newAppointment();
 		} else if(cmd.equalsIgnoreCase("add")) {

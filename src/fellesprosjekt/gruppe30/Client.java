@@ -54,11 +54,11 @@ public class Client extends Application {
 		this.loginView = new LoginView();
 		this.loginView.addListener(loginController);
 
-		this.calendar = new Calendar();
-		this.calendarController = new CalendarController(this);
 		this.calendarView = new CalendarView();
+		this.calendar = new Calendar(this);
+		this.calendarView.setModel(this.calendar);
+		this.calendarController = new CalendarController(this);
 		this.calendarView.addListener(calendarController);
-		//this.calendar.addPropertyChangeSuppertListener(calendarView);
 
 		this.appointmentView = new AppointmentView();
 		this.bookMeetingRoomView = new BookMeetingRoomView();

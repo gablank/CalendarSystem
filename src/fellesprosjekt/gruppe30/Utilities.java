@@ -69,20 +69,30 @@ public class Utilities {
 
 		return numberOfWeeks;
 	}
-
 	public static String dateToFormattedString(Date date) {
+		return Utilities.dateToFormattedString(date, true);
+	}
+
+	public static String dateToFormattedString(Date date, boolean displayYear) {
+		String res = "";
+
 		GregorianCalendar gregorianCalendar = new GregorianCalendar();
 		gregorianCalendar.setTime(date);
 		String day = Integer.toString(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
 		if(day.length() == 1) {
 			day = "0" + day;
 		}
-		String month = Integer.toString(gregorianCalendar.get(Calendar.MONTH));
+		res += day;
+		String month = Integer.toString(gregorianCalendar.get(Calendar.MONTH) + 1);
 		if(month.length() == 1) {
 			month = "0" + month;
 		}
-		String year = Integer.toString(gregorianCalendar.get(Calendar.YEAR) - 2000);
-		return day + "." + month + "." + year;
+		res += "." + month;
+		if(displayYear) {
+			res += "." + Integer.toString(gregorianCalendar.get(Calendar.YEAR));
+		}
+
+		return res;
 	}
 
 	public static String timeToFormattedString(Date date) {
