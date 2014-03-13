@@ -693,7 +693,7 @@ public class Database {
 						while(members.next()) {
 							userEmail = members.getString("user_email");
 							newMember = Utilities.getUserByEmail(userEmail, users);
-							newGroup.addMember(newMember);
+							newGroup.addMember((InternalUser) newMember);
 						}
 					}
 
@@ -1038,6 +1038,7 @@ public class Database {
 		projectWork.addUser(espen);
 		projectWork.addGroup(jsGroup);
 
+		
 
 		/*
 		Insert into database
