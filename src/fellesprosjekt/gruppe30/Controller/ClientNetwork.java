@@ -216,13 +216,21 @@ public class ClientNetwork extends Network {
 					if ("change".equals(action)) {
 						int id = message.getInt("id");
 						appointment.setId(id);
+
+						Appointment oldAppointment = Utilities.getAppointmentById(id, client.getAppointments());
 						if (Utilities.getAppointmentById(id, client.getAppointments()) == null) {
 							System.out.println("failed handling an change appointment message, the appointment with specified id could not be found.");
+							return;
 						}
-					}
 
-					client.addAppointment(appointment);
-					System.out.println("successfully added appointment!");
+						oldAppointment.copyAllFrom(appointment);
+						System.out.println("successfully changed an appointment!");
+
+					} else {
+
+						client.addAppointment(appointment);
+						System.out.println("successfully added an appointment!");
+					}
 
 				} else if ("remove".equals(action) && message.has("id")) {
 					int id = message.getInt("id");
