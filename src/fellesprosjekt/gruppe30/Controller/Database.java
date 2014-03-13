@@ -46,6 +46,28 @@ public class Database {
 		return instance;
 	}
 
+	public boolean loadDatabase(Server server) {
+		List<User> users;
+		List<MeetingRoom> meetingRooms;
+		List<Appointment> appointments;
+		List<Alarm> alarms;
+		List<Group> groups;
+
+		users = this.getUsers();
+		meetingRooms = this.getMeetingRooms();
+		appointments = this.getAppointments(users, meetingRooms);
+		alarms = this.getAlarms(users, appointments);
+		groups = this.getGroups(users);
+
+		server.setUsers(users);
+		server.setAppointments(appointments);
+		server.setMeetingRooms(meetingRooms);
+		server.setAlarms(alarms);
+		server.setGroups(groups);
+
+		return true;
+	}
+
 	/**
 	 * @param user the user to insert into the database
 	 * @return true if success
@@ -644,28 +666,6 @@ public class Database {
 		return new java.sql.Timestamp(date.getTime());
 	}
 
-	public boolean loadDatabase(Server server) {
-		List<User> users;
-		List<MeetingRoom> meetingRooms;
-		List<Appointment> appointments;
-		List<Alarm> alarms;
-		List<Group> groups;
-
-		users = this.getUsers();
-		meetingRooms = this.getMeetingRooms();
-		appointments = this.getAppointments(users, meetingRooms);
-		alarms = this.getAlarms(users, appointments);
-		groups = this.getGroups(users);
-
-		server.setUsers(users);
-		server.setAppointments(appointments);
-		server.setMeetingRooms(meetingRooms);
-		server.setAlarms(alarms);
-		server.setGroups(groups);
-
-		return true;
-	}
-
 	private List<Group> getGroups(List<User> users) {
 		List<Group> groups = new ArrayList<Group>();
 		String query = "SELECT * FROM groups;";
@@ -774,7 +774,7 @@ public class Database {
 						String lastName = results.getString("last_name");
 
 						InternalUser user = new InternalUser(email, firstName, lastName);
-						user.setPassword(password);
+						user.setPassword(password, false);
 						users.add(user);
 					} catch(SQLException e) {
 						e.printStackTrace();

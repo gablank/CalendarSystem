@@ -39,8 +39,16 @@ public class InternalUser extends User {
 	}
 
 	// Should only be used by the server!
+	public void setPassword(String password, boolean hash) {
+		if(hash) {
+			this.password = InternalUser.hashPassword(password);
+		} else {
+			this.password = password;
+		}
+	}
+
 	public void setPassword(String password) {
-		this.password = password;
+		this.setPassword(password, true);
 	}
 
 	// Should only be used by the server!
