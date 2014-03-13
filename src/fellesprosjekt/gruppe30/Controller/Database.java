@@ -176,7 +176,7 @@ public class Database {
 	/**
 	 * @param alarm object to insert into (or update) db
 	 */
-	private void insertAlarm(Alarm alarm) {
+	private boolean insertAlarm(Alarm alarm) {
 		this.insertUser(alarm.getUser());
 		String query;
 		query = "INSERT INTO alarms ";
@@ -192,12 +192,12 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			this.updateAlarm(alarm.getUser().getEmail(), alarm.getAppointment().getId(), alarm.getDate());
-			return;
+			return this.updateAlarm(alarm);
 		}
+		return true;
 	}
 
-	private void updateAlarm(String userEmail, int appointmentId, java.util.Date date) {
+	private boolean updateAlarm(Alarm alarm) {
 		String query;
 		query = "UPDATE alarms ";
 		query += "SET time = ? ";
@@ -205,22 +205,24 @@ public class Database {
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setTimestamp(1, this.dateToSqlTimestamp(date));
-			preparedStatement.setInt(2, appointmentId);
-			preparedStatement.setString(3, userEmail);
+			preparedStatement.setTimestamp(1, this.dateToSqlTimestamp(alarm.getDate()));
+			preparedStatement.setInt      (2, alarm.getAppointment().getId()          );
+			preparedStatement.setString   (3, alarm.getUser().getEmail()              );
 			preparedStatement.executeUpdate();
 
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	/**
 	 * @param meetingRoom the MeetingRoom to insert into the database
 	 * @param appointment Appointment to insert into the database
 	 */
-	private void insertMeetingRoomReservation(MeetingRoom meetingRoom, Appointment appointment) {
+	private boolean insertMeetingRoomReservation(MeetingRoom meetingRoom, Appointment appointment) {
 		String query;
 		query = "INSERT INTO meeting_room_reservations ";
 		query += "(meeting_room_id, appointment_id) ";
@@ -235,7 +237,9 @@ public class Database {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -272,6 +276,7 @@ public class Database {
 				preparedStatement.close();
 			} catch(SQLException a) {
 				a.printStackTrace();
+				return false;
 			}
 		}
 
@@ -527,7 +532,7 @@ public class Database {
 		}
 	}
 
-	public void deleteUser(User user) {
+	public boolean deleteUser(User user) {
 		String query = "DELETE FROM users WHERE email = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -535,10 +540,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete user with email: " + user.getEmail());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteMeetingRoom(MeetingRoom meetingRoom) {
+	public boolean deleteMeetingRoom(MeetingRoom meetingRoom) {
 		String query = "DELETE FROM meeting_rooms WHERE id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -546,10 +553,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete meeting room with id: " + meetingRoom.getId());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteGroup(Group group) {
+	public boolean deleteGroup(Group group) {
 		String query = "DELETE FROM groups WHERE name = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -557,10 +566,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete group with name: " + group.getName());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteGroupMember(Group group, User user) {
+	public boolean deleteGroupMember(Group group, User user) {
 		String query = "DELETE FROM group_members WHERE user_email = ? AND group_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -569,10 +580,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete group member with email: " + user.getEmail());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteAppointment(Appointment appointment) {
+	public boolean deleteAppointment(Appointment appointment) {
 		String query = "DELETE FROM appointments WHERE id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -580,10 +593,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete appointment with id: " + Integer.toString(appointment.getId()));
+			return false;
 		}
+		return true;
 	}
 
-	private void deleteMeetingRoomReservation(Appointment appointment) {
+	private boolean deleteMeetingRoomReservation(Appointment appointment) {
 		String query = "DELETE FROM meeting_room_reservations WHERE meeting_room_id = ? AND appointment_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -592,10 +607,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete meeting room reservation for appointment with id: " + Integer.toString(appointment.getId()));
+			return false;
 		}
+		return true;
 	}
 
-	private void deleteAttendant(Attendant attendant) {
+	private boolean deleteAttendant(Attendant attendant) {
 		String query = "DELETE FROM attendants WHERE user_email = ? AND appointment_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -604,10 +621,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete attendant with user_email: " + attendant.getUser().getEmail());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteAlarm(Alarm alarm) {
+	public boolean deleteAlarm(Alarm alarm) {
 		String query = "DELETE FROM alarms WHERE user_email = ? AND appointment_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -616,7 +635,9 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete alarm for user " + alarm.getUser().getEmail());
+			return false;
 		}
+		return true;
 	}
 
 	private java.sql.Timestamp dateToSqlTimestamp(java.util.Date date) {
