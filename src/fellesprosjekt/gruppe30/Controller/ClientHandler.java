@@ -225,23 +225,6 @@ public class ClientHandler extends Network {
 					break;
 				}
 
-				case "meetingRoom": {
-					if (message.has("id")
-							&& message.has("roomSize")) {
-
-						int id       = message.getInt("id");
-						int roomSize = message.getInt("roomSize");
-
-						MeetingRoom meetingRoom = new MeetingRoom(roomSize);
-						meetingRoom.setId(id);
-
-						server.addMeetingRoom(meetingRoom);
-						System.out.println("successfully added meetingroom!");
-					}
-
-					break;
-				}
-
 				case "alarm": {
 					if (message.has("action"))
 						action = message.getString("action");
