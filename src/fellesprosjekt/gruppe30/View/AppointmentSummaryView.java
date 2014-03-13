@@ -16,7 +16,6 @@ public class AppointmentSummaryView extends JPanel {
 	private PersonRenderer  listrenderer;
 	private PersonListModel personListModel;
 	private int             userCount = 3;
-	//userCount should be (participants.getModel().getSize());
 
 	public AppointmentSummaryView() {
 		GridBagConstraints c = new GridBagConstraints();
@@ -108,7 +107,13 @@ public class AppointmentSummaryView extends JPanel {
 		frame.pack();
 		//System.out.println(participants.getModel().getSize());
 		//end test code
+		
 
+	}
+	
+	public void updateFrame(){
+		userCount = (participants.getModel().getSize());
+		this.frame.repaint();
 	}
 
 	public void setVisible(boolean visible) {
@@ -124,7 +129,6 @@ public class AppointmentSummaryView extends JPanel {
 	public static void main(String[] args) {
 		AppointmentSummaryView view = new AppointmentSummaryView();
 		view.setVisible(true);
-
 
 	}
 

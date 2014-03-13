@@ -3,6 +3,9 @@ package fellesprosjekt.gruppe30.View;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
+
+import fellesprosjekt.gruppe30.Model.MeetingRoom;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -13,8 +16,9 @@ import java.util.EventListener;
 //TODO: skaler bedre(?), 
 public class BookMeetingRoomView extends JPanel {
 	//Salvador Fali aka Kush Wagner
-	private JList               roomList;
-	private JFormattedTextField startText, endText, dateText, capacityText;
+	private JList<MeetingRoom>  roomList;
+	private JFormattedTextField startText, endText, dateText;// capacityText;
+	private JTextField          capacityText;
 	private JLabel              startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
 	private JScrollPane         roomListScroll;
 	private JButton             okButton, quitButton;
@@ -40,11 +44,12 @@ public class BookMeetingRoomView extends JPanel {
 		//Layout elements
 		spaceLabel = new JLabel("    ");
 
-		roomLabel = new JLabel("Rooms availible:");
-		roomList = new JList();
-		roomList.setPreferredSize(new Dimension(200, 200));
+		roomLabel = new JLabel("Rooms available:");
+		roomLabel.setAlignmentX(CENTER_ALIGNMENT);
+		roomList = new JList<MeetingRoom>();
+		//roomList.setPreferredSize(new Dimension(150, 200));
 		roomListScroll = new JScrollPane(roomList);
-		roomList.setVisible(true);
+		roomListScroll.setPreferredSize(new Dimension(180, 120));
 
 		startLabel = new JLabel("Start:");
 		MaskFormatter startFormatter;
@@ -54,9 +59,9 @@ public class BookMeetingRoomView extends JPanel {
 			startText = new JFormattedTextField(startFormatter);
 			startText.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch(ParseException e) {
-			startText.setText("hei");
+			e.printStackTrace();
 		}
-		startText.setColumns(5);
+		startText.setPreferredSize(new Dimension(70,20));
 
 		endLabel = new JLabel("End:");
 		MaskFormatter endFormatter;
@@ -66,10 +71,9 @@ public class BookMeetingRoomView extends JPanel {
 			endText = new JFormattedTextField(endFormatter);
 			endText.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch(ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		endText.setColumns(5);
+		endText.setPreferredSize(new Dimension(70, 20));
 
 		dateLabel = new JLabel("Date:");
 		MaskFormatter dateFormatter;
@@ -77,26 +81,21 @@ public class BookMeetingRoomView extends JPanel {
 			dateFormatter = new MaskFormatter("##.##.####");
 			dateFormatter.setPlaceholder("0000000000");
 			dateText = new JFormattedTextField(dateFormatter);
+			dateText.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch(ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		dateText.setPreferredSize(new Dimension(70, 20));
 
 		capacityLabel = new JLabel("Capacity:");
-		MaskFormatter capacityFormatter;
-		try {
-			capacityFormatter = new MaskFormatter("##");
-			capacityFormatter.setPlaceholder("0");
-			capacityText = new JFormattedTextField(capacityFormatter);
-			capacityText.setHorizontalAlignment(JFormattedTextField.CENTER);
-		} catch(ParseException e) {
-			capacityText.setText("hei");
-		}
-		capacityText.setColumns(2);
+		capacityText = new JTextField("0");
+		capacityText.setHorizontalAlignment(JFormattedTextField.CENTER);
+		capacityText.setPreferredSize(new Dimension(70, 20));
 
 		okButton = new JButton("Ok");
 		quitButton = new JButton("Quit");
 
+		
 		cRight.gridy = 0;
 		cMiddle.gridy = 0;
 		cLeft.gridy = 0;
@@ -109,7 +108,6 @@ public class BookMeetingRoomView extends JPanel {
 		roomPanel.add(roomListScroll, cLeft);
 		add(roomPanel, cLeft);
 		cLeft.gridheight = 1;
-
 
 		add(startLabel, cMiddle);
 		add(startText, cRight);
@@ -132,19 +130,22 @@ public class BookMeetingRoomView extends JPanel {
 		add(capacityLabel, cMiddle);
 		add(capacityText, cRight);
 
+		cRight.gridy = 4;
+		add(spaceLabel, cRight);
 		cRight.gridy = 5;
 		JPanel okQuitPanel = new JPanel();
 		okQuitPanel.setLayout(new BoxLayout(okQuitPanel, BoxLayout.X_AXIS));
 		okQuitPanel.add(okButton, cLeft);
 		okQuitPanel.add(spaceLabel, cLeft);
 		okQuitPanel.add(quitButton, cRight);
+		cRight.gridheight = 2;
 		add(okQuitPanel, cRight);
 
 		frame = new JFrame("Reserve Room");
 		frame.add(this);
 		frame.setVisible(false);
-		frame.setSize(500, 250);
 		frame.setResizable(false);
+		frame.setSize(500, 250);
 		frame.setLocationRelativeTo(null);
 
 	}
