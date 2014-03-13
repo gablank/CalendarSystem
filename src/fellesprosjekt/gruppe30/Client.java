@@ -87,6 +87,7 @@ public class Client {
 		users = new ArrayList<User>();
 		meetingRooms = new ArrayList<MeetingRoom>();
 		alarms = new ArrayList<Alarm>();
+		groups = new ArrayList<Group>();
 		InternalUser test = new InternalUser("Anders", "Wenhaug", "anders@wenhaug.no");
 		users.add(test);
 		// end test code

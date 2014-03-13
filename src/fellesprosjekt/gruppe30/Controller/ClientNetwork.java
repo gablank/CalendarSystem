@@ -249,6 +249,9 @@ public class ClientNetwork extends Network {
 
 					client.addMeetingRoom(meetingRoom);
 					System.out.println("successfully added meetingroom!");
+
+				} else {
+					System.out.println("a meetingRoom message did not have the required fields: " + message.toString());
 				}
 				
 				break;
@@ -288,11 +291,10 @@ public class ClientNetwork extends Network {
 						long time = message.getLong("time");
 						Date date = new Date(time);
 						
-
+						
 						Utilities.getAlarm(appointment, user, client.getAlarms()).setDate(date);
 						System.out.println("successfully changed alarm!");
-					
-					
+
 					} else if ("remove".equals(action)) {
 						client.removeAlarm(appointment, user);
 						System.out.println("successfully removed alarm!");
@@ -304,6 +306,29 @@ public class ClientNetwork extends Network {
 
 				} else {
 					System.out.println("an alarm message did not have the required fields: " + message.toString());
+				}
+				
+				break;
+				
+			case "group":
+				if (message.has("name") && message.has("members")) {
+
+					String name = message.getString("name");
+					JSONArray memberEmails = message.getJSONArray("members");
+
+					Group group = new Group(name);
+					
+					for (int i = 0; i < memberEmails.length(); i++) {
+						String email = memberEmails.getString(i);
+						User member = Utilities.getUserByEmail(email, client.getUsers());
+						group.addMember(member);
+					}
+
+					client.addGroup(group);
+					System.out.println("successfully added group!");
+
+				} else {
+					System.out.println("a group message did not have the required fields: " + message.toString());
 				}
 				
 				break;
