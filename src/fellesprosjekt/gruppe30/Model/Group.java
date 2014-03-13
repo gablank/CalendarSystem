@@ -1,8 +1,10 @@
 package fellesprosjekt.gruppe30.Model;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
@@ -13,6 +15,7 @@ public class Group {
 
 	public Group(String name) {
 		this.name = name;
+		members = new ArrayList<User>();
 	}
 
 	public int getId() {
@@ -44,6 +47,14 @@ public class Group {
 	}
 
 	public JSONObject getJSON() {
-		return null;
+		JSONObject obj = new JSONObject();
+		obj.put("type", "group");
+		obj.put("name", name);
+		JSONArray members = new JSONArray();
+		for (User member : this.members) {
+			members.put(member.getEmail());
+		}
+		obj.put("members", members);
+		return obj;
 	}
 }
