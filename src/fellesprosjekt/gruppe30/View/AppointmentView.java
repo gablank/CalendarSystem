@@ -393,4 +393,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		AppointmentView view = new AppointmentView();
 		view.setVisible(true);
 	}
+
+	public Appointment getModel() {
+		return model;
+	}
 }

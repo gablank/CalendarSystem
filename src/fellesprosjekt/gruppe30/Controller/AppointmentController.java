@@ -2,8 +2,12 @@ package fellesprosjekt.gruppe30.Controller;
 
 
 import fellesprosjekt.gruppe30.Client;
+import fellesprosjekt.gruppe30.Model.Appointment;
 
 import javax.swing.event.ListSelectionListener;
+
+import org.json.JSONObject;
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 
@@ -20,11 +24,23 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		System.out.println(cmd);
 		if(cmd.equals("save")) {
-			// Save
+			Appointment appointment = client.getAppointmentView().getModel();
+			JSONObject message = appointment.getJSON();
+			if (appointment.getId() == -1) {
+				message.put("action", "new");
+			} else {
+				message.put("action", "change");
+			}
+			
+			client.network.send(appointment.getJSON());
+			client.close(Client.ViewEnum.APPOINTMENT);
+
 		} else if(cmd.equals("select...")) {
 			client.open(Client.ViewEnum.BOOKMEETINGROOM);
+
 		} else if(cmd.equals("cancel")) {
 			client.close(Client.ViewEnum.APPOINTMENT);
+
 		} else if(cmd.equals("cancel")) {
 
 		} else if(cmd.equals("cancel")) {
