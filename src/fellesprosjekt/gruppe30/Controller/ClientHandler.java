@@ -78,7 +78,7 @@ public class ClientHandler extends Network {
 			} else {
 				response.put("status", "wrongCombination");
 				response.put("statusMessage", "The username and password combination was wrong!");
-				System.out.println("Someone tried logging in as " + username + ", but the password was wrong!");
+				System.out.println("Someone tried logging in as " + usernameReceived + ", but the password was wrong!");
 			}
 
 			send(response);

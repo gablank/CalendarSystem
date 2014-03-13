@@ -51,12 +51,9 @@ public class Server extends Application {
 	}
 
 	public boolean verifyLogin(String username, String password) {
-		for(User user : users) {
-			if(user instanceof InternalUser && user.getEmail().equals(username)) {
-				if(((InternalUser) user).getPassword().equals(password)) {
-					return true;
-				}
-			}
+		User user = Utilities.getUserByEmail(username, users);
+		if(user != null && user instanceof InternalUser && ((InternalUser) user).getPassword().equals(password)) {
+			return true;
 		}
 		return false;
 	}
