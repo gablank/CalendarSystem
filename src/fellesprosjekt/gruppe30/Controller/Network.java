@@ -94,7 +94,7 @@ public abstract class Network implements Runnable {
 		try {
 			String stringObj = incomingStream.readUTF();
 			result = new JSONObject(stringObj);
-			System.out.println("recieved: " + result.toString());
+			System.out.println("received: " + result.toString());
 		} catch(IOException e) {
 			// System.out.println("getJsonObject threw exception: ");
 		}

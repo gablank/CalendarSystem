@@ -173,7 +173,7 @@ public class ClientNetwork extends Network {
 								ExternalAttendant externalAttendant = new ExternalAttendant((ExternalUser) user, appointment);
 								externalAttendant.setStatus(attendantStatus);
 								appointment.addAttendant(externalAttendant);
-								System.out.println("succesfully added external attendant to appointment");
+								System.out.println("successfully added external attendant to appointment");
 
 							} else if (attendantType.equals("internalAttendant")) {
 								if (attendantObj.has("visibleOnCalendar") && attendantObj.has("lastChecked")) {
@@ -187,7 +187,7 @@ public class ClientNetwork extends Network {
 									internalAttendant.setLastChecked(lastCheckedDate);
 									internalAttendant.setVisibleOnCalendar(visibleOnCalendar);
 									appointment.addAttendant(internalAttendant);
-									System.out.println("succesfully added internal attendant to appointment");
+									System.out.println("successfully added internal attendant to appointment");
 
 								} else {
 									System.out.println("failed handling an appointment message, an internal attendant did not have the required fields: " + attendantObj.toString());
