@@ -27,7 +27,7 @@ public class LoginController implements ActionListener {
 
 	public void handleLoginResponse(boolean success, String username) {
 		if(success) {
-			client.setLoggedin(username);
+			client.setLoggedIn(username);
 		} else {
 			client.getLoginView().viewNotifier();
 		}
