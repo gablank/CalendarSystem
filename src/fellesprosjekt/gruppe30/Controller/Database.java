@@ -950,28 +950,66 @@ public class Database {
 	}
 
 	public static void main(String[] args) {
-		/**
-		 * Test data
+
+		/*
+		Users
 		 */
 		InternalUser anders = new InternalUser("anders@wenhaug.no", "Anders", "Wenhaug");
-		InternalUser emil = new InternalUser("emil.schroeder@gmail.com", "Emil", "Jakobus Schroeder");
-		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
 		anders.setPassword("password");
-		emil.setPassword("password");
-		MeetingRoom meetingRoom = new MeetingRoom(8);
-		Appointment appointment = new Appointment(anders, "Test-appointment", "Test-description", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), meetingRoom);
-		InternalAttendant andersAttendant = new InternalAttendant(anders, appointment);
-		InternalAttendant emilAttendant = new InternalAttendant(emil, appointment);
-		ExternalAttendant espenAttendant = new ExternalAttendant(espen, appointment);
 
-		appointment.addAttendant(andersAttendant);
-		appointment.addAttendant(emilAttendant);
-		appointment.addAttendant(espenAttendant);
+		InternalUser easy = new InternalUser("", "Test", "User");
+		easy.setPassword("");
 
+		InternalUser emiljs = new InternalUser("emil.schroeder@gmail.com", "Emil Jakobus", "Schroeder");
+		emiljs.setPassword("password");
+
+		InternalUser emilh = new InternalUser("emil@heien.no", "Emil", "Heien");
+		emilh.setPassword("password");
+
+		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
+
+		/*
+		Meeting rooms
+		 */
+		MeetingRoom p15 = new MeetingRoom(88);
+
+		/*
+		Appointments
+		 */
+		Appointment studLan = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p15);
+		Appointment workWork = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), "REMA 1000");
+
+		/*
+		Groups
+		 */
+		Group gamings = new Group("Gamings");
+		gamings.addMember(anders);
+		gamings.addMember(emiljs);
+
+		Group espenGroup = new Group("Espen-group");
+		espenGroup.addMember(espen);
+		espenGroup.addMember(emilh);
+
+		/*
+		Add users to appointment
+		 */
+		studLan.addGroup(gamings);
+		studLan.addUser(espen);
+
+		workWork.addUser(emilh);
+
+		/*
+		Insert into database
+		 */
 		Database database = new Database();
 		database.insertUser(anders);
-		meetingRoom.setId(database.insertMeetingRoom(meetingRoom));
-		appointment.setId(database.insertAppointment(appointment));
+		database.insertUser(emiljs);
+		database.insertUser(emilh);
+		database.insertUser(espen);
+		database.insertUser(easy);
+		p15.setId(database.insertMeetingRoom(p15));
+		studLan.setId(database.insertAppointment(studLan));
+		workWork.setId(database.insertAppointment(workWork));
 		database.close();
 	}
 }
