@@ -18,9 +18,9 @@ public class CalendarController implements ActionListener {
 		if(cmd.equalsIgnoreCase("log out")) {
 			client.logout();
 		} else if(cmd.equalsIgnoreCase(">")) {
-			client.getCalendar().nextWeek();
+			//client.getCalendar().nextWeek();
 		} else if(cmd.equalsIgnoreCase("<")) {
-			client.getCalendar().previousWeek();
+			//client.getCalendar().previousWeek();
 		} else if(cmd.equalsIgnoreCase("new appointment")) {
 			client.newAppointment();
 		} else if(cmd.equalsIgnoreCase("add")) {
