@@ -21,7 +21,9 @@ public class PersonRenderer implements ListCellRenderer {
 		if(model instanceof InternalUser) {
 			String firstName = ((InternalUser) model).getFirstName();
 			String lastName = ((InternalUser) model).getLastName();
-			label = new JLabel(firstName + " " + lastName.charAt(0) + ".");
+			String firstNameStrip = firstName.substring(0, Math.min(firstName.length(), 13));
+			
+			label = new JLabel(firstNameStrip + " " + lastName.charAt(0) + ".");
 		} else {
 			label = new JLabel(((ExternalUser) model).getEmail());
 		}
@@ -37,6 +39,7 @@ public class PersonRenderer implements ListCellRenderer {
 		     *TODO logic to choose correct icon
 		     */
 		label.setIcon(accept);
+		
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 

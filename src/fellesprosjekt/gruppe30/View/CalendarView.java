@@ -44,25 +44,26 @@ public class CalendarView extends JPanel {
 		rightArrowButton.setPreferredSize(new Dimension(41, 20));
 
 		userCalendars = new JList<User>();
-		userCalendars.setPreferredSize(new Dimension(140, 150));
-
+		JScrollPane userCalendarsScroller = new JScrollPane(userCalendars);
+		userCalendarsScroller.setPreferredSize(new Dimension(140, 150));
+		
 		users = new JComboBox();
 		users.setPreferredSize(new Dimension(140, 25));
 
-		weekLabel = new JLabel("week 10");
+		weekLabel = new JLabel();
 		showCalendarsFor = new JLabel("Show calendars for:");
-		monLabel = new JLabel("Mon 3.3");
-		tueLabel = new JLabel("Tue 4.3");
-		wedLabel = new JLabel("Wed 5.3");
-		thuLabel = new JLabel("Thu 6.3");
-		friLabel = new JLabel("Fri 7.3");
-		satLabel = new JLabel("Sat 8.3");
-		sunLabel = new JLabel("Sun 9.3");
+		monLabel = new JLabel();
+		tueLabel = new JLabel();
+		wedLabel = new JLabel();
+		thuLabel = new JLabel();
+		friLabel = new JLabel();
+		satLabel = new JLabel();
+		sunLabel = new JLabel();
 
 		monAppointment = new JPanel();
 		JScrollPane monScroller = new JScrollPane(monAppointment);
 		monScroller.setFocusable(true);
-		monScroller.setPreferredSize(new Dimension(160, 500));
+		monScroller.setPreferredSize(new Dimension(155, 500));
 		monScroller.getVerticalScrollBar().setUnitIncrement(15);
 		monAppointment.setBackground(Color.WHITE);
 		monAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -71,7 +72,7 @@ public class CalendarView extends JPanel {
 		tueAppointment = new JPanel();
 		JScrollPane tueScroller = new JScrollPane(tueAppointment);
 		tueScroller.setFocusable(true);
-		tueScroller.setPreferredSize(new Dimension(160, 500));
+		tueScroller.setPreferredSize(new Dimension(155, 500));
 		tueScroller.getVerticalScrollBar().setUnitIncrement(15);
 		tueAppointment.setBackground(Color.WHITE);
 		tueAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -80,7 +81,7 @@ public class CalendarView extends JPanel {
 		wedAppointment = new JPanel();
 		JScrollPane wedScroller = new JScrollPane(wedAppointment);
 		wedScroller.setFocusable(true);
-		wedScroller.setPreferredSize(new Dimension(160, 500));
+		wedScroller.setPreferredSize(new Dimension(155, 500));
 		wedScroller.getVerticalScrollBar().setUnitIncrement(15);
 		wedAppointment.setBackground(Color.WHITE);
 		wedAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -89,7 +90,7 @@ public class CalendarView extends JPanel {
 		thuAppointment = new JPanel();
 		JScrollPane thuScroller = new JScrollPane(thuAppointment);
 		thuScroller.setFocusable(true);
-		thuScroller.setPreferredSize(new Dimension(160, 500));
+		thuScroller.setPreferredSize(new Dimension(155, 500));
 		thuScroller.getVerticalScrollBar().setUnitIncrement(15);
 		thuAppointment.setBackground(Color.WHITE);
 		thuAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -98,7 +99,7 @@ public class CalendarView extends JPanel {
 		friAppointment = new JPanel();
 		JScrollPane friScroller = new JScrollPane(friAppointment);
 		friScroller.setFocusable(true);
-		friScroller.setPreferredSize(new Dimension(160, 500));
+		friScroller.setPreferredSize(new Dimension(155, 500));
 		friScroller.getVerticalScrollBar().setUnitIncrement(15);
 		friAppointment.setBackground(Color.WHITE);
 		friAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -107,7 +108,7 @@ public class CalendarView extends JPanel {
 		satAppointment = new JPanel();
 		JScrollPane satScroller = new JScrollPane(satAppointment);
 		satScroller.setFocusable(true);
-		satScroller.setPreferredSize(new Dimension(160, 500));
+		satScroller.setPreferredSize(new Dimension(155, 500));
 		satScroller.getVerticalScrollBar().setUnitIncrement(15);
 		satAppointment.setBackground(Color.WHITE);
 		satAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -116,7 +117,7 @@ public class CalendarView extends JPanel {
 		sunAppointment = new JPanel();
 		JScrollPane sunScroller = new JScrollPane(sunAppointment);
 		sunScroller.setFocusable(true);
-		sunScroller.setPreferredSize(new Dimension(160, 500));
+		sunScroller.setPreferredSize(new Dimension(155, 500));
 		sunScroller.getVerticalScrollBar().setUnitIncrement(15);
 		sunAppointment.setBackground(Color.WHITE);
 		sunAppointment.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -133,11 +134,12 @@ public class CalendarView extends JPanel {
 		arrowPanel.add(weekLabel);
 		arrowPanel.add(rightArrowButton);
 		add(arrowPanel, c);
+		
 
 		c.gridy = 1;
 		add(showCalendarsFor, c);
 		c.gridy = 2;
-		add(userCalendars, c);
+		add(userCalendarsScroller, c);
 		c.gridy = 3;
 		add(users, c);
 		c.gridy = 4;
@@ -146,6 +148,9 @@ public class CalendarView extends JPanel {
 		addRemove.add(removeButton);
 		add(addRemove, c);
 		c.gridy = 5;
+		JLabel spaceLabel = new JLabel();
+		add(spaceLabel, c);
+		c.gridy = 6;
 		add(newAppointmentButton, c);
 		c.gridy = 7;
 		c.anchor = GridBagConstraints.SOUTHWEST;
@@ -203,6 +208,15 @@ public class CalendarView extends JPanel {
 		wedAppointment.add(new AppointmentSummaryView());
 		wedAppointment.add(new AppointmentSummaryView());
 		thuAppointment.add(new AppointmentSummaryView());
+		
+		weekLabel.setText("week 10");
+		monLabel.setText("Mon 3.3");
+		tueLabel.setText("Tue 4.3");
+		wedLabel.setText("Wed 5.3");
+		thuLabel.setText("Thu 6.3");
+		friLabel.setText("Fri 7.3");
+		satLabel.setText("Sat 8.3");
+		sunLabel.setText("Sun 9.3");
 		//end test code
 
 
