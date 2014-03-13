@@ -67,7 +67,6 @@ public class Client extends Application {
 		this.appointmentController = new AppointmentController(this);
 		this.appointmentView.addListener(this.appointmentController);
 
-
 		this.close(ViewEnum.ALL);
 		this.open(ViewEnum.LOGIN);
 
