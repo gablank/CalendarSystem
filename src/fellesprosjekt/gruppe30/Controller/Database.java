@@ -993,12 +993,18 @@ public class Database {
 		Meeting rooms
 		 */
 		MeetingRoom p15 = new MeetingRoom(88);
+		MeetingRoom p151 = new MeetingRoom(4);
+		MeetingRoom p1515 = new MeetingRoom(8);
 
 		/*
 		Appointments
 		 */
 		Appointment studLan = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p15);
 		Appointment workWork = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), "REMA 1000");
+		Appointment drekka = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
+		Appointment dota = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p151);
+		Appointment moreDota = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
+		Appointment projectWork = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
 
 		/*
 		Groups
@@ -1007,17 +1013,31 @@ public class Database {
 		gamings.addMember(anders);
 		gamings.addMember(emiljs);
 
-		Group espenGroup = new Group("Espen-group");
-		espenGroup.addMember(espen);
-		espenGroup.addMember(emilh);
-
+		Group jsGroup = new Group("JS-group");
+		jsGroup.addMember(emiljs);
+		jsGroup.addMember(emilh);
+		jsGroup.addMember(anders);
+		
 		/*
 		Add users to appointment
 		 */
 		studLan.addGroup(gamings);
 		studLan.addUser(espen);
+		studLan.addUser(emilh);
 
 		workWork.addUser(emilh);
+		
+		drekka.addGroup(jsGroup);
+		
+		dota.addUser(emilh);
+		dota.addUser(anders);
+		
+		moreDota.addUser(emilh);
+		moreDota.addUser(anders);
+		
+		projectWork.addUser(espen);
+		projectWork.addGroup(jsGroup);
+
 
 		/*
 		Insert into database
