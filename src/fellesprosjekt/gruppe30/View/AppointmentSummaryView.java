@@ -1,11 +1,16 @@
 package fellesprosjekt.gruppe30.View;
 
+import fellesprosjekt.gruppe30.Controller.CalendarController;
+import fellesprosjekt.gruppe30.Controller.LoginController;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
 
 import javax.swing.*;
+
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.io.File;
 
 public class AppointmentSummaryView extends JPanel {
@@ -123,6 +128,15 @@ public class AppointmentSummaryView extends JPanel {
 	public void setPersonListModel(PersonListModel model) {
 		this.personListModel = model;
 		participants.setModel(model);
+	}
+	
+	public void addListener(CalendarController controller) {
+		this.addMouseListener((MouseListener) controller);
+	}
+
+	public void addMouseListener(MouseListener controller) {
+		titleLabel.addMouseListener(controller);
+		timeLabel.addMouseListener(controller);
 	}
 
 
