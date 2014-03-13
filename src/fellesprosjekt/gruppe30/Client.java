@@ -131,7 +131,7 @@ public class Client extends Application {
 	public void newAppointment() {
 		open(Client.ViewEnum.APPOINTMENT);
 		Appointment newAppointment = new Appointment((InternalUser) this.loggedInUser);
-		this.appointments.add(newAppointment);
+		// this.appointments.add(newAppointment);
 		getAppointmentView().setModel(newAppointment);
 	}
 
