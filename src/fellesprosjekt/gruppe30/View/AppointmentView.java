@@ -98,6 +98,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 
 		useMeetingRoom = new JCheckBox("Use meeting room");
+		useMeetingRoom.setSelected(true);
 		hideFromCalendar = new JCheckBox("Hide from calendar");
 		setAlarm = new JCheckBox("Alarm");
 		inviteByEmail = new JCheckBox("Invite by email");
@@ -167,8 +168,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		add(useMeetingRoom, cLeft);
 		cLeft.gridy = 5;
 		add(meetingRoomField, cLeft);
+		meetingRoomField.setVisible(false);
 		add(selectRoom, cLeft);
-		selectRoom.setVisible(false);
 
 		cRight.gridx = 2;
 		cRight.gridy = 0;
@@ -359,7 +360,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		User user = (User) participants.getSelectedValue();
-		
 	}
 
 	public void setVisible(boolean visible) {
