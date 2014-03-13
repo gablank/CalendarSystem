@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
 
+import fellesprosjekt.gruppe30.Model.Calendar;
 import fellesprosjekt.gruppe30.Model.User;
 
 import javax.swing.*;
@@ -8,9 +9,11 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Date;
 import java.util.EventListener;
 
-public class CalendarView extends JPanel {
+public class CalendarView extends JPanel implements PropertyChangeListener {
 	private PersonRenderer listrenderer;
 	private JButton        addButton, removeButton, newAppointmentButton, logOutButton, leftArrowButton, rightArrowButton;
 	private JComboBox 	   users;
@@ -18,6 +21,7 @@ public class CalendarView extends JPanel {
 	private JList<User>    userCalendars;
 	private JPanel         monAppointment, tueAppointment, wedAppointment, thuAppointment, friAppointment, satAppointment, sunAppointment;
 	private JFrame         frame;
+	private Calendar       model;
 
 	public CalendarView() {
 		GridBagConstraints c = new GridBagConstraints();
@@ -245,17 +249,35 @@ public class CalendarView extends JPanel {
 	}
 
 	public void propertyChange(PropertyChangeEvent pce) {
-		if(pce.getPropertyName() == "next week") {
-			weekLabel.setText((String) pce.getNewValue());
-			/*
-			 * TODO implement next week functions
-			 */
-		} else if(pce.getPropertyName() == "previous week") {
-			weekLabel.setText((String) pce.getNewValue());
-			/*
-			 * TODO implement previous week functions
-			 */
-		}
+		updateView();
+	}
+	
+	public void updateView(){
+		List<Appointment> mondayAppointment = this.model.getMonday();
+		List<Appointment> tuesdayAppointment = this.model.getTuesday();
+		List<Appointment> wednesdayAppointment = this.model.getWednesday();
+		List<Appointment> thursdayAppointment = this.model.getThursday();
+		List<Appointment> fridayAppointment = this.model.getFriday();
+		List<Appointment> saturdayAppointment = this.model.getSaturday();
+		List<Appointment> sundayAppointment = this.model.getSunday();
+		List<User> users = this.model.getUsers();
+		int week = this.model.getWeek();
+		Date monday = this.model.getMondayDate();
+		Date tuesday = this.model.getTuesdayDate();
+		Date wednesday = this.model.getWednesdayDate();
+		Date thursday = this.model.getThursdayDate();
+		Date friday = this.model.getFridayDate();
+		Date saturday = this.model.getSaturdayDate();
+		Date sunday = this.model.getSundayDate();
+		
+		this.monLabel.setText(monday);
+		
+		
+	}
+	
+	public void setModel (Calendar calendar){
+		this.model = calendar;
+		updateView();
 	}
 
 	public static void main(String[] args) {
