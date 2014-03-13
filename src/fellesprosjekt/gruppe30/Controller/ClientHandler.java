@@ -52,6 +52,7 @@ public class ClientHandler extends Network {
 							response.put("statusMessage", "OK");
 							response.put("username", usernameReceived);
 							username = usernameReceived;
+							sendAllModels();
 							System.out.println(username + " has logged in!");
 						} else {
 							response.put("status", "wrongCombination");
@@ -60,7 +61,7 @@ public class ClientHandler extends Network {
 						}
 
 						send(response);
-						sendAllModels();
+
 
 					} else {
 						System.out.println("a login message did not have the required fields: " + message.toString());
