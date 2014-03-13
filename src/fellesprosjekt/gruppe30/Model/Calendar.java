@@ -74,7 +74,10 @@ public class Calendar {
 		for(Appointment appointment : client.getAppointments()) {
 			if(appointment.getWeek() == this.getWeek() && appointment.getYear() == this.getYear()) {
 				for(Attendant attendant : appointment.getAttendants()) {
-					if(client.getUsers().contains(attendant.getUser()) && attendant instanceof InternalAttendant && ((InternalAttendant) attendant).getVisibleOnCalendar()) {
+					if(attendant instanceof ExternalAttendant) {
+						continue;
+					}
+					if(this.otherCalendars.contains((InternalUser) attendant.getUser()) && ((InternalAttendant) attendant).getVisibleOnCalendar()) {
 						days.get(appointment.getDayOfWeek()).add(appointment);
 					}
 				}
