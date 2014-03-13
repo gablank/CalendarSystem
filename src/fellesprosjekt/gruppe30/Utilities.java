@@ -1,10 +1,7 @@
 package fellesprosjekt.gruppe30;
 
 
-import fellesprosjekt.gruppe30.Model.Alarm;
-import fellesprosjekt.gruppe30.Model.Appointment;
-import fellesprosjekt.gruppe30.Model.MeetingRoom;
-import fellesprosjekt.gruppe30.Model.User;
+import fellesprosjekt.gruppe30.Model.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -45,6 +42,16 @@ public class Utilities {
 		for(MeetingRoom meetingRoom : meetingRooms) {
 			if(meetingRoom.getId() == id)
 				return meetingRoom;
+		}
+
+		return null;
+	}
+
+	public static Attendant getAttendantByEmailAppointmentId(String attendantEmail, int appointmentId, List<Attendant> attendants) {
+		for(Attendant attendant : attendants) {
+			if(attendant.getAppointment().getId() == appointmentId && attendant.getUser().getEmail().equals(attendantEmail)) {
+				return attendant;
+			}
 		}
 
 		return null;
