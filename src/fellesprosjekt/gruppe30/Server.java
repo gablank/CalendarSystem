@@ -7,7 +7,6 @@ import fellesprosjekt.gruppe30.Controller.ServerListener;
 import fellesprosjekt.gruppe30.Model.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Server extends Application {
