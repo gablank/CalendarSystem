@@ -203,11 +203,13 @@ public class ClientHandler extends Network {
 							}
 
 							oldAppointment.copyAllFrom(appointment);
+							server.getDatabase().insertAppointment(oldAppointment);
 							System.out.println("successfully changed an appointment!");
 
 						} else {
 
 							server.addAppointment(appointment);
+							server.getDatabase().insertAppointment(appointment);
 							System.out.println("successfully added an appointment!");
 						}
 
@@ -249,24 +251,30 @@ public class ClientHandler extends Network {
 							Alarm alarm = new Alarm(user, appointment, date);
 
 							server.addAlarm(alarm);
+							server.getDatabase().insertAlarm(alarm);
 							System.out.println("successfully added alarm!");
 
 						} else if ("change".equals(action)) {
 							if (!message.has("time")) {
-								System.out.println("an add alarm message did not have the required time field: " + message.toString());
+								System.out.println("a change alarm message did not have the required time field: " + message.toString());
 								return;
 							}
 
 							long time = message.getLong("time");
 							Date date = new Date(time);
 
-
-							Utilities.getAlarm(appointment, user, server.getAlarms()).setDate(date);
+							Alarm alarm = Utilities.getAlarm(appointment, user, server.getAlarms());
+							alarm.setDate(date);
+							server.getDatabase().insertAlarm(alarm);
 							System.out.println("successfully changed alarm!");
 
 
 						} else if ("remove".equals(action)) {
 							server.removeAlarm(appointment, user);
+
+							Alarm alarm = Utilities.getAlarm(appointment, user, server.getAlarms());
+
+							server.getDatabase().deleteAlarm(alarm);
 							System.out.println("successfully removed alarm!");
 
 
