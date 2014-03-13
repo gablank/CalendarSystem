@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Server {
 	private final Database database = Database.getInstance();
+
 	private       List<User>        users;
 	private       List<Appointment> appointments;
 	private       List<MeetingRoom> meetingRooms;
@@ -97,11 +98,9 @@ public class Server {
 
 	}
 
-	public void removeAppointment(int id) {
-
-		// todo: database.remove...
-
-		appointments.remove(Utilities.getAppointmentById(id, appointments));
+	public void removeAppointment(Appointment appointment) {
+		database.deleteAppointment(appointment);
+		appointments.remove(appointment);
 	}
 
 	public boolean verifyLogin(String username, String password) {
@@ -123,6 +122,18 @@ public class Server {
 
 	public List<Group> getGroups() {
 		return groups;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public Database getDatabase() {
+		return database;
+	}
+
+	public List<MeetingRoom> getMeetingRooms() {
+		return meetingRooms;
 	}
 
 
