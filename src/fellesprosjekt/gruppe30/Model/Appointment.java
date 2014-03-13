@@ -49,6 +49,10 @@ public class Appointment {
 		this.lastUpdated = new Date();
 	}
 
+	public void addAttendant(Attendant attendant) {
+		this.attendants.add(attendant);
+	}
+
 	public void addUser(User user) {
 		Attendant attendant;
 		if(user instanceof InternalUser) {
