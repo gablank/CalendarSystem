@@ -145,8 +145,14 @@ public class AppointmentSummaryView extends JPanel {
 
 
 	public static void main(String[] args) {
-		//AppointmentSummaryView view = new AppointmentSummaryView();
-		//view.setVisible(true);
+
+		InternalUser user = new InternalUser("epost", "firstName", "lastname");
+
+		Appointment appointment = new Appointment(user);
+		appointment.addAttendant(new InternalAttendant(user, appointment));
+
+		AppointmentSummaryView view = new AppointmentSummaryView(appointment);
+		view.setVisible(true);
 
 	}
 
