@@ -201,17 +201,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		String[] labels = model.getDays();
 		int weekNumber = model.getWeek();
 
-		weekLabel.setText("Week " + Integer.toString(weekNumber));
-		for(int i = 0; i < 7; i++) {
-			dayLabels[i].setText(labels[i]);
-			this.appointments[i].removeAll();
-			this.appointments[i].repaint();
-
-			for(Appointment appointment : showAppointments.get(i)) {
-				this.appointments[i].add(new AppointmentSummaryView(appointment));
-			}
-		}
-
 		java.util.List<InternalUser> showCalendarsFor = model.getUsers();
 		PersonListModel personListModel = new PersonListModel();
 		for(InternalUser user : showCalendarsFor) {
@@ -221,6 +210,17 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 		java.util.List<InternalUser> allInternalUsers = model.getInternalUsers();
 		this.setInternalUsers(allInternalUsers);
+
+		weekLabel.setText("Week " + Integer.toString(weekNumber));
+		for(int i = 0; i < 7; i++) {
+			dayLabels[i].setText(labels[i]);
+			this.appointments[i].removeAll();
+			this.appointments[i].repaint();
+
+			for(Appointment appointment : showAppointments.get(i)) {
+				this.appointments[i].add(new AppointmentSummaryView(appointment, showCalendarsFor));
+			}
+		}
 	}
 	
 	public void setModel (Calendar calendar){
