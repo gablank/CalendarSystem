@@ -9,6 +9,8 @@ import java.awt.*;
 import java.io.File;
 
 public class PersonRenderer implements ListCellRenderer {
+	
+	public boolean canSelect = true;
 
 	public PersonRenderer() {
 	}
@@ -43,8 +45,10 @@ public class PersonRenderer implements ListCellRenderer {
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		if (isSelected)
-			label.setForeground(Color.BLUE);
+		if (canSelect){
+			if (isSelected)
+				label.setForeground(Color.BLUE);		
+		}
 		
 		return label;
 	}
