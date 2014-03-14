@@ -229,7 +229,7 @@ public class Database {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
 			preparedStatement.setTimestamp(1, this.dateToSqlTimestamp(alarm.getDate()));
 			preparedStatement.setInt      (2, alarm.getAppointment().getId()          );
-			preparedStatement.setString   (3, alarm.getUser().getEmail()              );
+			preparedStatement.setString(3, alarm.getUser().getEmail());
 			preparedStatement.executeUpdate();
 
 			preparedStatement.close();
@@ -404,55 +404,52 @@ public class Database {
 
 	/**
 	 * @param appointment the appointment to insert into the database
-	 * @return the database id of the appointment; if an exception happened it returns -1
+	 * @return true if successful, false if not
 	 */
-	public int insertAppointment(Appointment appointment) {
+	public boolean insertAppointment(Appointment appointment) {
+		boolean res = true;
+
 		if(appointment.getId() != -1) {
-			this.updateAppointment(appointment);
+			res = this.updateAppointment(appointment);
+		} else {
+			int newAppointmentId = -1;
 
-			for(Attendant attendant : appointment.getAttendants()) {
-				this.insertAttendant(attendant);
+			String query;
+			query = "INSERT INTO appointments ";
+			query += "(title, description, start_date, end_date, place, last_updated, owner_email) ";
+			query += "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+			try {
+				PreparedStatement preparedStatement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				preparedStatement.setString(1, appointment.getTitle());
+				preparedStatement.setString(2, appointment.getDescription());
+				preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(appointment.getStart()));
+				preparedStatement.setTimestamp(4, this.dateToSqlTimestamp(appointment.getEnd()));
+				preparedStatement.setString(5, appointment.getMeetingPlace());
+				preparedStatement.setTimestamp(6, this.dateToSqlTimestamp(appointment.getLastUpdated()));
+				preparedStatement.setString(7, appointment.getOwner().getEmail());
+				preparedStatement.executeUpdate();
+
+				ResultSet appointmentId = preparedStatement.getGeneratedKeys();
+
+				/**
+				 * Moves the cursor forward one row from its current position.
+				 * A <code>ResultSet</code> cursor is initially positioned
+				 * before the first row; the first call to the method
+				 * <code>next</code> makes the first row the current row; the
+				 * second call makes the second row the current row, and so on.
+				 */
+				appointmentId.next();
+
+				newAppointmentId = appointmentId.getInt(1);
+
+				preparedStatement.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+				res = false;
 			}
-
-			return appointment.getId();
+			appointment.setId(newAppointmentId);
 		}
-		int newAppointmentId = -1;
-
-		String query;
-		query = "INSERT INTO appointments ";
-		query += "(title, description, start_date, end_date, place, last_updated, owner_email) ";
-		query += "VALUES (?, ?, ?, ?, ?, ?, ?);";
-
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, appointment.getTitle());
-			preparedStatement.setString(2, appointment.getDescription());
-			preparedStatement.setTimestamp(3, this.dateToSqlTimestamp(appointment.getStart()));
-			preparedStatement.setTimestamp(4, this.dateToSqlTimestamp(appointment.getEnd()));
-			preparedStatement.setString(5, appointment.getMeetingPlace());
-			preparedStatement.setTimestamp(6, this.dateToSqlTimestamp(appointment.getLastUpdated()));
-			preparedStatement.setString(7, appointment.getOwner().getEmail());
-			preparedStatement.executeUpdate();
-
-			ResultSet appointmentId = preparedStatement.getGeneratedKeys();
-
-			/**
-			 * Moves the cursor forward one row from its current position.
-			 * A <code>ResultSet</code> cursor is initially positioned
-			 * before the first row; the first call to the method
-			 * <code>next</code> makes the first row the current row; the
-			 * second call makes the second row the current row, and so on.
-			 */
-			appointmentId.next();
-
-			newAppointmentId = appointmentId.getInt(1);
-
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-
-		appointment.setId(newAppointmentId);
 
 		if(appointment.getMeetingRoom() != null) {
 			this.insertMeetingRoomReservation(appointment.getMeetingRoom(), appointment);
@@ -462,10 +459,10 @@ public class Database {
 			this.insertAttendant(attendant);
 		}
 
-		return newAppointmentId;
+		return res;
 	}
 
-	private void updateAppointment(Appointment appointment) {
+	private boolean updateAppointment(Appointment appointment) {
 		String query;
 		query = "UPDATE appointments ";
 		query += "SET title = ?, description = ?, start_date = ?, end_date = ? ";
@@ -487,56 +484,58 @@ public class Database {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 
-		if(appointment.getMeetingRoom() != null) {
-			this.insertMeetingRoomReservation(appointment.getMeetingRoom(), appointment);
-		}
+		return true;
 	}
 
 	/**
 	 * @param meetingRoom meeting room to insert into db
 	 * @return id of the meeting room in the database; if exception happens returns -1
 	 */
-	public int insertMeetingRoom(MeetingRoom meetingRoom) {
+	public boolean insertMeetingRoom(MeetingRoom meetingRoom) {
+		boolean res = true;
 		if(meetingRoom.getId() != -1) {
-			this.updateMeetingRoom(meetingRoom);
-			return meetingRoom.getId();
+			res = this.updateMeetingRoom(meetingRoom);
+		} else {
+			int newMeetingRoomId = -1;
+
+			String query;
+			query = "INSERT INTO meeting_rooms ";
+			query += "(capacity) ";
+			query += "VALUES (?);";
+
+			try {
+				PreparedStatement preparedStatement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				preparedStatement.setInt(1, meetingRoom.getRoomSize());
+				preparedStatement.executeUpdate();
+
+				ResultSet meetingRoomId = preparedStatement.getGeneratedKeys();
+
+				/**
+				 * Moves the cursor forward one row from its current position.
+				 * A <code>ResultSet</code> cursor is initially positioned
+				 * before the first row; the first call to the method
+				 * <code>next</code> makes the first row the current row; the
+				 * second call makes the second row the current row, and so on.
+				 */
+				meetingRoomId.next();
+
+				newMeetingRoomId = meetingRoomId.getInt(1);
+
+				preparedStatement.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+				res = false;
+			}
+
+			meetingRoom.setId(newMeetingRoomId);
 		}
-		int newMeetingRoomId = -1;
-
-		String query;
-		query = "INSERT INTO meeting_rooms ";
-		query += "(capacity) ";
-		query += "VALUES (?);";
-
-		try {
-			PreparedStatement preparedStatement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1, meetingRoom.getRoomSize());
-			preparedStatement.executeUpdate();
-
-			ResultSet meetingRoomId = preparedStatement.getGeneratedKeys();
-
-			/**
-			 * Moves the cursor forward one row from its current position.
-			 * A <code>ResultSet</code> cursor is initially positioned
-			 * before the first row; the first call to the method
-			 * <code>next</code> makes the first row the current row; the
-			 * second call makes the second row the current row, and so on.
-			 */
-			meetingRoomId.next();
-
-			newMeetingRoomId = meetingRoomId.getInt(1);
-
-			preparedStatement.close();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-
-		return newMeetingRoomId;
+		return res;
 	}
 
-	private void updateMeetingRoom(MeetingRoom meetingRoom) {
+	private boolean updateMeetingRoom(MeetingRoom meetingRoom) {
 		String query;
 		query = "UPDATE meeting_rooms ";
 		query += "SET capacity = ? ";
@@ -551,7 +550,9 @@ public class Database {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	public boolean deleteUser(User user) {
@@ -1049,9 +1050,16 @@ public class Database {
 		database.insertUser(emilh);
 		database.insertUser(espen);
 		database.insertUser(easy);
-		p15.setId(database.insertMeetingRoom(p15));
-		studLan.setId(database.insertAppointment(studLan));
-		workWork.setId(database.insertAppointment(workWork));
+		database.insertMeetingRoom(p15);
+		database.insertMeetingRoom(p151);
+		database.insertMeetingRoom(p1515);
+		database.insertAppointment(studLan);
+		database.insertAppointment(workWork);
+		database.insertAppointment(drekka);
+		database.insertAppointment(dota);
+		database.insertAppointment(moreDota);
+		database.insertAppointment(projectWork);
+
 		database.close();
 	}
 }
