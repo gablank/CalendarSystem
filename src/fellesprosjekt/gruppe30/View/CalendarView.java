@@ -5,6 +5,7 @@ import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
+import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -33,15 +34,19 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 		//set appearance of all buttons
 		addButton = new JButton("Add");
+		addButton.setName("add_calendar");
 		addButton.setPreferredSize(new Dimension(60, 30));
 
 		removeButton = new JButton("Remove");
+		removeButton.setName("remove_calendar");
 		removeButton.setPreferredSize(new Dimension(80, 30));
 
 		newAppointmentButton = new JButton("New Appointment");
+		newAppointmentButton.setName("new_appointment");
 		newAppointmentButton.setPreferredSize(new Dimension(145, 30));
 
 		logOutButton = new JButton("Log out");
+		logOutButton.setName("log_out");
 		logOutButton.setPreferredSize(new Dimension(80, 25));
 
 		leftArrowButton = new JButton("<");
@@ -174,6 +179,21 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent pce) {
 		updateView();
 	}
+
+	public void setInternalUsers(java.util.List<InternalUser> internalUsers) {
+		users.removeAll();
+		for(InternalUser user : internalUsers) {
+			this.addInternalUser(user);
+		}
+	}
+
+	public void addInternalUser(InternalUser user) {
+		users.addItem(user.getEmail());
+	}
+
+	public void removeInternalUser(InternalUser user) {
+		users.removeItem(user.getEmail());
+	}
 	
 	public void updateView(){
 		java.util.List<java.util.List<Appointment>> appointments = model.getAppointments();
@@ -189,6 +209,16 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 				this.appointments[i].add(new AppointmentSummaryView(appointment));
 			}
 		}
+
+		java.util.List<InternalUser> showCalendarsFor = model.getUsers();
+		PersonListModel personListModel = new PersonListModel();
+		for(InternalUser user : showCalendarsFor) {
+			personListModel.addElement(user.getName());
+		}
+		this.setPersonListModel(personListModel);
+
+		java.util.List<InternalUser> allInternalUsers = model.getInternalUsers();
+		this.setInternalUsers(allInternalUsers);
 	}
 	
 	public void setModel (Calendar calendar){
@@ -199,5 +229,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	public static void main(String[] args) {
 		CalendarView view = new CalendarView();
 		view.setVisible(true);
+	}
+
+	public String getSelectedUserEmail() {
+		return (String) users.getSelectedItem();
 	}
 }
