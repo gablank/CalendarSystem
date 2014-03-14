@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -67,17 +68,36 @@ public class Server extends Application {
 		String mailFrom = "emilhe@stud.ntnu.no";
 		
 		Properties props = new Properties();
-		props.put("mail.smtp.starttls.enable", null);
+		// props.put("mail.smtp.starttls.enable", null);
 		props.put("mail.smtp.host", "smtp.stud.ntnu.no");
-		props.put("mail.smtp.user", mailFrom); //Dont know if needed
+		// props.put("mail.smtp.user", mailFrom); //Dont know if needed
 		props.put("mail.smtp.port", "25");
-		props.put("mail.smtp.auth", true);
+		// props.put("mail.smtp.auth", true);
 		
 		Session session = Session.getDefaultInstance(props);
 		
 		try {
 			Message message = new MimeMessage(session);
-			message.setFrom();
+			message.setFrom(new Address() {
+
+				@Override
+				public String toString() {
+
+					return "Emil_S";
+				}
+
+				@Override
+				public String getType() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+
+				@Override
+				public boolean equals(Object arg0) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			});
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
 			message.setSubject(subject);
 			message.setText(body);
@@ -105,6 +125,5 @@ public class Server extends Application {
 
 	public static void main(String[] args) {
 		Server server = new Server();
-		server.sendMail("emilhe@stud.ntnu.no", "This is an test", "Test");
 	}
 }
