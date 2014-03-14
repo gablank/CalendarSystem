@@ -2,15 +2,12 @@ package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.InternalUser;
-import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import static fellesprosjekt.gruppe30.Utilities.*;
 
 public class CalendarController implements ActionListener, MouseListener {
 	private final Client client;
@@ -43,10 +40,10 @@ public class CalendarController implements ActionListener, MouseListener {
 		} else if(buttonName.equalsIgnoreCase("new_appointment")) {
 			client.newAppointment();
 		} else if(buttonName.equalsIgnoreCase("add_calendar")) {
-			InternalUser added = (InternalUser) Utilities.getUserByEmail(client.getCalendarView().getSelectedUserEmail(), client.getUsers());
+			InternalUser added = client.getCalendarView().getSelectedUser();
 			client.getCalendar().addUser(added);
 		} else if(buttonName.equalsIgnoreCase("remove_calendar")) {
-			InternalUser removed = (InternalUser) Utilities.getUserByEmail(client.getCalendarView().getSelectedUserEmail(), client.getUsers());
+			InternalUser removed = client.getCalendarView().getSelectedDropDownUser();
 			client.getCalendar().removeUser(removed);
 		}
 	}
