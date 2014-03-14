@@ -985,7 +985,7 @@ public class Database {
 		InternalUser emiljs = new InternalUser("emil.schroeder@gmail.com", "Emil Jakobus", "Schroeder");
 		emiljs.setPassword("password");
 
-		InternalUser emilh = new InternalUser("emil@heien.no", "Emil", "Heien");
+		InternalUser emilh = new InternalUser("emilhe@stud.ntnu.no", "Emil", "Heien");
 		emilh.setPassword("password");
 
 		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
@@ -1007,6 +1007,19 @@ public class Database {
 		Appointment moreDota = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
 		Appointment projectWork = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
 
+		Appointment studLan1 = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p15);
+		Appointment workWork1 = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), "REMA 1000");
+		Appointment drekka1 = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p1515);
+		Appointment dota1 = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p151);
+		Appointment moreDota1 = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p1515);
+		Appointment projectWork1 = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p1515);
+		
+		Appointment studLan2 = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p15);
+		Appointment workWork2 = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), "REMA 1000");
+		Appointment drekka2 = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p1515);
+		Appointment dota2 = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p151);
+		Appointment moreDota2 = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p1515);
+		Appointment projectWork2 = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p1515);
 		/*
 		Groups
 		 */
@@ -1059,6 +1072,18 @@ public class Database {
 		database.insertAppointment(dota);
 		database.insertAppointment(moreDota);
 		database.insertAppointment(projectWork);
+		database.insertAppointment(studLan1);
+		database.insertAppointment(workWork1);
+		database.insertAppointment(drekka1);
+		database.insertAppointment(dota1);
+		database.insertAppointment(moreDota1);
+		database.insertAppointment(projectWork1);
+		database.insertAppointment(studLan2);
+		database.insertAppointment(workWork2);
+		database.insertAppointment(drekka2);
+		database.insertAppointment(dota2);
+		database.insertAppointment(moreDota2);
+		database.insertAppointment(projectWork2);
 
 		database.close();
 	}
