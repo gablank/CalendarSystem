@@ -4,6 +4,7 @@ package fellesprosjekt.gruppe30.View;
 import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
 import fellesprosjekt.gruppe30.Model.InternalUser;
+import fellesprosjekt.gruppe30.Model.PersonListModel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -23,6 +24,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	private JFrame      		frame;
 	private Calendar      		model;
 	private JScrollPane 		userCalendarsScroller;
+	private PersonListModel     personListModel;
 
 	public CalendarView() {
 		GridBagConstraints c = new GridBagConstraints();
@@ -127,12 +129,24 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			add(scrollers[i], contents);
 			contents.gridx++;
 		}
+		
+		personListModel = new PersonListModel();
+		this.setPersonListModel(personListModel);
+		//test code
+		personListModel.addElement("Dude dudeson");
+		//end test code
 
 		frame = new JFrame("Calendar view");
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);
 		frame.setResizable(true);
+		
+	}
+	
+	public void setPersonListModel(PersonListModel model) {
+		this.personListModel = model;
+		userCalendars.setModel(model);
 	}
 
 	public void addListener(EventListener controller) {

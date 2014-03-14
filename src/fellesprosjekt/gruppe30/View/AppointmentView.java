@@ -228,17 +228,18 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		frame.setVisible(false);
 		frame.setResizable(false);
 
-		//test code, REMOVE this following code later:
 		useMeetingRoom.addActionListener(this);
 		inviteByEmail.addActionListener(this);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		personListModel = new PersonListModel();
+		this.setPersonListModel(personListModel);
+		
+		//test code
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		personListModel.addElement(new InternalUser("email", "Jonathan", "Cinderella"));
 		for(int i = 0; i < 10; i++) {
 			personListModel.addElement(new InternalUser("email", "Emil", "Heien"));
 		}
-		this.setPersonListModel(personListModel);
 		//end test code
 	}
 

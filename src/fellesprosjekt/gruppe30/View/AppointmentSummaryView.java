@@ -152,7 +152,7 @@ public class AppointmentSummaryView extends JPanel {
 
 		Appointment appointment = new Appointment(user);
 		appointment.addAttendant(new InternalAttendant(user, appointment));
-
+		
 		AppointmentSummaryView view = new AppointmentSummaryView(appointment);
 		view.setVisible(true);
 		view.updateFrame();
