@@ -53,7 +53,7 @@ public class AppointmentSummaryView extends JPanel {
 		unanswered.setIcon(unanswer);
 
 		participants = new JList<User>();
-		participants.setPreferredSize(new Dimension(100, 20 * userCount));
+		participants.setMinimumSize(new Dimension(130, 20 * userCount));
 		participants.setLayout(new BoxLayout(participants, BoxLayout.Y_AXIS));
 		participants.setVisibleRowCount(4);
 		participants.setBackground(Color.WHITE);
@@ -109,9 +109,9 @@ public class AppointmentSummaryView extends JPanel {
 			personListModel.addElement(attendant.getUser());
 		}
 
-		/*for(int i = 0; i < userCount - 1; i++) {
+		for(int i = 0; i < userCount - 1; i++) {
 			personListModel.addElement(new InternalUser("email", "Emil", "Heien"));
-		} */
+		}
 		this.setPersonListModel(personListModel);
 		frame.pack();
 		//System.out.println(participants.getModel().getSize());
@@ -122,9 +122,7 @@ public class AppointmentSummaryView extends JPanel {
 	
 	public void updateFrame(){
 		userCount = (participants.getModel().getSize());
-		this.participants.setPreferredSize(new Dimension(100, 20 * userCount));
-		this.repaint();
-		this.frame.pack();
+		this.frame.repaint();
 	}
 
 	public void setVisible(boolean visible) {
@@ -147,15 +145,8 @@ public class AppointmentSummaryView extends JPanel {
 
 
 	public static void main(String[] args) {
-
-		InternalUser user = new InternalUser("epost", "firstName", "lastname");
-
-		Appointment appointment = new Appointment(user);
-		appointment.addAttendant(new InternalAttendant(user, appointment));
-		
-		AppointmentSummaryView view = new AppointmentSummaryView(appointment);
-		view.setVisible(true);
-		view.updateFrame();
+		//AppointmentSummaryView view = new AppointmentSummaryView();
+		//view.setVisible(true);
 
 	}
 
