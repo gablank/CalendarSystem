@@ -73,15 +73,15 @@ public class ClientHandler extends Network {
 				response.put("statusMessage", "OK");
 				response.put("username", usernameReceived);
 				username = usernameReceived;
+				send(response);
 				sendAllModels();
 				System.out.println(username + " has logged in!");
 			} else {
 				response.put("status", "wrongCombination");
 				response.put("statusMessage", "The username and password combination was wrong!");
 				System.out.println("Someone tried logging in as " + usernameReceived + ", but the password was wrong!");
+				send(response);
 			}
-
-			send(response);
 
 		} else {
 			System.out.println("a login message did not have the required fields: " + message.toString());
