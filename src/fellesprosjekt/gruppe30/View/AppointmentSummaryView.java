@@ -90,6 +90,7 @@ public class AppointmentSummaryView extends JPanel {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		listrenderer = new PersonRenderer();
 		participants.setCellRenderer(listrenderer);
+		listrenderer.canSelect = false;
 
 		frame = new JFrame();
 		frame.add(this);
