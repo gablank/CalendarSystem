@@ -8,6 +8,14 @@ import fellesprosjekt.gruppe30.Model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class Server extends Application {
 	private final Database database = Database.getInstance();
@@ -56,7 +64,30 @@ public class Server extends Application {
 	}
 
 	public synchronized void sendMail(String recipient, String subject, String body) {
-		System.out.println("Sending mail to " + recipient);
+		String mailFrom = "emilhe@stud.ntnu.no";
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.starttls.enable", null);
+		props.put("mail.smtp.host", "smtp.stud.ntnu.no");
+		props.put("mail.smtp.user", mailFrom); //Dont know if needed
+		props.put("mail.smtp.port", "25");
+		props.put("mail.smtp.auth", true);
+		
+		Session session = Session.getDefaultInstance(props);
+		
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom();
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+			message.setSubject(subject);
+			message.setText(body);
+			
+			Transport.send(message);
+			System.out.println("Email sent to: " + recipient);
+		}
+		catch (MessagingException me) {
+			throw new RuntimeException(me);
+		}
 	}
 
 	public boolean verifyLogin(String username, String password) {
@@ -74,5 +105,6 @@ public class Server extends Application {
 
 	public static void main(String[] args) {
 		Server server = new Server();
+		server.sendMail("emilhe@stud.ntnu.no", "This is an test", "Test");
 	}
 }
