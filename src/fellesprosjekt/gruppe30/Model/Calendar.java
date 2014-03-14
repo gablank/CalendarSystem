@@ -62,6 +62,11 @@ public class Calendar {
 		pcs.firePropertyChange("change", 1, 2); // Hack
 	}
 
+	public void setUser(InternalUser user) {
+		otherCalendars.clear();
+		otherCalendars.add(user);
+	}
+
 	public void removeUser(InternalUser user) {
 		otherCalendars.remove(user);
 		pcs.firePropertyChange("change", 1, 2); // Hack
@@ -80,7 +85,7 @@ public class Calendar {
 						continue;
 					}
 					InternalUser user = (InternalUser) attendant.getUser();
-					if(this.otherCalendars.contains(user) && attendant instanceof InternalAttendant && ((InternalAttendant) attendant).getVisibleOnCalendar()) {
+					if(this.otherCalendars.contains(user) && ((InternalAttendant) attendant).getVisibleOnCalendar()) {
 						days.get(appointment.getDayOfWeek()).add(appointment);
 					}
 				}
@@ -116,8 +121,11 @@ public class Calendar {
 		days[5] = "Sat";
 		days[6] = "Sun";
 		String[] labels = new String[7];
+		long msPerDay = 24 * 60 * 60 * 1000;
+		long time = gregorianCalendar.getTime().getTime() - gregorianCalendar.get(java.util.Calendar.DAY_OF_WEEK) * msPerDay;
 		for(int i = 0; i < 7; i++) {
-			labels[i] = days[i] + " " + Utilities.dateToFormattedString(new java.util.Date(gregorianCalendar.getTime().getTime() + (i - (8 - gregorianCalendar.get(java.util.Calendar.DAY_OF_WEEK))) * 24 * 60 * 60 * 1000), false);
+			time += msPerDay;
+			labels[i] = days[i] + " " + Utilities.dateToFormattedString(new java.util.Date(time), false);
 		}
 		return labels;
 	}
@@ -130,5 +138,9 @@ public class Calendar {
 	public static void main(String[] args) {
 
 
+	}
+
+	public List<InternalUser> getInternalUsers() {
+		return otherCalendars;
 	}
 }

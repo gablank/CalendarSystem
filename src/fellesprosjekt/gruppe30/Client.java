@@ -35,10 +35,6 @@ public class Client extends Application {
 		return loggedInUser;
 	}
 
-	public void setLoggedInUser(User loggedInUser) {
-		this.loggedInUser = loggedInUser;
-	}
-
 	public Client() {
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<User>();
@@ -121,7 +117,7 @@ public class Client extends Application {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
 		this.loggedInUser = Utilities.getUserByEmail(email, users);
-		this.calendar.addUser((InternalUser) this.loggedInUser);
+		this.calendar.setUser((InternalUser) this.loggedInUser);
 	}
 
 	public void newAppointment() {
