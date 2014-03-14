@@ -753,7 +753,7 @@ public class Database {
 						String lastName = results.getString("last_name");
 
 						InternalUser user = new InternalUser(email, firstName, lastName);
-						user.setPassword(password);
+						user.setPassword(password, false);
 						users.add(user);
 					} catch(SQLException e) {
 						e.printStackTrace();
