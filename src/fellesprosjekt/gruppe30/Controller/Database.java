@@ -46,6 +46,28 @@ public class Database {
 		return instance;
 	}
 
+	public boolean loadDatabase(Server server) {
+		List<User> users;
+		List<MeetingRoom> meetingRooms;
+		List<Appointment> appointments;
+		List<Alarm> alarms;
+		List<Group> groups;
+
+		users = this.getUsers();
+		meetingRooms = this.getMeetingRooms();
+		appointments = this.getAppointments(users, meetingRooms);
+		alarms = this.getAlarms(users, appointments);
+		groups = this.getGroups(users);
+
+		server.setUsers(users);
+		server.setAppointments(appointments);
+		server.setMeetingRooms(meetingRooms);
+		server.setAlarms(alarms);
+		server.setGroups(groups);
+
+		return true;
+	}
+
 	/**
 	 * @param user the user to insert into the database
 	 * @return true if success
@@ -176,7 +198,7 @@ public class Database {
 	/**
 	 * @param alarm object to insert into (or update) db
 	 */
-	public void insertAlarm(Alarm alarm) {
+	public boolean insertAlarm(Alarm alarm) {
 		this.insertUser(alarm.getUser());
 		String query;
 		query = "INSERT INTO alarms ";
@@ -192,12 +214,12 @@ public class Database {
 
 			preparedStatement.close();
 		} catch(SQLException e) {
-			this.updateAlarm(alarm.getUser().getEmail(), alarm.getAppointment().getId(), alarm.getDate());
-			return;
+			return this.updateAlarm(alarm);
 		}
+		return true;
 	}
 
-	private void updateAlarm(String userEmail, int appointmentId, java.util.Date date) {
+	public boolean updateAlarm(Alarm alarm) {
 		String query;
 		query = "UPDATE alarms ";
 		query += "SET time = ? ";
@@ -205,22 +227,24 @@ public class Database {
 
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-			preparedStatement.setTimestamp(1, this.dateToSqlTimestamp(date));
-			preparedStatement.setInt(2, appointmentId);
-			preparedStatement.setString(3, userEmail);
+			preparedStatement.setTimestamp(1, this.dateToSqlTimestamp(alarm.getDate()));
+			preparedStatement.setInt      (2, alarm.getAppointment().getId()          );
+			preparedStatement.setString   (3, alarm.getUser().getEmail()              );
 			preparedStatement.executeUpdate();
 
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	/**
 	 * @param meetingRoom the MeetingRoom to insert into the database
 	 * @param appointment Appointment to insert into the database
 	 */
-	private void insertMeetingRoomReservation(MeetingRoom meetingRoom, Appointment appointment) {
+	private boolean insertMeetingRoomReservation(MeetingRoom meetingRoom, Appointment appointment) {
 		String query;
 		query = "INSERT INTO meeting_room_reservations ";
 		query += "(meeting_room_id, appointment_id) ";
@@ -235,7 +259,9 @@ public class Database {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -272,6 +298,7 @@ public class Database {
 				preparedStatement.close();
 			} catch(SQLException a) {
 				a.printStackTrace();
+				return false;
 			}
 		}
 
@@ -527,7 +554,7 @@ public class Database {
 		}
 	}
 
-	public void deleteUser(User user) {
+	public boolean deleteUser(User user) {
 		String query = "DELETE FROM users WHERE email = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -535,10 +562,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete user with email: " + user.getEmail());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteMeetingRoom(MeetingRoom meetingRoom) {
+	public boolean deleteMeetingRoom(MeetingRoom meetingRoom) {
 		String query = "DELETE FROM meeting_rooms WHERE id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -546,10 +575,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete meeting room with id: " + meetingRoom.getId());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteGroup(Group group) {
+	public boolean deleteGroup(Group group) {
 		String query = "DELETE FROM groups WHERE name = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -557,10 +588,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete group with name: " + group.getName());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteGroupMember(Group group, User user) {
+	public boolean deleteGroupMember(Group group, User user) {
 		String query = "DELETE FROM group_members WHERE user_email = ? AND group_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -569,10 +602,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete group member with email: " + user.getEmail());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteAppointment(Appointment appointment) {
+	public boolean deleteAppointment(Appointment appointment) {
 		String query = "DELETE FROM appointments WHERE id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -580,10 +615,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete appointment with id: " + Integer.toString(appointment.getId()));
+			return false;
 		}
+		return true;
 	}
 
-	private void deleteMeetingRoomReservation(Appointment appointment) {
+	private boolean deleteMeetingRoomReservation(Appointment appointment) {
 		String query = "DELETE FROM meeting_room_reservations WHERE meeting_room_id = ? AND appointment_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -592,10 +629,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete meeting room reservation for appointment with id: " + Integer.toString(appointment.getId()));
+			return false;
 		}
+		return true;
 	}
 
-	private void deleteAttendant(Attendant attendant) {
+	private boolean deleteAttendant(Attendant attendant) {
 		String query = "DELETE FROM attendants WHERE user_email = ? AND appointment_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -604,10 +643,12 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete attendant with user_email: " + attendant.getUser().getEmail());
+			return false;
 		}
+		return true;
 	}
 
-	public void deleteAlarm(Alarm alarm) {
+	public boolean deleteAlarm(Alarm alarm) {
 		String query = "DELETE FROM alarms WHERE user_email = ? AND appointment_id = ?;";
 		try {
 			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -616,33 +657,13 @@ public class Database {
 			preparedStatement.execute();
 		} catch(SQLException e) {
 			System.out.println("Could not delete alarm for user " + alarm.getUser().getEmail());
+			return false;
 		}
+		return true;
 	}
 
 	private java.sql.Timestamp dateToSqlTimestamp(java.util.Date date) {
 		return new java.sql.Timestamp(date.getTime());
-	}
-
-	public boolean loadDatabase(Server server) {
-		List<User> users;
-		List<MeetingRoom> meetingRooms;
-		List<Appointment> appointments;
-		List<Alarm> alarms;
-		List<Group> groups;
-
-		users = this.getUsers();
-		meetingRooms = this.getMeetingRooms();
-		appointments = this.getAppointments(users, meetingRooms);
-		alarms = this.getAlarms(users, appointments);
-		groups = this.getGroups(users);
-
-		server.setUsers(users);
-		server.setAppointments(appointments);
-		server.setMeetingRooms(meetingRooms);
-		server.setAlarms(alarms);
-		server.setGroups(groups);
-
-		return true;
 	}
 
 	private List<Group> getGroups(List<User> users) {
@@ -849,11 +870,11 @@ public class Database {
 						continue;
 					}
 
-					Appointment appointment = new Appointment(owner, title, description, startDate, endDate, null, null);
+					Appointment appointment = new Appointment(owner, title, description, startDate, endDate);
 					appointment.setId(appointmentId);
 					appointment.setLastUpdated(lastUpdatedDate);
 
-					if (place == null) {
+					if(place.isEmpty()) {
 						MeetingRoom meetingRoom = this.getMeetingRoomForAppointment(appointment, meetingRooms);
 
 						if(meetingRoom == null) {
@@ -950,28 +971,87 @@ public class Database {
 	}
 
 	public static void main(String[] args) {
-		/**
-		 * Test data
+
+		/*
+		Users
 		 */
 		InternalUser anders = new InternalUser("anders@wenhaug.no", "Anders", "Wenhaug");
-		InternalUser emil = new InternalUser("emil.schroeder@gmail.com", "Emil", "Jakobus Schroeder");
-		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
 		anders.setPassword("password");
-		emil.setPassword("password");
-		MeetingRoom meetingRoom = new MeetingRoom(8);
-		Appointment appointment = new Appointment(anders, "Test-appointment", "Test-description", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), meetingRoom);
-		InternalAttendant andersAttendant = new InternalAttendant(anders, appointment);
-		InternalAttendant emilAttendant = new InternalAttendant(emil, appointment);
-		ExternalAttendant espenAttendant = new ExternalAttendant(espen, appointment);
 
-		appointment.addAttendant(andersAttendant);
-		appointment.addAttendant(emilAttendant);
-		appointment.addAttendant(espenAttendant);
+		InternalUser easy = new InternalUser("", "Test", "User");
+		easy.setPassword("");
 
+		InternalUser emiljs = new InternalUser("emil.schroeder@gmail.com", "Emil Jakobus", "Schroeder");
+		emiljs.setPassword("password");
+
+		InternalUser emilh = new InternalUser("emil@heien.no", "Emil", "Heien");
+		emilh.setPassword("password");
+
+		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
+
+		/*
+		Meeting rooms
+		 */
+		MeetingRoom p15 = new MeetingRoom(88);
+		MeetingRoom p151 = new MeetingRoom(4);
+		MeetingRoom p1515 = new MeetingRoom(8);
+
+		/*
+		Appointments
+		 */
+		Appointment studLan = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p15);
+		Appointment workWork = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), "REMA 1000");
+		Appointment drekka = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
+		Appointment dota = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p151);
+		Appointment moreDota = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
+		Appointment projectWork = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
+
+		/*
+		Groups
+		 */
+		Group gamings = new Group("Gamings");
+		gamings.addMember(anders);
+		gamings.addMember(emiljs);
+
+		Group jsGroup = new Group("JS-group");
+		jsGroup.addMember(emiljs);
+		jsGroup.addMember(emilh);
+		jsGroup.addMember(anders);
+
+		/*
+		Add users to appointment
+		 */
+		studLan.addGroup(gamings);
+		studLan.addUser(espen);
+		studLan.addUser(emilh);
+
+		workWork.addUser(emilh);
+
+		drekka.addGroup(jsGroup);
+
+		dota.addUser(emilh);
+		dota.addUser(anders);
+
+		moreDota.addUser(emilh);
+		moreDota.addUser(anders);
+
+		projectWork.addUser(espen);
+		projectWork.addGroup(jsGroup);
+
+
+
+		/*
+		Insert into database
+		 */
 		Database database = new Database();
 		database.insertUser(anders);
-		meetingRoom.setId(database.insertMeetingRoom(meetingRoom));
-		appointment.setId(database.insertAppointment(appointment));
+		database.insertUser(emiljs);
+		database.insertUser(emilh);
+		database.insertUser(espen);
+		database.insertUser(easy);
+		p15.setId(database.insertMeetingRoom(p15));
+		studLan.setId(database.insertAppointment(studLan));
+		workWork.setId(database.insertAppointment(workWork));
 		database.close();
 	}
 }
