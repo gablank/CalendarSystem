@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
 import fellesprosjekt.gruppe30.Model.Appointment;
+import fellesprosjekt.gruppe30.Model.ExternalUser;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
@@ -10,6 +11,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -105,7 +107,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		participantList = new JComboBox<User>();
 		participantList.setPreferredSize(new Dimension(40, 25));
-		participants = new JList<User>();
+		participants = new JList<User>(personListModel);
 		listRenderer = new PersonRenderer();
 		participants.setCellRenderer(listRenderer);
 		participants.addListSelectionListener(this);
@@ -408,6 +410,34 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 	public Appointment getModel() {
 		return model;
+	}
+	
+	public void inviteToAppointment() {
+		if (inviteByEmail.isSelected()) {
+			User user = new ExternalUser(emailField.getText());
+			personListModel.addElement(user);
+		} else {
+			personListModel.addElement((User)participantList.getSelectedItem());
+		}
+	}
+	
+	public void removeFromAppointment() {
+		personListModel.removeElement(participants.getSelectedValue());
+	}
+	
+	public boolean setAlarmIsSelected() {
+		if (setAlarm.isSelected())
+			return true;
+		return false;
+	}
+	
+	public int getAlarmInMinutes() {
+		if (setAlarm.isSelected()) {
+			String alarm = this.alarmTimeField.getText();
+			int minutes = Integer.parseInt("" + alarm.charAt(3) + alarm.charAt(4));
+			minutes += Integer.parseInt("" + alarm.charAt(0) + alarm.charAt(1)) * 60;
+			return minutes;
+		} return -1;
 	}
 
 }

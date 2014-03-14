@@ -27,6 +27,7 @@ public class Client extends Application {
 	private final ViewAppointmentView   viewAppointmentView;
 	private final BookMeetingRoomView   bookMeetingRoomView;
 	private final AppointmentController appointmentController;
+	private final AreYouSureView		areYouSureView;
 	public  final ClientNetwork         network;
 
 	private User loggedInUser = null;
@@ -59,6 +60,9 @@ public class Client extends Application {
 		this.appointmentController = new AppointmentController(this);
 		this.appointmentView.addListener(this.appointmentController);
 
+		this.areYouSureView = new AreYouSureView();
+		this.areYouSureView.addListener(appointmentController);
+		
 		this.close(ViewEnum.ALL);
 		this.open(ViewEnum.LOGIN);
 
@@ -90,6 +94,9 @@ public class Client extends Application {
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.VIEWAPPOINTMENTVIEW)) {
 			this.viewAppointmentView.setVisible(state);
+		}
+		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(viewEnum.AREYOUSUREVIEW)) {
+			this.areYouSureView.setVisible(state);
 		}
 	}
 
@@ -144,7 +151,7 @@ public class Client extends Application {
 	}
 
 	public static enum ViewEnum {
-		ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW
+		ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW, AREYOUSUREVIEW
 	}
 
 	/**
