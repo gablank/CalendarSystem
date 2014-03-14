@@ -35,6 +35,49 @@ public class ClientNetwork extends Network {
 		super.run();
 	}
 
+	@Override
+	protected void handleMessage(JSONObject message) {
+		if (message.has("type")) {
+			String type = message.getString("type");
+
+			switch (type) {
+				case "login":
+					handleLoginMessage(message);
+					break;
+
+				case "internalUser":
+					handleInternalUserMessage(message);
+					break;
+
+				case "externalUser":
+					handleExternalUserMessage(message);
+					break;
+
+				case "appointment":
+					handleAppointmentMessage(message);
+					break;
+
+				case "meetingRoom":
+					handleMeetingRoomMessage(message);
+					break;
+
+				case "alarm":
+					handleAlarmMessage(message);
+					break;
+
+				case "group":
+					handleGroupMessage(message);
+					break;
+
+				default:
+					System.out.println("got a message of invalid type: " + message.toString());
+			}
+
+		} else {
+			System.out.println("a message had no type field: " + message.toString());
+		}
+	}
+
 	private void handleLoginMessage(JSONObject message) {
 		if (message.has("status") && message.has("statusMessage")) {
 
@@ -294,64 +337,4 @@ public class ClientNetwork extends Network {
 		}
 	}
 
-	@Override
-	protected void handleMessage(JSONObject message) {
-		if (message.has("type")) {
-			String type = message.getString("type");
-
-			String action = "";
-
-			switch (type) {
-				case "login":
-					handleLoginMessage(message);
-					break;
-
-				case "internalUser":
-					handleInternalUserMessage(message);
-					break;
-
-				case "externalUser":
-					handleExternalUserMessage(message);
-					break;
-
-				case "appointment":
-					handleAppointmentMessage(message);
-					break;
-
-				case "meetingRoom":
-					handleMeetingRoomMessage(message);
-					break;
-
-				case "alarm":
-					handleAlarmMessage(message);
-					break;
-
-				case "group":
-					handleGroupMessage(message);
-					break;
-
-				default:
-					System.out.println("got a message of invalid type: " + message.toString());
-			}
-
-		} else {
-			System.out.println("a message had no type field: " + message.toString());
-		}
-	}
-
-	public void closeConnection() {
-		running = false;
-		JSONObject obj = new JSONObject();
-		obj.put("type", "logout");
-		send(obj);
-
-		try {
-			// Thread.sleep(2000);
-			connectionSocket.close();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

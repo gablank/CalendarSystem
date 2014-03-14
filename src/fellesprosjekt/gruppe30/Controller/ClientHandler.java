@@ -209,14 +209,16 @@ public class ClientHandler extends Network {
 					return;
 				}
 
-				oldAppointment.copyAllFrom(appointment);
 				server.getDatabase().insertAppointment(oldAppointment);
+				oldAppointment.copyAllFrom(appointment);
+				server.getServerListener().broadcast(message);
 				System.out.println("successfully changed an appointment!");
 
 			} else {
 
-				server.addAppointment(appointment);
 				server.getDatabase().insertAppointment(appointment);
+				server.addAppointment(appointment);
+				server.getServerListener().broadcast(message);
 				System.out.println("successfully added an appointment!");
 			}
 
@@ -224,7 +226,10 @@ public class ClientHandler extends Network {
 			int id = message.getInt("id");
 
 			Appointment appointment = Utilities.getAppointmentById(id, server.getAppointments());
+
+			server.getDatabase().deleteAppointment(appointment);
 			server.removeAppointment(appointment);
+			server.getServerListener().broadcast(message);
 			System.out.println("successfully removed appointment!");
 
 		} else {
@@ -255,8 +260,9 @@ public class ClientHandler extends Network {
 				Date date = new Date(time);
 				Alarm alarm = new Alarm(user, appointment, date);
 
-				server.addAlarm(alarm);
 				server.getDatabase().insertAlarm(alarm);
+				server.addAlarm(alarm);
+				server.getServerListener().broadcast(message);
 				System.out.println("successfully added alarm!");
 
 			} else if ("change".equals(action)) {
@@ -269,16 +275,18 @@ public class ClientHandler extends Network {
 				Date date = new Date(time);
 
 				Alarm alarm = Utilities.getAlarm(appointment, user, server.getAlarms());
-				alarm.setDate(date);
+
 				server.getDatabase().insertAlarm(alarm);
+				alarm.setDate(date);
+				server.getServerListener().broadcast(message);
 				System.out.println("successfully changed alarm!");
 
 			} else if ("remove".equals(action)) {
-				server.removeAlarm(appointment, user);
-
 				Alarm alarm = Utilities.getAlarm(appointment, user, server.getAlarms());
 
 				server.getDatabase().deleteAlarm(alarm);
+				server.removeAlarm(appointment, user);
+				server.getServerListener().broadcast(message);
 				System.out.println("successfully removed alarm!");
 
 			} else {

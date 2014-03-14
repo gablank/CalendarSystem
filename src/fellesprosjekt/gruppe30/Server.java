@@ -12,25 +12,34 @@ import java.util.List;
 public class Server extends Application {
 	private final Database database = Database.getInstance();
 
-	private final Thread            alarmController;
-	private final Thread            serverListener;
+	private AlarmController	alarmController;
+	private ServerListener	serverListener;
+	private Thread			serverListenerThread;
+	private Thread			alarmControllerThread;
 
 	public Server() {
 		this.loadDatabase();
 
-		serverListener = new Thread(new ServerListener(this));
-		serverListener.start();
 
-		alarmController = new Thread(new AlarmController(this));
-		alarmController.start();
+		serverListener = new ServerListener(this);
+		serverListenerThread = new Thread(serverListener);
+		serverListenerThread.start();
+
+		alarmController = new AlarmController(this);
+		alarmControllerThread = new Thread(alarmController);
+		alarmControllerThread.start();
 
 		try {
-			serverListener.join();
-			alarmController.join();
+			serverListenerThread.join();
+			alarmControllerThread.join();
 		} catch(InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public ServerListener getServerListener() {
+		return serverListener;
 	}
 
 	public void loadDatabase() {
@@ -62,8 +71,8 @@ public class Server extends Application {
 	}
 
 	public void shutdown() {
-		this.alarmController.interrupt();
-		this.serverListener.interrupt();
+		this.alarmControllerThread.interrupt();
+		this.serverListenerThread.interrupt();
 	}
 
 	public static void main(String[] args) {

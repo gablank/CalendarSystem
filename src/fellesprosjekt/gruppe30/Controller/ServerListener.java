@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 
 public class ServerListener implements Runnable {
 	int                 listenerPort   = 11223;
@@ -19,11 +21,18 @@ public class ServerListener implements Runnable {
 		this.server = server;
 	}
 
+	// for testing only
 	public ClientHandler getFirstHandler() {
 		if(clientHandlers.isEmpty()) {
 			return null;
 		} else {
 			return clientHandlers.get(0);
+		}
+	}
+
+	public void broadcast(JSONObject message){
+		for (ClientHandler clientHandler : clientHandlers) {
+			clientHandler.send(message);
 		}
 	}
 
