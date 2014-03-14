@@ -70,6 +70,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			scrollers[i].setFocusable(true);
 			scrollers[i].setPreferredSize(new Dimension(155, 500));
 			scrollers[i].getVerticalScrollBar().setUnitIncrement(15);
+			scrollers[i].getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 			appointments[i].setBackground(Color.WHITE);
 			appointments[i].setBorder(BorderFactory.createLineBorder(Color.black));
 			appointments[i].setLayout(new BoxLayout(appointments[i], BoxLayout.Y_AXIS));
