@@ -6,6 +6,7 @@ import fellesprosjekt.gruppe30.Controller.Database;
 import fellesprosjekt.gruppe30.Controller.ServerListener;
 import fellesprosjekt.gruppe30.Model.*;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -38,7 +39,12 @@ public class Server extends Application {
 		alarmControllerThread = new Thread(alarmController);
 		alarmControllerThread.start();
 
-		//sendMail("emilhe@stud.ntnu.no", "This is an test", "Test");
+		// sendMail("emilhe@stud.ntnu.no", "This is an test", "Test");
+		//
+		// Alarm alarm = new Alarm(new InternalUser("emilhe@stud.ntnu.no",
+		// "Emil", "Heien"), appointments.get(0), new Date((new
+		// Date()).getTime() + 1000 * 61));
+		// addAlarm(alarm);
 
 		try {
 			serverListenerThread.join();
@@ -58,6 +64,8 @@ public class Server extends Application {
 	}
 
 	public Database getDatabase() {
+		int du = 120;
+		long hei = du;
 		return database;
 	}
 
@@ -83,7 +91,7 @@ public class Server extends Application {
 			message.setFrom(new Address() { //Inner class Address()
 
 				public String toString() {
-					return "Calendar_notifier";
+					return "CalendarSystem notification!";
 				}
 
 				public String getType() {
