@@ -17,7 +17,7 @@ import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.EventListener;
 
-public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, MouseListener, ListSelectionListener {
+public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, ListSelectionListener, FocusListener {
 	protected PersonRenderer      listRenderer;
 	protected PersonListModel     personListModel;
 	protected JTextField          titleField, meetingRoomField, emailField;
@@ -40,21 +40,21 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		//set appearance of all buttons
 		titleField = new JTextField("Title", 13);
-		titleField.addMouseListener(this);
+		titleField.addFocusListener(this);
 
 
 		description = new JTextArea("Description", 5, 13);
 		description.setBorder(titleField.getBorder());
 		description.setLineWrap(true);
 		description.setWrapStyleWord(true);
-		description.addMouseListener(this);
+		description.addFocusListener(this);
 		descriptionScroller = new JScrollPane(description);
 
 
 		meetingRoomField = new JTextField("Place", 10);
-		meetingRoomField.addMouseListener(this);
+		meetingRoomField.addFocusListener(this);
 		emailField = new JTextField("Email", 1);
-		emailField.addMouseListener(this);
+		emailField.addFocusListener(this);
 
 
 		selectRoom = new JButton("Select...");
@@ -67,7 +67,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			dateField = new JFormattedTextField(dateFormatter);
 			dateField.setPreferredSize(new Dimension(80, 20));
 			dateField.setValue("03.07.2014");
-			dateField.addMouseListener(this);
+			dateField.addFocusListener(this);
 			dateField.setHorizontalAlignment(JFormattedTextField.CENTER);
 		} catch(ParseException e) {
 			e.printStackTrace();
@@ -80,17 +80,17 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			startTimeField.setPreferredSize(new Dimension(50, 20));
 			startTimeField.setValue("08:40");
 			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-			startTimeField.addMouseListener(this);
+			startTimeField.addFocusListener(this);
 			endTimeField = new JFormattedTextField(timeFormatter);
 			endTimeField.setPreferredSize(new Dimension(50, 20));
 			endTimeField.setValue("10:40");
 			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-			endTimeField.addMouseListener(this);
+			endTimeField.addFocusListener(this);
 			alarmTimeField = new JFormattedTextField(timeFormatter);
 			alarmTimeField.setPreferredSize(new Dimension(40, 20));
 			alarmTimeField.setValue("00:30");
 			alarmTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-			alarmTimeField.addMouseListener(this);
+			alarmTimeField.addFocusListener(this);
 
 		} catch(ParseException e) {
 			e.printStackTrace();
@@ -302,10 +302,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 
 	}
-
-
+	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void focusGained(FocusEvent e) {
 		if(e.getSource() == titleField) {
 			if(titleField.getText().equals("Title")) {
 				titleField.setText("");
@@ -340,21 +339,25 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			}
 		}
 	}
-
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void focusLost(FocusEvent e) {
+		if(e.getSource() == titleField) {
+			if(titleField.getText().equals("")) {
+				titleField.setText("Title");
+			}
+		} else if(e.getSource() == description) {
+			if(description.getText().equals("")) {
+				description.setText("Description");
+			}
+		} else if(e.getSource() == meetingRoomField) {
+			if(meetingRoomField.getText().equals("")) {
+				meetingRoomField.setText("Place");
+			}
+		} else if(e.getSource() == emailField) {
+			if(emailField.getText().equals("")) {
+				emailField.setText("Email");
+			}
+		}
 	}
 	
 	@Override
