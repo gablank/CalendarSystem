@@ -4,12 +4,9 @@ import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
-public class CalendarController implements ActionListener, MouseListener {
+public class CalendarController implements ActionListener, MouseListener, WindowListener {
 	private final Client client;
 
 	public CalendarController(Client client) {
@@ -77,4 +74,38 @@ public class CalendarController implements ActionListener, MouseListener {
 	}
 
 
+	@Override
+	public void windowOpened(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowClosing(WindowEvent windowEvent) {
+		client.logout();
+	}
+
+	@Override
+	public void windowClosed(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowIconified(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowActivated(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
 }

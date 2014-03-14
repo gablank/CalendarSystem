@@ -5,15 +5,14 @@ import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
-import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.EventListener;
 
 public class CalendarView extends JPanel implements PropertyChangeListener {
@@ -157,6 +156,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 	public void addListener(EventListener controller) {
 		this.addActionListener((ActionListener) controller);
+		this.frame.addWindowListener((WindowListener) controller);
 	}
 
 	public void addActionListener(ActionListener controller) {
