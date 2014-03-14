@@ -66,37 +66,33 @@ public class Server extends Application {
 		return (List<Alarm>) ((ArrayList<Alarm>) this.alarms).clone();
 	}
 
-	public synchronized void sendMail(String recipient, String subject, String body) {
-		String mailFrom = "emilhe@stud.ntnu.no";
+	public synchronized void sendMail(String recipient, String subject, String body) throws RuntimeException {
 		
 		Properties props = new Properties();
-		// props.put("mail.smtp.starttls.enable", null);
+		/*props.put("mail.smtp.starttls.enable", null);
+		props.put("mail.smtp.user", "user");
+		props.put("mail.smtp.password", "password")
+		props.put("mail.smtp.auth", true); */
 		props.put("mail.smtp.host", "smtp.stud.ntnu.no");
-		// props.put("mail.smtp.user", mailFrom); //Dont know if needed
 		props.put("mail.smtp.port", "25");
-		// props.put("mail.smtp.auth", true);
 		
 		Session session = Session.getDefaultInstance(props);
 		
 		try {
 			Message message = new MimeMessage(session);
-			message.setFrom(new Address() {
+			message.setFrom(new Address() { //Inner class Address()
 
-				@Override
 				public String toString() {
-
-					return "Emil_S";
+					return "Calendar_notifier";
 				}
 
-				@Override
 				public String getType() {
-					// TODO Auto-generated method stub
 					return null;
 				}
 
-				@Override
 				public boolean equals(Object arg0) {
-					// TODO Auto-generated method stub
+					if (this.toString().equals(arg0.toString()))
+						return true;
 					return false;
 				}
 			});

@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -33,6 +35,25 @@ public class ServerListener implements Runnable {
 	public void broadcast(JSONObject message){
 		for (ClientHandler clientHandler : clientHandlers) {
 			clientHandler.send(message);
+		}
+		if (message.has("title") && message.has("attendants") && message.has("description") && message.has("start") && message.has("end")) {
+			JSONArray attendants = message.getJSONArray("Attendants");
+			for (int i = 0; i < attendants.length(); i++) {
+				JSONObject attendant = attendants.getJSONObject(i);
+				if (attendant.has("email")) {
+					String recipient = attendant.getString("email");
+					String subject = message.getString("title");
+					Long start = message.getLong("start");
+					Long end = message.getLong("end");
+					Date startDate = new Date(start);
+					Date endDate = new Date(end);
+					String body = "Date: " + Integer.toString(startDate.getDate()) + "\n" + message.getString("description") + "\nTime: " +
+					Integer.toString(startDate.getHours()) + ":" + Integer.toString(startDate.getMinutes()) + " - " + Integer.toString(endDate.getHours())
+					+ ":" + Integer.toString(endDate.getMinutes()) + "\nNumber of participants: " + attendants.length();
+					
+					server.sendMail(recipient, subject, body);
+				}
+			}
 		}
 	}
 
