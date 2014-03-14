@@ -53,7 +53,7 @@ public class AppointmentSummaryView extends JPanel {
 		unanswered.setIcon(unanswer);
 
 		participants = new JList<User>();
-		participants.setMinimumSize(new Dimension(130, 20 * userCount));
+		participants.setPreferredSize(new Dimension(100, 20 * userCount));
 		participants.setLayout(new BoxLayout(participants, BoxLayout.Y_AXIS));
 		participants.setVisibleRowCount(4);
 		participants.setBackground(Color.WHITE);
