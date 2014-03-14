@@ -38,6 +38,8 @@ public class Server extends Application {
 		alarmControllerThread = new Thread(alarmController);
 		alarmControllerThread.start();
 
+		sendMail("emilhe@stud.ntnu.no", "This is an test", "Test");
+
 		try {
 			serverListenerThread.join();
 			alarmControllerThread.join();
