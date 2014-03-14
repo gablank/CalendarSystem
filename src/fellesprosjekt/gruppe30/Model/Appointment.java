@@ -161,7 +161,6 @@ public class Appointment {
 		obj.put("start", this.start.getTime());
 		obj.put("end", this.end.getTime());
 		obj.put("meetingPlace", this.meetingPlace);
-		System.out.println(this.meetingPlace);
 		JSONArray attendants = new JSONArray();
 		for(Attendant attendant : this.attendants) {
 			attendants.put(attendant.getJSON());
