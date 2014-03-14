@@ -2,17 +2,11 @@ package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.InternalUser;
-import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
-import static fellesprosjekt.gruppe30.Utilities.*;
-
-public class CalendarController implements ActionListener, MouseListener {
+public class CalendarController implements ActionListener, MouseListener, WindowListener {
 	private final Client client;
 
 	public CalendarController(Client client) {
@@ -43,10 +37,10 @@ public class CalendarController implements ActionListener, MouseListener {
 		} else if(buttonName.equalsIgnoreCase("new_appointment")) {
 			client.newAppointment();
 		} else if(buttonName.equalsIgnoreCase("add_calendar")) {
-			InternalUser added = (InternalUser) Utilities.getUserByEmail(client.getCalendarView().getSelectedUserEmail(), client.getUsers());
+			InternalUser added = client.getCalendarView().getSelectedUser();
 			client.getCalendar().addUser(added);
 		} else if(buttonName.equalsIgnoreCase("remove_calendar")) {
-			InternalUser removed = (InternalUser) Utilities.getUserByEmail(client.getCalendarView().getSelectedUserEmail(), client.getUsers());
+			InternalUser removed = client.getCalendarView().getSelectedDropDownUser();
 			client.getCalendar().removeUser(removed);
 		}
 	}
@@ -80,4 +74,38 @@ public class CalendarController implements ActionListener, MouseListener {
 	}
 
 
+	@Override
+	public void windowOpened(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowClosing(WindowEvent windowEvent) {
+		client.logout();
+	}
+
+	@Override
+	public void windowClosed(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowIconified(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowActivated(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent windowEvent) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
 }

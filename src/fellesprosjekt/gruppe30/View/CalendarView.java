@@ -5,12 +5,12 @@ import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
-import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventListener;
@@ -156,6 +156,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 	public void addListener(EventListener controller) {
 		this.addActionListener((ActionListener) controller);
+		this.frame.addWindowListener((WindowListener) controller);
 	}
 
 	public void addActionListener(ActionListener controller) {
@@ -181,14 +182,14 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	}
 
 	public void setInternalUsers(java.util.List<InternalUser> internalUsers) {
-		users.removeAll();
+		users.removeAllItems();
 		for(InternalUser user : internalUsers) {
 			this.addInternalUser(user);
 		}
 	}
 
 	public void addInternalUser(InternalUser user) {
-		users.addItem(user.getEmail());
+		users.addItem(user);
 	}
 
 	public void removeInternalUser(InternalUser user) {
@@ -213,7 +214,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		java.util.List<InternalUser> showCalendarsFor = model.getUsers();
 		PersonListModel personListModel = new PersonListModel();
 		for(InternalUser user : showCalendarsFor) {
-			personListModel.addElement(user.getName());
+			personListModel.addElement(user);
 		}
 		this.setPersonListModel(personListModel);
 
@@ -231,7 +232,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		view.setVisible(true);
 	}
 
-	public String getSelectedUserEmail() {
-		return (String) users.getSelectedItem();
+	public InternalUser getSelectedUser() {
+		return (InternalUser) users.getSelectedItem();
+	}
+
+	public InternalUser getSelectedDropDownUser() {
+		return userCalendars.getSelectedValue();
 	}
 }

@@ -70,6 +70,10 @@ public class InternalUser extends User {
 		}
 	}
 
+	public String toString() {
+		return this.getName();
+	}
+
 	public JSONObject getJSON() {
 		JSONObject obj = new JSONObject();
 		obj.put("type", "internalUser");

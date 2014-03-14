@@ -20,6 +20,7 @@ public class ViewAppointmentView extends AppointmentView {
 		participantList.setVisible(false);
 		deleteButton.setVisible(false);
 		inviteByEmail.setVisible(false);
+		selectRoom.setVisible(false);
 	}
 
 	public static void main(String[] args) {

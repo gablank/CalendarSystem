@@ -27,12 +27,10 @@ public class AlarmController implements Runnable {
 			Date curTime = new Date(new Date().getTime() + 30 * 1000);
 			Date oneMinBeforeCurTime = new Date(new Date().getTime() - 30 * 1000);
 
+			System.out.println("checking alarms (" + curTime.toString() + ") + " + curTime.getTime() % 1000 + "ms");
+
 			for(int i = 0; i < alarms.size(); i++) {
 				// If now is after alarm date, send mail
-				Date alarmDate = new Date(alarms.get(i).getDate().getTime());
-				System.out.println("alarmDate: " + alarmDate.toString());
-
-				System.out.println(curTime.after(alarms.get(i).getDate()) + " && " + oneMinBeforeCurTime.before(alarms.get(i).getDate()));
 				if(curTime.after(alarms.get(i).getDate()) && oneMinBeforeCurTime.before(alarms.get(i).getDate())) {
 					this.server.sendMail(alarms.get(i).getUser().getEmail(), "Meeting notification", alarms.get(i).getAppointment().getTitle() + " is starting in "
 				+ ((alarms.get(i).getAppointment().getStart().getTime() - alarms.get(i).getDate().getTime()) / 1000 / 60) + " minutes");

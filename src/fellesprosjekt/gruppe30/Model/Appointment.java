@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
+import java.util.Calendar;
 
 public class Appointment {
 	private int             id;
@@ -161,7 +162,6 @@ public class Appointment {
 		obj.put("start", this.start.getTime());
 		obj.put("end", this.end.getTime());
 		obj.put("meetingPlace", this.meetingPlace);
-		System.out.println(this.meetingPlace);
 		JSONArray attendants = new JSONArray();
 		for(Attendant attendant : this.attendants) {
 			attendants.put(attendant.getJSON());
@@ -205,6 +205,11 @@ public class Appointment {
 	public int getDayOfWeek() {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(start);
-		return cal.get(java.util.Calendar.DAY_OF_WEEK);
+		int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
+		dayOfWeek -= 1;
+		if(dayOfWeek == 0) {
+			dayOfWeek = 6;
+		}
+		return dayOfWeek;
 	}
 }

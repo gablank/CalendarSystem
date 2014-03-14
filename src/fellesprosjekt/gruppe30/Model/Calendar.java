@@ -141,6 +141,12 @@ public class Calendar {
 	}
 
 	public List<InternalUser> getInternalUsers() {
-		return otherCalendars;
+		List<InternalUser> users = new ArrayList<>();
+		for(User user : client.getUsers()) {
+			if(user instanceof InternalUser && !otherCalendars.contains(user)) {
+				users.add((InternalUser) user);
+			}
+		}
+		return users;
 	}
 }

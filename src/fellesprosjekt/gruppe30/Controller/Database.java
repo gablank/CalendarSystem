@@ -994,32 +994,21 @@ public class Database {
 		Meeting rooms
 		 */
 		MeetingRoom p15 = new MeetingRoom(88);
-		MeetingRoom p151 = new MeetingRoom(4);
-		MeetingRoom p1515 = new MeetingRoom(8);
+		MeetingRoom kuben = new MeetingRoom(6);
+		MeetingRoom asbestRommet = new MeetingRoom(8);
 
 		/*
 		Appointments
 		 */
-		Appointment studLan = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p15);
-		Appointment workWork = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), "REMA 1000");
-		Appointment drekka = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
-		Appointment dota = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p151);
-		Appointment moreDota = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
-		Appointment projectWork = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000), p1515);
+		long msPerHour = 60 * 60 * 1000;
+		long msPerDay = 24 * msPerHour;
+		Appointment workWork = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(1394406000000L + 0 * msPerDay + 16 * msPerHour), new java.util.Date(1394406000000L + 0 * msPerDay + 23 * msPerHour), "REMA 1000");
+		Appointment drekka = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(1394406000000L + 5 * msPerDay + 20 * msPerHour), new java.util.Date(1394406000000L + 6 * msPerDay + 8 * msPerHour), asbestRommet);
+		Appointment dota = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(1394406000000L + 4 * msPerDay + 21 * msPerHour), new java.util.Date(1394406000000L + 4 * msPerDay + 22 * msPerHour), kuben);
+		Appointment moreDota = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(1394406000000L + 4 * msPerDay + 23 * msPerHour), new java.util.Date(1394406000000L + 5 * msPerDay + 3 * msPerHour), asbestRommet);
+		Appointment projectWork = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(1394406000000L + 2 * msPerDay + 10 * msPerHour), new java.util.Date(1394406000000L + 4 * msPerDay + 18 * msPerHour), asbestRommet);
+		Appointment studLan = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(1394406000000L + 4 * msPerDay + 19 * msPerHour), new java.util.Date(1394406000000L + 6 * msPerDay + 14 * msPerHour), p15);
 
-		Appointment studLan1 = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p15);
-		Appointment workWork1 = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), "REMA 1000");
-		Appointment drekka1 = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p1515);
-		Appointment dota1 = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p151);
-		Appointment moreDota1 = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p1515);
-		Appointment projectWork1 = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24), p1515);
-		
-		Appointment studLan2 = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p15);
-		Appointment workWork2 = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), "REMA 1000");
-		Appointment drekka2 = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p1515);
-		Appointment dota2 = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p151);
-		Appointment moreDota2 = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p1515);
-		Appointment projectWork2 = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(), new java.util.Date(new java.util.Date().getTime() + 60 * 60 * 1000 * 24 * 2), p1515);
 		/*
 		Groups
 		 */
@@ -1027,21 +1016,22 @@ public class Database {
 		gamings.addMember(anders);
 		gamings.addMember(emiljs);
 
-		Group jsGroup = new Group("JS-group");
-		jsGroup.addMember(emiljs);
-		jsGroup.addMember(emilh);
-		jsGroup.addMember(anders);
+		Group projectGroup = new Group("ProsjektGruppe");
+		projectGroup.addMember(emiljs);
+		projectGroup.addMember(emilh);
+		projectGroup.addMember(anders);
 
 		/*
 		Add users to appointment
 		 */
-		studLan.addGroup(gamings);
-		studLan.addUser(espen);
 		studLan.addUser(emilh);
+		studLan.addUser(anders);
 
 		workWork.addUser(emilh);
+		workWork.addUser(easy);
 
-		drekka.addGroup(jsGroup);
+		drekka.addGroup(projectGroup);
+		drekka.addUser(espen);
 
 		dota.addUser(emilh);
 		dota.addUser(anders);
@@ -1050,9 +1040,7 @@ public class Database {
 		moreDota.addUser(anders);
 
 		projectWork.addUser(espen);
-		projectWork.addGroup(jsGroup);
-
-
+		projectWork.addGroup(projectGroup);
 
 		/*
 		Insert into database
@@ -1064,26 +1052,14 @@ public class Database {
 		database.insertUser(espen);
 		database.insertUser(easy);
 		database.insertMeetingRoom(p15);
-		database.insertMeetingRoom(p151);
-		database.insertMeetingRoom(p1515);
+		database.insertMeetingRoom(kuben);
+		database.insertMeetingRoom(asbestRommet);
 		database.insertAppointment(studLan);
 		database.insertAppointment(workWork);
 		database.insertAppointment(drekka);
 		database.insertAppointment(dota);
 		database.insertAppointment(moreDota);
 		database.insertAppointment(projectWork);
-		database.insertAppointment(studLan1);
-		database.insertAppointment(workWork1);
-		database.insertAppointment(drekka1);
-		database.insertAppointment(dota1);
-		database.insertAppointment(moreDota1);
-		database.insertAppointment(projectWork1);
-		database.insertAppointment(studLan2);
-		database.insertAppointment(workWork2);
-		database.insertAppointment(drekka2);
-		database.insertAppointment(dota2);
-		database.insertAppointment(moreDota2);
-		database.insertAppointment(projectWork2);
 
 		database.close();
 	}
