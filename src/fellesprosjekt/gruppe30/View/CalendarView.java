@@ -26,6 +26,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	private Calendar      		model;
 	private JScrollPane 		userCalendarsScroller;
 	private PersonListModel     personListModel;
+	JScrollPane[] 				scrollers = new JScrollPane[7];
 
 	public CalendarView() {
 		GridBagConstraints c = new GridBagConstraints();
@@ -68,7 +69,6 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		showCalendarsFor = new JLabel("Show calendars for:");
 
 
-		JScrollPane[] scrollers = new JScrollPane[7];
 		for(int i = 0; i < 7; i++) {
 			dayLabels[i] = new JLabel();
 			appointments[i] = new JPanel();
@@ -197,7 +197,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	}
 	
 	public void updateView(){
-		java.util.List<java.util.List<Appointment>> appointments = model.getAppointments();
+		java.util.List<java.util.List<Appointment>> showAppointments = model.getAppointments();
 		String[] labels = model.getDays();
 		int weekNumber = model.getWeek();
 
@@ -205,8 +205,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		for(int i = 0; i < 7; i++) {
 			dayLabels[i].setText(labels[i]);
 			this.appointments[i].removeAll();
+			this.appointments[i].repaint();
 
-			for(Appointment appointment : appointments.get(i)) {
+			for(Appointment appointment : showAppointments.get(i)) {
 				this.appointments[i].add(new AppointmentSummaryView(appointment));
 			}
 		}
