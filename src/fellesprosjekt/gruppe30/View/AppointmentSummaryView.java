@@ -122,7 +122,7 @@ public class AppointmentSummaryView extends JPanel {
 	
 	public void updateFrame(){
 		userCount = (participants.getModel().getSize());
-		this.setPreferredSize(new Dimension(100, 80 + 20 * userCount));
+		this.participants.setPreferredSize(new Dimension(100, 20 * userCount));
 		this.repaint();
 		this.frame.pack();
 	}
