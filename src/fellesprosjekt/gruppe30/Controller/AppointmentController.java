@@ -71,7 +71,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("selectRoom")) {
 			client.open(Client.ViewEnum.BOOKMEETINGROOM);
-			client.getBookMeetingRoomController().setAppointment(appointmentView.getAppointmentModel());
+			client.getBookMeetingRoomController().setModel(appointmentView.getAppointmentModel());
 			
 		} else if(name.equalsIgnoreCase("cancel")) {
 			client.close(Client.ViewEnum.APPOINTMENT);
