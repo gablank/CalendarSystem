@@ -3,11 +3,10 @@ package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Client.ViewEnum;
-import fellesprosjekt.gruppe30.Model.Alarm;
-import fellesprosjekt.gruppe30.Model.InternalAttendant;
+import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.Utilities;
-import fellesprosjekt.gruppe30.Model.Appointment;
 
+import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
 import fellesprosjekt.gruppe30.View.AppointmentView;
@@ -18,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 public class AppointmentController implements ActionListener, KeyListener, ListSelectionListener, MouseListener {
 	private final Client client;
@@ -35,8 +35,16 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
 		String cmd = actionEvent.getActionCommand().toLowerCase();
 
-		System.out.println(cmd);
-		if(cmd.equals("save")) {
+		JComponent source = (JComponent) actionEvent.getSource();
+		String name = source.getName();
+		if(name.equalsIgnoreCase("inviteUser")) {
+			System.out.println("In invite user");
+			List<User> invitees = appointmentView.getSelectedUsers();
+			for(User invitee : invitees) {
+				appointmentView.getAppointmentModel().addUser(invitee);
+				System.out.println("Adding " + invitee.getEmail());
+			}
+		} else if(name.equalsIgnoreCase("save")) {
 			Appointment appointment = appointmentView.getAppointmentModel();
 			JSONObject message = appointment.getJSON();
 			if (appointment.getId() == -1) {
@@ -60,17 +68,17 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			}
 			client.close(Client.ViewEnum.APPOINTMENT);
 
-		} else if(cmd.equals("select...")) {
+		} else if(name.equalsIgnoreCase("selectRoom")) {
 			client.open(Client.ViewEnum.BOOKMEETINGROOM);
 			
-		} else if(cmd.equals("cancel")) {
+		} else if(name.equalsIgnoreCase("cancel")) {
 			client.close(Client.ViewEnum.APPOINTMENT);
 			
-		} else if(cmd.equals("delete")) {
+		} else if(name.equalsIgnoreCase("delete")) {
 			client.open(Client.ViewEnum.AREYOUSUREVIEW);
-		} else if(cmd.equals("no")) {
+		} else if(name.equalsIgnoreCase("no")) {
 			client.close(Client.ViewEnum.AREYOUSUREVIEW);
-		} else if(cmd.equals("yes")) {
+		} else if(name.equalsIgnoreCase("yes")) {
 			if (appointmentView.getAppointmentModel().getId() != -1) {
 				JSONObject message = new JSONObject();
 				message.put("type", "appointment");
@@ -79,10 +87,9 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 				client.network.send(message);
 			}
 			client.close(ViewEnum.APPOINTMENT);
-		} else if(cmd.equals("add")) {
-			appointmentView.inviteToAppointment();
-		} else if(cmd.equals("remove")) {
-			appointmentView.removeFromAppointment();
+		} else if(name.equalsIgnoreCase("removeUser")) {
+			Attendant selectedAttendant = appointmentView.getSelectedAttendant();
+			appointmentView.getAppointmentModel().removeAttendant(selectedAttendant);
 		}
 	}
 
@@ -132,6 +139,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		InternalAttendant newAttendant = new InternalAttendant(client.getLoggedInUser(), newAppointment);
 		Alarm newAlarm = new Alarm(client.getLoggedInUser(), newAppointment, new java.util.Date(0));
 		appointmentView.setModel(newAppointment, newAttendant, newAlarm);
+		appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 		appointmentView.setVisible(true);
 	}
 
