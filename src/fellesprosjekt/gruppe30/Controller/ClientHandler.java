@@ -12,8 +12,11 @@ import java.util.Date;
 
 
 public class ClientHandler extends Network {
-	Server server;
-	String username = null;
+	Server	server;
+	String	username				= null;
+	
+	int		lastNewAppointmentId	= -1;	// used to determine appointmentId
+											// of alarms with appointmentId = -1
 
 	public ClientHandler(Socket connectionSocket, Server server) {
 		this.connectionSocket = connectionSocket;
@@ -215,8 +218,11 @@ public class ClientHandler extends Network {
 				System.out.println("successfully changed an appointment!");
 
 			} else {
-
+				
 				server.getDatabase().insertAppointment(appointment);
+				lastNewAppointmentId = appointment.getId();
+				System.out.println("set last to " + lastNewAppointmentId);
+
 				server.addAppointment(appointment);
 				server.getServerListener().broadcast(message);
 				System.out.println("successfully added an appointment!");
@@ -247,8 +253,17 @@ public class ClientHandler extends Network {
 			String userEmail = message.getString("userEmail");
 			int appointmentId = message.getInt("appointmentId");
 
+			if (appointmentId == -1) {
+				appointmentId = lastNewAppointmentId;
+			}
+
 			InternalUser user = (InternalUser) Utilities.getUserByEmail(userEmail, server.getUsers());
 			Appointment appointment = Utilities.getAppointmentById(appointmentId, server.getAppointments());
+
+			if (appointment == null) {
+				System.out.println("Could not find appointment with id " + appointmentId + " to add alarm to.");
+				return;
+			}
 
 			if ("new".equals(action)) {
 				if (!message.has("time")) {

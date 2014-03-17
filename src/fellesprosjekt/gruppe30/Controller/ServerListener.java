@@ -37,7 +37,7 @@ public class ServerListener implements Runnable {
 			clientHandler.send(message);
 		}
 		if (message.has("action") && message.has("title") && message.has("attendants") && message.has("description") && message.has("start") && message.has("end")) {
-			JSONArray attendants = message.getJSONArray("Attendants");
+			JSONArray attendants = message.getJSONArray("attendants");
 			for (int i = 0; i < attendants.length(); i++) {
 				JSONObject attendant = attendants.getJSONObject(i);
 				if (attendant.has("email")) {
