@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionListener;
 
 import fellesprosjekt.gruppe30.View.AppointmentView;
 import fellesprosjekt.gruppe30.View.ViewAppointmentView;
+
 import org.json.JSONObject;
 
 import java.awt.event.ActionListener;
@@ -70,6 +71,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("selectRoom")) {
 			client.open(Client.ViewEnum.BOOKMEETINGROOM);
+			client.getBookMeetingRoomController().setAppointment(appointmentView.getAppointmentModel());
 			
 		} else if(name.equalsIgnoreCase("cancel")) {
 			client.close(Client.ViewEnum.APPOINTMENT);
@@ -156,5 +158,9 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	public void setVisible(boolean state) {
 		appointmentView.setVisible(state);
 		viewAppointmentView.setVisible(state);
+	}
+
+	public Appointment getModel() {
+		return appointmentView.getAppointmentModel();
 	}
 }

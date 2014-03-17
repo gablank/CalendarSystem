@@ -21,7 +21,7 @@ import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
 public class BookMeetingRoomController implements ActionListener, ListSelectionListener, KeyListener {
 	private final Client		client;
 	private BookMeetingRoomView	bookMeetingRoomView;
-	private Appointment			model;
+	private Appointment			appointment;
 	
 	public BookMeetingRoomController(Client client) {
 		this.client = client;
@@ -31,8 +31,8 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 
 	}
 	
-	void setModel(Appointment model) {
-		this.model = model;
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
 		populateList();
 	}
 
@@ -70,8 +70,8 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 			}
 		}
 		
-		Date startDate = model.getStart();
-		Date endDate = model.getStart();
+		Date startDate = appointment.getStart();
+		Date endDate = appointment.getStart();
 		for (int i = 0; i < validRooms.size(); ++i) {
 			if (!isAvailable(validRooms.get(i), startDate, endDate, client.getAppointments())) {
 				validRooms.remove(i);

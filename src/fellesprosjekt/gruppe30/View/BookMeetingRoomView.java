@@ -222,6 +222,8 @@ public class BookMeetingRoomView extends JPanel {
 	}
 
 	public void populateList(List<MeetingRoom> validRooms) {
+		roomListModel.removeAllElements();
+
 		for(MeetingRoom room : validRooms){
 			roomListModel.addElement(room);
 		}
