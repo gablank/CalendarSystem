@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Client extends Application {
 	private final LoginController       loginController;
 	private final CalendarController    calendarController;
-	private final BookMeetingRoomController bookMeetingRoomController;
+	//private final BookMeetingRoomController bookMeetingRoomController;
 	private final AppointmentController appointmentController;
 	private final AreYouSureView		areYouSureView;
 	public  final ClientNetwork         network;
@@ -29,6 +30,9 @@ public class Client extends Application {
 	}
 
 	public Client() {
+        pcs = new PropertyChangeSupport(this);
+        PersonRenderer.getInstance();
+        PersonRenderer.setClient(this);
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<User>();
 		meetingRooms = new ArrayList<MeetingRoom>();
@@ -39,7 +43,7 @@ public class Client extends Application {
 
 		this.calendarController = new CalendarController(this);
 
-		this.bookMeetingRoomController = new BookMeetingRoomController();
+		//this.bookMeetingRoomController = new BookMeetingRoomController();
 
 		this.appointmentController = new AppointmentController(this);
 
@@ -85,6 +89,7 @@ public class Client extends Application {
 		open(ViewEnum.CALENDAR);
 		this.loggedInUser = (InternalUser) Utilities.getUserByEmail(email, users);
 		this.calendarController.setUser((InternalUser) this.loggedInUser);
+        pcs.firePropertyChange("change", 1, 2);
 	}
 
 	public void newAppointment() {
@@ -125,7 +130,11 @@ public class Client extends Application {
 		return users;
 	}
 
-	public static enum ViewEnum {
+    public void addPcsListener(CalendarView calendarView) {
+        pcs.addPropertyChangeListener(calendarView);
+    }
+
+    public static enum ViewEnum {
 		ALL, LOGIN, CALENDAR, APPOINTMENT, BOOKMEETINGROOM, VIEWAPPOINTMENTVIEW, AREYOUSUREVIEW
 	}
 
