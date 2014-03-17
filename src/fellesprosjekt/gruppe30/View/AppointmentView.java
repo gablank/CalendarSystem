@@ -232,9 +232,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		saveDelete.add(cancelButton);
 		add(saveDelete, cRight);
 
-		//listRenderer = new PersonRenderer();
-		//participants.setCellRenderer(listRenderer);
-
 		frame = new JFrame("Appointment view");
 		frame.add(this);
 		frame.pack();
@@ -246,6 +243,21 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		personListModel = new PersonListModel();
 		this.setPersonListModel(personListModel);
+		
+		/*//test code
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
+		InternalUser user2 = new InternalUser("email", "Knut", "Grut");
+		InternalUser user3 = new InternalUser ("email", "Stefan", "Trefan");
+		InternalAttendant attendant = new InternalAttendant(user, new Appointment(user));
+		InternalAttendant attendant2 = new InternalAttendant(user2, new Appointment(user2));
+		InternalAttendant attendant3 = new InternalAttendant(user3, new Appointment(user3));
+		personListModel.addElement(attendant);
+		personListModel.addElement(attendant2);
+		personListModel.addElement(attendant3);
+		for(int i = 0; i < 10; i++) {
+		}
+		//end test code*/
 	}
 
 	//add listeners to all components

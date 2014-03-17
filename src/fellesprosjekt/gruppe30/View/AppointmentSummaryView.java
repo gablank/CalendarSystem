@@ -124,6 +124,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		frame.setResizable(true);
 
 		//test code
+		//setMeetingStatus();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		titleLabel.setText(model.getTitle());
 		timeLabel.setText(Utilities.timeToFormattedString(model.getStart()) + " - " + Utilities.timeToFormattedString(model.getEnd()));
@@ -150,6 +151,20 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 	public void setPersonListModel(PersonListModel model) {
 		this.personListModel = model;
 		participants.setModel(model);
+	}
+	
+	public void setMeetingStatus(){
+		for (int i=0; i<participants.getModel().getSize(); i++){
+			if (participants.getModel().getElementAt(i).getStatus() == 1){
+				noLabel.setVisible(true);
+			}
+			if (participants.getModel().getElementAt(i).getStatus() == 2){
+				unanswered.setVisible(true);
+			}
+		}
+		if (!noLabel.isVisible() && !unanswered.isVisible()){
+			yesLabel.setVisible(true);
+		}
 	}
 	
 	public void addListener(CalendarController controller) {
