@@ -1,18 +1,21 @@
 package fellesprosjekt.gruppe30.View;
 
+import fellesprosjekt.gruppe30.Controller.AppointmentController;
 import fellesprosjekt.gruppe30.Controller.CalendarController;
 import fellesprosjekt.gruppe30.Controller.LoginController;
 import fellesprosjekt.gruppe30.Model.*;
+import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
-public class AppointmentSummaryView extends JPanel {
+public class AppointmentSummaryView extends JPanel implements MouseListener {
 
 	private JLabel 			titleLabel, timeLabel, yesLabel, noLabel, creatorLabel, unanswered;
 	private JFrame          frame;
@@ -21,9 +24,11 @@ public class AppointmentSummaryView extends JPanel {
 	private PersonListModel personListModel;
 	private int				userCount	= 3;
 	private Appointment     model;
+	private Client          client;
 
-	public AppointmentSummaryView(Appointment model, java.util.List<InternalUser> toShow) {
+	public AppointmentSummaryView(Appointment model, java.util.List<InternalUser> toShow, Client client) {
 		this.model = model;
+		this.client = client;
 
 		personListModel = new PersonListModel();
 		for (Attendant attendant : this.model.getAttendants()) {
@@ -89,6 +94,7 @@ public class AppointmentSummaryView extends JPanel {
 		timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		headerPanel.add(timeLabel);
 		headerPanel.setPreferredSize(new Dimension(130, 40));
+		headerPanel.addMouseListener(this);
 		add(headerPanel, c);
 		c.gridy = 1;
 
@@ -153,6 +159,36 @@ public class AppointmentSummaryView extends JPanel {
 	public void addMouseListener(MouseListener controller) {
 		titleLabel.addMouseListener(controller);
 		timeLabel.addMouseListener(controller);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		client.appointmentController.open(model);
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

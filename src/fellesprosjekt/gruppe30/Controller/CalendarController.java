@@ -15,7 +15,7 @@ public class CalendarController implements ActionListener, MouseListener, Window
 
 	public CalendarController(Client client) {
 		this.client = client;
-		this.calendarView = new CalendarView();
+		this.calendarView = new CalendarView(client);
 		calendarView.addListener(this);
 		this.calendarModel = new Calendar(client);
 		this.calendarModel.addPcsListener(calendarView);
