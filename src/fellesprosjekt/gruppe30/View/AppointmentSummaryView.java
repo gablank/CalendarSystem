@@ -35,10 +35,9 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 			if (attendant instanceof ExternalAttendant) {
 				continue;
 			}
-			InternalUser user = (InternalUser) attendant.getUser();
-			InternalAttendant userattendant = new InternalAttendant(user, new Appointment(user));
-			if (toShow.contains(user)) {
-				personListModel.addElement(userattendant);
+
+			if (toShow.contains(attendant.getUser())) {
+				personListModel.addElement(attendant);
 			}
 		}
 
@@ -61,18 +60,21 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		yesLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		ImageIcon accept = new ImageIcon(new File(directory, "yesIcon.png").getPath());
 		yesLabel.setIcon(accept);
+		yesLabel.setVisible(false);
 
 		noLabel = new JLabel();
 		noLabel.setPreferredSize(new Dimension(30, 30));
 		noLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		ImageIcon decline = new ImageIcon(new File(directory, "noIcon.png").getPath());
 		noLabel.setIcon(decline);
+		noLabel.setVisible(false);
 
 		unanswered = new JLabel();
 		unanswered.setPreferredSize(new Dimension(30, 30));
 		unanswered.setBorder(BorderFactory.createLineBorder(Color.black));
 		ImageIcon unanswer = new ImageIcon(new File(directory, "unanswer.png").getPath());
 		unanswered.setIcon(unanswer);
+		unanswered.setVisible(false);
 
 		participants = new JList<Attendant>();
 		participants.setMinimumSize(new Dimension(130, 20 * userCount));
@@ -113,7 +115,6 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		listrenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listrenderer);
-		listrenderer.canSelect = false;
 
 		frame = new JFrame();
 		frame.add(this);
@@ -124,7 +125,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		frame.setResizable(true);
 
 		//test code
-		//setMeetingStatus();
+		setMeetingStatus();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		titleLabel.setText(model.getTitle());
 		timeLabel.setText(Utilities.timeToFormattedString(model.getStart()) + " - " + Utilities.timeToFormattedString(model.getEnd()));
@@ -154,16 +155,16 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 	}
 	
 	public void setMeetingStatus(){
-		for (int i=0; i<participants.getModel().getSize(); i++){
-			if (participants.getModel().getElementAt(i).getStatus() == 1){
-				noLabel.setVisible(true);
-			}
-			if (participants.getModel().getElementAt(i).getStatus() == 2){
+		for(Attendant attendant : model.getAttendants()) {
+			if(attendant.getStatus() == Attendant.Status.NOT_ANSWERED) {
 				unanswered.setVisible(true);
 			}
-		}
-		if (!noLabel.isVisible() && !unanswered.isVisible()){
-			yesLabel.setVisible(true);
+			if(attendant.getStatus() == Attendant.Status.NOT_ATTENDING) {
+				noLabel.setVisible(true);
+			}
+			if (!noLabel.isVisible() && !unanswered.isVisible()){
+				yesLabel.setVisible(true);
+			}
 		}
 	}
 	
