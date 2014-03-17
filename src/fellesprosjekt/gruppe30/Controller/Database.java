@@ -989,6 +989,9 @@ public class Database {
 		emilh.setPassword("password");
 
 		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
+		
+		InternalUser reidarkl = new InternalUser("reidar.kl@gmail.com", "Reidar Kjøs", "Lien");
+		reidarkl.setPassword("password");
 
 		/*
 		Meeting rooms
@@ -1051,6 +1054,7 @@ public class Database {
 		database.insertUser(emilh);
 		database.insertUser(espen);
 		database.insertUser(easy);
+		database.insertUser(reidarkl);
 		database.insertMeetingRoom(p15);
 		database.insertMeetingRoom(kuben);
 		database.insertMeetingRoom(asbestRommet);

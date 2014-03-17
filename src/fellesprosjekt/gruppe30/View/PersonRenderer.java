@@ -37,16 +37,11 @@ public class PersonRenderer implements ListCellRenderer {
 		ImageIcon decline = new ImageIcon(new File(directory, "noIcon(small).png").getPath());
 		ImageIcon unanswer = new ImageIcon(new File(directory, "unanswer(small).png").getPath());
 		ImageIcon creator = new ImageIcon(new File(directory, "creatorIcon(small).png").getPath());
-		
-		ImageIcon[] statuses = new ImageIcon[3];
-		statuses[0] = accept;
-		statuses[1] = decline;
-		statuses[2] = unanswer;
-		
+	
 			/*
 		     *TODO logic to choose correct icon
 		     */
-		label.setIcon(statuses[0]);
+		label.setIcon(accept);
 		
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
