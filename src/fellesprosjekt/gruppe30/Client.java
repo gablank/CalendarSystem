@@ -42,7 +42,7 @@ public class Client extends Application {
 
 		this.calendarController = new CalendarController(this);
 
-		this.bookMeetingRoomController = new BookMeetingRoomController();
+		this.bookMeetingRoomController = new BookMeetingRoomController(this);
 
 		this.appointmentController = new AppointmentController(this);
 
