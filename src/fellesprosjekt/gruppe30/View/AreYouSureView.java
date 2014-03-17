@@ -1,7 +1,9 @@
 package fellesprosjekt.gruppe30.View;
 
 import javax.swing.*;
+
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.EventListener;
 
@@ -49,14 +51,9 @@ public class AreYouSureView extends JPanel {
 		//end test code
 	}
 
-	// listener FEEEST
-	public void addListener(EventListener controller) {
-		this.addMouseListener((MouseListener) controller);
-	}
-
-	public void addMouseListener(MouseListener controller) {
-		yesButton.addMouseListener(controller);
-		noButton.addMouseListener(controller);
+	public void addListener(ActionListener controller) {
+		yesButton.addActionListener(controller);
+		noButton.addActionListener(controller);
 	}
 	
 	public void setVisible(boolean visible) {

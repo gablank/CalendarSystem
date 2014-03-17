@@ -68,9 +68,12 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			
 		} else if(cmd.equals("delete")) {
 			client.open(Client.ViewEnum.AREYOUSUREVIEW);
+
 		} else if(cmd.equals("no")) {
 			client.close(Client.ViewEnum.AREYOUSUREVIEW);
+
 		} else if(cmd.equals("yes")) {
+			client.close(Client.ViewEnum.AREYOUSUREVIEW);
 			if (appointmentView.getAppointmentModel().getId() != -1) {
 				JSONObject message = new JSONObject();
 				message.put("type", "appointment");
@@ -79,8 +82,10 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 				client.network.send(message);
 			}
 			client.close(ViewEnum.APPOINTMENT);
+
 		} else if(cmd.equals("add")) {
 			appointmentView.inviteToAppointment();
+
 		} else if(cmd.equals("remove")) {
 			appointmentView.removeFromAppointment();
 		}
