@@ -148,4 +148,8 @@ public class Client extends Application {
 			}
 		});
 	}
+
+	public AppointmentController getAppointmentController() {
+		return appointmentController;
+	}
 }

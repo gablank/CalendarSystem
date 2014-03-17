@@ -178,7 +178,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		client.appointmentController.open(model);
+		client.getAppointmentController().open(model);
 		
 	}
 
