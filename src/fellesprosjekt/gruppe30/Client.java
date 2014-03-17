@@ -139,9 +139,16 @@ public class Client extends Application {
 
 	public void logout() {
 		this.loggedInUser = null;
+		this.users.clear();
+		this.appointments.clear();
+		this.meetingRooms.clear();
+		this.alarms.clear();
+		this.groups.clear();
+
 		JSONObject obj = new JSONObject();
 		obj.put("type", "logout");
 		this.network.send(obj);
+
 		close(ViewEnum.ALL);
 		open(ViewEnum.LOGIN);
 	}
