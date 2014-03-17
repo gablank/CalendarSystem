@@ -17,7 +17,7 @@ public class ViewAppointmentView extends AppointmentView {
 		useMeetingRoom.setVisible(false);
 		addButton.setVisible(false);
 		removeButton.setVisible(false);
-		participantList.setVisible(false);
+		allUsersAndGroups.setVisible(false);
 		deleteButton.setVisible(false);
 		inviteByEmail.setVisible(false);
 		selectRoom.setVisible(false);

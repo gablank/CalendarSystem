@@ -225,6 +225,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	
 	public void setModel (Calendar calendar){
 		this.model = calendar;
+        this.model.addPcsListener(this);
 		updateView();
 	}
 

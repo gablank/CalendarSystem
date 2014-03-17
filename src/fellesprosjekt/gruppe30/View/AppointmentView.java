@@ -14,17 +14,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.*;
-import java.util.Calendar;
 import java.util.List;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, ListSelectionListener, FocusListener {
 	protected PersonRenderer      listRenderer;
-	protected PersonListModel     personListModel;
+	public    PersonListModel     personListModel;
 	protected JTextField          titleField, meetingPlaceField, emailField;
 	protected JTextArea           description;
 	protected JFormattedTextField dateField, startTimeField, endTimeField, alarmTimeField;
 	protected JCheckBox           useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
-	protected JComboBox<InternalUser>     participantList;
+	protected JComboBox<Object> allUsersAndGroups;
 	protected JList<Attendant>         participants;
 	protected JButton             addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
 	protected JScrollPane         participantScroller, descriptionScroller;
@@ -60,6 +59,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 
 		selectRoom = new JButton("Select...");
+		selectRoom.setName("selectRoom");
 		selectRoom.setPreferredSize(new Dimension(100, 25));
 
 
@@ -100,17 +100,23 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 
 		useMeetingRoom = new JCheckBox("Use meeting room");
+		useMeetingRoom.setName("useMeetingRoom");
 		useMeetingRoom.setSelected(true);
 		hideFromCalendar = new JCheckBox("Hide from calendar");
+		hideFromCalendar.setName("hideFromCalendar");
 		setAlarm = new JCheckBox("Alarm");
+		setAlarm.setName("setAlarm");
 		inviteByEmail = new JCheckBox("Invite by email");
+		inviteByEmail.setName("inviteByEmail");
 
-		participantList = new JComboBox<InternalUser>();
-		participantList.setPreferredSize(new Dimension(40, 25));
+		allUsersAndGroups = new JComboBox<>();
+		allUsersAndGroups.setPreferredSize(new Dimension(40, 25));
+		allUsersAndGroups.setName("allUsersAndGroups");
 		participants = new JList<Attendant>();
-		listRenderer = new PersonRenderer();
+		listRenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listRenderer);
 		participants.addListSelectionListener(this);
+        participants.addMouseListener(listRenderer);
 
 		participantScroller = new JScrollPane(participants);
 		participantScroller.setFocusable(true);
@@ -119,14 +125,19 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		participantLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		addButton = new JButton("Add        ");
+		addButton.setName("inviteUser");
 		addButton.setPreferredSize(new Dimension(80, 25));
 
 		removeButton = new JButton("Remove");
+		removeButton.setName("removeUser");
 		removeButton.setPreferredSize(new Dimension(80, 25));
 
 		saveButton = new JButton("Save");
+		saveButton.setName("save");
 		deleteButton = new JButton("Delete");
+		deleteButton.setName("delete");
 		cancelButton = new JButton("Cancel");
+		cancelButton.setName("cancel");
 
 
 		//Build a gridbag
@@ -205,7 +216,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		JPanel userOrEmail = new JPanel();
 		userOrEmail.setLayout(new BoxLayout(userOrEmail, BoxLayout.Y_AXIS));
 		userOrEmail.add(inviteByEmail);
-		userOrEmail.add(participantList, 1);
+		userOrEmail.add(allUsersAndGroups, 1);
 		userOrEmail.add(emailField, 1);
 		emailField.setVisible(false);
 		JPanel personAddRemove = new JPanel();
@@ -221,8 +232,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		saveDelete.add(cancelButton);
 		add(saveDelete, cRight);
 
-		listRenderer = new PersonRenderer();
-		participants.setCellRenderer(listRenderer);
+		//listRenderer = new PersonRenderer();
+		//participants.setCellRenderer(listRenderer);
 
 		frame = new JFrame("Appointment view");
 		frame.add(this);
@@ -235,21 +246,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		personListModel = new PersonListModel();
 		this.setPersonListModel(personListModel);
-		
-		//test code
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
-		InternalUser user2 = new InternalUser("email", "Knut", "Grut");
-		InternalUser user3 = new InternalUser ("email", "Stefan", "Trefan");
-		InternalAttendant attendant = new InternalAttendant(user, new Appointment(user));
-		InternalAttendant attendant2 = new InternalAttendant(user2, new Appointment(user2));
-		InternalAttendant attendant3 = new InternalAttendant(user3, new Appointment(user3));
-		personListModel.addElement(attendant);
-		personListModel.addElement(attendant2);
-		personListModel.addElement(attendant3);
-		for(int i = 0; i < 10; i++) {
-		}
-		//end test code
 	}
 
 	//add listeners to all components
@@ -266,7 +262,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		saveButton.addActionListener(controller);
 		deleteButton.addActionListener(controller);
 		cancelButton.addActionListener(controller);
-		participantList.addActionListener(controller);
+		allUsersAndGroups.addActionListener(controller);
 		hideFromCalendar.addActionListener(controller);
 		setAlarm.addActionListener(controller);
 		useMeetingRoom.addActionListener(controller);
@@ -303,11 +299,11 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			}
 		} else if(e.getSource() == inviteByEmail) {
 			if(inviteByEmail.isSelected()) {
-				participantList.setVisible(false);
+				allUsersAndGroups.setVisible(false);
 				emailField.setVisible(true);
 			} else {
 				emailField.setVisible(false);
-				participantList.setVisible(true);
+				allUsersAndGroups.setVisible(true);
 			}
 		}
 
@@ -387,13 +383,19 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		this.appointmentModel = appointment;
 		this.attendantModel = attendant;
 		this.alarmModel = alarm;
+		this.appointmentModel.addListener(this);
 		updateFields();
 	}
 
-	public void setInternalUsers(List<InternalUser> internalUsers) {
+	public void setInternalUsersAndGroups(List<InternalUser> internalUsers, List<Group> groups) {
+		allUsersAndGroups.removeAllItems();
+
 		for(InternalUser user : internalUsers) {
-			participantList.addItem(user);
-			System.out.println("Adding " + user + " to internal users combobox");
+			allUsersAndGroups.addItem(user);
+		}
+
+		for(Group group : groups) {
+			allUsersAndGroups.addItem(group);
 		}
 	}
 
@@ -427,6 +429,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			setAlarm.setSelected(true);
 			alarmTimeField.setValue(getAlarmTimeDiff());
 		}
+
+		PersonListModel personListModel = new PersonListModel();
+		List<Attendant> invited = appointmentModel.getAttendants();
+		for(Attendant attendant : invited) {
+			personListModel.addElement(attendant);
+		}
+		setPersonListModel(personListModel);
 	}
 
 	public void setPersonListModel(PersonListModel model) {
@@ -441,19 +450,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 	public Appointment getAppointmentModel() {
 		return appointmentModel;
-	}
-	
-	public void inviteToAppointment() {
-		if (inviteByEmail.isSelected()) {
-			User user = new ExternalUser(emailField.getText());
-			personListModel.addElement(user);
-		} else {
-			personListModel.addElement((User)participantList.getSelectedItem());
-		}
-	}
-	
-	public void removeFromAppointment() {
-		personListModel.removeElement(participants.getSelectedValue());
 	}
 	
 	public boolean setAlarmIsSelected() {
@@ -485,6 +481,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		alarmMinutes += cal.get(java.util.Calendar.MINUTE);
 
 		int diff = startMinutes - alarmMinutes;
+		if(diff < 0) {
+			diff += 24 * 60;
+		}
 		int minutes = diff % 60;
 		int hours = (diff - minutes) / 60;
 		String hoursAsString = Integer.toString(hours);
@@ -499,8 +498,44 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		return  hoursAsString + ":" + minutesAsString;
 	}
 
+	public List<User> getSelectedUsers() {
+		List<User> users = new ArrayList<User>();
+		if(inviteByEmail.isSelected()) {
+			ExternalUser user = new ExternalUser(emailField.getText());
+			users.add(user);
+		} else {
+			Object selected = allUsersAndGroups.getSelectedItem();
+			if(selected instanceof Group) {
+				for(User member : ((Group) selected).getMembers()) {
+					users.add(member);
+				}
+			} else {
+				users.add((User) selected);
+			}
+		}
+		return users;
+	}
+
+	public Attendant getSelectedAttendant() {
+		return participants.getSelectedValue();
+	}
+
 	public static void main(String[] args) {
 		AppointmentView view = new AppointmentView();
 		view.setVisible(true);
+		//test code
+		view.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
+		InternalUser user2 = new InternalUser("email", "Knut", "Grut");
+		InternalUser user3 = new InternalUser ("email", "Stefan", "Trefan");
+		InternalAttendant attendant = new InternalAttendant(user, new Appointment(user));
+		InternalAttendant attendant2 = new InternalAttendant(user2, new Appointment(user2));
+		InternalAttendant attendant3 = new InternalAttendant(user3, new Appointment(user3));
+		view.personListModel.addElement(attendant);
+		view.personListModel.addElement(attendant2);
+		view.personListModel.addElement(attendant3);
+		for(int i = 0; i < 10; i++) {
+		}
+		//end test code
 	}
 }

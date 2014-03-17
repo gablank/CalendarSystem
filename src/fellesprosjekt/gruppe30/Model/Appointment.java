@@ -3,6 +3,8 @@ package fellesprosjekt.gruppe30.Model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.Calendar;
 
@@ -17,6 +19,7 @@ public class Appointment {
 	private MeetingRoom     room;
 	private Date            lastUpdated;
 	private InternalUser    owner;
+	private PropertyChangeSupport pcs;
 
 
 	public Appointment(InternalUser owner) {
@@ -46,20 +49,34 @@ public class Appointment {
 		this.room = room;
 		this.attendants = new ArrayList<Attendant>();
 		this.lastUpdated = new Date();
+		pcs = new PropertyChangeSupport(this);
+        this.addUser(owner);
+	}
+
+	public void addListener(PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
 	}
 
 	public void addAttendant(Attendant attendant) {
 		this.attendants.add(attendant);
+		pcs.firePropertyChange("change", 1, 2);
 	}
 
 	public void addUser(User user) {
+		// Avoid adding duplicates
+		for(Attendant attendant1 : attendants) {
+			if(attendant1.getUser() == user) {
+				return;
+			}
+		}
+
 		Attendant attendant;
 		if(user instanceof InternalUser) {
 			attendant = new InternalAttendant((InternalUser) user, this);
 		} else {
 			attendant = new ExternalAttendant((ExternalUser) user, this);
 		}
-		this.attendants.add(attendant);
+		addAttendant(attendant);
 	}
 
 	public void addGroup(Group group) {
@@ -68,8 +85,9 @@ public class Appointment {
 		}
 	}
 
-	public void removeAttendant(InternalAttendant internalAttendant) {
-		this.attendants.remove(internalAttendant);
+	public void removeAttendant(Attendant attendant) {
+		this.attendants.remove(attendant);
+		pcs.firePropertyChange("change", 1, 2);
 	}
 
 	public void setAttendants(List<Attendant> attendants) {
