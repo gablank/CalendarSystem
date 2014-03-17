@@ -1,10 +1,7 @@
 package fellesprosjekt.gruppe30;
 
 
-import fellesprosjekt.gruppe30.Controller.AppointmentController;
-import fellesprosjekt.gruppe30.Controller.CalendarController;
-import fellesprosjekt.gruppe30.Controller.ClientNetwork;
-import fellesprosjekt.gruppe30.Controller.LoginController;
+import fellesprosjekt.gruppe30.Controller.*;
 import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.View.*;
 
@@ -12,27 +9,22 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 
-import java.awt.Container;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class Client extends Application {
 	private final LoginController       loginController;
-	private final LoginView             loginView;
-	private final Calendar              calendar;
 	private final CalendarController    calendarController;
-	private final CalendarView          calendarView;
-	private final AppointmentView       appointmentView;
-	private final ViewAppointmentView   viewAppointmentView;
-	private final BookMeetingRoomView   bookMeetingRoomView;
+	private final BookMeetingRoomController bookMeetingRoomController;
 	private final AppointmentController appointmentController;
 	private final AreYouSureView		areYouSureView;
 	public  final ClientNetwork         network;
 
-	private User loggedInUser = null;
+	private InternalUser loggedInUser = null;
 
-	public User getLoggedInUser() {
+	public InternalUser getLoggedInUser() {
 		return loggedInUser;
 	}
 
@@ -44,21 +36,12 @@ public class Client extends Application {
 		groups = new ArrayList<Group>();
 
 		this.loginController = new LoginController(this);
-		this.loginView = new LoginView();
-		this.loginView.addListener(loginController);
 
-		this.calendarView = new CalendarView();
-		this.calendar = new Calendar(this);
-		this.calendarView.setModel(this.calendar);
 		this.calendarController = new CalendarController(this);
-		this.calendarView.addListener(calendarController);
 
-		this.appointmentView = new AppointmentView();
-		this.bookMeetingRoomView = new BookMeetingRoomView();
-		this.viewAppointmentView = new ViewAppointmentView();
+		this.bookMeetingRoomController = new BookMeetingRoomController();
 
 		this.appointmentController = new AppointmentController(this);
-		this.appointmentView.addListener(this.appointmentController);
 
 		this.areYouSureView = new AreYouSureView();
 		this.areYouSureView.addListener(appointmentController);
@@ -81,56 +64,31 @@ public class Client extends Application {
 
 	public void setViewVisible(ViewEnum viewEnum, boolean state) {
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.LOGIN)) {
-			this.loginView.setVisible(state);
+			this.loginController.setVisible(state);
 		}
-		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.APPOINTMENT)) {
-			this.appointmentView.setVisible(state);
+		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.APPOINTMENT) || viewEnum.equals(ViewEnum.VIEWAPPOINTMENTVIEW)) {
+			this.appointmentController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.BOOKMEETINGROOM)) {
-			this.bookMeetingRoomView.setVisible(state);
+			//this.bookMeetingRoomController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.CALENDAR)) {
-			this.calendarView.setVisible(state);
+			this.calendarController.setVisible(state);
 		}
-		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.VIEWAPPOINTMENTVIEW)) {
-			this.viewAppointmentView.setVisible(state);
-		}
-		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(viewEnum.AREYOUSUREVIEW)) {
+		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.AREYOUSUREVIEW)) {
 			this.areYouSureView.setVisible(state);
 		}
-	}
-
-	public AppointmentView getAppointmentView() {
-		return appointmentView;
-	}
-
-	public BookMeetingRoomView getBookMeetingRoomView() {
-		return bookMeetingRoomView;
-	}
-
-	public LoginView getLoginView() {
-		return this.loginView;
-	}
-
-	public CalendarView getCalendarView() {
-		return calendarView;
-	}
-
-	public Calendar getCalendar() {
-		return this.calendar;
 	}
 
 	public void setLoggedIn(String email) {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
-		this.loggedInUser = Utilities.getUserByEmail(email, users);
-		this.calendar.setUser((InternalUser) this.loggedInUser);
+		this.loggedInUser = (InternalUser) Utilities.getUserByEmail(email, users);
+		this.calendarController.setUser((InternalUser) this.loggedInUser);
 	}
 
 	public void newAppointment() {
-		open(Client.ViewEnum.APPOINTMENT);
-		Appointment newAppointment = new Appointment((InternalUser) this.loggedInUser);
-		getAppointmentView().setModel(newAppointment);
+		appointmentController.openNew();
 	}
 
 	public LoginController getLoginController() {
@@ -155,6 +113,16 @@ public class Client extends Application {
 
 	public void quit(int i) {
 		System.exit(i);
+	}
+
+	public List<InternalUser> getInternalUsers() {
+		List<InternalUser> users = new ArrayList<>();
+		for(User user : this.users) {
+			if(user instanceof InternalUser) {
+				users.add((InternalUser) user);
+			}
+		}
+		return users;
 	}
 
 	public static enum ViewEnum {

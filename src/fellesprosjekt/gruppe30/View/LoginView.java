@@ -80,6 +80,7 @@ public class LoginView extends JPanel implements KeyListener {
 		frame.setResizable(false);
 		frame.setSize(350, 160);
 		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public void setVisible(boolean visible) {
@@ -103,7 +104,7 @@ public class LoginView extends JPanel implements KeyListener {
 		return passwordTextField.getText();
 	}
 
-	public void viewNotifier() {
+	public void displayNotifier() {
 		notifier.setVisible(true);
 	}
 

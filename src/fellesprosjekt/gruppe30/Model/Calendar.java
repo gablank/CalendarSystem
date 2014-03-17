@@ -2,8 +2,8 @@ package fellesprosjekt.gruppe30.Model;
 
 import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Utilities;
+import fellesprosjekt.gruppe30.View.CalendarView;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Calendar {
-	private GregorianCalendar  gregorianCalendar;
-	private List<InternalUser> otherCalendars;
-	private Client             client;
+	private final GregorianCalendar  gregorianCalendar;
+	private List<InternalUser>       otherCalendars;
+	private final Client             client;
 
 	PropertyChangeSupport pcs;
 
@@ -26,7 +26,10 @@ public class Calendar {
 		gregorianCalendar.setTime(new java.util.Date());
 		gregorianCalendar.setFirstDayOfWeek(java.util.Calendar.MONDAY);
 		pcs = new PropertyChangeSupport(this);
-		pcs.addPropertyChangeListener(client.getCalendarView());
+	}
+
+	public void addPcsListener(CalendarView calendarView) {
+		this.addPropertyChangeSupportListener(calendarView);
 	}
 
 	public void nextWeek() {

@@ -1,12 +1,6 @@
 package fellesprosjekt.gruppe30.View;
 
-import fellesprosjekt.gruppe30.Model.Appointment;
-import fellesprosjekt.gruppe30.Model.Attendant;
-import fellesprosjekt.gruppe30.Model.ExternalUser;
-import fellesprosjekt.gruppe30.Model.InternalAttendant;
-import fellesprosjekt.gruppe30.Model.InternalUser;
-import fellesprosjekt.gruppe30.Model.PersonListModel;
-import fellesprosjekt.gruppe30.Model.User;
+import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.Utilities;
 
 import javax.swing.*;
@@ -19,22 +13,26 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.util.EventListener;
+import java.util.*;
+import java.util.Calendar;
+import java.util.List;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, ListSelectionListener, FocusListener {
 	protected PersonRenderer      listRenderer;
 	protected PersonListModel     personListModel;
-	protected JTextField          titleField, meetingRoomField, emailField;
+	protected JTextField          titleField, meetingPlaceField, emailField;
 	protected JTextArea           description;
 	protected JFormattedTextField dateField, startTimeField, endTimeField, alarmTimeField;
 	protected JCheckBox           useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
-	protected JComboBox<User>     participantList;
-	protected JList<Attendant>    participants;
+	protected JComboBox<InternalUser>     participantList;
+	protected JList<Attendant>         participants;
 	protected JButton             addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
 	protected JScrollPane         participantScroller, descriptionScroller;
 	protected JLabel              participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
 	protected JFrame              frame;
-	protected Appointment         model;
+	protected Appointment         appointmentModel;
+    protected Attendant           attendantModel;
+	protected Alarm               alarmModel;
 
 
 	public AppointmentView() {
@@ -55,8 +53,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		descriptionScroller = new JScrollPane(description);
 
 
-		meetingRoomField = new JTextField("Place", 10);
-		meetingRoomField.addFocusListener(this);
+		meetingPlaceField = new JTextField("Place", 10);
+		meetingPlaceField.addFocusListener(this);
 		emailField = new JTextField("Email", 1);
 		emailField.addFocusListener(this);
 
@@ -107,7 +105,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		setAlarm = new JCheckBox("Alarm");
 		inviteByEmail = new JCheckBox("Invite by email");
 
-		participantList = new JComboBox<User>();
+		participantList = new JComboBox<InternalUser>();
 		participantList.setPreferredSize(new Dimension(40, 25));
 		participants = new JList<Attendant>();
 		listRenderer = new PersonRenderer();
@@ -171,8 +169,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		add(useMeetingRoom, cLeft);
 		cLeft.gridy = 5;
-		add(meetingRoomField, cLeft);
-		meetingRoomField.setVisible(false);
+		add(meetingPlaceField, cLeft);
+		meetingPlaceField.setVisible(false);
 		add(selectRoom, cLeft);
 
 		cRight.gridx = 2;
@@ -278,7 +276,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	public void addKeyListener(KeyListener controller) {
 		titleField.addKeyListener(controller);
 		description.addKeyListener(controller);
-		meetingRoomField.addKeyListener(controller);
+		meetingPlaceField.addKeyListener(controller);
 		dateField.addKeyListener(controller);
 		startTimeField.addKeyListener(controller);
 		endTimeField.addKeyListener(controller);
@@ -295,12 +293,12 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == useMeetingRoom) {
 			if(useMeetingRoom.isSelected()) {
-				meetingRoomField.setVisible(false);
+				meetingPlaceField.setVisible(false);
 				selectRoom.setVisible(true);
 				this.repaint();
 			} else {
 				selectRoom.setVisible(false);
-				meetingRoomField.setVisible(true);
+				meetingPlaceField.setVisible(true);
 				this.repaint();
 			}
 		} else if(e.getSource() == inviteByEmail) {
@@ -325,9 +323,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			if(description.getText().equals("Description")) {
 				description.setText("");
 			}
-		} else if(e.getSource() == meetingRoomField) {
-			if(meetingRoomField.getText().equals("Place")) {
-				meetingRoomField.setText("");
+		} else if(e.getSource() == meetingPlaceField) {
+			if(meetingPlaceField.getText().equals("Place")) {
+				meetingPlaceField.setText("");
 			}
 		} else if(e.getSource() == emailField) {
 			if(emailField.getText().equals("Email")) {
@@ -361,9 +359,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			if(description.getText().equals("")) {
 				description.setText("Description");
 			}
-		} else if(e.getSource() == meetingRoomField) {
-			if(meetingRoomField.getText().equals("")) {
-				meetingRoomField.setText("Place");
+		} else if(e.getSource() == meetingPlaceField) {
+			if(meetingPlaceField.getText().equals("")) {
+				meetingPlaceField.setText("Place");
 			}
 		} else if(e.getSource() == emailField) {
 			if(emailField.getText().equals("")) {
@@ -381,24 +379,53 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		this.frame.setVisible(visible);
 	}
 
-	public void setModel(Appointment model) {
-		this.model = model;
+	public void setModel(Appointment appointmentModel) {
+		setModel(appointmentModel, null, null);
+	}
+
+	public void setModel(Appointment appointment, Attendant attendant, Alarm alarm) {
+		this.appointmentModel = appointment;
+		this.attendantModel = attendant;
+		this.alarmModel = alarm;
 		updateFields();
 	}
 
-	private void updateFields() {
-		titleField.setText(model.getTitle());
-		description.setText(model.getDescription());
-		dateField.setValue(Utilities.dateToFormattedString(model.getStart()));
-		startTimeField.setValue(Utilities.timeToFormattedString(model.getStart()));
-		endTimeField.setValue(Utilities.timeToFormattedString(model.getEnd()));
+	public void setInternalUsers(List<InternalUser> internalUsers) {
+		for(InternalUser user : internalUsers) {
+			participantList.addItem(user);
+			System.out.println("Adding " + user + " to internal users combobox");
+		}
+	}
 
-		if (model.getMeetingRoom() == null) {
-			useMeetingRoom.setSelected(true);
+	private void updateFields() {
+		titleField.setText(appointmentModel.getTitle());
+		description.setText(appointmentModel.getDescription());
+		dateField.setValue(Utilities.dateToFormattedString(appointmentModel.getStart()));
+		startTimeField.setValue(Utilities.timeToFormattedString(appointmentModel.getStart()));
+		endTimeField.setValue(Utilities.timeToFormattedString(appointmentModel.getEnd()));
+
+		if (appointmentModel.getMeetingRoom() == null) {
+			useMeetingRoom.setSelected(false);
+            meetingPlaceField.setText(appointmentModel.getMeetingPlace());
 
 		} else {
-			useMeetingRoom.setSelected(false);
-			selectRoom.setText("Room # " + Integer.toString(model.getMeetingRoom().getId()));
+			useMeetingRoom.setSelected(true);
+			selectRoom.setText("Room # " + Integer.toString(appointmentModel.getMeetingRoom().getId()));
+		}
+
+		if(attendantModel != null) {
+			if(((InternalAttendant) attendantModel).getVisibleOnCalendar()) {
+				hideFromCalendar.setSelected(false);
+			} else {
+				hideFromCalendar.setSelected(true);
+			}
+		}
+
+		if(alarmModel == null) {
+			setAlarm.setSelected(false);
+		} else {
+			setAlarm.setSelected(true);
+			alarmTimeField.setValue(getAlarmTimeDiff());
 		}
 	}
 
@@ -407,19 +434,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		participants.setModel(model);
 	}
 
-
 	@Override
 	public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
 		this.updateFields();
 	}
 
-	public static void main(String[] args) {
-		AppointmentView view = new AppointmentView();
-		view.setVisible(true);
-	}
-
-	public Appointment getModel() {
-		return model;
+	public Appointment getAppointmentModel() {
+		return appointmentModel;
 	}
 	
 	public void inviteToAppointment() {
@@ -436,9 +457,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	}
 	
 	public boolean setAlarmIsSelected() {
-		if (setAlarm.isSelected())
-			return true;
-		return false;
+		return setAlarm.isSelected();
 	}
 	
 	public int getAlarmInMinutes() {
@@ -450,4 +469,38 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		} return -1;
 	}
 
+	public String getAlarmTimeDiff() {
+		if(appointmentModel.getStart() == null || alarmModel.getDate() == null) {
+			return "00:30"; // Default
+		}
+		int startMinutes = 0;
+		int alarmMinutes = 0;
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		cal.setTime(appointmentModel.getStart());
+		startMinutes += cal.get(java.util.Calendar.HOUR_OF_DAY) * 60;
+		startMinutes += cal.get(java.util.Calendar.MINUTE);
+
+		cal.setTime(alarmModel.getDate());
+		alarmMinutes += cal.get(java.util.Calendar.HOUR_OF_DAY) * 60;
+		alarmMinutes += cal.get(java.util.Calendar.MINUTE);
+
+		int diff = startMinutes - alarmMinutes;
+		int minutes = diff % 60;
+		int hours = (diff - minutes) / 60;
+		String hoursAsString = Integer.toString(hours);
+		while(hoursAsString.length() < 2) {
+			hoursAsString += "0";
+		}
+		String minutesAsString = Integer.toString(minutes);
+		while(minutesAsString.length() < 2) {
+			minutesAsString += "0";
+		}
+
+		return  hoursAsString + ":" + minutesAsString;
+	}
+
+	public static void main(String[] args) {
+		AppointmentView view = new AppointmentView();
+		view.setVisible(true);
+	}
 }

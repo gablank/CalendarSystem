@@ -3,11 +3,15 @@ package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Client.ViewEnum;
+import fellesprosjekt.gruppe30.Model.Alarm;
+import fellesprosjekt.gruppe30.Model.InternalAttendant;
 import fellesprosjekt.gruppe30.Utilities;
 import fellesprosjekt.gruppe30.Model.Appointment;
 
 import javax.swing.event.ListSelectionListener;
 
+import fellesprosjekt.gruppe30.View.AppointmentView;
+import fellesprosjekt.gruppe30.View.ViewAppointmentView;
 import org.json.JSONObject;
 
 import java.awt.event.ActionListener;
@@ -17,10 +21,15 @@ import java.awt.event.MouseListener;
 
 public class AppointmentController implements ActionListener, KeyListener, ListSelectionListener, MouseListener {
 	private final Client client;
+	private AppointmentView appointmentView;
+	private ViewAppointmentView viewAppointmentView;
 
 
 	public AppointmentController(Client client) {
 		this.client = client;
+		this.appointmentView = new AppointmentView();
+		this.viewAppointmentView = new ViewAppointmentView();
+		appointmentView.addListener(this);
 	}
 
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
@@ -28,7 +37,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		System.out.println(cmd);
 		if(cmd.equals("save")) {
-			Appointment appointment = client.getAppointmentView().getModel();
+			Appointment appointment = appointmentView.getAppointmentModel();
 			JSONObject message = appointment.getJSON();
 			if (appointment.getId() == -1) {
 				message.put("action", "new");
@@ -37,7 +46,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			}
 			client.network.send(message);
 			
-			if (client.getAppointmentView().setAlarmIsSelected()) {	
+			if (appointmentView.setAlarmIsSelected()) {
 				JSONObject alarmMessage = new JSONObject();
 				alarmMessage.put("type", "alarm");
 				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
@@ -45,7 +54,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 				} else alarmMessage.put("action", "change");
 				alarmMessage.put("userEmail", client.getLoggedInUser().getEmail());
 				alarmMessage.put("appointmentId", appointment.getId());
-				long alarm = client.getAppointmentView().getAlarmInMinutes() * 60 * 1000;
+				long alarm = appointmentView.getAlarmInMinutes() * 60 * 1000;
 				alarmMessage.put("time", appointment.getStart().getTime() - alarm);
 				client.network.send(alarmMessage);
 			}
@@ -62,18 +71,18 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if(cmd.equals("no")) {
 			client.close(Client.ViewEnum.AREYOUSUREVIEW);
 		} else if(cmd.equals("yes")) {
-			if (client.getAppointmentView().getModel().getId() != -1) {
+			if (appointmentView.getAppointmentModel().getId() != -1) {
 				JSONObject message = new JSONObject();
 				message.put("type", "appointment");
 				message.put("action", "delete");
-				message.put("id", client.getAppointmentView().getModel().getId());
+				message.put("id", appointmentView.getAppointmentModel().getId());
 				client.network.send(message);
 			}
 			client.close(ViewEnum.APPOINTMENT);
 		} else if(cmd.equals("add")) {
-			client.getAppointmentView().inviteToAppointment();
+			appointmentView.inviteToAppointment();
 		} else if(cmd.equals("remove")) {
-			client.getAppointmentView().removeFromAppointment();
+			appointmentView.removeFromAppointment();
 		}
 	}
 
@@ -116,5 +125,28 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		System.out.println(e);
+	}
+
+	public void openNew() {
+		Appointment newAppointment = new Appointment(client.getLoggedInUser());
+		InternalAttendant newAttendant = new InternalAttendant(client.getLoggedInUser(), newAppointment);
+		Alarm newAlarm = new Alarm(client.getLoggedInUser(), newAppointment, new java.util.Date(0));
+		appointmentView.setModel(newAppointment, newAttendant, newAlarm);
+		appointmentView.setVisible(true);
+	}
+
+	public void open(Appointment appointment) {
+		if(appointment.getOwner() == client.getLoggedInUser()) {
+			appointmentView.setModel(appointment);
+			appointmentView.setVisible(true);
+		} else {
+			viewAppointmentView.setModel(appointment);
+			viewAppointmentView.setVisible(true);
+		}
+	}
+
+	public void setVisible(boolean state) {
+		appointmentView.setVisible(state);
+		viewAppointmentView.setVisible(state);
 	}
 }

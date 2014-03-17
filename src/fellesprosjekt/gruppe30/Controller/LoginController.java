@@ -2,20 +2,24 @@ package fellesprosjekt.gruppe30.Controller;
 
 import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.InternalUser;
+import fellesprosjekt.gruppe30.View.LoginView;
 import org.json.JSONObject;
 
 import java.awt.event.ActionListener;
 
 public class LoginController implements ActionListener {
 	private final Client client;
+	private final LoginView loginView;
 
 	public LoginController(Client client) {
 		this.client = client;
+		this.loginView = new LoginView();
+		this.loginView.addListener(this);
 	}
 
 	public void sendLoginRequest() {
-		String username = client.getLoginView().getUsername();
-		String password = client.getLoginView().getPassword();
+		String username = loginView.getUsername();
+		String password = loginView.getPassword();
 
 		JSONObject obj = new JSONObject();
 		obj.put("type", "login");
@@ -29,7 +33,7 @@ public class LoginController implements ActionListener {
 		if(success) {
 			client.setLoggedIn(username);
 		} else {
-			client.getLoginView().viewNotifier();
+			loginView.displayNotifier();
 		}
 	}
 
@@ -42,5 +46,9 @@ public class LoginController implements ActionListener {
 		} else if(cmd.equalsIgnoreCase("quit")) {
 			client.quit(0);
 		}
+	}
+
+	public void setVisible(boolean state) {
+		this.loginView.setVisible(state);
 	}
 }
