@@ -112,8 +112,9 @@ public class AppointmentSummaryView extends JPanel {
 				continue;
 			}
 			InternalUser user = (InternalUser) attendant.getUser();
+			InternalAttendant userattendant = new InternalAttendant(user, new Appointment(user));
 			if(toShow.contains(user)) {
-				personListModel.addElement(user);
+				personListModel.addElement(userattendant);
 			}
 		}
 
