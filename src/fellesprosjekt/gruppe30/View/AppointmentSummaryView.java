@@ -115,6 +115,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		listrenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listrenderer);
+        participants.addMouseListener(listrenderer);
 
 		frame = new JFrame();
 		frame.add(this);
