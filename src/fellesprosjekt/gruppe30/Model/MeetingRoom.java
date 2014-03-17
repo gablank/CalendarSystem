@@ -35,4 +35,9 @@ public class MeetingRoom {
 		return obj;
 	}
 
+	@Override
+	public String toString() {
+		return "Room #" + id;
+	}
+
 }

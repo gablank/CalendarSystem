@@ -13,13 +13,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.List;
 
 
 //TODO: skaler bedre(?), 
 public class BookMeetingRoomView extends JPanel {
 	//Salvador Fali aka Kush Wagner
 	private JList<MeetingRoom>  roomList;
+	private DefaultListModel<MeetingRoom>	roomListModel;
 	private JFormattedTextField startText, endText, dateText;// capacityText;
 	private JTextField          capacityText;
 	private JLabel              startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
@@ -50,6 +53,8 @@ public class BookMeetingRoomView extends JPanel {
 		roomLabel = new JLabel("Rooms available:");
 		roomLabel.setAlignmentX(CENTER_ALIGNMENT);
 		roomList = new JList<MeetingRoom>();
+		roomListModel = new DefaultListModel<MeetingRoom>();
+		roomList.setModel(roomListModel);
 		roomList.setName("room_list");
 		//roomList.setPreferredSize(new Dimension(150, 200));
 		roomListScroll = new JScrollPane(roomList);
@@ -199,10 +204,27 @@ public class BookMeetingRoomView extends JPanel {
 	public static void main(String[] args) {
 		BookMeetingRoomView frame = new BookMeetingRoomView();
 		frame.setVisible(true);
+		
+		List<MeetingRoom> list = new ArrayList<MeetingRoom>();
+		
+		list.add(new MeetingRoom(8));
+		list.add(new MeetingRoom(6));
+		list.add(new MeetingRoom(7));
+		list.add(new MeetingRoom(2));
+		list.add(new MeetingRoom(3));
+		
+		frame.populateList(list);
+
 	}
 
 	public int getCapacity() {
-		return Integer.parseInt(capacityText.getText());
+		return Integer.parseInt(capacityText.getText().trim());
+	}
+
+	public void populateList(List<MeetingRoom> validRooms) {
+		for(MeetingRoom room : validRooms){
+			roomListModel.addElement(room);
+		}
 	}
 
 }

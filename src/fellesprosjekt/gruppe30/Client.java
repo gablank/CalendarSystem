@@ -69,7 +69,7 @@ public class Client extends Application {
 			this.appointmentController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.BOOKMEETINGROOM)) {
-			//this.bookMeetingRoomController.setVisible(state);
+			this.bookMeetingRoomController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.CALENDAR)) {
 			this.calendarController.setVisible(state);
