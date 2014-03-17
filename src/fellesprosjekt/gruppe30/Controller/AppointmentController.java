@@ -12,8 +12,10 @@ import org.json.JSONObject;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class AppointmentController implements ActionListener, KeyListener, ListSelectionListener {
+public class AppointmentController implements ActionListener, KeyListener, ListSelectionListener, MouseListener {
 	private final Client client;
 
 
@@ -89,5 +91,30 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 	public void valueChanged(javax.swing.event.ListSelectionEvent listSelectionEvent) {
 
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println(e);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		System.out.println(e);
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		System.out.println(e);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		System.out.println(e);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		System.out.println(e);
 	}
 }
