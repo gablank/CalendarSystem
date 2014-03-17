@@ -18,12 +18,11 @@ public class Client extends Application {
 	private final LoginController       loginController;
 	private final CalendarController    calendarController;
 	private final BookMeetingRoomController bookMeetingRoomController;
-	private final AppointmentController appointmentController;
+	public final AppointmentController appointmentController;
 	private final AreYouSureView		areYouSureView;
 	public  final ClientNetwork         network;
 
 	private InternalUser loggedInUser = null;
-
 	public InternalUser getLoggedInUser() {
 		return loggedInUser;
 	}
