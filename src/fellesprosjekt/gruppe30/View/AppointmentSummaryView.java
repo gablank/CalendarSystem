@@ -115,6 +115,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		listrenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listrenderer);
+        participants.addMouseListener(this);
         participants.addMouseListener(listrenderer);
 
 		frame = new JFrame();
@@ -180,8 +181,17 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		client.getAppointmentController().open(model);
-		
+        if(arg0.getSource() instanceof JPanel) {
+		    client.getAppointmentController().open(model);
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    setMeetingStatus();
+                }
+            });
+        }
+
 	}
 
 	@Override
