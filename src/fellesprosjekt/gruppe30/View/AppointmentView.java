@@ -236,7 +236,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		personListModel = new PersonListModel();
 		this.setPersonListModel(personListModel);
 		
-		//test code
+		/*//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
 		InternalUser user2 = new InternalUser("email", "Knut", "Grut");
@@ -249,7 +249,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		personListModel.addElement(attendant3);
 		for(int i = 0; i < 10; i++) {
 		}
-		//end test code
+		//end test code*/
 	}
 
 	//add listeners to all components

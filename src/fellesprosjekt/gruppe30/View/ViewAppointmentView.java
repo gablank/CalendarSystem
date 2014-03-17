@@ -11,8 +11,21 @@ public class ViewAppointmentView extends AppointmentView {
 		dateField.setEditable(false);
 		startTimeField.setEditable(false);
 		endTimeField.setEditable(false);
-		meetingPlaceField.setEditable(false);
 		participants.setEnabled(false);
+		
+		if (!meetingPlaceField.getText().equals("Place")){
+			meetingPlaceField.setVisible(true);
+		}
+		meetingPlaceField.setEditable(false);
+		
+		if (selectRoom.getText().equals("Select...")){
+			selectRoom.setVisible(false);
+		}
+		else {
+			meetingPlaceField.setText(selectRoom.getText());
+			meetingPlaceField.setVisible(true);
+			selectRoom.setVisible(false);
+		}
 
 		useMeetingRoom.setVisible(false);
 		addButton.setVisible(false);
@@ -20,7 +33,6 @@ public class ViewAppointmentView extends AppointmentView {
 		participantList.setVisible(false);
 		deleteButton.setVisible(false);
 		inviteByEmail.setVisible(false);
-		selectRoom.setVisible(false);
 	}
 
 	public static void main(String[] args) {
