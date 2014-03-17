@@ -34,4 +34,5 @@ public class MeetingRoom {
 		obj.put("roomSize", this.roomSize);
 		return obj;
 	}
+
 }

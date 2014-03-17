@@ -201,4 +201,8 @@ public class BookMeetingRoomView extends JPanel {
 		frame.setVisible(true);
 	}
 
+	public int getCapacity() {
+		return Integer.parseInt(capacityText.getText());
+	}
+
 }
