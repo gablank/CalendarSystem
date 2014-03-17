@@ -195,6 +195,96 @@ public class Database {
 		return true;
 	}
 
+	public boolean insertGroup(Group group) {
+		boolean res = true;
+		if(group.getId() != -1) {
+			res = this.updateGroup(group);
+		} else {
+			int newGroupId = -1;
+
+			String query;
+			query = "INSERT INTO groups ";
+			query += "(name) ";
+			query += "VALUES (?);";
+
+			try {
+				PreparedStatement preparedStatement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				preparedStatement.setString(1, group.getName());
+				preparedStatement.executeUpdate();
+
+				ResultSet groupId = preparedStatement.getGeneratedKeys();
+
+				/**
+				 * Moves the cursor forward one row from its current position.
+				 * A <code>ResultSet</code> cursor is initially positioned
+				 * before the first row; the first call to the method
+				 * <code>next</code> makes the first row the current row; the
+				 * second call makes the second row the current row, and so on.
+				 */
+				groupId.next();
+
+				newGroupId = groupId.getInt(1);
+
+				preparedStatement.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+				res = false;
+			}
+
+			group.setId(newGroupId);
+		}
+
+		for(User member : group.getMembers()) {
+			insertGroupMember(group, member);
+		}
+
+		return res;
+	}
+
+	private boolean updateGroup(Group group) {
+		String query;
+		query = "UPDATE groups ";
+		query += "SET name = ? ";
+		query += "WHERE id = ?;";
+
+		try {
+			PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+			preparedStatement.setString(1, group.getName());
+			preparedStatement.setInt   (2, group.getId());
+			preparedStatement.executeUpdate();
+
+			preparedStatement.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	private boolean insertGroupMember(Group group, User member) {
+		boolean res = true;
+		if(group.getId() == -1) {
+			this.insertGroup(group);
+		} else {
+			String query;
+			query = "INSERT INTO group_members ";
+			query += "(user_email, group_id) ";
+			query += "VALUES (?, ?);";
+
+			try {
+				PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+				preparedStatement.setString(1, member.getEmail());
+				preparedStatement.setInt(2, group.getId());
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+				res = false;
+			}
+		}
+		return res;
+	}
+
 	/**
 	 * @param alarm object to insert into (or update) db
 	 */
@@ -990,7 +1080,7 @@ public class Database {
 
 		ExternalUser espen = new ExternalUser("espstr@stud.ntnu.no");
 		
-		InternalUser reidarkl = new InternalUser("reidar.kl@gmail.com", "Reidar Kjøs", "Lien");
+		InternalUser reidarkl = new InternalUser("reidar.kl@gmail.com", "Reidar Kjï¿½s", "Lien");
 		reidarkl.setPassword("password");
 
 		/*
@@ -1055,6 +1145,8 @@ public class Database {
 		database.insertUser(espen);
 		database.insertUser(easy);
 		database.insertUser(reidarkl);
+		database.insertGroup(gamings);
+		database.insertGroup(projectGroup);
 		database.insertMeetingRoom(p15);
 		database.insertMeetingRoom(kuben);
 		database.insertMeetingRoom(asbestRommet);
