@@ -14,6 +14,7 @@ public class Group {
 
 
 	public Group(String name) {
+		this.id = -1;
 		this.name = name;
 		members = new ArrayList<InternalUser>();
 	}
@@ -44,6 +45,11 @@ public class Group {
 
 	public void addMember(InternalUser newMember) {
 		this.members.add(newMember);
+	}
+
+	@Override
+	public String toString() {
+		return "Group: " + this.name;
 	}
 
 	public JSONObject getJSON() {
