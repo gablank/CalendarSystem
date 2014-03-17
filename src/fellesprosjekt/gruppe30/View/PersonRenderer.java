@@ -1,5 +1,6 @@
 package fellesprosjekt.gruppe30.View;
 
+import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.Attendant;
 import fellesprosjekt.gruppe30.Model.ExternalUser;
 import fellesprosjekt.gruppe30.Model.InternalUser;
@@ -12,14 +13,29 @@ import java.awt.event.MouseListener;
 import java.io.File;
 
 public class PersonRenderer implements ListCellRenderer, MouseListener {
-	
+	private static PersonRenderer instance;
 	public boolean  canSelect = true;
 	JLabel          label;
 	ImageIcon       accept, decline, unanswer, creator;
 	Attendant       model;
+    private static Client client;
 
-	public PersonRenderer() {
-	}
+
+	protected PersonRenderer() {
+        //prepare Icon images
+        File directory = new File(System.getProperty("user.dir"), "Icons");
+        accept   = new ImageIcon(new File(directory, "yesIcon(small).png")    .getPath());
+        decline  = new ImageIcon(new File(directory, "noIcon(small).png")     .getPath());
+        unanswer = new ImageIcon(new File(directory, "unanswer(small).png")   .getPath());
+        creator  = new ImageIcon(new File(directory, "creatorIcon(small).png").getPath());
+    }
+
+    public static PersonRenderer getInstance() {
+        if(instance == null) {
+            instance = new PersonRenderer();
+        }
+        return instance;
+    }
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -37,16 +53,6 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 		}
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		list.addMouseListener(this);
-
-		//prepare Icon images
-		File directory = new File(System.getProperty("user.dir"), "Icons");
-		new File(directory, "yesIcon.png").getPath();
-		accept = new ImageIcon(new File(directory, "yesIcon(small).png").getPath());
-		decline = new ImageIcon(new File(directory, "noIcon(small).png").getPath());
-		unanswer = new ImageIcon(new File(directory, "unanswer(small).png").getPath());
-		creator = new ImageIcon(new File(directory, "creatorIcon(small).png").getPath());
-	
 		
 		//choose correct icon to display
 		if (model.getStatus() == 0){
@@ -58,26 +64,27 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 		else if (model.getStatus() == 2){
 			label.setIcon(unanswer);
 		}
+        if(model.getUser() == model.getAppointment().getOwner()) {
+            label.setIcon(creator);
+        }
 
 		if (canSelect){
-			if (isSelected){
-				label.setForeground(Color.BLUE);
-				if (model.getStatus() < 2){
-					model.setStatus(model.getStatus()+1);
-					list.repaint();
-				}
-				else if (model.getStatus() == 2) {
-					model.setStatus(0);
-					list.repaint();
-				}
+			if (cellHasFocus && isSelected) {
+				label.setBackground(list.getSelectionBackground());
+                label.setOpaque(true);
 			}
-			
 		}
 		return label;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+        Attendant attendant = ((JList<Attendant>) e.getSource()).getSelectedValue();
+        if(attendant.getUser() == client.getLoggedInUser() || client.getLoggedInUser() == attendant.getAppointment().getOwner()) {
+            int newStatus = (attendant.getStatus() + 1) % 3;
+            attendant.setStatus(newStatus);
+            ((JList)e.getSource()).repaint();
+        }
 	}
 	
 	@Override
@@ -101,4 +108,7 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 		
 	}
 
+    public static void setClient(Client client) {
+        PersonRenderer.client = client;
+    }
 }
