@@ -35,10 +35,9 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 			if (attendant instanceof ExternalAttendant) {
 				continue;
 			}
-			InternalUser user = (InternalUser) attendant.getUser();
-			InternalAttendant userattendant = new InternalAttendant(user, new Appointment(user));
-			if (toShow.contains(user)) {
-				personListModel.addElement(userattendant);
+
+			if (toShow.contains(attendant.getUser())) {
+				personListModel.addElement(attendant);
 			}
 		}
 
@@ -113,7 +112,6 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		listrenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listrenderer);
-		listrenderer.canSelect = false;
 
 		frame = new JFrame();
 		frame.add(this);

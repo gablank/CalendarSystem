@@ -237,11 +237,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		view.setVisible(true);
 	}*/
 
-	public InternalUser getSelectedUser() {
+	public InternalUser getSelectedDropDownUser() {
 		return (InternalUser) users.getSelectedItem();
 	}
 
-	public InternalUser getSelectedDropDownUser() {
+	public InternalUser getSelectedUser() {
 		return userCalendars.getSelectedValue();
 	}
 }

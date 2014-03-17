@@ -45,10 +45,16 @@ public class CalendarController implements ActionListener, MouseListener, Window
 		} else if(buttonName.equalsIgnoreCase("new_appointment")) {
 			client.newAppointment();
 		} else if(buttonName.equalsIgnoreCase("add_calendar")) {
-			InternalUser added = calendarView.getSelectedUser();
+			InternalUser added = calendarView.getSelectedDropDownUser();
+            if(added == null) {
+                return;
+            }
 			calendarModel.addUser(added);
 		} else if(buttonName.equalsIgnoreCase("remove_calendar")) {
-			InternalUser removed = calendarView.getSelectedDropDownUser();
+			InternalUser removed = calendarView.getSelectedUser();
+            if(removed == null) {
+                return;
+            }
 			calendarModel.removeUser(removed);
 		}
 	}

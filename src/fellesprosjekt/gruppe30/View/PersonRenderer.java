@@ -14,7 +14,6 @@ import java.io.File;
 
 public class PersonRenderer implements ListCellRenderer, MouseListener {
 	private static PersonRenderer instance;
-	public boolean  canSelect = true;
 	JLabel          label;
 	ImageIcon       accept, decline, unanswer, creator;
 	Attendant       model;
@@ -68,12 +67,10 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
             label.setIcon(creator);
         }
 
-		if (canSelect){
-			if (cellHasFocus && isSelected) {
-				label.setBackground(list.getSelectionBackground());
-                label.setOpaque(true);
-			}
-		}
+        if (cellHasFocus && isSelected) {
+            label.setBackground(list.getSelectionBackground());
+            label.setOpaque(true);
+        }
 		return label;
 	}
 

@@ -50,7 +50,7 @@ public class Appointment {
 		this.attendants = new ArrayList<Attendant>();
 		this.lastUpdated = new Date();
 		pcs = new PropertyChangeSupport(this);
-        this.addUser(owner);
+        //this.addUser(owner);
 	}
 
 	public void addListener(PropertyChangeListener listener) {
