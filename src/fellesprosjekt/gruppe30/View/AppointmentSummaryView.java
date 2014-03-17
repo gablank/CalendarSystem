@@ -19,11 +19,26 @@ public class AppointmentSummaryView extends JPanel {
 	private JList<User>     participants;
 	private PersonRenderer  listrenderer;
 	private PersonListModel personListModel;
-	private int             userCount = 3;
+	private int				userCount	= 3;
 	private Appointment     model;
 
 	public AppointmentSummaryView(Appointment model, java.util.List<InternalUser> toShow) {
 		this.model = model;
+
+		personListModel = new PersonListModel();
+		for (Attendant attendant : this.model.getAttendants()) {
+			if (attendant instanceof ExternalAttendant) {
+				continue;
+			}
+			InternalUser user = (InternalUser) attendant.getUser();
+			if (toShow.contains(user)) {
+				personListModel.addElement(user);
+			}
+		}
+
+
+		userCount = (personListModel.size());
+		System.out.println(userCount);
 
 		GridBagConstraints c = new GridBagConstraints();
 		setLayout(new GridBagLayout());
@@ -106,22 +121,13 @@ public class AppointmentSummaryView extends JPanel {
 		titleLabel.setText(model.getTitle());
 		timeLabel.setText(Utilities.timeToFormattedString(model.getStart()) + " - " + Utilities.timeToFormattedString(model.getEnd()));
 
-		personListModel = new PersonListModel();
-		for(Attendant attendant : this.model.getAttendants()) {
-			if(attendant instanceof ExternalAttendant) {
-				continue;
-			}
-			InternalUser user = (InternalUser) attendant.getUser();
-			if(toShow.contains(user)) {
-				personListModel.addElement(user);
-			}
-		}
 
 		this.setPersonListModel(personListModel);
 		frame.pack();
 		//System.out.println(participants.getModel().getSize());
 		//end test code
 		
+
 
 	}
 	
@@ -149,10 +155,10 @@ public class AppointmentSummaryView extends JPanel {
 	}
 
 
-	public static void main(String[] args) {
-		//AppointmentSummaryView view = new AppointmentSummaryView();
-		//view.setVisible(true);
-
-	}
+	// public static void main(String[] args) {
+	// //AppointmentSummaryView view = new AppointmentSummaryView();
+	// //view.setVisible(true);
+	//
+	// }
 
 }
