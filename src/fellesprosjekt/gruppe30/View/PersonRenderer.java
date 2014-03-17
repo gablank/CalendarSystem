@@ -1,5 +1,6 @@
 package fellesprosjekt.gruppe30.View;
 
+import fellesprosjekt.gruppe30.Model.Attendant;
 import fellesprosjekt.gruppe30.Model.ExternalUser;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.User;
@@ -17,17 +18,17 @@ public class PersonRenderer implements ListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		User model = (User) value;
+		Attendant model = (Attendant) value;
 
 		JLabel label;
-		if(model instanceof InternalUser) {
-			String firstName = ((InternalUser) model).getFirstName();
-			String lastName = ((InternalUser) model).getLastName();
+		if(model.getUser() instanceof InternalUser) {
+			String firstName = ((InternalUser) model.getUser()).getFirstName();
+			String lastName = ((InternalUser) model.getUser()).getLastName();
 			String firstNameStrip = firstName.substring(0, Math.min(firstName.length(), 13));
 			
 			label = new JLabel(firstNameStrip + " " + lastName.charAt(0) + ".");
 		} else {
-			label = new JLabel(((ExternalUser) model).getEmail());
+			label = new JLabel(((ExternalUser) model.getUser()).getEmail());
 		}
 
 		File directory = new File(System.getProperty("user.dir"), "Icons");
@@ -38,10 +39,16 @@ public class PersonRenderer implements ListCellRenderer {
 		ImageIcon unanswer = new ImageIcon(new File(directory, "unanswer(small).png").getPath());
 		ImageIcon creator = new ImageIcon(new File(directory, "creatorIcon(small).png").getPath());
 	
-			/*
-		     *TODO logic to choose correct icon
-		     */
-		label.setIcon(accept);
+
+		if (model.getStatus() == 0){
+			label.setIcon(accept);	
+		}
+		else if (model.getStatus() == 1){
+			label.setIcon(decline);
+		}
+		else if (model.getStatus() == 2){
+			label.setIcon(unanswer);
+		}
 		
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		label.setHorizontalAlignment(SwingConstants.RIGHT);

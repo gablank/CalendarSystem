@@ -16,7 +16,7 @@ public class AppointmentSummaryView extends JPanel {
 
 	private JLabel 			titleLabel, timeLabel, yesLabel, noLabel, creatorLabel, unanswered;
 	private JFrame          frame;
-	private JList<User>     participants;
+	private JList<Attendant>participants;
 	private PersonRenderer  listrenderer;
 	private PersonListModel personListModel;
 	private int				userCount	= 3;
@@ -68,7 +68,7 @@ public class AppointmentSummaryView extends JPanel {
 		ImageIcon unanswer = new ImageIcon(new File(directory, "unanswer.png").getPath());
 		unanswered.setIcon(unanswer);
 
-		participants = new JList<User>();
+		participants = new JList<Attendant>();
 		participants.setMinimumSize(new Dimension(130, 20 * userCount));
 		participants.setLayout(new BoxLayout(participants, BoxLayout.Y_AXIS));
 		participants.setVisibleRowCount(4);
