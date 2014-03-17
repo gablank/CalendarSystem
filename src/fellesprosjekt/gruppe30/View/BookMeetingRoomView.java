@@ -1,6 +1,8 @@
 package fellesprosjekt.gruppe30.View;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 
@@ -9,6 +11,7 @@ import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.EventListener;
 
@@ -47,9 +50,13 @@ public class BookMeetingRoomView extends JPanel {
 		roomLabel = new JLabel("Rooms available:");
 		roomLabel.setAlignmentX(CENTER_ALIGNMENT);
 		roomList = new JList<MeetingRoom>();
+		roomList.setName("room_list");
 		//roomList.setPreferredSize(new Dimension(150, 200));
 		roomListScroll = new JScrollPane(roomList);
 		roomListScroll.setPreferredSize(new Dimension(180, 120));
+		
+		
+		roomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		startLabel = new JLabel("Start:");
 		MaskFormatter startFormatter;
@@ -62,6 +69,7 @@ public class BookMeetingRoomView extends JPanel {
 			e.printStackTrace();
 		}
 		startText.setPreferredSize(new Dimension(70,20));
+		startText.setName("start_text");
 
 		endLabel = new JLabel("End:");
 		MaskFormatter endFormatter;
@@ -74,6 +82,7 @@ public class BookMeetingRoomView extends JPanel {
 			e1.printStackTrace();
 		}
 		endText.setPreferredSize(new Dimension(70, 20));
+		endText.setName("end_text");
 
 		dateLabel = new JLabel("Date:");
 		MaskFormatter dateFormatter;
@@ -86,14 +95,25 @@ public class BookMeetingRoomView extends JPanel {
 			e1.printStackTrace();
 		}
 		dateText.setPreferredSize(new Dimension(70, 20));
+		dateText.setName("date_text");
 
+		MaskFormatter capacityFormatter;
+		try{
+			capacityFormatter = new MaskFormatter("##");
+			capacityFormatter.setPlaceholder("0");
+			capacityText = new JFormattedTextField(capacityFormatter);
+			capacityText.setHorizontalAlignment(JFormattedTextField.CENTER);
+		} catch(ParseException e1) {
+			e1.printStackTrace();
+		}
 		capacityLabel = new JLabel("Capacity:");
-		capacityText = new JTextField("0");
-		capacityText.setHorizontalAlignment(JFormattedTextField.CENTER);
+
 		capacityText.setPreferredSize(new Dimension(70, 20));
 
 		okButton = new JButton("Ok");
+		okButton.setName("ok_button");
 		quitButton = new JButton("Quit");
+		quitButton.setName("quit_button");
 
 		
 		cRight.gridy = 0;
@@ -166,8 +186,9 @@ public class BookMeetingRoomView extends JPanel {
 	}
 
 	public void addKeyListener(KeyListener controller) {
-		startText.addKeyListener(controller);
 		endText.addKeyListener(controller);
+		startText.addKeyListener(controller);
+		dateText.addKeyListener(controller);
 	}
 
 	public void addListSelectionListener(ListSelectionListener controller) {
