@@ -1,6 +1,7 @@
 package fellesprosjekt.gruppe30.View;
 
 
+import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.Calendar;
 import fellesprosjekt.gruppe30.Model.InternalUser;
@@ -26,9 +27,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	private Calendar      		model;
 	private JScrollPane 		userCalendarsScroller;
 	private PersonListModel     personListModel;
+	private Client              client;
 	JScrollPane[] 				scrollers = new JScrollPane[7];
 
-	public CalendarView() {
+	public CalendarView(Client client) {
+		this.client = client;
 		GridBagConstraints c = new GridBagConstraints();
 		GridBagConstraints contents = new GridBagConstraints();
 		setLayout(new GridBagLayout());
@@ -218,7 +221,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 			this.appointments[i].repaint();
 
 			for(Appointment appointment : showAppointments.get(i)) {
-				this.appointments[i].add(new AppointmentSummaryView(appointment, showCalendarsFor));
+				this.appointments[i].add(new AppointmentSummaryView(appointment, showCalendarsFor, client));
 			}
 		}
 	}
@@ -229,10 +232,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		updateView();
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		CalendarView view = new CalendarView();
 		view.setVisible(true);
-	}
+	}*/
 
 	public InternalUser getSelectedUser() {
 		return (InternalUser) users.getSelectedItem();

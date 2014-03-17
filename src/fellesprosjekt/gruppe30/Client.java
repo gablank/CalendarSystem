@@ -18,13 +18,12 @@ import java.util.List;
 public class Client extends Application {
 	private final LoginController       loginController;
 	private final CalendarController    calendarController;
-	//private final BookMeetingRoomController bookMeetingRoomController;
+	private final BookMeetingRoomController bookMeetingRoomController;
 	private final AppointmentController appointmentController;
 	private final AreYouSureView		areYouSureView;
 	public  final ClientNetwork         network;
 
 	private InternalUser loggedInUser = null;
-
 	public InternalUser getLoggedInUser() {
 		return loggedInUser;
 	}
@@ -43,7 +42,7 @@ public class Client extends Application {
 
 		this.calendarController = new CalendarController(this);
 
-		//this.bookMeetingRoomController = new BookMeetingRoomController();
+		this.bookMeetingRoomController = new BookMeetingRoomController();
 
 		this.appointmentController = new AppointmentController(this);
 
@@ -74,7 +73,7 @@ public class Client extends Application {
 			this.appointmentController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.BOOKMEETINGROOM)) {
-			//this.bookMeetingRoomController.setVisible(state);
+			this.bookMeetingRoomController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.CALENDAR)) {
 			this.calendarController.setVisible(state);

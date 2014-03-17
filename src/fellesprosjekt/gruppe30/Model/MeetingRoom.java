@@ -34,4 +34,10 @@ public class MeetingRoom {
 		obj.put("roomSize", this.roomSize);
 		return obj;
 	}
+
+	@Override
+	public String toString() {
+		return "Room #" + id;
+	}
+
 }

@@ -78,7 +78,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			client.open(Client.ViewEnum.AREYOUSUREVIEW);
 		} else if(name.equalsIgnoreCase("no")) {
 			client.close(Client.ViewEnum.AREYOUSUREVIEW);
-		} else if(name.equalsIgnoreCase("yes")) {
+        } else if(name.equalsIgnoreCase("yes")) {
 			if (appointmentView.getAppointmentModel().getId() != -1) {
 				JSONObject message = new JSONObject();
 				message.put("type", "appointment");
