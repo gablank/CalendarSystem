@@ -74,7 +74,7 @@ public class Server extends Application {
 		return (List<Alarm>) ((ArrayList<Alarm>) this.alarms).clone();
 	}
 
-	public synchronized void sendMail(String recipient, String subject, String body) throws RuntimeException {
+	public synchronized void sendMail(String recipient, String subject, String body) {
 		
 		Properties props = new Properties();
 		/*props.put("mail.smtp.starttls.enable", null);
@@ -108,11 +108,11 @@ public class Server extends Application {
 			message.setSubject(subject);
 			message.setText(body);
 			
-			Transport.send(message);
-			System.out.println("Email sent to: " + recipient);
-		}
-		catch (MessagingException me) {
-			throw new RuntimeException(me);
+			//Transport.send(message);
+			System.out.println("Email sent to " + recipient + ": " + message.toString());
+
+		} catch (MessagingException me) {
+			System.out.println("Failed sending email to + " + recipient);
 		}
 	}
 

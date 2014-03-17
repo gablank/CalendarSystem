@@ -36,6 +36,7 @@ public class ServerListener implements Runnable {
 		for (ClientHandler clientHandler : clientHandlers) {
 			clientHandler.send(message);
 		}
+
 		if (message.has("action") && message.has("title") && message.has("attendants") && message.has("description") && message.has("start") && message.has("end")) {
 			JSONArray attendants = message.getJSONArray("attendants");
 			for (int i = 0; i < attendants.length(); i++) {
@@ -43,16 +44,16 @@ public class ServerListener implements Runnable {
 				if (attendant.has("email")) {
 					String recipient = attendant.getString("email");
 					String subject = message.getString("title");
-					Long start = message.getLong("start");
-					Long end = message.getLong("end");
-					Date startDate = new Date(start);
-					Date endDate = new Date(end);
+					Date startDate = new Date(message.getLong("start"));
+					Date endDate = new Date(message.getLong("end"));
+
 					String action;
 					if (message.getString("action").equals("new"))
 						action = "New appointment!";
-					else action = "Appointment has been edited.";
-					String body = action + "\nDate: " + Integer.toString(startDate.getDate()) + "." + Integer.toString(startDate.getMonth()) + "." + 
-					Integer.toString(startDate.getYear()) + "\n" + message.getString("description") + "\nTime: " +
+					else
+						action = "Appointment has been edited.";
+
+					String body = action + "\nDate: " + Integer.toString(startDate.getDate()) + "." + Integer.toString(startDate.getMonth() + 1) + "." + Integer.toString(startDate.getYear() + 1900) + "\n" + message.getString("description") + "\nTime: " +
 					Integer.toString(startDate.getHours()) + ":" + Integer.toString(startDate.getMinutes()) + " - " + Integer.toString(endDate.getHours())
 					+ ":" + Integer.toString(endDate.getMinutes()) + "\nNumber of participants: " + attendants.length();
 					
@@ -96,7 +97,7 @@ public class ServerListener implements Runnable {
 				}
 
 			} catch(IOException e) {
-				System.out.println("Something bad happened when accepting a connetion.");
+				System.out.println("Something bad happened when accepting a connection.");
 				e.printStackTrace();
 				continue;
 			}
@@ -108,5 +109,23 @@ public class ServerListener implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	// public static void main(String[] args) {
+	// Date startDate = new Date();
+	// Date endDate = new Date(startDate.getTime() + 1000 * 60 * 15);
+	//
+	//
+	// String body = "new" + "\nDate: " + Integer.toString(startDate.getDate())
+	// + "." + Integer.toString(startDate.getMonth()) + 1 + "." +
+	// Integer.toString(startDate.getYear() + 1900) + "\n" + "description..." +
+	// "\nTime: " +
+	// Integer.toString(startDate.getHours()) + ":" +
+	// Integer.toString(startDate.getMinutes()) + " - " +
+	// Integer.toString(endDate.getHours())
+	// + ":" + Integer.toString(endDate.getMinutes()) +
+	// "\nNumber of participants: " + 3;
+	//
+	// System.out.println(body);
+	// }
 
 }
