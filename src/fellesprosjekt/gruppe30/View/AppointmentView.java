@@ -1,7 +1,9 @@
 package fellesprosjekt.gruppe30.View;
 
 import fellesprosjekt.gruppe30.Model.Appointment;
+import fellesprosjekt.gruppe30.Model.Attendant;
 import fellesprosjekt.gruppe30.Model.ExternalUser;
+import fellesprosjekt.gruppe30.Model.InternalAttendant;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 import fellesprosjekt.gruppe30.Model.PersonListModel;
 import fellesprosjekt.gruppe30.Model.User;
@@ -27,7 +29,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	protected JFormattedTextField dateField, startTimeField, endTimeField, alarmTimeField;
 	protected JCheckBox           useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
 	protected JComboBox<User>     participantList;
-	protected JList<User>         participants;
+	protected JList<Attendant>    participants;
 	protected JButton             addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
 	protected JScrollPane         participantScroller, descriptionScroller;
 	protected JLabel              participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
@@ -107,7 +109,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		participantList = new JComboBox<User>();
 		participantList.setPreferredSize(new Dimension(40, 25));
-		participants = new JList<User>();
+		participants = new JList<Attendant>();
 		listRenderer = new PersonRenderer();
 		participants.setCellRenderer(listRenderer);
 		participants.addListSelectionListener(this);
@@ -238,9 +240,12 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		personListModel.addElement(new InternalUser("email", "Jonathan", "Cinderella"));
+		InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
+		InternalAttendant attendant = new InternalAttendant(user, new Appointment(user));
+		
+		personListModel.addElement(attendant);
 		for(int i = 0; i < 10; i++) {
-			personListModel.addElement(new InternalUser("email", "Emil", "Heien"));
+			personListModel.addElement(attendant);
 		}
 		//end test code
 	}
@@ -365,7 +370,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		User user = (User) participants.getSelectedValue();
+		Attendant attendant = (Attendant) participants.getSelectedValue();
 	}
 
 	public void setVisible(boolean visible) {
