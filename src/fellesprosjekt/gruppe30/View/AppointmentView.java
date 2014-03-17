@@ -241,11 +241,15 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		//test code
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
+		InternalUser user2 = new InternalUser("email", "Knut", "Grut");
+		InternalUser user3 = new InternalUser ("email", "Stefan", "Trefan");
 		InternalAttendant attendant = new InternalAttendant(user, new Appointment(user));
-		
+		InternalAttendant attendant2 = new InternalAttendant(user2, new Appointment(user2));
+		InternalAttendant attendant3 = new InternalAttendant(user3, new Appointment(user3));
 		personListModel.addElement(attendant);
+		personListModel.addElement(attendant2);
+		personListModel.addElement(attendant3);
 		for(int i = 0; i < 10; i++) {
-			personListModel.addElement(attendant);
 		}
 		//end test code
 	}
