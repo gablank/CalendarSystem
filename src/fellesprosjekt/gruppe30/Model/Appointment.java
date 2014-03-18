@@ -127,19 +127,29 @@ public class Appointment {
 	}
 
 	public void setStart(Date start) {
+		setStart(start, true);
+	}
+
+	public void setStart(Date start, boolean fireChange) {
 		this.start.setTime(start.getTime());
 		System.out.println("new start: " + start.toString());
-		pcs.firePropertyChange("start", 1, 2);
+		if (fireChange)
+			pcs.firePropertyChange("start", 1, 2);
 	}
 
 	public Date getEnd() {
 		return end;
 	}
 
-	public void setEnd(Date end) {
+	public void setEnd(Date start) {
+		setEnd(start, true);
+	}
+
+	public void setEnd(Date end, boolean fireChange) {
 		this.end.setTime(end.getTime());
 		System.out.println("new end: " + end.toString());
-		pcs.firePropertyChange("end", 1, 2);
+		if (fireChange)
+			pcs.firePropertyChange("end", 1, 2);
 	}
 
 	public String getMeetingPlace() {
@@ -148,6 +158,7 @@ public class Appointment {
 
 	public void setMeetingPlace(String meetingPlace) {
 		this.meetingPlace = meetingPlace;
+		System.out.println("new MeetingPlace: " + meetingPlace);
 	}
 
 	public MeetingRoom getMeetingRoom() {

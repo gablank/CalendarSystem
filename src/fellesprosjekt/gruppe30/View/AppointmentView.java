@@ -54,6 +54,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		meetingPlaceField = new JTextField("Place", 10);
 		meetingPlaceField.addFocusListener(this);
+		meetingPlaceField.setName("meeting_place");
 		emailField = new JTextField("Email", 10);
 		emailField.addFocusListener(this);
 
@@ -72,7 +73,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			dateField.setValue("03.07.2014");
 			dateField.addFocusListener(this);
 			dateField.setHorizontalAlignment(JFormattedTextField.CENTER);
-			dateField.setName("date_text");
+			dateField.setName("app_date_text");
 		} catch(ParseException e) {
 			e.printStackTrace();
 		}
@@ -85,13 +86,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			startTimeField.setValue("08:40");
 			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			startTimeField.addFocusListener(this);
-			startTimeField.setName("start_text");
+			startTimeField.setName("app_start_text");
 			endTimeField = new JFormattedTextField(timeFormatter);
 			endTimeField.setPreferredSize(new Dimension(50, 20));
 			endTimeField.setValue("10:40");
 			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			endTimeField.addFocusListener(this);
-			endTimeField.setName("end_text");
+			endTimeField.setName("app_end_text");
 			alarmTimeField = new JFormattedTextField(timeFormatter);
 			alarmTimeField.setPreferredSize(new Dimension(40, 20));
 			alarmTimeField.setValue("00:30");
@@ -571,6 +572,10 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 	public JFormattedTextField getEndText() {
 		return endTimeField;
+	}
+
+	public String getMeetingPlaceText() {
+		return meetingPlaceField.getText();
 	}
 
 }
