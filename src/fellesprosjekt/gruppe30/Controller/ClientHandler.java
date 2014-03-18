@@ -223,6 +223,7 @@ public class ClientHandler extends Network {
 				System.out.println("set last to " + lastNewAppointmentId);
 
 				server.addAppointment(appointment);
+				message.put("id", appointment.getId());
 				server.getServerListener().broadcast(message);
 				System.out.println("successfully added an appointment!");
 			}
@@ -276,6 +277,7 @@ public class ClientHandler extends Network {
 
 				server.getDatabase().insertAlarm(alarm);
 				server.addAlarm(alarm);
+				message.put("appointmentId", appointmentId);
 				server.getServerListener().broadcast(message);
 				System.out.println("successfully added alarm!");
 
