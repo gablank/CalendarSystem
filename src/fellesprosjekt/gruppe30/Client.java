@@ -11,7 +11,6 @@ import javax.swing.*;
 
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -151,5 +150,9 @@ public class Client extends Application {
 
 	public AppointmentController getAppointmentController() {
 		return appointmentController;
+	}
+
+	public BookMeetingRoomController getBookMeetingRoomController() {
+		return bookMeetingRoomController;
 	}
 }

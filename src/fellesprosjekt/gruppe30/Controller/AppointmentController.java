@@ -11,13 +11,19 @@ import javax.swing.event.ListSelectionListener;
 
 import fellesprosjekt.gruppe30.View.AppointmentView;
 import fellesprosjekt.gruppe30.View.ViewAppointmentView;
+
 import org.json.JSONObject;
 
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 public class AppointmentController implements ActionListener, KeyListener, ListSelectionListener, MouseListener {
 	private final Client client;
@@ -70,6 +76,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("selectRoom")) {
 			client.open(Client.ViewEnum.BOOKMEETINGROOM);
+			client.getBookMeetingRoomController().setModel(appointmentView.getAppointmentModel());
 			
 		} else if(name.equalsIgnoreCase("cancel")) {
 			client.close(Client.ViewEnum.APPOINTMENT);
@@ -102,7 +109,44 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	}
 
 	public void keyReleased(java.awt.event.KeyEvent keyEvent) {
+		try {
+			System.out.println(keyEvent);
+			String source = ((Component) keyEvent.getSource()).getName().toLowerCase();
+			if (source.equals("start_text") || source.equals("end_text") || source.equals("date_text")) {
 
+				// dateText: DD.MM.YYYY
+				// start/endText: HH:MM
+
+				String dateStrings[] = appointmentView.getDateText().getText().split("\\.");
+
+				int day = Integer.parseInt(dateStrings[0]);
+				int month = Integer.parseInt(dateStrings[1]);
+				int year = Integer.parseInt(dateStrings[2]);
+
+				String startTime[] = appointmentView.getStartText().getText().split(":");
+
+				int startHour = Integer.parseInt(startTime[0]);
+				int startMinute = Integer.parseInt(startTime[1]);
+
+				String endTime[] = appointmentView.getEndText().getText().split(":");
+
+				int endHour = Integer.parseInt(endTime[0]);
+				int endMinute = Integer.parseInt(endTime[1]);
+
+				GregorianCalendar newStartGC = new GregorianCalendar(year, month - 1, day, startHour, startMinute + 1);
+				newStartGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
+				GregorianCalendar newEndGC = new GregorianCalendar(year, month - 1, day, endHour, endMinute + 1);
+				newEndGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
+
+				Date newStart = newStartGC.getTime();
+				Date newEnd = newEndGC.getTime();
+
+				appointmentView.getModel().setStart(newStart);
+				appointmentView.getModel().setEnd(newEnd);
+			}
+		} catch (Exception exception) {
+
+		}
 	}
 
 	public void valueChanged(javax.swing.event.ListSelectionEvent listSelectionEvent) {
@@ -156,5 +200,9 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	public void setVisible(boolean state) {
 		appointmentView.setVisible(state);
 		viewAppointmentView.setVisible(state);
+	}
+
+	public Appointment getModel() {
+		return appointmentView.getAppointmentModel();
 	}
 }

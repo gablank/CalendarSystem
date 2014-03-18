@@ -13,7 +13,10 @@ public class ViewAppointmentView extends AppointmentView {
 		endTimeField.setEditable(false);
 		participants.setEnabled(false);
 		
-		if (!meetingPlaceField.getText().equals("Place")){
+		if (meetingPlaceField.getText().equals("Place")){
+			meetingPlaceField.setVisible(false);
+		}
+		else {
 			meetingPlaceField.setVisible(true);
 		}
 		meetingPlaceField.setEditable(false);
@@ -33,11 +36,13 @@ public class ViewAppointmentView extends AppointmentView {
 		allUsersAndGroups.setVisible(false);
 		deleteButton.setVisible(false);
 		inviteByEmail.setVisible(false);
+		saveButton.setName("viewsave");
+		cancelButton.setName("viewcancel");
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ViewAppointmentView view = new ViewAppointmentView();
 		view.setVisible(true);
-	}
+	}*/
 
 }

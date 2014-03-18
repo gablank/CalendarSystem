@@ -2,8 +2,11 @@ package fellesprosjekt.gruppe30.Controller;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.SimpleTimeZone;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -21,7 +24,8 @@ import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
 public class BookMeetingRoomController implements ActionListener, ListSelectionListener, KeyListener {
 	private final Client		client;
 	private BookMeetingRoomView	bookMeetingRoomView;
-	private Appointment			model;
+
+	// private Appointment appointment;
 	
 	public BookMeetingRoomController(Client client) {
 		this.client = client;
@@ -31,8 +35,8 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 
 	}
 	
-	void setModel(Appointment model) {
-		this.model = model;
+	public void setModel(Appointment model) {
+		bookMeetingRoomView.setModel(model);
 		populateList();
 	}
 
@@ -70,8 +74,8 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 			}
 		}
 		
-		Date startDate = model.getStart();
-		Date endDate = model.getStart();
+		Date startDate = bookMeetingRoomView.getModel().getStart();
+		Date endDate = bookMeetingRoomView.getModel().getStart();
 		for (int i = 0; i < validRooms.size(); ++i) {
 			if (!isAvailable(validRooms.get(i), startDate, endDate, client.getAppointments())) {
 				validRooms.remove(i);
@@ -120,20 +124,56 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 	}
 
 	@Override
-	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
+	public void keyPressed(KeyEvent e) {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
+	public void keyReleased(KeyEvent e) {
+		try{
+			System.out.println(e);
+			String source = ((Component) e.getSource()).getName().toLowerCase();
+			if (source.equals("start_text") || source.equals("end_text") || source.equals("date_text")) {
+				
+				//dateText: 	 DD.MM.YYYY
+				//start/endText: HH:MM
+				
+				String dateStrings[] = bookMeetingRoomView.getDateText().getText().split("\\.");
+	
+				int day = Integer.parseInt(dateStrings[0]);
+				int month = Integer.parseInt(dateStrings[1]);
+				int year = Integer.parseInt(dateStrings[2]);
+	
+				String startTime[] = bookMeetingRoomView.getStartText().getText().split(":");
+	
+				int startHour = Integer.parseInt(startTime[0]);
+				int startMinute = Integer.parseInt(startTime[1]);
+	
+				String endTime[] = bookMeetingRoomView.getEndText().getText().split(":");
+	
+				int endHour = Integer.parseInt(endTime[0]);
+				int endMinute = Integer.parseInt(endTime[1]);
+	
+				GregorianCalendar newStartGC = new GregorianCalendar(year, month - 1, day, startHour, startMinute+1);
+				newStartGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
+				GregorianCalendar newEndGC = new GregorianCalendar(year, month - 1, day, endHour, endMinute+1);
+				newEndGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
+				
+				System.out.println(newStartGC.getTime());
+				System.out.println(newEndGC.getTime());
+	
+				Date newStart = newStartGC.getTime();
+				Date newEnd = newEndGC.getTime();
+	
+				bookMeetingRoomView.getModel().setStart(newStart);
+				bookMeetingRoomView.getModel().setEnd(newEnd);
+			}
+		} catch (Exception exception) {
+			
+		}
 	}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+	public void keyTyped(KeyEvent e) {
 
 	}
 

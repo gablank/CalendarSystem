@@ -17,21 +17,21 @@ import java.util.*;
 import java.util.List;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, ListSelectionListener, FocusListener {
-	protected PersonRenderer      listRenderer;
-	public    PersonListModel     personListModel;
-	protected JTextField          titleField, meetingPlaceField, emailField;
-	protected JTextArea           description;
-	protected JFormattedTextField dateField, startTimeField, endTimeField, alarmTimeField;
-	protected JCheckBox           useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
-	protected JComboBox<Object> allUsersAndGroups;
-	protected JList<Attendant>         participants;
-	protected JButton             addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
-	protected JScrollPane         participantScroller, descriptionScroller;
-	protected JLabel              participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
-	protected JFrame              frame;
-	protected Appointment         appointmentModel;
-    protected Attendant           attendantModel;
-	protected Alarm               alarmModel;
+	protected PersonRenderer	listRenderer;
+	public PersonListModel		personListModel;
+	protected JTextField		titleField, meetingPlaceField, emailField;
+	protected JTextArea			description;
+	protected JFormattedTextField	dateField, startTimeField, endTimeField, alarmTimeField;
+	protected JCheckBox				useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
+	protected JComboBox<Object>		allUsersAndGroups;
+	protected JList<Attendant>		participants;
+	protected JButton				addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
+	protected JScrollPane			participantScroller, descriptionScroller;
+	protected JLabel				participantLabel, dateLabel, startTimeLabel, endTimeLabel, alarmLabel;
+	protected JFrame				frame;
+	protected Appointment			appointmentModel;
+	protected Attendant				attendantModel;
+	protected Alarm					alarmModel;
 
 
 	public AppointmentView() {
@@ -54,13 +54,14 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		meetingPlaceField = new JTextField("Place", 10);
 		meetingPlaceField.addFocusListener(this);
-		emailField = new JTextField("Email", 1);
+		emailField = new JTextField("Email", 10);
 		emailField.addFocusListener(this);
 
 
 		selectRoom = new JButton("Select...");
 		selectRoom.setName("selectRoom");
-		selectRoom.setPreferredSize(new Dimension(100, 25));
+		selectRoom.setPreferredSize(new Dimension(100, 20));
+		selectRoom.setVisible(false);
 
 
 		MaskFormatter dateFormatter;
@@ -71,6 +72,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			dateField.setValue("03.07.2014");
 			dateField.addFocusListener(this);
 			dateField.setHorizontalAlignment(JFormattedTextField.CENTER);
+			dateField.setName("date_text");
 		} catch(ParseException e) {
 			e.printStackTrace();
 		}
@@ -83,11 +85,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			startTimeField.setValue("08:40");
 			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			startTimeField.addFocusListener(this);
+			startTimeField.setName("start_text");
 			endTimeField = new JFormattedTextField(timeFormatter);
 			endTimeField.setPreferredSize(new Dimension(50, 20));
 			endTimeField.setValue("10:40");
 			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			endTimeField.addFocusListener(this);
+			endTimeField.setName("end_text");
 			alarmTimeField = new JFormattedTextField(timeFormatter);
 			alarmTimeField.setPreferredSize(new Dimension(40, 20));
 			alarmTimeField.setValue("00:30");
@@ -108,9 +112,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		setAlarm.setName("setAlarm");
 		inviteByEmail = new JCheckBox("Invite by email");
 		inviteByEmail.setName("inviteByEmail");
-
 		allUsersAndGroups = new JComboBox<>();
-		allUsersAndGroups.setPreferredSize(new Dimension(40, 25));
+		allUsersAndGroups.setPreferredSize(new Dimension(30, 20));
 		allUsersAndGroups.setName("allUsersAndGroups");
 		participants = new JList<Attendant>();
 		listRenderer = PersonRenderer.getInstance();
@@ -181,7 +184,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		add(useMeetingRoom, cLeft);
 		cLeft.gridy = 5;
 		add(meetingPlaceField, cLeft);
-		meetingPlaceField.setVisible(false);
+		meetingPlaceField.setVisible(true);
 		add(selectRoom, cLeft);
 
 		cRight.gridx = 2;
@@ -215,15 +218,18 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		addRemove.add(removeButton);
 		JPanel userOrEmail = new JPanel();
 		userOrEmail.setLayout(new BoxLayout(userOrEmail, BoxLayout.Y_AXIS));
-		userOrEmail.add(inviteByEmail);
-		userOrEmail.add(allUsersAndGroups, 1);
-		userOrEmail.add(emailField, 1);
+		allUsersAndGroups.setPreferredSize(new Dimension(120, 20));
+		emailField.setPreferredSize(new Dimension(200,20));
+		userOrEmail.add(allUsersAndGroups, 0);
+		userOrEmail.add(emailField, 0);
 		emailField.setVisible(false);
 		JPanel personAddRemove = new JPanel();
 		personAddRemove.add(userOrEmail);
 		personAddRemove.add(addRemove);
+		
+		add(inviteByEmail, cRight);
+		cRight.gridy = 5;
 		add(personAddRemove, cRight);
-
 		cRight.gridy = 8;
 
 		JPanel saveDelete = new JPanel();
@@ -550,4 +556,21 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 		//end test code
 	}
+
+	public Appointment getModel() {
+		return appointmentModel;
+	}
+
+	public JFormattedTextField getDateText() {
+		return dateField;
+	}
+
+	public JFormattedTextField getStartText() {
+		return startTimeField;
+	}
+
+	public JFormattedTextField getEndText() {
+		return endTimeField;
+	}
+
 }

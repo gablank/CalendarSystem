@@ -6,6 +6,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 
+import fellesprosjekt.gruppe30.Utilities;
+import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.MeetingRoom;
 
 import java.awt.*;
@@ -21,14 +23,17 @@ import java.util.List;
 //TODO: skaler bedre(?), 
 public class BookMeetingRoomView extends JPanel {
 	//Salvador Fali aka Kush Wagner
-	private JList<MeetingRoom>  roomList;
+	private JList<MeetingRoom>				roomList;
 	private DefaultListModel<MeetingRoom>	roomListModel;
-	private JFormattedTextField startText, endText, dateText;// capacityText;
-	private JTextField          capacityText;
-	private JLabel              startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
-	private JScrollPane         roomListScroll;
-	private JButton             okButton, quitButton;
-	private JFrame              frame;
+	private JFormattedTextField				startText, endText, dateText;	// capacityText;
+	private JTextField						capacityText;
+	private JLabel							startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
+	private JScrollPane						roomListScroll;
+	private JButton							okButton, quitButton;
+	private JFrame							frame;
+
+	public Appointment						model;
+
 
 	public BookMeetingRoomView() {
 		// gridbag og gridconstraints deklarasjon.
@@ -75,6 +80,7 @@ public class BookMeetingRoomView extends JPanel {
 		}
 		startText.setPreferredSize(new Dimension(70,20));
 		startText.setName("start_text");
+
 
 		endLabel = new JLabel("End:");
 		MaskFormatter endFormatter;
@@ -222,9 +228,39 @@ public class BookMeetingRoomView extends JPanel {
 	}
 
 	public void populateList(List<MeetingRoom> validRooms) {
+		roomListModel.removeAllElements();
+
 		for(MeetingRoom room : validRooms){
 			roomListModel.addElement(room);
 		}
 	}
 
+	public void setModel(Appointment model) {
+		this.model = model;
+
+		setFields();
+	}
+
+	private void setFields() {
+		startText.setText(Utilities.timeToFormattedString(model.getStart()));
+		endText.setText(Utilities.timeToFormattedString(model.getEnd()));
+		dateText.setText(Utilities.dateToFormattedString(model.getStart(), true));
+		capacityText.setText(Integer.toString(model.getAttendants().size()));
+	}
+
+	public Appointment getModel() {
+		return model;
+	}
+
+	public JFormattedTextField getDateText() {
+		return dateText;
+	}
+
+	public JFormattedTextField getStartText() {
+		return startText;
+	}
+
+	public JFormattedTextField getEndText() {
+		return endText;
+	}
 }
