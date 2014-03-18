@@ -128,6 +128,8 @@ public class Appointment {
 
 	public void setStart(Date start) {
 		this.start.setTime(start.getTime());
+		System.out.println("new start: " + start.toString());
+		pcs.firePropertyChange("start", 1, 2);
 	}
 
 	public Date getEnd() {
@@ -136,6 +138,8 @@ public class Appointment {
 
 	public void setEnd(Date end) {
 		this.end.setTime(end.getTime());
+		System.out.println("new end: " + end.toString());
+		pcs.firePropertyChange("end", 1, 2);
 	}
 
 	public String getMeetingPlace() {

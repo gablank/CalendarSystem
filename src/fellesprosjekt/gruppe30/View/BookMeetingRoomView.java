@@ -81,6 +81,7 @@ public class BookMeetingRoomView extends JPanel {
 		startText.setPreferredSize(new Dimension(70,20));
 		startText.setName("start_text");
 
+
 		endLabel = new JLabel("End:");
 		MaskFormatter endFormatter;
 		try {
@@ -251,4 +252,15 @@ public class BookMeetingRoomView extends JPanel {
 		return model;
 	}
 
+	public JFormattedTextField getDateText() {
+		return dateText;
+	}
+
+	public JFormattedTextField getStartText() {
+		return startText;
+	}
+
+	public JFormattedTextField getEndText() {
+		return endText;
+	}
 }
