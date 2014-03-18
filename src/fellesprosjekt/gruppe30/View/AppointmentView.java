@@ -420,9 +420,15 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		startTimeField.setValue(Utilities.timeToFormattedString(appointmentModel.getStart()));
 		endTimeField.setValue(Utilities.timeToFormattedString(appointmentModel.getEnd()));
 
-		meetingPlaceField.setText(appointmentModel.getMeetingPlace());
 		if (appointmentModel.getMeetingRoom() != null) {
+			useMeetingRoom.setSelected(true);
 			selectRoom.setText("Room # " + Integer.toString(appointmentModel.getMeetingRoom().getId()));
+
+		} else {
+			useMeetingRoom.setSelected(false);
+			meetingPlaceField.setText(appointmentModel.getMeetingPlace());
+			meetingPlaceField.setVisible(true);
+			selectRoom.setVisible(false);
 		}
 
 
@@ -533,24 +539,27 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		return participants.getSelectedValue();
 	}
 
-	public static void main(String[] args) {
-		AppointmentView view = new AppointmentView();
-		view.setVisible(true);
-		//test code
-		view.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
-		InternalUser user2 = new InternalUser("email", "Knut", "Grut");
-		InternalUser user3 = new InternalUser ("email", "Stefan", "Trefan");
-		InternalAttendant attendant = new InternalAttendant(user, new Appointment(user));
-		InternalAttendant attendant2 = new InternalAttendant(user2, new Appointment(user2));
-		InternalAttendant attendant3 = new InternalAttendant(user3, new Appointment(user3));
-		view.personListModel.addElement(attendant);
-		view.personListModel.addElement(attendant2);
-		view.personListModel.addElement(attendant3);
-		for(int i = 0; i < 10; i++) {
-		}
-		//end test code
-	}
+	// public static void main(String[] args) {
+	// AppointmentView view = new AppointmentView();
+	// view.setVisible(true);
+	// //test code
+	// view.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	// InternalUser user = new InternalUser("email", "Bjarne", "Fjarne");
+	// InternalUser user2 = new InternalUser("email", "Knut", "Grut");
+	// InternalUser user3 = new InternalUser ("email", "Stefan", "Trefan");
+	// InternalAttendant attendant = new InternalAttendant(user, new
+	// Appointment(user));
+	// InternalAttendant attendant2 = new InternalAttendant(user2, new
+	// Appointment(user2));
+	// InternalAttendant attendant3 = new InternalAttendant(user3, new
+	// Appointment(user3));
+	// view.personListModel.addElement(attendant);
+	// view.personListModel.addElement(attendant2);
+	// view.personListModel.addElement(attendant3);
+	// for(int i = 0; i < 10; i++) {
+	// }
+	// //end test code
+	// }
 
 	public Appointment getModel() {
 		return appointmentModel;

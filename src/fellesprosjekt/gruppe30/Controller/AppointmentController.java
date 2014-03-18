@@ -242,6 +242,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		Attendant attendant = appointment.getAttendant(client.getLoggedInUser());
 		Alarm alarm = Utilities.getAlarm(appointment, appointment.getOwner(), client.getAlarms());
 		if(appointment.getOwner() == client.getLoggedInUser()) {
+			appointmentView.setComponentsToDefault();
 			appointmentView.setModel(appointment, attendant, alarm);
 			appointmentView.setVisible(true);
 		} else {
