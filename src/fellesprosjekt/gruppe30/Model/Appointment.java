@@ -23,7 +23,7 @@ public class Appointment {
 
 
 	public Appointment(InternalUser owner) {
-		this(owner, "Title", "Description", new Date(), new Date(), "", null);
+		this(owner, "Title", "Description", new Date(), new Date(new Date().getTime() + 60 * 60 * 1000), "", null);
 	}
 
 	public Appointment(InternalUser owner, String title, String description, Date start, Date end) {
