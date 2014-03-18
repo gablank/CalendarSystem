@@ -561,10 +561,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	// //end test code
 	// }
 
-	public Appointment getModel() {
-		return appointmentModel;
-	}
-
 	public JFormattedTextField getDateText() {
 		return dateField;
 	}
