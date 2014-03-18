@@ -42,6 +42,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		//set appearance of all buttons
 		titleField = new JTextField("Title", 13);
 		titleField.addFocusListener(this);
+		titleField.setName("title");
 
 
 		description = new JTextArea("Description", 5, 13);
@@ -49,6 +50,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		description.setLineWrap(true);
 		description.setWrapStyleWord(true);
 		description.addFocusListener(this);
+		description.setName("description");
 		descriptionScroller = new JScrollPane(description);
 
 
@@ -397,6 +399,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	public void setModel(Appointment appointment, Attendant attendant, Alarm alarm) {
 		this.appointmentModel = appointment;
 		this.attendantModel = attendant;
+		//this.personListModel.addElement((Attendant) attendant);
 		this.alarmModel = alarm;
 		this.appointmentModel.addListener(this);
 		updateFields();
@@ -569,6 +572,14 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 	public String getMeetingPlaceText() {
 		return meetingPlaceField.getText();
+	}
+	
+	public String getTitleText() {
+		return titleField.getText();
+	}
+	
+	public String getDescriptionText() {
+		return description.getText();
 	}
 
 	public boolean useMeetingRoomIsChecked() {

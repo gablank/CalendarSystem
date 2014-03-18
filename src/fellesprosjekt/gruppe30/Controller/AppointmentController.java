@@ -145,7 +145,11 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	public void keyReleased(java.awt.event.KeyEvent keyEvent) {
 		String source = ((Component) keyEvent.getSource()).getName().toLowerCase();
 
-		if (source.equals("meeting_place")) {
+		if (source.equals("title")) {
+			appointmentView.getModel().setTitle(appointmentView.getTitleText());
+		} else if (source.equals("description")) {
+			appointmentView.getModel().setDescription(appointmentView.getDescriptionText());
+		} else if (source.equals("meeting_place")) {
 			appointmentView.getModel().setMeetingPlace(appointmentView.getMeetingPlaceText());
 
 		} else if (source.equals("app_start_text") || source.equals("app_end_text") || source.equals("app_date_text")) {
