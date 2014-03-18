@@ -65,7 +65,8 @@ public class Appointment {
 			}
 		}
 		this.attendants.add(attendant);
-		pcs.firePropertyChange("change", 1, 2);
+		if (pcs != null)
+			pcs.firePropertyChange("change", 1, 2);
 	}
 
 	public Attendant getAttendant(User user) {
@@ -253,6 +254,7 @@ public class Appointment {
 	}
 
 	public void firePcs() {
-		pcs.firePropertyChange("change", 1, 2);
+		if (pcs != null)
+			pcs.firePropertyChange("change", 1, 2);
 	}
 }
