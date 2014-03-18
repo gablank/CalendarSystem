@@ -54,13 +54,14 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		meetingPlaceField = new JTextField("Place", 10);
 		meetingPlaceField.addFocusListener(this);
-		emailField = new JTextField("Email", 1);
+		emailField = new JTextField("Email", 10);
 		emailField.addFocusListener(this);
 
 
 		selectRoom = new JButton("Select...");
 		selectRoom.setName("selectRoom");
-		selectRoom.setPreferredSize(new Dimension(100, 25));
+		selectRoom.setPreferredSize(new Dimension(100, 20));
+		selectRoom.setVisible(false);
 
 
 		MaskFormatter dateFormatter;
@@ -108,9 +109,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		setAlarm.setName("setAlarm");
 		inviteByEmail = new JCheckBox("Invite by email");
 		inviteByEmail.setName("inviteByEmail");
-
 		allUsersAndGroups = new JComboBox<>();
-		allUsersAndGroups.setPreferredSize(new Dimension(40, 25));
+		allUsersAndGroups.setPreferredSize(new Dimension(30, 20));
 		allUsersAndGroups.setName("allUsersAndGroups");
 		participants = new JList<Attendant>();
 		listRenderer = PersonRenderer.getInstance();
@@ -181,7 +181,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		add(useMeetingRoom, cLeft);
 		cLeft.gridy = 5;
 		add(meetingPlaceField, cLeft);
-		meetingPlaceField.setVisible(false);
+		meetingPlaceField.setVisible(true);
 		add(selectRoom, cLeft);
 
 		cRight.gridx = 2;
@@ -215,15 +215,18 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		addRemove.add(removeButton);
 		JPanel userOrEmail = new JPanel();
 		userOrEmail.setLayout(new BoxLayout(userOrEmail, BoxLayout.Y_AXIS));
-		userOrEmail.add(inviteByEmail);
-		userOrEmail.add(allUsersAndGroups, 1);
-		userOrEmail.add(emailField, 1);
+		allUsersAndGroups.setPreferredSize(new Dimension(120, 20));
+		emailField.setPreferredSize(new Dimension(200,20));
+		userOrEmail.add(allUsersAndGroups, 0);
+		userOrEmail.add(emailField, 0);
 		emailField.setVisible(false);
 		JPanel personAddRemove = new JPanel();
 		personAddRemove.add(userOrEmail);
 		personAddRemove.add(addRemove);
+		
+		add(inviteByEmail, cRight);
+		cRight.gridy = 5;
 		add(personAddRemove, cRight);
-
 		cRight.gridy = 8;
 
 		JPanel saveDelete = new JPanel();
