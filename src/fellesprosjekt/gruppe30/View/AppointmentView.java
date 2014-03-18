@@ -93,6 +93,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			endTimeField.addFocusListener(this);
 			endTimeField.setName("app_end_text");
 			alarmTimeField = new JFormattedTextField(timeFormatter);
+			alarmTimeField.setName("alarmTimeField");
 			alarmTimeField.setPreferredSize(new Dimension(40, 20));
 			alarmTimeField.setValue("00:30");
 			alarmTimeField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -217,7 +218,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		JPanel userOrEmail = new JPanel();
 		userOrEmail.setLayout(new BoxLayout(userOrEmail, BoxLayout.Y_AXIS));
 		allUsersAndGroups.setPreferredSize(new Dimension(120, 20));
-		emailField.setPreferredSize(new Dimension(200,20));
+		emailField.setPreferredSize(new Dimension(200, 20));
 		userOrEmail.add(allUsersAndGroups, 0);
 		userOrEmail.add(emailField, 0);
 		emailField.setVisible(false);
@@ -391,10 +392,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		this.frame.setVisible(visible);
 	}
 
-	public void setModel(Appointment appointmentModel) {
-		setModel(appointmentModel, null, null);
-	}
-
 	public void setModel(Appointment appointment, Attendant attendant, Alarm alarm) {
 		this.appointmentModel = appointment;
 		this.attendantModel = attendant;
@@ -466,17 +463,19 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		return appointmentModel;
 	}
 	
-	public boolean setAlarmIsSelected() {
+	public boolean getAlarmIsSelected() {
 		return setAlarm.isSelected();
 	}
 	
 	public int getAlarmInMinutes() {
 		if (setAlarm.isSelected()) {
-			String alarm = this.alarmTimeField.getText();
-			int minutes = Integer.parseInt("" + alarm.charAt(3) + alarm.charAt(4));
-			minutes += Integer.parseInt("" + alarm.charAt(0) + alarm.charAt(1)) * 60;
-			return minutes;
-		} return -1;
+			String alarmTime[] = alarmTimeField.getText().split(":");
+
+			int hour = Integer.parseInt(alarmTime[0]);
+			int minutes = Integer.parseInt(alarmTime[1]);
+			return hour * 60 + minutes;
+		}
+		return -1;
 	}
 
 	public String getAlarmTimeDiff() {
@@ -607,5 +606,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		allUsersAndGroups.setVisible(true);
 
 
+	}
+
+	public Alarm getAlarmModel() {
+		return this.alarmModel;
 	}
 }

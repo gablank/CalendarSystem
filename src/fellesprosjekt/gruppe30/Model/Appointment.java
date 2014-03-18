@@ -49,8 +49,8 @@ public class Appointment {
 		this.room = room;
 		this.attendants = new ArrayList<Attendant>();
 		this.lastUpdated = new Date();
+		this.addUser(owner);
 		pcs = new PropertyChangeSupport(this);
-        //this.addUser(owner);
 	}
 
 	public void addListener(PropertyChangeListener listener) {
@@ -58,18 +58,26 @@ public class Appointment {
 	}
 
 	public void addAttendant(Attendant attendant) {
+		// Avoid adding duplicates
+		for(Attendant attendant1 : attendants) {
+			if(attendant1.getUser() == attendant.getUser()) {
+				return;
+			}
+		}
 		this.attendants.add(attendant);
 		pcs.firePropertyChange("change", 1, 2);
 	}
 
-	public void addUser(User user) {
-		// Avoid adding duplicates
-		for(Attendant attendant1 : attendants) {
-			if(attendant1.getUser() == user) {
-				return;
+	public Attendant getAttendant(User user) {
+		for(Attendant attendant : attendants) {
+			if(attendant.getUser() == user) {
+				return attendant;
 			}
 		}
+		return null;
+	}
 
+	public void addUser(User user) {
 		Attendant attendant;
 		if(user instanceof InternalUser) {
 			attendant = new InternalAttendant((InternalUser) user, this);

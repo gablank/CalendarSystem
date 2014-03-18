@@ -40,16 +40,15 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	}
 
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-		String cmd = actionEvent.getActionCommand().toLowerCase();
+		String name= ((JComponent) actionEvent.getSource()).getName();
 
-		JComponent source = (JComponent) actionEvent.getSource();
-		String name = source.getName();
 		if(name.equalsIgnoreCase("inviteUser")) {
 			List<User> invitees = appointmentView.getSelectedUsers();
 			for(User invitee : invitees) {
 				appointmentView.getAppointmentModel().addUser(invitee);
 				System.out.println("Adding " + invitee.getEmail());
 			}
+
 		} else if(name.equalsIgnoreCase("save")) {
 			Appointment appointment = appointmentView.getAppointmentModel();
 			JSONObject message = appointment.getJSON();
@@ -72,16 +71,15 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 			client.network.send(message);
 			
-			if (appointmentView.setAlarmIsSelected()) {
-				JSONObject alarmMessage = new JSONObject();
-				alarmMessage.put("type", "alarm");
+			if (appointmentView.getAlarmIsSelected()) {
+				JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
+
 				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
 					alarmMessage.put("action", "new");
-				} else alarmMessage.put("action", "change");
-				alarmMessage.put("userEmail", client.getLoggedInUser().getEmail());
-				alarmMessage.put("appointmentId", appointment.getId());
-				long alarm = appointmentView.getAlarmInMinutes() * 60 * 1000;
-				alarmMessage.put("time", appointment.getStart().getTime() - alarm);
+				} else {
+					alarmMessage.put("action", "change");
+				}
+
 				client.network.send(alarmMessage);
 			}
 			client.close(Client.ViewEnum.APPOINTMENT);
@@ -95,8 +93,10 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			
 		} else if(name.equalsIgnoreCase("delete")) {
 			client.open(Client.ViewEnum.AREYOUSUREVIEW);
+
 		} else if(name.equalsIgnoreCase("no")) {
 			client.close(Client.ViewEnum.AREYOUSUREVIEW);
+
         } else if(name.equalsIgnoreCase("yes")) {
 			if (appointmentView.getAppointmentModel().getId() != -1) {
 				JSONObject message = new JSONObject();
@@ -106,28 +106,30 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 				client.network.send(message);
 			}
 			client.close(ViewEnum.APPOINTMENT);
+
 		} else if(name.equalsIgnoreCase("removeUser")) {
 			Attendant selectedAttendant = appointmentView.getSelectedAttendant();
 			appointmentView.getAppointmentModel().removeAttendant(selectedAttendant);
+
 		} else if(name.equalsIgnoreCase("viewsave")) {
 			Appointment appointment = viewAppointmentView.getAppointmentModel();
 			JSONObject message = appointment.getJSON();
 			message.put("action", "change");
 			client.network.send(message);
-			
-			if (viewAppointmentView.setAlarmIsSelected()) {
-				JSONObject alarmMessage = new JSONObject();
-				alarmMessage.put("type", "alarm");
+
+			if (appointmentView.getAlarmIsSelected()) {
+				JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
+
 				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
 					alarmMessage.put("action", "new");
-				} else alarmMessage.put("action", "change");
-				alarmMessage.put("userEmail", client.getLoggedInUser().getEmail());
-				alarmMessage.put("appointmentId", appointment.getId());
-				long alarm = viewAppointmentView.getAlarmInMinutes() * 60 * 1000;
-				alarmMessage.put("time", appointment.getStart().getTime() - alarm);
+				} else {
+					alarmMessage.put("action", "change");
+				}
+
 				client.network.send(alarmMessage);
 			}
 			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
+
 		} else if(name.equalsIgnoreCase("viewcancel")) {
 			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
 		}
@@ -146,8 +148,10 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		if (source.equals("title")) {
 			appointmentView.getModel().setTitle(appointmentView.getTitleText());
+
 		} else if (source.equals("description")) {
 			appointmentView.getModel().setDescription(appointmentView.getDescriptionText());
+
 		} else if (source.equals("meeting_place")) {
 			appointmentView.getModel().setMeetingPlace(appointmentView.getMeetingPlaceText());
 
@@ -188,6 +192,10 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 			}
 
+		} else if (source.equals("alarmTimeField")) {
+			java.util.Date startTime = appointmentView.getModel().getStart();
+            java.util.Date alarmDate = new java.util.Date(startTime.getTime() + appointmentView.getAlarmInMinutes() * 60*1000);
+			appointmentView.getAlarmModel().setDate(alarmDate);
 		}
 	}
 
@@ -231,11 +239,13 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	}
 
 	public void open(Appointment appointment) {
+		Attendant attendant = appointment.getAttendant(client.getLoggedInUser());
+		Alarm alarm = Utilities.getAlarm(appointment, appointment.getOwner(), client.getAlarms());
 		if(appointment.getOwner() == client.getLoggedInUser()) {
-			appointmentView.setModel(appointment);
+			appointmentView.setModel(appointment, attendant, alarm);
 			appointmentView.setVisible(true);
 		} else {
-			viewAppointmentView.setModel(appointment);
+			viewAppointmentView.setModel(appointment, attendant, alarm);
 			viewAppointmentView.setVisible(true);
 		}
 	}
