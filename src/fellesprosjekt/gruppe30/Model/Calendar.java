@@ -6,10 +6,7 @@ import fellesprosjekt.gruppe30.View.CalendarView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Calendar {
 	private final GregorianCalendar  gregorianCalendar;
@@ -24,6 +21,9 @@ public class Calendar {
 
 		gregorianCalendar = new GregorianCalendar();
 		gregorianCalendar.setTime(new java.util.Date());
+		gregorianCalendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
+		gregorianCalendar.set(java.util.Calendar.MINUTE, 0);
+		gregorianCalendar.set(java.util.Calendar.SECOND, 0);
 		gregorianCalendar.setFirstDayOfWeek(java.util.Calendar.MONDAY);
 		pcs = new PropertyChangeSupport(this);
 	}
@@ -125,7 +125,7 @@ public class Calendar {
 		days[6] = "Sun";
 		String[] labels = new String[7];
 		long msPerDay = 24 * 60 * 60 * 1000;
-		long time = gregorianCalendar.getTime().getTime() - gregorianCalendar.get(java.util.Calendar.DAY_OF_WEEK) * msPerDay;
+		long time = gregorianCalendar.getTime().getTime() - (gregorianCalendar.get(java.util.Calendar.DAY_OF_WEEK) - 1) * msPerDay;
 		for(int i = 0; i < 7; i++) {
 			time += msPerDay;
 			labels[i] = days[i] + " " + Utilities.dateToFormattedString(new java.util.Date(time), false);
