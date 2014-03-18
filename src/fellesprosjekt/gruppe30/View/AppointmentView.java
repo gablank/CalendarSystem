@@ -17,10 +17,10 @@ import java.util.*;
 import java.util.List;
 
 public class AppointmentView extends JPanel implements ActionListener, PropertyChangeListener, ListSelectionListener, FocusListener {
-	protected PersonRenderer	listRenderer;
-	public PersonListModel		personListModel;
-	protected JTextField		titleField, meetingPlaceField, emailField;
-	protected JTextArea			description;
+	protected PersonRenderer		listRenderer;
+	public PersonListModel			personListModel;
+	protected JTextField			titleField, meetingPlaceField, emailField;
+	protected JTextArea				description;
 	protected JFormattedTextField	dateField, startTimeField, endTimeField, alarmTimeField;
 	protected JCheckBox				useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
 	protected JComboBox<Object>		allUsersAndGroups;
@@ -70,7 +70,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			dateFormatter = new MaskFormatter("##.##.####");
 			dateField = new JFormattedTextField(dateFormatter);
 			dateField.setPreferredSize(new Dimension(80, 20));
-			dateField.setValue("03.07.2014");
 			dateField.addFocusListener(this);
 			dateField.setHorizontalAlignment(JFormattedTextField.CENTER);
 			dateField.setName("app_date_text");
@@ -83,13 +82,11 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			timeFormatter = new MaskFormatter("##:##");
 			startTimeField = new JFormattedTextField(timeFormatter);
 			startTimeField.setPreferredSize(new Dimension(50, 20));
-			startTimeField.setValue("08:40");
 			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			startTimeField.addFocusListener(this);
 			startTimeField.setName("app_start_text");
 			endTimeField = new JFormattedTextField(timeFormatter);
 			endTimeField.setPreferredSize(new Dimension(50, 20));
-			endTimeField.setValue("10:40");
 			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 			endTimeField.addFocusListener(this);
 			endTimeField.setName("app_end_text");
@@ -106,7 +103,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		useMeetingRoom = new JCheckBox("Use meeting room");
 		useMeetingRoom.setName("useMeetingRoom");
-		useMeetingRoom.setSelected(true);
 		hideFromCalendar = new JCheckBox("Hide from calendar");
 		hideFromCalendar.setName("hideFromCalendar");
 		setAlarm = new JCheckBox("Alarm");
@@ -425,14 +421,11 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		startTimeField.setValue(Utilities.timeToFormattedString(appointmentModel.getStart()));
 		endTimeField.setValue(Utilities.timeToFormattedString(appointmentModel.getEnd()));
 
-		if (appointmentModel.getMeetingRoom() == null) {
-			useMeetingRoom.setSelected(false);
-            meetingPlaceField.setText(appointmentModel.getMeetingPlace());
-
-		} else {
-			useMeetingRoom.setSelected(true);
+		meetingPlaceField.setText(appointmentModel.getMeetingPlace());
+		if (appointmentModel.getMeetingRoom() != null) {
 			selectRoom.setText("Room # " + Integer.toString(appointmentModel.getMeetingRoom().getId()));
 		}
+
 
 		if(attendantModel != null) {
 			if(((InternalAttendant) attendantModel).getVisibleOnCalendar()) {
@@ -582,4 +575,27 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		return useMeetingRoom.isSelected();
 	}
 
+	public void setComponentsToDefault() {
+		titleField.setText("Title");
+		description.setText("Description");
+
+		dateField.setValue("03.07.2014");
+		startTimeField.setValue("08:40");
+		endTimeField.setValue("10:45");
+
+		useMeetingRoom.setSelected(true);
+		meetingPlaceField.setVisible(false);
+		selectRoom.setVisible(true);
+		selectRoom.setText("Select...");
+
+		setAlarm.setSelected(false);
+		hideFromCalendar.setSelected(false);
+
+		inviteByEmail.setSelected(false);
+		emailField.setText("Email");
+		emailField.setVisible(false);
+		allUsersAndGroups.setVisible(true);
+
+
+	}
 }
