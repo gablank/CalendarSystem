@@ -555,7 +555,7 @@ public class Database {
 	private boolean updateAppointment(Appointment appointment) {
 		String query;
 		query = "UPDATE appointments ";
-		query += "SET title = ?, description = ?, start_date = ?, end_date = ? ";
+		query += "SET title = ?, description = ?, start_date = ?, end_date = ?, ";
 		query += "place = ?, last_updated = ?, owner_email = ? ";
 		query += "WHERE id = ?;";
 
