@@ -46,7 +46,9 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 		System.out.println(cmd);
 		
 		if (cmd.equals("ok_button")) {
-			//send rom og tid til appointmentkontroller
+			MeetingRoom selectedRoom = bookMeetingRoomView.getSelectedRoom();
+			if (selectedRoom != null)
+				bookMeetingRoomView.getModel().setMeetingRoom(selectedRoom);
 			client.close(Client.ViewEnum.BOOKMEETINGROOM);
 		}
 		else if (cmd.equals("quit_button")) {

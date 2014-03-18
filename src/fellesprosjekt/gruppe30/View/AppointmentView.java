@@ -578,4 +578,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		return meetingPlaceField.getText();
 	}
 
+	public boolean useMeetingRoomIsChecked() {
+		return useMeetingRoom.isSelected();
+	}
+
 }

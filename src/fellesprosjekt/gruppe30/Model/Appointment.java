@@ -132,7 +132,6 @@ public class Appointment {
 
 	public void setStart(Date start, boolean fireChange) {
 		this.start.setTime(start.getTime());
-		System.out.println("new start: " + start.toString());
 		if (fireChange)
 			pcs.firePropertyChange("start", 1, 2);
 	}
@@ -147,7 +146,6 @@ public class Appointment {
 
 	public void setEnd(Date end, boolean fireChange) {
 		this.end.setTime(end.getTime());
-		System.out.println("new end: " + end.toString());
 		if (fireChange)
 			pcs.firePropertyChange("end", 1, 2);
 	}
@@ -158,7 +156,6 @@ public class Appointment {
 
 	public void setMeetingPlace(String meetingPlace) {
 		this.meetingPlace = meetingPlace;
-		System.out.println("new MeetingPlace: " + meetingPlace);
 	}
 
 	public MeetingRoom getMeetingRoom() {
@@ -167,6 +164,7 @@ public class Appointment {
 
 	public void setMeetingRoom(MeetingRoom room) {
 		this.room = room;
+		pcs.firePropertyChange("room", 1, 2);
 	}
 
 	public InternalUser getOwner() {

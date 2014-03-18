@@ -263,4 +263,8 @@ public class BookMeetingRoomView extends JPanel {
 	public JFormattedTextField getEndText() {
 		return endText;
 	}
+
+	public MeetingRoom getSelectedRoom() {
+		return roomList.getSelectedValue();
+	}
 }
