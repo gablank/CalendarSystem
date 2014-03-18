@@ -13,9 +13,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 
-public class AppointmentSummaryView extends JPanel implements MouseListener {
+public class AppointmentSummaryView extends JPanel implements MouseListener, PropertyChangeListener {
 
 	private JLabel 			titleLabel, timeLabel, yesLabel, noLabel, creatorLabel, unanswered;
 	private JFrame          frame;
@@ -29,6 +31,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 	public AppointmentSummaryView(Appointment model, java.util.List<InternalUser> toShow, Client client) {
 		this.model = model;
 		this.client = client;
+		model.addListener(this);
 
 		personListModel = new PersonListModel();
 		for (Attendant attendant : this.model.getAttendants()) {
@@ -43,7 +46,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 
 
 		userCount = (personListModel.size());
-		System.out.println(userCount);
+
 
 		GridBagConstraints c = new GridBagConstraints();
 		setLayout(new GridBagLayout());
@@ -180,21 +183,14 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 				yesLabel.setVisible(true);
 			}
 		}
+		participants.repaint();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
         if(arg0.getSource() instanceof JPanel) {
 		    client.getAppointmentController().open(model);
-        } else {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    setMeetingStatus();
-                }
-            });
         }
-
 	}
 
 	@Override
@@ -219,6 +215,16 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setMeetingStatus();
+			}
+		});
 	}
 
 

@@ -45,7 +45,6 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		JComponent source = (JComponent) actionEvent.getSource();
 		String name = source.getName();
 		if(name.equalsIgnoreCase("inviteUser")) {
-			System.out.println("In invite user");
 			List<User> invitees = appointmentView.getSelectedUsers();
 			for(User invitee : invitees) {
 				appointmentView.getAppointmentModel().addUser(invitee);
@@ -154,7 +153,6 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if (source.equals("app_start_text") || source.equals("app_end_text") || source.equals("app_date_text")) {
 			try {
-				System.out.println(keyEvent);
 
 				// dateText: DD.MM.YYYY
 				// start/endText: HH:MM
@@ -199,27 +197,27 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println(e);
+		//System.out.println(e);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		System.out.println(e);
+		//System.out.println(e);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		System.out.println(e);
+		//System.out.println(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println(e);
+		//System.out.println(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		System.out.println(e);
+		//System.out.println(e);
 	}
 
 	public void openNew() {

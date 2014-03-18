@@ -19,7 +19,6 @@ public class AlarmController implements Runnable {
 	// Runs then sleeps 60 secs
 	@Override
 	public void run() {
-		System.out.println("I'm alive!");
 		List<Alarm> alarms;
 		while(this.run) {
 

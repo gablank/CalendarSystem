@@ -27,7 +27,7 @@ public class CalendarController implements ActionListener, MouseListener, Window
 		if(actionEvent.getSource() instanceof JButton) {
 			buttonName = ((JButton) actionEvent.getSource()).getName();
 		} else {
-			System.out.println("actionEvent source is not a JButton!");
+			//System.out.println("actionEvent source is not a JButton!");
 			return;
 		}
 

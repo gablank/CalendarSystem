@@ -12,7 +12,7 @@ public abstract class Attendant {
 	public Attendant(User user, Appointment appointment) {
 		this.user = user;
 		this.appointment = appointment;
-		status = Status.NOT_ANSWERED;
+		setStatus(Status.NOT_ANSWERED);
 	}
 
 	public User getUser() {
@@ -25,6 +25,10 @@ public abstract class Attendant {
 
 	public void setStatus(int status) {
 		this.status = status;
+		if(appointment.getOwner() == getUser()) {
+			this.status = Status.ATTENDING;
+		}
+		appointment.firePcs();
 	}
 
 	public int getStatus() {

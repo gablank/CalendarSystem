@@ -243,4 +243,8 @@ public class Appointment {
 		}
 		return dayOfWeek;
 	}
+
+	public void firePcs() {
+		pcs.firePropertyChange("change", 1, 2);
+	}
 }

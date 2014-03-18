@@ -43,7 +43,6 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
 		String cmd = ((Component) actionEvent.getSource()).getName();
-		System.out.println(cmd);
 		
 		if (cmd.equals("ok_button")) {
 			MeetingRoom selectedRoom = bookMeetingRoomView.getSelectedRoom();
@@ -132,7 +131,6 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 	@Override
 	public void keyReleased(KeyEvent e) {
 		try{
-			System.out.println(e);
 			String source = ((Component) e.getSource()).getName().toLowerCase();
 			if (source.equals("start_text") || source.equals("end_text") || source.equals("date_text")) {
 				
@@ -159,10 +157,7 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 				newStartGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
 				GregorianCalendar newEndGC = new GregorianCalendar(year, month - 1, day, endHour, endMinute);
 				newEndGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
-				
-				System.out.println(newStartGC.getTime());
-				System.out.println(newEndGC.getTime());
-	
+
 				Date newStart = newStartGC.getTime();
 				Date newEnd = newEndGC.getTime();
 	

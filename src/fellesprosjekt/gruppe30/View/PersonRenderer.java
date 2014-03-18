@@ -106,7 +106,7 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 				@Override
 				public void run() {
 					Attendant attendant = (Attendant) source.getSelectedValue();
-					if(attendant.getUser() == client.getLoggedInUser() || client.getLoggedInUser() == attendant.getAppointment().getOwner()) {
+					if((attendant.getUser() != attendant.getAppointment().getOwner()) && (attendant.getUser() == client.getLoggedInUser() || client.getLoggedInUser() == attendant.getAppointment().getOwner())) {
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
 						source.repaint();
