@@ -4,9 +4,10 @@ import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.Attendant;
 import fellesprosjekt.gruppe30.Model.ExternalUser;
 import fellesprosjekt.gruppe30.Model.InternalUser;
-import fellesprosjekt.gruppe30.Model.User;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,7 +15,6 @@ import java.io.File;
 
 public class PersonRenderer implements ListCellRenderer, MouseListener {
 	private static PersonRenderer instance;
-	JLabel          label;
 	ImageIcon       accept, decline, unanswer, creator;
 	Attendant       model;
     private static Client client;
@@ -39,49 +39,87 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		model = (Attendant) value;
-		
+
+		JPanel jPanel = new JPanel();
+		jPanel.setLayout(new GridBagLayout());
+		jPanel.setMinimumSize(new Dimension(100, 1));
+		jPanel.setMaximumSize(new Dimension(100, 50));
+
+		JLabel nameLabel;
 		//make the renderer display the name or email correctly
 		if(model.getUser() instanceof InternalUser) {
 			String firstName = ((InternalUser) model.getUser()).getFirstName();
 			String lastName = ((InternalUser) model.getUser()).getLastName();
 			String firstNameStrip = firstName.substring(0, Math.min(firstName.length(), 13));
 			
-			label = new JLabel(firstNameStrip + " " + lastName.charAt(0) + ".");
+			nameLabel = new JLabel(firstNameStrip + " " + lastName.charAt(0) + ".");
 		} else {
-			label = new JLabel(((ExternalUser) model.getUser()).getEmail());
+			nameLabel = new JLabel(((ExternalUser) model.getUser()).getEmail());
 		}
-		label.setHorizontalTextPosition(SwingConstants.LEFT);
-		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		
+		nameLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+
+		JLabel iconLabel = new JLabel();
 		//choose correct icon to display
 		if (model.getStatus() == 0){
-			label.setIcon(accept);	
+			iconLabel.setIcon(accept);
 		}
 		else if (model.getStatus() == 1){
-			label.setIcon(decline);
+			iconLabel.setIcon(decline);
 		}
 		else if (model.getStatus() == 2){
-			label.setIcon(unanswer);
+			iconLabel.setIcon(unanswer);
 		}
         if(model.getUser() == model.getAppointment().getOwner()) {
-            label.setIcon(creator);
+	        iconLabel.setIcon(creator);
         }
+		iconLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         if (cellHasFocus && isSelected) {
-            label.setBackground(list.getSelectionBackground());
-            label.setOpaque(true);
+            nameLabel.setBackground(list.getSelectionBackground());
+            nameLabel.setOpaque(true);
         }
-		return label;
+
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.weightx = 1;
+		gc.anchor = GridBagConstraints.WEST;
+		jPanel.add(nameLabel, gc);
+		gc.weightx = 0;
+		gc.gridx = 1;
+		jPanel.add(iconLabel, gc);
+
+		//nameLabel.addMouseListener(this);
+
+		return jPanel;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-        Attendant attendant = ((JList<Attendant>) e.getSource()).getSelectedValue();
-        if(attendant.getUser() == client.getLoggedInUser() || client.getLoggedInUser() == attendant.getAppointment().getOwner()) {
-            int newStatus = (attendant.getStatus() + 1) % 3;
-            attendant.setStatus(newStatus);
-            ((JList)e.getSource()).repaint();
-        }
+		if(e.getX() >= 110) {
+			class MyRunnable implements Runnable {
+				private JList source;
+				public MyRunnable(JList source) {
+					this.source = source;
+				}
+
+				@Override
+				public void run() {
+					Attendant attendant = (Attendant) source.getSelectedValue();
+					if(attendant.getUser() == client.getLoggedInUser() || client.getLoggedInUser() == attendant.getAppointment().getOwner()) {
+						int newStatus = (attendant.getStatus() + 1) % 3;
+						attendant.setStatus(newStatus);
+						source.repaint();
+					}
+				}
+			}
+			JList<Attendant> source = (JList<Attendant>) e.getSource();
+			Attendant attendant = (Attendant) source.getSelectedValue();
+			if(attendant == null) {
+				attendant = client.getAppointmentController().appointmentView.getSelectedAttendant();
+			}
+			SwingUtilities.invokeLater(new MyRunnable(source));
+		}
 	}
 	
 	@Override
@@ -101,8 +139,7 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
     public static void setClient(Client client) {

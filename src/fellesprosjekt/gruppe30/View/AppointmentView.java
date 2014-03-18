@@ -118,8 +118,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		participants = new JList<Attendant>();
 		listRenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listRenderer);
-		participants.addListSelectionListener(this);
-        participants.addMouseListener(listRenderer);
+		participants.addMouseListener(listRenderer);
 
 		participantScroller = new JScrollPane(participants);
 		participantScroller.setFocusable(true);
@@ -386,7 +385,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		Attendant attendant = (Attendant) participants.getSelectedValue();
+
 	}
 
 	public void setVisible(boolean visible) {

@@ -115,8 +115,8 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		listrenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listrenderer);
+		participants.addMouseListener(listrenderer);
         participants.addMouseListener(this);
-        participants.addMouseListener(listrenderer);
 
 		frame = new JFrame();
 		frame.add(this);
@@ -170,25 +170,16 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 				yesLabel.setVisible(false);
 				declineCheck = 1;
 			}
-		if (unanswerCheck == 0){
-			unanswered.setVisible(false);
+			if (unanswerCheck == 0){
+				unanswered.setVisible(false);
+			}
+			if (declineCheck == 0){
+				noLabel.setVisible(false);
+			}
+			if (!noLabel.isVisible() && !unanswered.isVisible()){
+				yesLabel.setVisible(true);
+			}
 		}
-		if (declineCheck == 0){
-			noLabel.setVisible(false);
-		}
-		if (!noLabel.isVisible() && !unanswered.isVisible()){
-			yesLabel.setVisible(true);
-		}
-		}
-	}
-	
-	public void addListener(CalendarController controller) {
-		this.addMouseListener((MouseListener) controller);
-	}
-
-	public void addMouseListener(MouseListener controller) {
-		titleLabel.addMouseListener(controller);
-		timeLabel.addMouseListener(controller);
 	}
 
 	@Override

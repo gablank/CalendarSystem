@@ -21,7 +21,7 @@ public class AreYouSureView extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		setLayout(new GridBagLayout());
 
-		// Creating and adding the label
+		// Creating and adding the nameLabel
 		label = new JLabel("Are you sure?");
 		gbc.gridx = 3;
 		gbc.gridy = 0;

@@ -11,7 +11,7 @@ public class ViewAppointmentView extends AppointmentView {
 		dateField.setEditable(false);
 		startTimeField.setEditable(false);
 		endTimeField.setEditable(false);
-		participants.setEnabled(false);
+		participants.setEnabled(true);
 		
 		if (meetingPlaceField.getText().equals("Place")){
 			meetingPlaceField.setVisible(false);

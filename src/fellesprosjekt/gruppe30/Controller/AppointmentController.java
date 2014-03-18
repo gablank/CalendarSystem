@@ -27,7 +27,7 @@ import java.util.SimpleTimeZone;
 
 public class AppointmentController implements ActionListener, KeyListener, ListSelectionListener, MouseListener {
 	private final Client client;
-	private AppointmentView appointmentView;
+	public AppointmentView appointmentView;
 	private ViewAppointmentView viewAppointmentView;
 
 
