@@ -36,6 +36,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		this.appointmentView = new AppointmentView();
 		this.viewAppointmentView = new ViewAppointmentView();
 		appointmentView.addListener(this);
+		viewAppointmentView.addListener(this);
 	}
 
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
@@ -97,6 +98,27 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if(name.equalsIgnoreCase("removeUser")) {
 			Attendant selectedAttendant = appointmentView.getSelectedAttendant();
 			appointmentView.getAppointmentModel().removeAttendant(selectedAttendant);
+		} else if(name.equalsIgnoreCase("viewsave")) {
+			Appointment appointment = viewAppointmentView.getAppointmentModel();
+			JSONObject message = appointment.getJSON();
+			message.put("action", "change");
+			client.network.send(message);
+			
+			if (viewAppointmentView.setAlarmIsSelected()) {
+				JSONObject alarmMessage = new JSONObject();
+				alarmMessage.put("type", "alarm");
+				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
+					alarmMessage.put("action", "new");
+				} else alarmMessage.put("action", "change");
+				alarmMessage.put("userEmail", client.getLoggedInUser().getEmail());
+				alarmMessage.put("appointmentId", appointment.getId());
+				long alarm = viewAppointmentView.getAlarmInMinutes() * 60 * 1000;
+				alarmMessage.put("time", appointment.getStart().getTime() - alarm);
+				client.network.send(alarmMessage);
+			}
+			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
+		} else if(name.equalsIgnoreCase("viewcancel")) {
+			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
 		}
 	}
 
