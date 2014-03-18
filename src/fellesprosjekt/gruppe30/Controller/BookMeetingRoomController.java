@@ -50,8 +50,8 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 			if (selectedRoom != null)
 				bookMeetingRoomView.getModel().setMeetingRoom(selectedRoom);
 			client.close(Client.ViewEnum.BOOKMEETINGROOM);
-		}
-		else if (cmd.equals("quit_button")) {
+
+		} else if (cmd.equals("cancel_button")) {
 			client.close(Client.ViewEnum.BOOKMEETINGROOM);
 		}
 		
