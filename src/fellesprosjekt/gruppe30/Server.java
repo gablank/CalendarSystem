@@ -64,8 +64,6 @@ public class Server extends Application {
 	}
 
 	public Database getDatabase() {
-		int du = 120;
-		long hei = du;
 		return database;
 	}
 
