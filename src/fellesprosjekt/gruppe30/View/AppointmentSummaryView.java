@@ -138,7 +138,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 
 		this.setPersonListModel(personListModel);
 		frame.pack();
-		//System.out.println(participants.getModel().getSize());
+		//System.out.println(participants.getAppointmentModel().getSize());
 		//end test code
 		
 

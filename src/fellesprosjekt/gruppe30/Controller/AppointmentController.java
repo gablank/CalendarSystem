@@ -147,13 +147,13 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		String source = ((Component) keyEvent.getSource()).getName().toLowerCase();
 
 		if (source.equals("title")) {
-			appointmentView.getModel().setTitle(appointmentView.getTitleText());
+			appointmentView.getAppointmentModel().setTitle(appointmentView.getTitleText());
 
 		} else if (source.equals("description")) {
-			appointmentView.getModel().setDescription(appointmentView.getDescriptionText());
+			appointmentView.getAppointmentModel().setDescription(appointmentView.getDescriptionText());
 
 		} else if (source.equals("meeting_place")) {
-			appointmentView.getModel().setMeetingPlace(appointmentView.getMeetingPlaceText());
+			appointmentView.getAppointmentModel().setMeetingPlace(appointmentView.getMeetingPlaceText());
 
 		} else if (source.equals("app_start_text") || source.equals("app_end_text") || source.equals("app_date_text")) {
 			try {
@@ -185,15 +185,15 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 				Date newStart = newStartGC.getTime();
 				Date newEnd = newEndGC.getTime();
 
-				appointmentView.getModel().setStart(newStart, false);
-				appointmentView.getModel().setEnd(newEnd, false);
+				appointmentView.getAppointmentModel().setStart(newStart, false);
+				appointmentView.getAppointmentModel().setEnd(newEnd, false);
 
 			} catch (Exception exception) {
 
 			}
 
 		} else if (source.equals("alarmTimeField")) {
-			java.util.Date startTime = appointmentView.getModel().getStart();
+			java.util.Date startTime = appointmentView.getAppointmentModel().getStart();
             java.util.Date alarmDate = new java.util.Date(startTime.getTime() + appointmentView.getAlarmInMinutes() * 60*1000);
 			appointmentView.getAlarmModel().setDate(alarmDate);
 		}

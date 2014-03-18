@@ -215,10 +215,10 @@ public class ClientNetwork extends Network {
 				}
 			}
 
-			if ("change".equals(action)) {
-				int id = message.getInt("id");
-				appointment.setId(id);
+			int id = message.getInt("id");
+			appointment.setId(id);
 
+			if ("change".equals(action)) {
 				Appointment oldAppointment = Utilities.getAppointmentById(id, client.getAppointments());
 				if (Utilities.getAppointmentById(id, client.getAppointments()) == null) {
 					System.out.println("failed handling an change appointment message, the appointment with specified id could not be found.");
@@ -229,7 +229,6 @@ public class ClientNetwork extends Network {
 				System.out.println("successfully changed an appointment!");
 
 			} else {
-
 				client.addAppointment(appointment);
 				System.out.println("successfully added an appointment!");
 			}
