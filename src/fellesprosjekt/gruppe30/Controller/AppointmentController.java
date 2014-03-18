@@ -53,11 +53,23 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if(name.equalsIgnoreCase("save")) {
 			Appointment appointment = appointmentView.getAppointmentModel();
 			JSONObject message = appointment.getJSON();
+
+			if (appointmentView.useMeetingRoomIsChecked()) {
+				if (appointment.getMeetingRoom() == null)
+					return;
+				message.put("meetingPlace", "");
+			} else {
+				if (appointment.getMeetingPlace() == "")
+					return;
+				message.put("meetingRoom", -1);
+			}
+
 			if (appointment.getId() == -1) {
 				message.put("action", "new");
 			} else {
 				message.put("action", "change");
 			}
+
 			client.network.send(message);
 			
 			if (appointmentView.setAlarmIsSelected()) {
