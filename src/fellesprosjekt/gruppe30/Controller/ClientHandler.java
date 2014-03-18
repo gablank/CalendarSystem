@@ -144,19 +144,20 @@ public class ClientHandler extends Network {
 			for (int i = 0; i < attendants.length(); i++) {
 				JSONObject attendantObj = attendants.getJSONObject(i);
 
-				if (attendantObj.has("type") && attendantObj.has("email") && attendantObj.has("appointmentId") && attendantObj.has("status")) {
+				if (attendantObj.has("type") 
+						&& attendantObj.has("email") 
+						&& attendantObj.has("status")
+						&& attendantObj.has("lastChecked")
+						&& attendantObj.has("visibleOnCalendar")) {
 
 					String attendantType = attendantObj.getString("type");
 					String attendantEmail = attendantObj.getString("email");
-					int appointmentId = attendantObj.getInt("appointmentId");
 					int attendantStatus = attendantObj.getInt("status");
+
+					int appointmentId = appointment.getId();
 
 					Attendant attendant;
 					User user = Utilities.getUserByEmail(attendantEmail, server.getUsers());
-
-					if (appointmentId != appointment.getId()) {
-						System.out.println("failed handling an appointment message, an attendant had no type: " + message.toString());
-					}
 
 					if (attendantType.equals("externalAttendant")) {
 						if (user == null) {
@@ -173,14 +174,12 @@ public class ClientHandler extends Network {
 								System.out.println("InternalUser doesn't exist!");
 							}
 
+							Date lastChecked = new Date(attendantObj.getLong("lastChecked"));
 							boolean visibleOnCalendar = attendantObj.getBoolean("visibleOnCalendar");
-							long lastChecked = attendantObj.getLong("lastChecked");
-
-							Date lastCheckedDate = new Date(lastChecked);
 
 							InternalAttendant internalAttendant = new InternalAttendant((InternalUser) user, appointment);
 							internalAttendant.setStatus(attendantStatus);
-							internalAttendant.setLastChecked(lastCheckedDate);
+							internalAttendant.setLastChecked(lastChecked);
 							internalAttendant.setVisibleOnCalendar(visibleOnCalendar);
 							appointment.addAttendant(internalAttendant);
 							System.out.println("successfully added internal attendant to appointment");

@@ -1,27 +1,26 @@
 package fellesprosjekt.gruppe30;
 
-
 import fellesprosjekt.gruppe30.Model.*;
 
 import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 public abstract class Application {
-	protected List<User>        users;
-	protected List<Appointment> appointments;
-	protected List<MeetingRoom> meetingRooms;
-	protected List<Alarm>       alarms;
-	protected List<Group>       groups;
-    protected PropertyChangeSupport pcs;
-
+	protected List<User>			users;
+	protected List<Appointment>		appointments;
+	protected List<MeetingRoom>		meetingRooms;
+	protected List<Alarm>			alarms;
+	protected List<Group>			groups;
+	protected PropertyChangeSupport	pcs;
 
 	/*
-	Adders and removers
+	 * Adders and removers
 	 */
 
 	public void addUser(User user) {
 		users.add(user);
-        pcs.firePropertyChange("addUser", 1 ,2);
+		if (pcs != null)
+			pcs.firePropertyChange("addUser", 1 ,2);
 	}
 
 	public void removeUser(User user) {
@@ -55,7 +54,7 @@ public abstract class Application {
 	}
 
 	public void removeAlarm(Appointment appointment, User user) {
-		if(user instanceof InternalUser) {
+		if (user instanceof InternalUser) {
 			this.removeAlarm(Utilities.getAlarm(appointment, user, this.alarms));
 		}
 	}
@@ -75,11 +74,8 @@ public abstract class Application {
         pcs.firePropertyChange("removeGroup", 1 ,2);
 	}
 
-
-
-
 	/*
-	Getters and setters
+	 * Getters and setters
 	 */
 
 	public List<User> getUsers() {

@@ -36,6 +36,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		this.appointmentView = new AppointmentView();
 		this.viewAppointmentView = new ViewAppointmentView();
 		appointmentView.addListener(this);
+		viewAppointmentView.addListener(this);
 	}
 
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
@@ -53,11 +54,23 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if(name.equalsIgnoreCase("save")) {
 			Appointment appointment = appointmentView.getAppointmentModel();
 			JSONObject message = appointment.getJSON();
+
+			if (appointmentView.useMeetingRoomIsChecked()) {
+				if (appointment.getMeetingRoom() == null)
+					return;
+				message.put("meetingPlace", "");
+			} else {
+				if (appointment.getMeetingPlace() == "")
+					return;
+				message.put("meetingRoom", -1);
+			}
+
 			if (appointment.getId() == -1) {
 				message.put("action", "new");
 			} else {
 				message.put("action", "change");
 			}
+
 			client.network.send(message);
 			
 			if (appointmentView.setAlarmIsSelected()) {
@@ -97,6 +110,27 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if(name.equalsIgnoreCase("removeUser")) {
 			Attendant selectedAttendant = appointmentView.getSelectedAttendant();
 			appointmentView.getAppointmentModel().removeAttendant(selectedAttendant);
+		} else if(name.equalsIgnoreCase("viewsave")) {
+			Appointment appointment = viewAppointmentView.getAppointmentModel();
+			JSONObject message = appointment.getJSON();
+			message.put("action", "change");
+			client.network.send(message);
+			
+			if (viewAppointmentView.setAlarmIsSelected()) {
+				JSONObject alarmMessage = new JSONObject();
+				alarmMessage.put("type", "alarm");
+				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
+					alarmMessage.put("action", "new");
+				} else alarmMessage.put("action", "change");
+				alarmMessage.put("userEmail", client.getLoggedInUser().getEmail());
+				alarmMessage.put("appointmentId", appointment.getId());
+				long alarm = viewAppointmentView.getAlarmInMinutes() * 60 * 1000;
+				alarmMessage.put("time", appointment.getStart().getTime() - alarm);
+				client.network.send(alarmMessage);
+			}
+			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
+		} else if(name.equalsIgnoreCase("viewcancel")) {
+			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
 		}
 	}
 
@@ -109,10 +143,18 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	}
 
 	public void keyReleased(java.awt.event.KeyEvent keyEvent) {
-		try {
-			System.out.println(keyEvent);
-			String source = ((Component) keyEvent.getSource()).getName().toLowerCase();
-			if (source.equals("start_text") || source.equals("end_text") || source.equals("date_text")) {
+		String source = ((Component) keyEvent.getSource()).getName().toLowerCase();
+
+		if (source.equals("title")) {
+			appointmentView.getModel().setTitle(appointmentView.getTitleText());
+		} else if (source.equals("description")) {
+			appointmentView.getModel().setDescription(appointmentView.getDescriptionText());
+		} else if (source.equals("meeting_place")) {
+			appointmentView.getModel().setMeetingPlace(appointmentView.getMeetingPlaceText());
+
+		} else if (source.equals("app_start_text") || source.equals("app_end_text") || source.equals("app_date_text")) {
+			try {
+				System.out.println(keyEvent);
 
 				// dateText: DD.MM.YYYY
 				// start/endText: HH:MM
@@ -133,18 +175,20 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 				int endHour = Integer.parseInt(endTime[0]);
 				int endMinute = Integer.parseInt(endTime[1]);
 
-				GregorianCalendar newStartGC = new GregorianCalendar(year, month - 1, day, startHour, startMinute + 1);
+				GregorianCalendar newStartGC = new GregorianCalendar(year, month - 1, day, startHour, startMinute);
 				newStartGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
-				GregorianCalendar newEndGC = new GregorianCalendar(year, month - 1, day, endHour, endMinute + 1);
+				GregorianCalendar newEndGC = new GregorianCalendar(year, month - 1, day, endHour, endMinute);
 				newEndGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
 
 				Date newStart = newStartGC.getTime();
 				Date newEnd = newEndGC.getTime();
 
-				appointmentView.getModel().setStart(newStart);
-				appointmentView.getModel().setEnd(newEnd);
+				appointmentView.getModel().setStart(newStart, false);
+				appointmentView.getModel().setEnd(newEnd, false);
+
+			} catch (Exception exception) {
+
 			}
-		} catch (Exception exception) {
 
 		}
 	}
@@ -182,6 +226,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		Appointment newAppointment = new Appointment(client.getLoggedInUser());
 		InternalAttendant newAttendant = new InternalAttendant(client.getLoggedInUser(), newAppointment);
 		Alarm newAlarm = new Alarm(client.getLoggedInUser(), newAppointment, new java.util.Date(0));
+		appointmentView.setComponentsToDefault();
 		appointmentView.setModel(newAppointment, newAttendant, newAlarm);
 		appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 		appointmentView.setVisible(true);

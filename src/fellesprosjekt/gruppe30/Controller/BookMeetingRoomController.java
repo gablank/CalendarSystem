@@ -46,10 +46,12 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 		System.out.println(cmd);
 		
 		if (cmd.equals("ok_button")) {
-			//send rom og tid til appointmentkontroller
+			MeetingRoom selectedRoom = bookMeetingRoomView.getSelectedRoom();
+			if (selectedRoom != null)
+				bookMeetingRoomView.getModel().setMeetingRoom(selectedRoom);
 			client.close(Client.ViewEnum.BOOKMEETINGROOM);
-		}
-		else if (cmd.equals("quit_button")) {
+
+		} else if (cmd.equals("cancel_button")) {
 			client.close(Client.ViewEnum.BOOKMEETINGROOM);
 		}
 		
@@ -153,9 +155,9 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 				int endHour = Integer.parseInt(endTime[0]);
 				int endMinute = Integer.parseInt(endTime[1]);
 	
-				GregorianCalendar newStartGC = new GregorianCalendar(year, month - 1, day, startHour, startMinute+1);
+				GregorianCalendar newStartGC = new GregorianCalendar(year, month - 1, day, startHour, startMinute);
 				newStartGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
-				GregorianCalendar newEndGC = new GregorianCalendar(year, month - 1, day, endHour, endMinute+1);
+				GregorianCalendar newEndGC = new GregorianCalendar(year, month - 1, day, endHour, endMinute);
 				newEndGC.setTimeZone(new SimpleTimeZone(3600000, "Europe/Paris", Calendar.MARCH, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, Calendar.OCTOBER, -1, Calendar.SUNDAY, 3600000, SimpleTimeZone.UTC_TIME, 3600000));
 				
 				System.out.println(newStartGC.getTime());

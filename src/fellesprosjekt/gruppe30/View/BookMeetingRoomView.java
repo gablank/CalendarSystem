@@ -29,7 +29,7 @@ public class BookMeetingRoomView extends JPanel {
 	private JTextField						capacityText;
 	private JLabel							startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
 	private JScrollPane						roomListScroll;
-	private JButton							okButton, quitButton;
+	private JButton							okButton, cancelButton;
 	private JFrame							frame;
 
 	public Appointment						model;
@@ -123,8 +123,8 @@ public class BookMeetingRoomView extends JPanel {
 
 		okButton = new JButton("Ok");
 		okButton.setName("ok_button");
-		quitButton = new JButton("Quit");
-		quitButton.setName("quit_button");
+		cancelButton = new JButton("Cancel");
+		cancelButton.setName("cancel_button");
 
 		
 		cRight.gridy = 0;
@@ -164,13 +164,13 @@ public class BookMeetingRoomView extends JPanel {
 		cRight.gridy = 4;
 		add(spaceLabel, cRight);
 		cRight.gridy = 5;
-		JPanel okQuitPanel = new JPanel();
-		okQuitPanel.setLayout(new BoxLayout(okQuitPanel, BoxLayout.X_AXIS));
-		okQuitPanel.add(okButton, cLeft);
-		okQuitPanel.add(spaceLabel, cLeft);
-		okQuitPanel.add(quitButton, cRight);
+		JPanel okCancelPanel = new JPanel();
+		okCancelPanel.setLayout(new BoxLayout(okCancelPanel, BoxLayout.X_AXIS));
+		okCancelPanel.add(okButton, cLeft);
+		okCancelPanel.add(spaceLabel, cLeft);
+		okCancelPanel.add(cancelButton, cRight);
 		cRight.gridheight = 2;
-		add(okQuitPanel, cRight);
+		add(okCancelPanel, cRight);
 
 		frame = new JFrame("Reserve Room");
 		frame.add(this);
@@ -194,6 +194,7 @@ public class BookMeetingRoomView extends JPanel {
 
 	public void addActionListener(ActionListener controller) {
 		okButton.addActionListener(controller);
+		cancelButton.addActionListener(controller);
 	}
 
 	public void addKeyListener(KeyListener controller) {
@@ -262,5 +263,9 @@ public class BookMeetingRoomView extends JPanel {
 
 	public JFormattedTextField getEndText() {
 		return endText;
+	}
+
+	public MeetingRoom getSelectedRoom() {
+		return roomList.getSelectedValue();
 	}
 }
