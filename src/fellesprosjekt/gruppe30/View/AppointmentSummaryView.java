@@ -155,16 +155,28 @@ public class AppointmentSummaryView extends JPanel implements MouseListener {
 	}
 	
 	public void setMeetingStatus(){
+		int declineCheck = 0;
+		int unanswerCheck = 0;
 		for(Attendant attendant : model.getAttendants()) {
 			if(attendant.getStatus() == Attendant.Status.NOT_ANSWERED) {
 				unanswered.setVisible(true);
+				yesLabel.setVisible(false);
+				unanswerCheck = 1;
 			}
 			if(attendant.getStatus() == Attendant.Status.NOT_ATTENDING) {
 				noLabel.setVisible(true);
+				yesLabel.setVisible(false);
+				declineCheck = 1;
 			}
-			if (!noLabel.isVisible() && !unanswered.isVisible()){
-				yesLabel.setVisible(true);
-			}
+		if (unanswerCheck == 0){
+			unanswered.setVisible(false);
+		}
+		if (declineCheck == 0){
+			noLabel.setVisible(false);
+		}
+		if (!noLabel.isVisible() && !unanswered.isVisible()){
+			yesLabel.setVisible(true);
+		}
 		}
 	}
 	
