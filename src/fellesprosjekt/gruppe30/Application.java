@@ -21,59 +21,58 @@ public abstract class Application {
 
 	public void addUser(User user) {
 		users.add(user);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("addUser", 1 ,2);
 	}
 
 	public void removeUser(User user) {
 		users.remove(user);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("removeUser", 1 ,2);
 	}
 
 	public void addAppointment(Appointment appointment) {
 		appointments.add(appointment);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("addAppointment", 1 ,2);
 	}
 
 	public void removeAppointment(Appointment appointment) {
 		appointments.remove(appointment);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("removeAppointment", 1 ,2);
 	}
 
 	public void addMeetingRoom(MeetingRoom meetingRoom) {
 		meetingRooms.add(meetingRoom);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("addMeetingRoom", 1 ,2);
 	}
 
 	public void removeMeetingRoom(MeetingRoom meetingRoom) {
 		meetingRooms.remove(meetingRoom);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("removeMeetingRoom", 1 ,2);
 	}
 
 	public void addAlarm(Alarm alarm) {
 		alarms.add(alarm);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("addAlarm", 1 ,2);
 	}
 
 	public void removeAlarm(Appointment appointment, User user) {
 		if(user instanceof InternalUser) {
 			this.removeAlarm(Utilities.getAlarm(appointment, user, this.alarms));
-            pcs.firePropertyChange("change", 1 ,2);
 		}
 	}
 
 	public void removeAlarm(Alarm alarm) {
 		alarms.remove(alarm);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("removeAlarm", 1 ,2);
 	}
 
 	public void addGroup(Group group) {
 		groups.add(group);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("addGroup", 1 ,2);
 	}
 
 	public void removeGroup(Group group) {
 		groups.remove(group);
-        pcs.firePropertyChange("change", 1 ,2);
+        pcs.firePropertyChange("removeGroup", 1 ,2);
 	}
 
 

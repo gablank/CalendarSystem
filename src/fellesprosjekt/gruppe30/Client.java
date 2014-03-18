@@ -87,7 +87,7 @@ public class Client extends Application {
 		close(ViewEnum.LOGIN);
 		open(ViewEnum.CALENDAR);
 		this.loggedInUser = (InternalUser) Utilities.getUserByEmail(email, users);
-		this.calendarController.setUser((InternalUser) this.loggedInUser);
+		this.calendarController.setUser(this.loggedInUser);
         pcs.firePropertyChange("change", 1, 2);
 	}
 
