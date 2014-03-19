@@ -1092,14 +1092,15 @@ public class Database {
 		/*
 		Appointments
 		 */
-		long msPerHour = 60 * 60 * 1000;
+		long msPerMin = 60 * 1000;
+		long msPerHour = 60 * msPerMin;
 		long msPerDay = 24 * msPerHour;
 		Appointment workWork = new Appointment(anders, "Work@rema1000", "Work work", new java.util.Date(1394406000000L + 0 * msPerDay + 16 * msPerHour), new java.util.Date(1394406000000L + 0 * msPerDay + 23 * msPerHour), "REMA 1000");
-		Appointment drekka = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(1394406000000L + 5 * msPerDay + 20 * msPerHour), new java.util.Date(1394406000000L + 6 * msPerDay + 8 * msPerHour), asbestRommet);
+		Appointment drekka = new Appointment(emilh, "Drekka", "We are to consume alcohol", new java.util.Date(1394406000000L + 5 * msPerDay + 20 * msPerHour), new java.util.Date(1394406000000L + 5 * msPerDay + 23 * msPerHour), asbestRommet);
 		Appointment dota = new Appointment(emilh, "Doto", "Emil H need Doto practice", new java.util.Date(1394406000000L + 4 * msPerDay + 21 * msPerHour), new java.util.Date(1394406000000L + 4 * msPerDay + 22 * msPerHour), kuben);
-		Appointment moreDota = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(1394406000000L + 4 * msPerDay + 23 * msPerHour), new java.util.Date(1394406000000L + 5 * msPerDay + 3 * msPerHour), asbestRommet);
-		Appointment projectWork = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(1394406000000L + 2 * msPerDay + 10 * msPerHour), new java.util.Date(1394406000000L + 4 * msPerDay + 18 * msPerHour), asbestRommet);
-		Appointment studLan = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(1394406000000L + 4 * msPerDay + 19 * msPerHour), new java.util.Date(1394406000000L + 6 * msPerDay + 14 * msPerHour), p15);
+		Appointment moreDota = new Appointment(emilh, "More Doto", "Even more Doto", new java.util.Date(1394406000000L + 4 * msPerDay + 23 * msPerHour), new java.util.Date(1394406000000L + 4 * msPerDay + 24 * msPerHour), asbestRommet);
+		Appointment projectWork = new Appointment(emiljs, "Project", "Workworkwork", new java.util.Date(1394406000000L + 2 * msPerDay + 10 * msPerHour), new java.util.Date(1394406000000L + 2 * msPerDay + 18 * msPerHour), asbestRommet);
+		Appointment studLan = new Appointment(anders, "StudLAN", "Gamings", new java.util.Date(1394406000000L + 4 * msPerDay + 19 * msPerHour), new java.util.Date(1394406000000L + 4 * msPerDay + 21 * msPerHour + 30 * msPerMin), p15);
 
 		/*
 		Groups
