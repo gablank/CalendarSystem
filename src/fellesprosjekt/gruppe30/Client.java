@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,8 +127,8 @@ public class Client extends Application {
 		return users;
 	}
 
-    public void addPcsListener(CalendarView calendarView) {
-        pcs.addPropertyChangeListener(calendarView);
+    public void addPcsListener(PropertyChangeListener propertyChangeListener) {
+        pcs.addPropertyChangeListener(propertyChangeListener);
     }
 
     public static enum ViewEnum {

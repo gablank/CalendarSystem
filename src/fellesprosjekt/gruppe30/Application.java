@@ -32,7 +32,7 @@ public abstract class Application {
 	public void addAppointment(Appointment appointment) {
 		appointments.add(appointment);
 		if (pcs != null)
-			pcs.firePropertyChange("addAppointment", 1 ,2);
+			pcs.firePropertyChange("addAppointment", null, appointment);
 	}
 
 	public void removeAppointment(Appointment appointment) {

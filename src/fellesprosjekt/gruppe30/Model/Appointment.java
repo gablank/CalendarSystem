@@ -234,7 +234,7 @@ public class Appointment {
 		this.attendants = appointment.getAttendants();
 		this.lastUpdated = appointment.getLastUpdated();
 		if(pcs != null)
-			pcs.firePropertyChange("change", 1, 2);
+			pcs.firePropertyChange("changedAppointment", 1, 2);
 	}
 
 	public int getYear() {

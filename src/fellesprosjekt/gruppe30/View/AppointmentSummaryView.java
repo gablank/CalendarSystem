@@ -31,7 +31,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 	public AppointmentSummaryView(Appointment model, java.util.List<InternalUser> toShow, Client client) {
 		this.client = client;
 
-		this.model.addListener(this);
+		model.addListener(this);
 		personListModel = new PersonListModel();
 
 		setModel(model, toShow);

@@ -7,6 +7,8 @@ import fellesprosjekt.gruppe30.View.CalendarView;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class CalendarController implements ActionListener, MouseListener, WindowListener {
 	private final Client client;
