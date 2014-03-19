@@ -118,8 +118,9 @@ public class BookMeetingRoomView extends JPanel {
 			e1.printStackTrace();
 		}
 		capacityLabel = new JLabel("Capacity:");
-
+		
 		capacityText.setPreferredSize(new Dimension(70, 20));
+		capacityText.setName("capacity");
 
 		okButton = new JButton("Ok");
 		okButton.setName("ok_button");
@@ -201,6 +202,7 @@ public class BookMeetingRoomView extends JPanel {
 		endText.addKeyListener(controller);
 		startText.addKeyListener(controller);
 		dateText.addKeyListener(controller);
+		capacityText.addKeyListener(controller);
 	}
 
 	public void addListSelectionListener(ListSelectionListener controller) {
