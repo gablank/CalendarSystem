@@ -146,9 +146,7 @@ public class ClientHandler extends Network {
 
 				if (attendantObj.has("type") 
 						&& attendantObj.has("email") 
-						&& attendantObj.has("status")
-						&& attendantObj.has("lastChecked")
-						&& attendantObj.has("visibleOnCalendar")) {
+						&& attendantObj.has("status")) {
 
 					String attendantType = attendantObj.getString("type");
 					String attendantEmail = attendantObj.getString("email");
