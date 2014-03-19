@@ -91,6 +91,10 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 
 		//nameLabel.addMouseListener(this);
 
+		if(model.getCrash()) {
+			jPanel.setBackground(Color.RED);
+		}
+
 		return jPanel;
 	}
 
@@ -106,7 +110,9 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 				@Override
 				public void run() {
 					Attendant attendant = (Attendant) source.getSelectedValue();
-					if((attendant.getUser() != attendant.getAppointment().getOwner()) && (attendant.getUser() == client.getLoggedInUser() || client.getLoggedInUser() == attendant.getAppointment().getOwner())) {
+					if((attendant.getUser() != attendant.getAppointment().getOwner())
+							&& (attendant.getUser() == client.getLoggedInUser()
+							|| client.getLoggedInUser() == attendant.getAppointment().getOwner())) {
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
 						source.repaint();
@@ -115,9 +121,6 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 			}
 			JList<Attendant> source = (JList<Attendant>) e.getSource();
 			Attendant attendant = (Attendant) source.getSelectedValue();
-			if(attendant == null) {
-				attendant = client.getAppointmentController().appointmentView.getSelectedAttendant();
-			}
 			SwingUtilities.invokeLater(new MyRunnable(source));
 		}
 	}

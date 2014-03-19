@@ -19,20 +19,38 @@ public abstract class Attendant {
 		return this.user;
 	}
 
+	public void setCrash(boolean crash) {
+		if(crash) {
+			status |= 1 << 2;
+		} else {
+			status &= 0b011;
+		}
+	}
+
+	public boolean getCrash() {
+		if((status & 0b100) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public Appointment getAppointment() {
 		return appointment;
 	}
 
 	public void setStatus(int status) {
-		this.status = status;
+		this.status &= 0b100;
+		this.status |= status;
 		if(appointment.getOwner() == getUser()) {
-			this.status = Status.ATTENDING;
+			this.status &= 0b100;
+			this.status |= Status.ATTENDING;
 		}
 		appointment.firePcs();
 	}
 
 	public int getStatus() {
-		return status;
+		return status & 0b11;
 	}
 
 	public abstract JSONObject getJSON();
