@@ -373,12 +373,19 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	}
 
 	public void setModel(Appointment appointment, Attendant attendant, Alarm alarm) {
+		if(appointmentModel != null) {
+			appointmentModel.removeListener(this);
+		}
 		this.appointmentModel = appointment;
 		this.attendantModel = attendant;
 		//this.personListModel.addElement((Attendant) attendant);
 		this.alarmModel = alarm;
 		this.appointmentModel.addListener(this);
 		updateFields();
+		if (alarm == null) {
+			Date alarmDate = new Date(appointment.getStart().getTime() + 1000 * 60 * 30);
+			this.alarmModel = new Alarm((InternalUser) attendant.getUser(), appointment, alarmDate);
+		}
 	}
 
 	public void setInternalUsersAndGroups(List<InternalUser> internalUsers, List<Group> groups) {
@@ -404,11 +411,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			useMeetingRoom.setSelected(true);
 			selectRoom.setText("Room # " + Integer.toString(appointmentModel.getMeetingRoom().getId()));
 
-		} else {
+		} else if (!meetingPlaceField.getText().isEmpty()) {
 			useMeetingRoom.setSelected(false);
 			meetingPlaceField.setText(appointmentModel.getMeetingPlace());
 			meetingPlaceField.setVisible(true);
 			selectRoom.setVisible(false);
+		} else {
+			// neither is set, do nothing.
 		}
 
 

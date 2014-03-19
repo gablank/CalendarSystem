@@ -28,9 +28,10 @@ public class Calendar {
 		pcs = new PropertyChangeSupport(this);
 	}
 
-	public void addPcsListener(CalendarView calendarView) {
-		this.addPropertyChangeSupportListener(calendarView);
+	public void addPropertyChangeSupportListener(PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
 	}
+
 
 	public void nextWeek() {
 		int week = getWeek() + 1;
@@ -55,11 +56,6 @@ public class Calendar {
 		// Not sure if needed
 		//gregorianCalendar.set(java.util.Calendar.DAY_OF_WEEK, java.util.Calendar.MONDAY);
 	}
-
-	public void addPropertyChangeSupportListener(PropertyChangeListener listener) {
-		pcs.addPropertyChangeListener(listener);
-	}
-
 	public void addUser(InternalUser user) {
 		otherCalendars.add(user);
 		pcs.firePropertyChange("change", 1, 2); // Hack

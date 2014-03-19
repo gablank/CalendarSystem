@@ -89,8 +89,8 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			message.put("action", "change");
 			client.network.send(message);
 
-			if (appointmentView.getAlarmIsSelected()) {
-				JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
+			if (viewAppointmentView.getAlarmIsSelected()) {
+				JSONObject alarmMessage = viewAppointmentView.getAlarmModel().getJSON();
 
 				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
 					alarmMessage.put("action", "new");
@@ -137,17 +137,24 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			// }
 		}
 		
-		if (appointmentView.getAlarmIsSelected()) {
-			JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
 
-			if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
-				alarmMessage.put("action", "new");
-			} else {
-				alarmMessage.put("action", "change");
-			}
+		JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
 
-			client.network.send(alarmMessage);
+		boolean haveAlarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) != null;
+		boolean wantAlarm = appointmentView.getAlarmIsSelected();
+
+		if (wantAlarm && haveAlarm) {
+			alarmMessage.put("action", "change");
+
+		} else if (wantAlarm && !haveAlarm) {
+			alarmMessage.put("action", "new");
+
+		} else if (!wantAlarm && haveAlarm) {
+			alarmMessage.put("action", "remove");
+
 		}
+
+		client.network.send(alarmMessage);
 
 		return true;
 	}
@@ -210,10 +217,14 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			}
 
 		} else if (source.equalsIgnoreCase("alarmTimeField")) {
-			java.util.Date startTime = appointmentView.getAppointmentModel().getStart();
-            java.util.Date alarmDate = new java.util.Date(startTime.getTime() + appointmentView.getAlarmInMinutes() * 60*1000);
-			System.out.println(alarmDate);
-			appointmentView.getAlarmModel().setDate(alarmDate);
+			AppointmentView change = viewAppointmentView;
+			if(keyEvent.getSource() instanceof AppointmentView) {
+				change = appointmentView;
+			}
+			java.util.Date startTime = change.getAppointmentModel().getStart();
+            java.util.Date alarmDate = new java.util.Date(startTime.getTime() - change.getAlarmInMinutes() * 60*1000);
+
+			change.getAlarmModel().setDate(alarmDate);
 		}
 	}
 
@@ -242,7 +253,9 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 							|| client.getLoggedInUser() == attendant.getAppointment().getOwner())) {
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
-						save(attendant.getAppointment());
+						if(source.getName() != null && source.getName().equals("appointmentSummaryViewParticipants")) {
+							save(attendant.getAppointment());
+						}
 						source.repaint();
 					}
 				}
@@ -275,9 +288,8 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	public void openNew() {
 		Appointment newAppointment = new Appointment(client.getLoggedInUser());
 		InternalAttendant newAttendant = new InternalAttendant(client.getLoggedInUser(), newAppointment);
-		Alarm newAlarm = new Alarm(client.getLoggedInUser(), newAppointment, new java.util.Date());
 		appointmentView.setComponentsToDefault();
-		appointmentView.setModel(newAppointment, newAttendant, newAlarm);
+		appointmentView.setModel(newAppointment, newAttendant, null);
 		appointmentView.setAlarmCheckbox(false);
 		appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 		appointmentView.setVisible(true);

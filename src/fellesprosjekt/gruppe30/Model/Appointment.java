@@ -57,6 +57,10 @@ public class Appointment {
 		pcs.addPropertyChangeListener(listener);
 	}
 
+	public void removeListener(PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(listener);
+	}
+
 	public void addAttendant(Attendant attendant) {
 		// Avoid adding duplicates
 		for(Attendant attendant1 : attendants) {
@@ -173,7 +177,8 @@ public class Appointment {
 
 	public void setMeetingRoom(MeetingRoom room) {
 		this.room = room;
-		pcs.firePropertyChange("room", 1, 2);
+		if(pcs != null)
+			pcs.firePropertyChange("room", 1, 2);
 	}
 
 	public InternalUser getOwner() {
@@ -228,7 +233,8 @@ public class Appointment {
 		this.room = appointment.getMeetingRoom();
 		this.attendants = appointment.getAttendants();
 		this.lastUpdated = appointment.getLastUpdated();
-		pcs.firePropertyChange("change", 1, 2);
+		if(pcs != null)
+			pcs.firePropertyChange("changedAppointment", 1, 2);
 	}
 
 	public int getYear() {

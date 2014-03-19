@@ -151,7 +151,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		frame.setResizable(true);
 		
 	}
-	
+
+	public Calendar getModel() {
+		return model;
+	}
+
 	public void setPersonListModel(PersonListModel model) {
 		this.personListModel = model;
 		userCalendars.setModel(model);
@@ -181,7 +185,20 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	}
 
 	public void propertyChange(PropertyChangeEvent pce) {
-		updateView();
+
+		if(pce.getSource() instanceof Client) {
+			if(pce.getPropertyName().equals("addAppointment")) {
+				((Appointment) pce.getNewValue()).addListener(this);
+			} else {
+				return;
+			}
+		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				updateView();
+			}
+		});
 	}
 
 	public void setInternalUsers(java.util.List<InternalUser> internalUsers) {
@@ -228,7 +245,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	
 	public void setModel (Calendar calendar){
 		this.model = calendar;
-        this.model.addPcsListener(this);
+        this.model.addPropertyChangeSupportListener(this);
 		updateView();
 	}
 
