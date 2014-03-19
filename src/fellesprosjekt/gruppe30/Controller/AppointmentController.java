@@ -51,8 +51,9 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("save")) {
 			Appointment appointment = appointmentView.getAppointmentModel();
-			save(appointment);
-			client.close(Client.ViewEnum.APPOINTMENT);
+			boolean closeView = save(appointment);
+			if (closeView)
+				client.close(Client.ViewEnum.APPOINTMENT);
 
 		} else if(name.equalsIgnoreCase("selectRoom")) {
 			client.open(Client.ViewEnum.BOOKMEETINGROOM);
@@ -106,19 +107,19 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		}
 	}
 
-	private void save(Appointment appointment) {
+	private boolean save(Appointment appointment) {
 		JSONObject message = appointment.getJSON();
 
-		message.put("dateChanged", new Date().getTime());
+		message.put("lastUpdated", new Date().getTime());
 
 		// don't allow saving if no meetingRoom or meetingPlace is chosen
 		if (appointmentView.useMeetingRoomIsChecked()) {
 			if (appointment.getMeetingRoom() == null)
-				return;
+				return false;
 			message.put("meetingPlace", "");
 		} else {
 			if (appointment.getMeetingPlace() == "")
-				return;
+				return false;
 			message.put("meetingRoom", -1);
 		}
 
@@ -147,6 +148,8 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 			client.network.send(alarmMessage);
 		}
+
+		return true;
 	}
 
 	public void keyTyped(java.awt.event.KeyEvent keyEvent) {
