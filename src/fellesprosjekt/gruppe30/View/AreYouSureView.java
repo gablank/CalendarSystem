@@ -49,7 +49,7 @@ public class AreYouSureView extends JPanel {
 		frame.add(this);
 		
 		//test code
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//end test code
 	}
 
