@@ -114,6 +114,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 				message.put("id", appointmentView.getAppointmentModel().getId());
 				client.network.send(message);
 			}
+			client.close(Client.ViewEnum.AREYOUSUREVIEW);
 			client.close(ViewEnum.APPOINTMENT);
 
 		} else if(name.equalsIgnoreCase("removeUser")) {
