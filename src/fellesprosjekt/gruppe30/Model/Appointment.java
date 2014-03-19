@@ -245,9 +245,8 @@ public class Appointment {
 	public int getDayOfWeek() {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(start);
-		int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
-		dayOfWeek -= 1;
-		if(dayOfWeek == 0) {
+		int dayOfWeek = (cal.get(java.util.Calendar.DAY_OF_WEEK) - 2);
+		if(dayOfWeek < 0) {
 			dayOfWeek = 6;
 		}
 		return dayOfWeek;
