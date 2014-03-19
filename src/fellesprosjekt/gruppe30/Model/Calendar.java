@@ -84,6 +84,8 @@ public class Calendar {
 		for(Appointment appointment : client.getAppointments()) {
 			if(appointment.getWeek() == this.getWeek() && appointment.getYear() == this.getYear()) {
 				for(Attendant attendant : appointment.getAttendants()) {
+					// Abuse this loop to reset the crash field
+					attendant.setCrash(false);
 					if(attendant instanceof ExternalAttendant) {
 						continue;
 					}
@@ -95,12 +97,65 @@ public class Calendar {
 			}
 		}
 
-		// Remove duplicates
+		// Remove duplicates and sort by start date asc
 		for(int i = 0; i < 7; i++) {
+			List<Appointment> day = days.get(i);
+
+			// Remove duplicates
 			HashSet<Appointment> hashSet = new HashSet<Appointment>();
-			hashSet.addAll(days.get(i));
-			days.get(i).clear();
-			days.get(i).addAll(hashSet);
+			hashSet.addAll(day);
+			day.clear();
+			day.addAll(hashSet);
+
+			// Sort it
+			Collections.sort(day, new Comparator<Appointment>() {
+				@Override
+				public int compare(Appointment appointment1, Appointment appointment2) {
+					// First sort by start time
+					if(appointment1.getStart().before(appointment2.getStart())) {
+						return -1;
+					} else if(appointment1.getStart().after(appointment2.getStart())) {
+						return 1;
+					}
+
+					// Then by end time if start time is equal
+					if(appointment1.getStart().before(appointment2.getStart())) {
+						return -1;
+					} else if(appointment1.getStart().after(appointment2.getStart())) {
+						return 1;
+					}
+
+					// Identical start and end times
+					return 0;
+				}
+			});
+
+			for(int j = 0; j < day.size() - 1; j++) {
+				for(int k = j+1; k < day.size(); k++) {
+					// If true there is a crash
+					if(day.get(j).getEnd().after(day.get(k).getStart())) {
+						// Mark all attendants that are ATTENDING both appointments as crashing
+						for(Attendant attendant : day.get(j).getAttendants()) {
+							if(attendant.getStatus() != Attendant.Status.ATTENDING) {
+								break;
+							}
+							for(Attendant attendant1 : day.get(k).getAttendants()) {
+								if(attendant1.getStatus() != Attendant.Status.ATTENDING) {
+									break;
+								}
+								if(attendant.getUser() == attendant1.getUser()) {
+									attendant.setCrash(true);
+									attendant1.setCrash(true);
+								}
+							}
+						}
+
+					// If k doesn't crash with j, k+1 cant possibly crash with j because we have sorted them asc by start time
+					} else {
+						break;
+					}
+				}
+			}
 		}
 
 		return days;
@@ -139,7 +194,6 @@ public class Calendar {
 
 
 	public static void main(String[] args) {
-
 
 	}
 
