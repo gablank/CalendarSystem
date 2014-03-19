@@ -404,11 +404,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			useMeetingRoom.setSelected(true);
 			selectRoom.setText("Room # " + Integer.toString(appointmentModel.getMeetingRoom().getId()));
 
-		} else {
+		} else if (!meetingPlaceField.getText().isEmpty()) {
 			useMeetingRoom.setSelected(false);
 			meetingPlaceField.setText(appointmentModel.getMeetingPlace());
 			meetingPlaceField.setVisible(true);
 			selectRoom.setVisible(false);
+		} else {
+			// neither is set, do nothing.
 		}
 
 
