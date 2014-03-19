@@ -379,6 +379,10 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		this.alarmModel = alarm;
 		this.appointmentModel.addListener(this);
 		updateFields();
+		if (alarm == null) {
+			Date alarmDate = new Date(appointment.getStart().getTime() + 1000 * 60 * 30);
+			this.alarmModel = new Alarm((InternalUser) attendant.getUser(), appointment, alarmDate);
+		}
 	}
 
 	public void setInternalUsersAndGroups(List<InternalUser> internalUsers, List<Group> groups) {
