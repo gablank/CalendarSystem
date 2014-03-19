@@ -76,7 +76,7 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 		}
 		
 		Date startDate = bookMeetingRoomView.getModel().getStart();
-		Date endDate = bookMeetingRoomView.getModel().getStart();
+		Date endDate = bookMeetingRoomView.getModel().getEnd();
 		for (int i = 0; i < validRooms.size(); ++i) {
 			if (!isAvailable(validRooms.get(i), startDate, endDate, client.getAppointments())) {
 				validRooms.remove(i);
@@ -101,6 +101,7 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 			// (StartDate1 <= EndDate2) 			   && (StartDate2 <= EndDate1)
 			if (appointment.getStart().before(endDate) && startDate.before(appointment.getEnd())) {
 				// there is overlap
+				System.out.println(appointment.getTitle() + ": " + appointment.getStart() + " - " + endDate.toString() + "//" + startDate.toString() + " - " + appointment.getEnd());
 				return false;
 			}
 		}
@@ -163,6 +164,7 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 	
 				bookMeetingRoomView.getModel().setStart(newStart);
 				bookMeetingRoomView.getModel().setEnd(newEnd);
+				populateList();
 			}
 		} catch (Exception exception) {
 			
