@@ -110,7 +110,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			if (appointmentView.getAppointmentModel().getId() != -1) {
 				JSONObject message = new JSONObject();
 				message.put("type", "appointment");
-				message.put("action", "delete");
+				message.put("action", "remove");
 				message.put("id", appointmentView.getAppointmentModel().getId());
 				client.network.send(message);
 			}
