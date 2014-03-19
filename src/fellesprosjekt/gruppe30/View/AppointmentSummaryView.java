@@ -29,17 +29,11 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 	private Client          client;
 
 	public AppointmentSummaryView(Appointment model, java.util.List<InternalUser> toShow, Client client) {
-		this.model = model;
 		this.client = client;
-		model.addListener(this);
 
 		personListModel = new PersonListModel();
 
 		setModel(model, toShow);
-
-
-
-
 
 		GridBagConstraints c = new GridBagConstraints();
 		setLayout(new GridBagLayout());
@@ -74,6 +68,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 
 		participants = new JList<Attendant>();
 		participants.setMinimumSize(new Dimension(130, 20 * userCount));
+		participants.setMaximumSize(new Dimension(130, 20 * userCount));
 		participants.setLayout(new BoxLayout(participants, BoxLayout.Y_AXIS));
 		participants.setVisibleRowCount(4);
 		participants.setBackground(Color.WHITE);
@@ -111,7 +106,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		listrenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listrenderer);
-		participants.addMouseListener(listrenderer);
+		participants.addMouseListener(client.getAppointmentController());
         participants.addMouseListener(this);
 
 		frame = new JFrame();
@@ -140,6 +135,8 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 	}
 
 	public void setModel(Appointment appointment, java.util.List<InternalUser> toShow) {
+		this.model = appointment;
+		this.model.addListener(this);
 		personListModel.removeAllElements();
 		for (Attendant attendant : this.model.getAttendants()) {
 			if (attendant instanceof ExternalAttendant) {

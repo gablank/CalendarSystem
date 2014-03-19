@@ -1,5 +1,6 @@
 package fellesprosjekt.gruppe30.View;
 
+import fellesprosjekt.gruppe30.Controller.AppointmentController;
 import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.Utilities;
 
@@ -113,7 +114,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		participants = new JList<Attendant>();
 		listRenderer = PersonRenderer.getInstance();
 		participants.setCellRenderer(listRenderer);
-		participants.addMouseListener(listRenderer);
 
 		participantScroller = new JScrollPane(participants);
 		participantScroller.setFocusable(true);
@@ -265,6 +265,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		this.addActionListener((ActionListener) controller);
 		this.addKeyListener((KeyListener) controller);
 		this.addListSelectionListener((ListSelectionListener) controller);
+		participants.addMouseListener((MouseListener) controller);
 	}
 
 	public void addActionListener(ActionListener controller) {

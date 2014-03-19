@@ -1,23 +1,17 @@
 package fellesprosjekt.gruppe30.View;
 
-import fellesprosjekt.gruppe30.Client;
 import fellesprosjekt.gruppe30.Model.Attendant;
 import fellesprosjekt.gruppe30.Model.ExternalUser;
 import fellesprosjekt.gruppe30.Model.InternalUser;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 
-public class PersonRenderer implements ListCellRenderer, MouseListener {
+public class PersonRenderer implements ListCellRenderer {
 	private static PersonRenderer instance;
 	ImageIcon       accept, decline, unanswer, creator;
 	Attendant       model;
-    private static Client client;
 
 
 	protected PersonRenderer() {
@@ -97,55 +91,4 @@ public class PersonRenderer implements ListCellRenderer, MouseListener {
 
 		return jPanel;
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if(e.getX() >= 110) {
-			class MyRunnable implements Runnable {
-				private JList source;
-				public MyRunnable(JList source) {
-					this.source = source;
-				}
-
-				@Override
-				public void run() {
-					Attendant attendant = (Attendant) source.getSelectedValue();
-					if((attendant.getUser() != attendant.getAppointment().getOwner())
-							&& (attendant.getUser() == client.getLoggedInUser()
-							|| client.getLoggedInUser() == attendant.getAppointment().getOwner())) {
-						int newStatus = (attendant.getStatus() + 1) % 3;
-						attendant.setStatus(newStatus);
-						source.repaint();
-					}
-				}
-			}
-			JList<Attendant> source = (JList<Attendant>) e.getSource();
-			Attendant attendant = (Attendant) source.getSelectedValue();
-			SwingUtilities.invokeLater(new MyRunnable(source));
-		}
-	}
-	
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
-    public static void setClient(Client client) {
-        PersonRenderer.client = client;
-    }
 }

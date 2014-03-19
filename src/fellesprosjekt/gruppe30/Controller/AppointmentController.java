@@ -220,7 +220,32 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//System.out.println(e);
+		if(e.getX() >= 110) {
+			class MyRunnable implements Runnable {
+				private JList source;
+				public MyRunnable(JList source) {
+					this.source = source;
+				}
+
+				@Override
+				public void run() {
+					Attendant attendant = (Attendant) source.getSelectedValue();
+					if(attendant == null) {
+						System.out.println("Attendant is null in AppointmentController.mouseClicked!");
+						return;
+					}
+					if((attendant.getUser() != attendant.getAppointment().getOwner())
+							&& (attendant.getUser() == client.getLoggedInUser()
+							|| client.getLoggedInUser() == attendant.getAppointment().getOwner())) {
+						int newStatus = (attendant.getStatus() + 1) % 3;
+						attendant.setStatus(newStatus);
+						source.repaint();
+					}
+				}
+			}
+			JList<Attendant> source = (JList<Attendant>) e.getSource();
+			SwingUtilities.invokeLater(new MyRunnable(source));
+		}
 	}
 
 	@Override
