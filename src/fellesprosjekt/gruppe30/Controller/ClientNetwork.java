@@ -182,6 +182,9 @@ public class ClientNetwork extends Network {
 					User user = Utilities.getUserByEmail(attendantEmail, client.getUsers());
 
 					if (attendantType.equals("externalAttendant")) {
+						if(user == null) {
+							user = new ExternalUser(attendantEmail);
+						}
 						ExternalAttendant externalAttendant = new ExternalAttendant((ExternalUser) user, appointment);
 						externalAttendant.setStatus(attendantStatus);
 						appointment.addAttendant(externalAttendant);
