@@ -210,10 +210,14 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			}
 
 		} else if (source.equalsIgnoreCase("alarmTimeField")) {
-			java.util.Date startTime = appointmentView.getAppointmentModel().getStart();
-            java.util.Date alarmDate = new java.util.Date(startTime.getTime() + appointmentView.getAlarmInMinutes() * 60*1000);
-			System.out.println(alarmDate);
-			appointmentView.getAlarmModel().setDate(alarmDate);
+			AppointmentView change = viewAppointmentView;
+			if(keyEvent.getSource() instanceof AppointmentView) {
+				change = appointmentView;
+			}
+			java.util.Date startTime = change.getAppointmentModel().getStart();
+            java.util.Date alarmDate = new java.util.Date(startTime.getTime() - change.getAlarmInMinutes() * 60*1000);
+
+			change.getAlarmModel().setDate(alarmDate);
 		}
 	}
 
