@@ -596,4 +596,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	public Alarm getAlarmModel() {
 		return this.alarmModel;
 	}
+
+	public void setAlarmCheckbox(boolean b) {
+		setAlarm.setSelected(b);
+	}
 }
