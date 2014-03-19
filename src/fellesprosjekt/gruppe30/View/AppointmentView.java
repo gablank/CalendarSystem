@@ -72,7 +72,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			dateFormatter = new MaskFormatter("##.##.####");
 			dateField = new JFormattedTextField(dateFormatter);
 			dateField.setPreferredSize(new Dimension(80, 20));
-			dateField.addFocusListener(this);
 			dateField.setHorizontalAlignment(JFormattedTextField.CENTER);
 			dateField.setName("app_date_text");
 		} catch(ParseException e) {
@@ -85,19 +84,15 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			startTimeField = new JFormattedTextField(timeFormatter);
 			startTimeField.setPreferredSize(new Dimension(50, 20));
 			startTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-			startTimeField.addFocusListener(this);
 			startTimeField.setName("app_start_text");
 			endTimeField = new JFormattedTextField(timeFormatter);
 			endTimeField.setPreferredSize(new Dimension(50, 20));
 			endTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-			endTimeField.addFocusListener(this);
 			endTimeField.setName("app_end_text");
 			alarmTimeField = new JFormattedTextField(timeFormatter);
 			alarmTimeField.setName("alarmTimeField");
 			alarmTimeField.setPreferredSize(new Dimension(40, 20));
-			alarmTimeField.setValue("00:30");
 			alarmTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-			alarmTimeField.addFocusListener(this);
 
 		} catch(ParseException e) {
 			e.printStackTrace();
@@ -344,22 +339,6 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			if(emailField.getText().equals("Email")) {
 				emailField.setText("");
 			}
-		} else if(e.getSource() == dateField) {
-			if(dateField.getText().equals("03.07.2014")) {
-				dateField.setText("");
-			}
-		} else if(e.getSource() == startTimeField) {
-			if(startTimeField.getText().equals("08:40")) {
-				startTimeField.setText(":");
-			}
-		} else if(e.getSource() == endTimeField) {
-			if(endTimeField.getText().equals("10:40")) {
-				endTimeField.setText(":");
-			}
-		} else if(e.getSource() == alarmTimeField) {
-			if(alarmTimeField.getText().equals("00:30")) {
-				alarmTimeField.setText("");
-			}
 		}
 	}
 	@Override
@@ -413,7 +392,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 	}
 
-	private void updateFields() {
+	protected void updateFields() {
 		titleField.setText(appointmentModel.getTitle());
 		description.setText(appointmentModel.getDescription());
 		dateField.setValue(Utilities.dateToFormattedString(appointmentModel.getStart()));
@@ -603,6 +582,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		selectRoom.setText("Select...");
 
 		setAlarm.setSelected(false);
+		alarmTimeField.setValue("00:30");
 		hideFromCalendar.setSelected(false);
 
 		inviteByEmail.setSelected(false);

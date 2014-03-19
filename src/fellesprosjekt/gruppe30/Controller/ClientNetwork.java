@@ -171,7 +171,9 @@ public class ClientNetwork extends Network {
 			for (int i = 0; i < attendants.length(); i++) {
 				JSONObject attendantObj = attendants.getJSONObject(i);
 
-				if (attendantObj.has("type") && attendantObj.has("email") && attendantObj.has("status")) {
+				if (attendantObj.has("type") 
+						&& attendantObj.has("email") 
+						&& attendantObj.has("status")) {
 
 					String attendantType = attendantObj.getString("type");
 					String attendantEmail = attendantObj.getString("email");

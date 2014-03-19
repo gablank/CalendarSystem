@@ -30,7 +30,9 @@ public class AreYouSureView extends JPanel {
 
 		// Adding buttons to panel
 		yesButton = new JButton("Yes");
+		yesButton.setName("yes");
 		noButton = new JButton("No");
+		noButton.setName("no");
 		gbc.gridy = 1;
 
 		JPanel panel = new JPanel();
@@ -47,7 +49,7 @@ public class AreYouSureView extends JPanel {
 		frame.add(this);
 		
 		//test code
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//end test code
 	}
 
