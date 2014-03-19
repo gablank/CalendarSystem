@@ -51,46 +51,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("save")) {
 			Appointment appointment = appointmentView.getAppointmentModel();
-			JSONObject message = appointment.getJSON();
-
-			message.put("dateChanged", new Date().getTime());
-
-			// don't allow saving if no meetingRoom or meetingPlace is chosen
-			if (appointmentView.useMeetingRoomIsChecked()) {
-				if (appointment.getMeetingRoom() == null)
-					return;
-				message.put("meetingPlace", "");
-			} else {
-				if (appointment.getMeetingPlace() == "")
-					return;
-				message.put("meetingRoom", -1);
-			}
-
-			// only save if this is a new appointment, or if changes have been
-			if (appointment.getId() == -1) {
-				message.put("action", "new");
-				client.network.send(message);
-			} else {
-				message.put("action", "change");
-				// Appointment oldAppointment = Utilities.getAppointmentById(appointment.getId(), client.getAppointments());
-				// if (appointment.equals(oldAppointment)) {
-				// System.out.println("not sending appointment, no changes have been made!");
-				// } else {
-					client.network.send(message);
-				// }
-			}
-			
-			if (appointmentView.getAlarmIsSelected()) {
-				JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
-
-				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
-					alarmMessage.put("action", "new");
-				} else {
-					alarmMessage.put("action", "change");
-				}
-
-				client.network.send(alarmMessage);
-			}
+			save(appointment);
 			client.close(Client.ViewEnum.APPOINTMENT);
 
 		} else if(name.equalsIgnoreCase("selectRoom")) {
@@ -142,6 +103,49 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("viewcancel")) {
 			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
+		}
+	}
+
+	private void save(Appointment appointment) {
+		JSONObject message = appointment.getJSON();
+
+		message.put("dateChanged", new Date().getTime());
+
+		// don't allow saving if no meetingRoom or meetingPlace is chosen
+		if (appointmentView.useMeetingRoomIsChecked()) {
+			if (appointment.getMeetingRoom() == null)
+				return;
+			message.put("meetingPlace", "");
+		} else {
+			if (appointment.getMeetingPlace() == "")
+				return;
+			message.put("meetingRoom", -1);
+		}
+
+		// only save if this is a new appointment, or if changes have been
+		if (appointment.getId() == -1) {
+			message.put("action", "new");
+			client.network.send(message);
+		} else {
+			message.put("action", "change");
+			// Appointment oldAppointment = Utilities.getAppointmentById(appointment.getId(), client.getAppointments());
+			// if (appointment.equals(oldAppointment)) {
+			// System.out.println("not sending appointment, no changes have been made!");
+			// } else {
+				client.network.send(message);
+			// }
+		}
+		
+		if (appointmentView.getAlarmIsSelected()) {
+			JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
+
+			if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
+				alarmMessage.put("action", "new");
+			} else {
+				alarmMessage.put("action", "change");
+			}
+
+			client.network.send(alarmMessage);
 		}
 	}
 
