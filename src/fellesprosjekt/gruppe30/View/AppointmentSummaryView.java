@@ -34,18 +34,11 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		model.addListener(this);
 
 		personListModel = new PersonListModel();
-		for (Attendant attendant : this.model.getAttendants()) {
-			if (attendant instanceof ExternalAttendant) {
-				continue;
-			}
 
-			if (toShow.contains(attendant.getUser())) {
-				personListModel.addElement(attendant);
-			}
-		}
+		setModel(model, toShow);
 
 
-		userCount = (personListModel.size());
+
 
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -140,9 +133,25 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		frame.pack();
 		//System.out.println(participants.getAppointmentModel().getSize());
 		//end test code
-		
+	}
 
+	public void setModel(java.util.List<InternalUser> toShow) {
+		setModel(this.model, toShow);
+	}
 
+	public void setModel(Appointment appointment, java.util.List<InternalUser> toShow) {
+		personListModel.removeAllElements();
+		for (Attendant attendant : this.model.getAttendants()) {
+			if (attendant instanceof ExternalAttendant) {
+				continue;
+			}
+
+			if (toShow.contains(attendant.getUser())) {
+				personListModel.addElement(attendant);
+			}
+		}
+
+		userCount = (personListModel.size());
 	}
 	
 	public void updateFrame(){
