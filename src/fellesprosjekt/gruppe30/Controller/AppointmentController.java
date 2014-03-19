@@ -89,8 +89,8 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			message.put("action", "change");
 			client.network.send(message);
 
-			if (appointmentView.getAlarmIsSelected()) {
-				JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
+			if (viewAppointmentView.getAlarmIsSelected()) {
+				JSONObject alarmMessage = viewAppointmentView.getAlarmModel().getJSON();
 
 				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
 					alarmMessage.put("action", "new");
