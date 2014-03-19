@@ -463,12 +463,16 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	}
 	
 	public int getAlarmInMinutes() {
-		if (setAlarm.isSelected()) {
-			String alarmTime[] = alarmTimeField.getText().split(":");
+		try {
+			if (setAlarm.isSelected()) {
+				String alarmTime[] = alarmTimeField.getText().split(":");
 
-			int hour = Integer.parseInt(alarmTime[0]);
-			int minutes = Integer.parseInt(alarmTime[1]);
-			return hour * 60 + minutes;
+				int hour = Integer.parseInt(alarmTime[0]);
+				int minutes = Integer.parseInt(alarmTime[1]);
+				return hour * 60 + minutes;
+			}
+		} catch (Exception e) {
+			// silently disregard exceptions fromparseInt
 		}
 		return -1;
 	}
