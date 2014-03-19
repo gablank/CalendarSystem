@@ -229,6 +229,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 			@Override
 			public void run() {
 				setMeetingStatus();
+				updateFrame();
 			}
 		});
 	}

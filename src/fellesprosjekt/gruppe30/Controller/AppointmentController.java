@@ -239,6 +239,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 							|| client.getLoggedInUser() == attendant.getAppointment().getOwner())) {
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
+						save(attendant.getAppointment());
 						source.repaint();
 					}
 				}

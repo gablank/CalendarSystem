@@ -228,6 +228,7 @@ public class Appointment {
 		this.room = appointment.getMeetingRoom();
 		this.attendants = appointment.getAttendants();
 		this.lastUpdated = appointment.getLastUpdated();
+		pcs.firePropertyChange("change", 1, 2);
 	}
 
 	public int getYear() {
