@@ -29,8 +29,6 @@ public class Client extends Application {
 
 	public Client() {
         pcs = new PropertyChangeSupport(this);
-        PersonRenderer.getInstance();
-        PersonRenderer.setClient(this);
 		appointments = new ArrayList<Appointment>();
 		users = new ArrayList<User>();
 		meetingRooms = new ArrayList<MeetingRoom>();
