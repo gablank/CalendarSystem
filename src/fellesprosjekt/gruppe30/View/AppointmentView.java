@@ -373,6 +373,9 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	}
 
 	public void setModel(Appointment appointment, Attendant attendant, Alarm alarm) {
+		if(appointmentModel != null) {
+			appointmentModel.removeListener(this);
+		}
 		this.appointmentModel = appointment;
 		this.attendantModel = attendant;
 		//this.personListModel.addElement((Attendant) attendant);

@@ -146,6 +146,10 @@ public class Client extends Application {
 		});
 	}
 
+	public Calendar getCalendarModel() {
+		return calendarController.getCalendarModel();
+	}
+
 	public AppointmentController getAppointmentController() {
 		return appointmentController;
 	}

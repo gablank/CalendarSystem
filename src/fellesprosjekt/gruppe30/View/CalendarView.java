@@ -151,7 +151,11 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		frame.setResizable(true);
 		
 	}
-	
+
+	public Calendar getModel() {
+		return model;
+	}
+
 	public void setPersonListModel(PersonListModel model) {
 		this.personListModel = model;
 		userCalendars.setModel(model);

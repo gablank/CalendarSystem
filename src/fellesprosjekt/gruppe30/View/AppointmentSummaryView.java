@@ -31,6 +31,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 	public AppointmentSummaryView(Appointment model, java.util.List<InternalUser> toShow, Client client) {
 		this.client = client;
 
+		this.model.addListener(this);
 		personListModel = new PersonListModel();
 
 		setModel(model, toShow);
@@ -40,7 +41,6 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 
 		//set appearance of all components
 		File directory = new File(System.getProperty("user.dir"), "Icons");
-		new File(directory, "yesIcon.png").getPath();
 
 		titleLabel = new JLabel();
 		timeLabel = new JLabel();
@@ -67,6 +67,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		unanswered.setVisible(false);
 
 		participants = new JList<Attendant>();
+		participants.setName("appointmentSummaryViewParticipants");
 		participants.setMinimumSize(new Dimension(130, 20 * userCount));
 		participants.setMaximumSize(new Dimension(130, 20 * userCount));
 		participants.setLayout(new BoxLayout(participants, BoxLayout.Y_AXIS));
@@ -136,7 +137,6 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 
 	public void setModel(Appointment appointment, java.util.List<InternalUser> toShow) {
 		this.model = appointment;
-		this.model.addListener(this);
 		personListModel.removeAllElements();
 		for (Attendant attendant : this.model.getAttendants()) {
 			if (attendant instanceof ExternalAttendant) {
@@ -229,7 +229,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 			@Override
 			public void run() {
 				setMeetingStatus();
-				updateFrame();
+				setModel(client.getCalendarModel().getUsers());
 			}
 		});
 	}

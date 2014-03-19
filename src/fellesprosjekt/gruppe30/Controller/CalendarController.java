@@ -130,4 +130,8 @@ public class CalendarController implements ActionListener, MouseListener, Window
 	public void setUser(InternalUser user) {
 		this.calendarModel.setUser(user);
 	}
+
+	public Calendar getCalendarModel() {
+		return calendarModel;
+	}
 }
