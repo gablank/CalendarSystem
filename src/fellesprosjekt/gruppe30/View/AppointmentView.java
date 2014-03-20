@@ -401,10 +401,11 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 		if (alarm == null) {
 			Date alarmDate = new Date(this.appointmentModel.getStart().getTime() + 1000 * 60 * 30);
-			this.alarmModel = new Alarm(owner, appointment, alarmDate);
+			this.alarmModel = new Alarm(owner, this.appointmentModel, alarmDate);
 			System.out.println("new!");
 		} else {
 			this.alarmModel = alarm.myClone();
+			this.alarmModel.setAppointment(this.appointmentModel);
 			System.out.println("clone!");
 		}
 
