@@ -136,7 +136,7 @@ public class ClientNetwork extends Network {
 			JSONArray attendants = message.getJSONArray("attendants");
 			String ownerEmail = message.getString("owner");
 			int meetingRoomId = message.getInt("meetingRoom");
-			long lastUpdated = message.getLong("lastUpdated");
+			Date lastUpdated = new Date(message.getLong("lastUpdated"));
 
 			InternalUser owner = (InternalUser) Utilities.getUserByEmail(ownerEmail, client.getUsers());
 
@@ -161,10 +161,10 @@ public class ClientNetwork extends Network {
 				return;
 
 			} else if (meetingRoom != null) {
-				appointment = new Appointment(owner, title, description, startDate, endDate, meetingRoom);
+				appointment = new Appointment(owner, title, description, startDate, endDate, meetingRoom, lastUpdated);
 
 			} else {
-				appointment = new Appointment(owner, title, description, startDate, endDate, meetingPlace);
+				appointment = new Appointment(owner, title, description, startDate, endDate, meetingPlace, lastUpdated);
 
 			}
 

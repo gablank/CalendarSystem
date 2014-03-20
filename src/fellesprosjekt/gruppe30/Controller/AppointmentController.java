@@ -122,14 +122,17 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		}
 	}
 
-	private boolean save(Appointment appointment) {
-		return save(appointment, false);
+	public boolean save(Appointment appointment) {
+		return save(appointment, false, true);
 	}
 
-	private boolean save(Appointment appointment, boolean force) {
+	public boolean save(Appointment appointment, boolean force, boolean setLastUpdated) {
+		if(setLastUpdated) {
+			appointment.setLastUpdated(new Date());
+		}
+
 		JSONObject message = appointment.getJSON();
 
-		message.put("lastUpdated", new Date().getTime());
 
 		// don't allow saving if no meetingRoom or meetingPlace is chosen
 		if(!force) {
@@ -286,7 +289,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
 						if(source.getName() != null && source.getName().equals("appointmentSummaryViewParticipants")) {
-							save(attendant.getAppointment(), true);
+							save(attendant.getAppointment(), true, true);
 						}
 						source.repaint();
 					}
