@@ -3,6 +3,8 @@ package fellesprosjekt.gruppe30.Model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import fellesprosjekt.gruppe30.Utilities;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
@@ -53,6 +55,15 @@ public class Appointment implements Cloneable {
 		pcs = new PropertyChangeSupport(this);
 	}
 
+	public Attendant getAttendant(String userEmail) {
+		for (Attendant attendant : attendants) {
+			if (attendant.getUser().getEmail().equals(userEmail))
+				return attendant;
+		}
+
+		return null;
+	}
+
 	public void addListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
@@ -63,11 +74,14 @@ public class Appointment implements Cloneable {
 
 	public void addAttendant(Attendant attendant) {
 		// Avoid adding duplicates
-		for(Attendant attendant1 : attendants) {
-			if(attendant1.getUser() == attendant.getUser()) {
+		for (int i = 0; i < attendants.size(); ++i) {
+			if (attendants.get(i).getUser() == attendant.getUser()) {
+				attendants.remove(i);
+				attendants.add(attendant);
 				return;
 			}
 		}
+
 		this.attendants.add(attendant);
 		if (pcs != null)
 			pcs.firePropertyChange("change", 1, 2);
