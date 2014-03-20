@@ -89,17 +89,23 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			message.put("action", "change");
 			client.network.send(message);
 
-			if (viewAppointmentView.getAlarmIsSelected()) {
-				JSONObject alarmMessage = viewAppointmentView.getAlarmModel().getJSON();
+			JSONObject alarmMessage = viewAppointmentView.getAlarmModel().getJSON();
+			boolean haveAlarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) != null;
+			boolean wantAlarm = viewAppointmentView.getAlarmIsSelected();
 
-				if (Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) == null) {
-					alarmMessage.put("action", "new");
-				} else {
-					alarmMessage.put("action", "change");
-				}
+			if (wantAlarm && haveAlarm) {
+				alarmMessage.put("action", "change");
+				client.network.send(alarmMessage);
 
+			} else if (wantAlarm && !haveAlarm) {
+				alarmMessage.put("action", "new");
+				client.network.send(alarmMessage);
+
+			} else if (!wantAlarm && haveAlarm) {
+				alarmMessage.put("action", "remove");
 				client.network.send(alarmMessage);
 			}
+
 			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
 
 		} else if(name.equalsIgnoreCase("viewcancel")) {
@@ -145,16 +151,18 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		if (wantAlarm && haveAlarm) {
 			alarmMessage.put("action", "change");
+			client.network.send(alarmMessage);
 
 		} else if (wantAlarm && !haveAlarm) {
 			alarmMessage.put("action", "new");
+			client.network.send(alarmMessage);
 
 		} else if (!wantAlarm && haveAlarm) {
 			alarmMessage.put("action", "remove");
+			client.network.send(alarmMessage);
 
 		}
 
-		client.network.send(alarmMessage);
 
 		return true;
 	}

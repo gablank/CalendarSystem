@@ -381,11 +381,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		//this.personListModel.addElement((Attendant) attendant);
 		this.alarmModel = alarm;
 		this.appointmentModel.addListener(this);
-		updateFields();
-		if (alarm == null) {
+
+		if (alarm == null && attendant != null) {
 			Date alarmDate = new Date(appointment.getStart().getTime() + 1000 * 60 * 30);
 			this.alarmModel = new Alarm((InternalUser) attendant.getUser(), appointment, alarmDate);
 		}
+
+		updateFields();
 	}
 
 	public void setInternalUsersAndGroups(List<InternalUser> internalUsers, List<Group> groups) {
@@ -430,9 +432,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 
 		if(alarmModel == null) {
+			setAlarm.setEnabled(false);
 			setAlarm.setSelected(false);
+			alarmTimeField.setEnabled(false);
 		} else {
+			setAlarm.setEnabled(true);
 			setAlarm.setSelected(true);
+			alarmTimeField.setEnabled(true);
 			alarmTimeField.setValue(getAlarmTimeDiff());
 		}
 
@@ -463,12 +469,16 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	}
 	
 	public int getAlarmInMinutes() {
-		if (setAlarm.isSelected()) {
-			String alarmTime[] = alarmTimeField.getText().split(":");
+		try {
+			if (setAlarm.isSelected()) {
+				String alarmTime[] = alarmTimeField.getText().split(":");
 
-			int hour = Integer.parseInt(alarmTime[0]);
-			int minutes = Integer.parseInt(alarmTime[1]);
-			return hour * 60 + minutes;
+				int hour = Integer.parseInt(alarmTime[0]);
+				int minutes = Integer.parseInt(alarmTime[1]);
+				return hour * 60 + minutes;
+			}
+		} catch (Exception e) {
+			// silently disregard exceptions fromparseInt
 		}
 		return -1;
 	}
