@@ -28,6 +28,7 @@ public class ViewAppointmentView extends AppointmentView {
 
 		saveButton.setName("viewsave");
 		cancelButton.setName("viewcancel");
+		alarmTimeField.setName("viewAlarmTimeField");
 	}
 
 	/*public static void main(String[] args) {

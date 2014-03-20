@@ -143,26 +143,28 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			// }
 		}
 		
+		Alarm alarm = appointmentView.getAlarmModel();
 
-		JSONObject alarmMessage = appointmentView.getAlarmModel().getJSON();
+		if (alarm != null) {
+			JSONObject alarmMessage = alarm.getJSON();
 
-		boolean haveAlarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) != null;
-		boolean wantAlarm = appointmentView.getAlarmIsSelected();
+			boolean haveAlarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) != null;
+			boolean wantAlarm = appointmentView.getAlarmIsSelected();
 
-		if (wantAlarm && haveAlarm) {
-			alarmMessage.put("action", "change");
-			client.network.send(alarmMessage);
+			if (wantAlarm && haveAlarm) {
+				alarmMessage.put("action", "change");
+				client.network.send(alarmMessage);
 
-		} else if (wantAlarm && !haveAlarm) {
-			alarmMessage.put("action", "new");
-			client.network.send(alarmMessage);
+			} else if (wantAlarm && !haveAlarm) {
+				alarmMessage.put("action", "new");
+				client.network.send(alarmMessage);
 
-		} else if (!wantAlarm && haveAlarm) {
-			alarmMessage.put("action", "remove");
-			client.network.send(alarmMessage);
+			} else if (!wantAlarm && haveAlarm) {
+				alarmMessage.put("action", "remove");
+				client.network.send(alarmMessage);
 
+			}
 		}
-
 
 		return true;
 	}
@@ -225,14 +227,20 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			}
 
 		} else if (source.equalsIgnoreCase("alarmTimeField")) {
-			AppointmentView change = viewAppointmentView;
-			if(keyEvent.getSource() instanceof AppointmentView) {
-				change = appointmentView;
-			}
-			java.util.Date startTime = change.getAppointmentModel().getStart();
-            java.util.Date alarmDate = new java.util.Date(startTime.getTime() - change.getAlarmInMinutes() * 60*1000);
+			java.util.Date startTime = appointmentView.getAppointmentModel().getStart();
+			java.util.Date alarmDate = new java.util.Date(startTime.getTime() - appointmentView.getAlarmInMinutes() * 60 * 1000);
+			System.out.println(startTime);
+			System.out.println(alarmDate);
 
-			change.getAlarmModel().setDate(alarmDate);
+			appointmentView.getAlarmModel().setDate(alarmDate);
+
+		} else if (source.equalsIgnoreCase("viewAlarmTimeField")) {
+			java.util.Date startTime = viewAppointmentView.getAppointmentModel().getStart();
+			java.util.Date alarmDate = new java.util.Date(startTime.getTime() - viewAppointmentView.getAlarmInMinutes() * 60 * 1000);
+			System.out.println(startTime);
+			System.out.println(alarmDate);
+
+			viewAppointmentView.getAlarmModel().setDate(alarmDate);
 		}
 	}
 
