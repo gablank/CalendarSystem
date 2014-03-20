@@ -381,11 +381,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		//this.personListModel.addElement((Attendant) attendant);
 		this.alarmModel = alarm;
 		this.appointmentModel.addListener(this);
-		updateFields();
-		if (alarm == null) {
+
+		if (alarm == null && attendant != null) {
 			Date alarmDate = new Date(appointment.getStart().getTime() + 1000 * 60 * 30);
 			this.alarmModel = new Alarm((InternalUser) attendant.getUser(), appointment, alarmDate);
 		}
+
+		updateFields();
 	}
 
 	public void setInternalUsersAndGroups(List<InternalUser> internalUsers, List<Group> groups) {
@@ -430,9 +432,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 
 		if(alarmModel == null) {
+			setAlarm.setEnabled(false);
 			setAlarm.setSelected(false);
+			alarmTimeField.setEnabled(false);
 		} else {
+			setAlarm.setEnabled(true);
 			setAlarm.setSelected(true);
+			alarmTimeField.setEnabled(true);
 			alarmTimeField.setValue(getAlarmTimeDiff());
 		}
 
