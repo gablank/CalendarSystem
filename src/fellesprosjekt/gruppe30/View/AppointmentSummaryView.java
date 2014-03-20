@@ -43,13 +43,17 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		File directory = new File(System.getProperty("user.dir"), "Icons");
 
 		titleLabel = new JLabel();
+		titleLabel.setOpaque(false);
+		titleLabel.setBackground(Color.GREEN);
 		timeLabel = new JLabel();
+		timeLabel.setOpaque(false);
 
 		yesLabel = new JLabel();
 		yesLabel.setPreferredSize(new Dimension(30, 30));
 		yesLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		ImageIcon accept = new ImageIcon(new File(directory, "yesIcon.png").getPath());
 		yesLabel.setIcon(accept);
+		yesLabel.setOpaque(false);
 		yesLabel.setVisible(false);
 
 		noLabel = new JLabel();
@@ -57,6 +61,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		noLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		ImageIcon decline = new ImageIcon(new File(directory, "noIcon.png").getPath());
 		noLabel.setIcon(decline);
+		noLabel.setOpaque(false);
 		noLabel.setVisible(false);
 
 		unanswered = new JLabel();
@@ -64,6 +69,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		unanswered.setBorder(BorderFactory.createLineBorder(Color.black));
 		ImageIcon unanswer = new ImageIcon(new File(directory, "unanswer.png").getPath());
 		unanswered.setIcon(unanswer);
+		unanswered.setOpaque(false);
 		unanswered.setVisible(false);
 
 		participants = new JList<Attendant>();
@@ -82,6 +88,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		c.insets = new Insets(0, 0, 0, 0);
 
 		JPanel headerPanel = new JPanel();
+		headerPanel.setOpaque(false);
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
 		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		headerPanel.add(titleLabel);
@@ -93,6 +100,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		c.gridy = 1;
 
 		JPanel statusPanel = new JPanel();
+		statusPanel.setOpaque(false);
 		statusPanel.add(yesLabel);
 		yesLabel.setHorizontalAlignment(JLabel.CENTER);
 		statusPanel.add(noLabel);
@@ -137,6 +145,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 
 	public void setModel(Appointment appointment, java.util.List<InternalUser> toShow) {
 		this.model = appointment;
+		setBackgroundColor();
 		personListModel.removeAllElements();
 		for (Attendant attendant : this.model.getAttendants()) {
 			if (attendant instanceof ExternalAttendant) {
@@ -150,10 +159,17 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 
 		userCount = (personListModel.size());
 	}
-	
-	public void updateFrame(){
-		userCount = (participants.getModel().getSize());
-		this.frame.repaint();
+
+	private void setBackgroundColor() {
+		this.setBackground(Color.LIGHT_GRAY);
+		// If the logged in user is invited to the appointment
+		Attendant loggedInUser;
+		loggedInUser = Utilities.getAttendantByUserAppointment(model, client.getLoggedInUser());
+		if(loggedInUser != null) {
+			if(((InternalAttendant) loggedInUser).getLastChecked().before(model.getLastUpdated())) {
+				this.setBackground(Color.RED);
+			}
+		}
 	}
 
 	public void setVisible(boolean visible) {
@@ -196,6 +212,17 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 	public void mouseClicked(MouseEvent arg0) {
         if(arg0.getSource() instanceof JPanel) {
 		    client.getAppointmentController().open(model);
+	        Attendant loggedInAttendant = Utilities.getAttendantByUserAppointment(model, client.getLoggedInUser());
+	        if(loggedInAttendant != null) {
+		        ((InternalAttendant) loggedInAttendant).setLastChecked();
+		        client.getAppointmentController().save(model, true, false);
+		        SwingUtilities.invokeLater(new Runnable() {
+			        @Override
+			        public void run() {
+				        setBackgroundColor();
+			        }
+		        });
+	        }
         }
 	}
 
