@@ -25,22 +25,30 @@ public class Appointment implements Cloneable {
 
 
 	public Appointment(InternalUser owner) {
-		this(owner, "Title", "Description", new Date(), new Date(new Date().getTime() + 60 * 60 * 1000), "", null);
+		this(owner, "Title", "Description", new Date(), new Date(new Date().getTime() + 60 * 60 * 1000), "", null, new Date());
 	}
 
 	public Appointment(InternalUser owner, String title, String description, Date start, Date end) {
-		this(owner, title, description, start, end, "", null);
+		this(owner, title, description, start, end, "", null, new Date());
 	}
 
 	public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace) {
-		this(owner, title, description, start, end, meetingPlace, null);
+		this(owner, title, description, start, end, meetingPlace, null, new Date());
 	}
 
 	public Appointment(InternalUser owner, String title, String description, Date start, Date end, MeetingRoom meetingRoom) {
-		this(owner, title, description, start, end, "", meetingRoom);
+		this(owner, title, description, start, end, "", meetingRoom, new Date());
 	}
 
-	public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace, MeetingRoom room) {
+	public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace, Date lastUpdated) {
+		this(owner, title, description, start, end, meetingPlace, null, lastUpdated);
+	}
+
+	public Appointment(InternalUser owner, String title, String description, Date start, Date end, MeetingRoom meetingRoom, Date lastUpdated) {
+		this(owner, title, description, start, end, "", meetingRoom, lastUpdated);
+	}
+
+	public Appointment(InternalUser owner, String title, String description, Date start, Date end, String meetingPlace, MeetingRoom room, Date lastUpdated) {
 		this.id = -1;
 		this.owner = owner;
 		this.title = title;
@@ -50,7 +58,7 @@ public class Appointment implements Cloneable {
 		this.meetingPlace = meetingPlace;
 		this.room = room;
 		this.attendants = new ArrayList<Attendant>();
-		this.lastUpdated = new Date();
+		this.lastUpdated = lastUpdated;
 		this.addUser(owner);
 		pcs = new PropertyChangeSupport(this);
 	}
@@ -279,7 +287,7 @@ public class Appointment implements Cloneable {
 	}
 
 	public Appointment myClone() {
-		Appointment result = new Appointment(this.owner, this.title, this.description, this.start, this.end, this.meetingPlace, this.room);
+		Appointment result = new Appointment(this.owner, this.title, this.description, this.start, this.end, this.meetingPlace, this.room, this.lastUpdated);
 
 		for (Attendant attendant : this.attendants) {
 			Attendant clonedAttendant;
@@ -292,7 +300,6 @@ public class Appointment implements Cloneable {
 			result.addAttendant(clonedAttendant);
 		}
 		result.id = this.getId();
-		result.lastUpdated = this.getLastUpdated();
 
 		return result;
 	}

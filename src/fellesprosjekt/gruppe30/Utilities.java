@@ -47,9 +47,9 @@ public class Utilities {
 		return null;
 	}
 
-	public static Attendant getAttendantByEmailAppointmentId(String attendantEmail, int appointmentId, List<Attendant> attendants) {
-		for(Attendant attendant : attendants) {
-			if(attendant.getAppointment().getId() == appointmentId && attendant.getUser().getEmail().equals(attendantEmail)) {
+	public static Attendant getAttendantByUserAppointment(Appointment appointment, User user) {
+		for(Attendant attendant : appointment.getAttendants()) {
+			if(attendant.getUser() == user) {
 				return attendant;
 			}
 		}

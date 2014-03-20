@@ -1,6 +1,5 @@
 package fellesprosjekt.gruppe30.View;
 
-import fellesprosjekt.gruppe30.Controller.AppointmentController;
 import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.Utilities;
 
