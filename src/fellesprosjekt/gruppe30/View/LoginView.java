@@ -104,8 +104,8 @@ public class LoginView extends JPanel implements KeyListener {
 		return passwordTextField.getText();
 	}
 
-	public void displayNotifier() {
-		notifier.setVisible(true);
+	public void displayNotifier(boolean status) {
+		notifier.setVisible(status);
 	}
 
 
