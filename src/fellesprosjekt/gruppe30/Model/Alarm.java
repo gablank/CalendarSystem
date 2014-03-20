@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Alarm {
 	private final InternalUser user;
-	private final Appointment  appointment;
+	private       Appointment  appointment;
 	private       Date         date;
 	private 	  boolean	   isSet;
 
@@ -56,5 +56,9 @@ public class Alarm {
 		result.setSet(this.isSet);
 
 		return result;
+	}
+
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
 	}
 }
