@@ -83,6 +83,10 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			Attendant selectedAttendant = appointmentView.getSelectedAttendant();
 			appointmentView.getAppointmentModel().removeAttendant(selectedAttendant);
 
+		} else if (name.equalsIgnoreCase("setAlarm")) {
+			appointmentView.getAlarmModel().setSet(appointmentView.getAlarmIsSelected());
+			System.out.println("edit " + appointmentView.getAlarmModel().isSet());
+
 		} else if(name.equalsIgnoreCase("viewsave")) {
 			Appointment appointment = viewAppointmentView.getAppointmentModel();
 			JSONObject message = appointment.getJSON();
@@ -110,6 +114,11 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("viewcancel")) {
 			client.close(Client.ViewEnum.VIEWAPPOINTMENTVIEW);
+
+		} else if (name.equalsIgnoreCase("viewSetAlarm")) {
+			viewAppointmentView.getAlarmModel().setSet(viewAppointmentView.getAlarmIsSelected());
+			System.out.println("view " + viewAppointmentView.getAlarmModel().isSet());
+
 		}
 	}
 
@@ -129,7 +138,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			message.put("meetingRoom", -1);
 		}
 
-		// only save if this is a new appointment, or if changes have been
+		// only save if this is a new appointment //, or if changes have been
 		if (appointment.getId() == -1) {
 			message.put("action", "new");
 			client.network.send(message);
@@ -229,8 +238,6 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if (source.equalsIgnoreCase("alarmTimeField")) {
 			java.util.Date startTime = appointmentView.getAppointmentModel().getStart();
 			java.util.Date alarmDate = new java.util.Date(startTime.getTime() - appointmentView.getAlarmInMinutes() * 60 * 1000);
-			System.out.println(startTime);
-			System.out.println(alarmDate);
 
 			appointmentView.getAlarmModel().setDate(alarmDate);
 
