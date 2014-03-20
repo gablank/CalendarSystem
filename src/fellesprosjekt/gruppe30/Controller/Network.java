@@ -80,7 +80,7 @@ public abstract class Network implements Runnable {
 			outgoingStream.flush();
 			return true;
 		} catch (IOException e) {
-			System.out.println("send threw exception, client disconnected?");
+			System.out.println("send threw exception, other side disconnected?");
 			return false;
 		}
 	}

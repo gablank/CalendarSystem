@@ -23,16 +23,19 @@ public class AlarmController implements Runnable {
 		while(this.run) {
 
 			alarms = server.getAlarms();
-			Date curTime = new Date(new Date().getTime() + 30 * 1000);
-			Date oneMinBeforeCurTime = new Date(new Date().getTime() - 30 * 1000);
+			Date halfAMinuteFromNow = new Date(new Date().getTime() + 30 * 1000);
+			Date halfAMinuteAgo = new Date(new Date().getTime() - 30 * 1000);
 
-			System.out.println("checking alarms (" + curTime.toString() + ") + " + curTime.getTime() % 1000 + "ms");
+			System.out.println("checking alarms (" + new Date().toString() + " + " + halfAMinuteFromNow.getTime() % 1000 + "ms)  +/- 30s");
 
 			for(int i = 0; i < alarms.size(); i++) {
-				// If now is after alarm date, send mail
-				if(curTime.after(alarms.get(i).getDate()) && oneMinBeforeCurTime.before(alarms.get(i).getDate())) {
-					this.server.sendMail(alarms.get(i).getUser().getEmail(), "Meeting notification", alarms.get(i).getAppointment().getTitle() + " is starting in "
-				+ ((alarms.get(i).getAppointment().getStart().getTime() - alarms.get(i).getDate().getTime()) / 1000 / 60) + " minutes");
+				// If alarm falls within now +/- 30 seconds, send email
+				if (halfAMinuteFromNow.after(alarms.get(i).getDate()) && halfAMinuteAgo.before(alarms.get(i).getDate())) {
+					String recipientEmail = alarms.get(i).getUser().getEmail();
+					String subject = "Meeting notification";
+					String body = alarms.get(i).getAppointment().getTitle() + " is starting in " + ((alarms.get(i).getAppointment().getStart().getTime() - alarms.get(i).getDate().getTime()) / 1000 / 60) + " minutes";
+
+					this.server.sendMail(recipientEmail, subject, body);
 				}
 			}
 
