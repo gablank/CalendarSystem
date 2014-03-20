@@ -119,6 +119,14 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			viewAppointmentView.getAlarmModel().setSet(viewAppointmentView.getAlarmIsSelected());
 			System.out.println("view " + viewAppointmentView.getAlarmModel().isSet());
 
+		} else if (name.equalsIgnoreCase("hideFromCalendar")) {
+			// InternalAttendant attendant = (InternalAttendant)
+			// appointmentView.getAttendantModel();
+			InternalAttendant attendant = (InternalAttendant) appointmentView.getAttendantModel();
+			if (attendant != null) {
+				attendant.setVisibleOnCalendar(!appointmentView.getHideFromCalendar());
+				System.out.println("visible: " + attendant.getVisibleOnCalendar());
+			}
 		}
 	}
 

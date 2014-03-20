@@ -3,6 +3,7 @@ package fellesprosjekt.gruppe30.View;
 import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.Utilities;
 
+import javax.rmi.CORBA.Util;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -22,7 +23,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	protected JTextField			titleField, meetingPlaceField, emailField;
 	protected JTextArea				description;
 	protected JFormattedTextField	dateField, startTimeField, endTimeField, alarmTimeField;
-	protected JCheckBox				useMeetingRoom, hideFromCalendar, setAlarm, inviteByEmail;
+	protected JCheckBox				useMeetingRoom;
+	protected JCheckBox				hideFromCalendar, setAlarm, inviteByEmail;
 	protected JComboBox<Object>		allUsersAndGroups;
 	protected JList<Attendant>		participants;
 	protected JButton				addButton, removeButton, saveButton, deleteButton, cancelButton, selectRoom;
@@ -396,7 +398,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 		this.appointmentModel.addListener(this);
 
-		this.attendantModel = new InternalAttendant(owner, appointmentModel);
+		this.attendantModel = appointment.getAttendant(owner.getEmail());
 
 		if (alarm == null) {
 			Date alarmDate = new Date(this.appointmentModel.getStart().getTime() + 1000 * 60 * 30);
@@ -643,5 +645,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 	public Alarm getAlarmModel() {
 		return this.alarmModel;
+	}
+
+	public Attendant getAttendantModel() {
+		return attendantModel;
+	}
+
+	public boolean getHideFromCalendar() {
+		return hideFromCalendar.isSelected();
 	}
 }
