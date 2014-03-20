@@ -69,6 +69,7 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 		
 		int wantCapacity = bookMeetingRoomView.getCapacity();
 		for (int i = 0; i < validRooms.size(); ++i) {
+			System.out.println(validRooms.get(i).getId() + " - " + validRooms.get(i).getRoomSize());
 			if (validRooms.get(i).getRoomSize() < wantCapacity) {
 				validRooms.remove(i);
 				--i;
@@ -132,7 +133,7 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 	public void keyReleased(KeyEvent e) {
 		try{
 			String source = ((Component) e.getSource()).getName().toLowerCase();
-			if (source.equals("start_text") || source.equals("end_text") || source.equals("date_text")) {
+			if (source.equals("start_text") || source.equals("end_text") || source.equals("date_text") || source.equals("capacity")) {
 				
 				//dateText: 	 DD.MM.YYYY
 				//start/endText: HH:MM
@@ -163,6 +164,7 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 	
 				bookMeetingRoomView.getModel().setStart(newStart);
 				bookMeetingRoomView.getModel().setEnd(newEnd);
+				
 				populateList();
 			}
 		} catch (Exception exception) {
