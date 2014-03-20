@@ -137,10 +137,13 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	public boolean save(Appointment appointment, boolean force, boolean setLastUpdated) {
 		if(setLastUpdated) {
 			appointment.setLastUpdated(new Date());
+			InternalAttendant loggedInUser = (InternalAttendant) Utilities.getAttendantByUserAppointment(appointment, client.getLoggedInUser());
+			if(loggedInUser != null) {
+				loggedInUser.setLastChecked();
+			}
 		}
 
 		JSONObject message = appointment.getJSON();
-
 
 		// don't allow saving if no meetingRoom or meetingPlace is chosen
 		if(!force) {
@@ -284,7 +287,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 				@Override
 				public void run() {
-					Attendant attendant = (Attendant) source.getSelectedValue();
+					InternalAttendant attendant = (InternalAttendant) source.getSelectedValue();
 					if(attendant == null) {
 						System.out.println("Attendant is null in AppointmentController.mouseClicked!");
 						return;
@@ -296,6 +299,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 					if((owner != user) && (isOwner || isSelf)) {
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
+						attendant.setLastChecked();
 						if(source.getName() != null && source.getName().equals("appointmentSummaryViewParticipants")) {
 							save(attendant.getAppointment(), true, true);
 						}

@@ -15,9 +15,9 @@ public class InternalAttendant extends Attendant {
 		lastChecked = new Date(0);
 	}
 
-	// Sets lastChecked to now
+	// Sets lastChecked to now + 1 second
 	public void setLastChecked() {
-		this.lastChecked = new Date();
+		this.lastChecked = new Date(new Date().getTime() + 1000);
 	}
 
 	public void setLastChecked(Date date) {
