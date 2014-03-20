@@ -29,9 +29,9 @@ public class Utilities {
 		return null;
 	}
 
-	public static Alarm getAlarm(Appointment appointment, User user, List<Alarm> alarms) {
+	public static Alarm getAlarm(int appointmentId, User user, List<Alarm> alarms) {
 		for(Alarm alarm : alarms) {
-			if(alarm.getAppointment() == appointment && alarm.getUser() == user)
+			if (alarm.getAppointment() != null && alarm.getAppointment().getId() == appointmentId && alarm.getUser() == user)
 				return alarm;
 		}
 

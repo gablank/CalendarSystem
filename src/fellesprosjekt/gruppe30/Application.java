@@ -61,7 +61,7 @@ public abstract class Application {
 
 	public void removeAlarm(Appointment appointment, User user) {
 		if (user instanceof InternalUser) {
-			this.removeAlarm(Utilities.getAlarm(appointment, user, this.alarms));
+			this.removeAlarm(Utilities.getAlarm(appointment.getId(), user, this.alarms));
 		}
 	}
 

@@ -14,7 +14,7 @@ import fellesprosjekt.gruppe30.Client;
 
 public class ClientNetwork extends Network {
 	int serverPort = 11223;
-	String	serverAddress	= "www.furic.pw";
+	String	serverAddress	= "localhost";
 	Client client;
 
 	public ClientNetwork(Client client) {
@@ -304,8 +304,8 @@ public class ClientNetwork extends Network {
 				long time = message.getLong("time");
 				Date date = new Date(time);
 
-				Utilities.getAlarm(appointment, user, client.getAlarms()).setDate(date);
-				Utilities.getAlarm(appointment, user, client.getAlarms()).setSet(true);
+				Utilities.getAlarm(appointment.getId(), user, client.getAlarms()).setDate(date);
+				Utilities.getAlarm(appointment.getId(), user, client.getAlarms()).setSet(true);
 				System.out.println("successfully changed alarm!");
 
 			} else if ("remove".equals(action)) {

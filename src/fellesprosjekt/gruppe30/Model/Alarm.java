@@ -50,4 +50,11 @@ public class Alarm {
 	public void setSet(boolean isSet) {
 		this.isSet = isSet;
 	}
+
+	public Alarm myClone() {
+		Alarm result = new Alarm(this.user, this.appointment, this.date);
+		result.setSet(this.isSet);
+
+		return result;
+	}
 }

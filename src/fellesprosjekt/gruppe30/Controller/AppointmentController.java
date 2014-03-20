@@ -94,7 +94,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			client.network.send(message);
 
 			JSONObject alarmMessage = viewAppointmentView.getAlarmModel().getJSON();
-			boolean haveAlarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) != null;
+			boolean haveAlarm = Utilities.getAlarm(appointment.getId(), client.getLoggedInUser(), client.getAlarms()) != null;
 			boolean wantAlarm = viewAppointmentView.getAlarmIsSelected();
 
 			if (wantAlarm && haveAlarm) {
@@ -157,7 +157,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		if (alarm != null) {
 			JSONObject alarmMessage = alarm.getJSON();
 
-			boolean haveAlarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms()) != null;
+			boolean haveAlarm = Utilities.getAlarm(appointment.getId(), client.getLoggedInUser(), client.getAlarms()) != null;
 			boolean wantAlarm = appointmentView.getAlarmIsSelected();
 
 			if (wantAlarm && haveAlarm) {
@@ -309,15 +309,14 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	}
 
 	public void openNew() {
-		Appointment newAppointment = new Appointment(client.getLoggedInUser());
 		appointmentView.setComponentsToDefault();
-		appointmentView.setModel(newAppointment, client.getLoggedInUser(), null);
+		appointmentView.setModel(null, client.getLoggedInUser(), null);
 		appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 		appointmentView.setVisible(true);
 	}
 
 	public void open(Appointment appointment) {
-		Alarm alarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms());
+		Alarm alarm = Utilities.getAlarm(appointment.getId(), client.getLoggedInUser(), client.getAlarms());
 
 		if(appointment.getOwner() == client.getLoggedInUser()) {
 			appointmentView.setComponentsToDefault();

@@ -290,7 +290,7 @@ public class ClientHandler extends Network {
 				long time = message.getLong("time");
 				Date date = new Date(time);
 
-				Alarm alarm = Utilities.getAlarm(appointment, user, server.getAlarms());
+				Alarm alarm = Utilities.getAlarm(appointment.getId(), user, server.getAlarms());
 
 				server.getDatabase().insertAlarm(alarm);
 				alarm.setDate(date);
@@ -298,7 +298,7 @@ public class ClientHandler extends Network {
 				System.out.println("successfully changed alarm!");
 
 			} else if ("remove".equals(action)) {
-				Alarm alarm = Utilities.getAlarm(appointment, user, server.getAlarms());
+				Alarm alarm = Utilities.getAlarm(appointment.getId(), user, server.getAlarms());
 
 				server.getDatabase().deleteAlarm(alarm);
 				server.removeAlarm(appointment, user);

@@ -8,7 +8,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.Calendar;
 
-public class Appointment {
+public class Appointment implements Cloneable {
 	private int             id;
 	private String          title;
 	private String          description;
@@ -262,5 +262,15 @@ public class Appointment {
 	public void firePcs() {
 		if (pcs != null)
 			pcs.firePropertyChange("change", 1, 2);
+	}
+
+	public Appointment myClone() {
+		Appointment result = new Appointment(this.owner, this.title, this.description, this.start, this.end, this.meetingPlace, this.room);
+
+		result.attendants = this.getAttendants();
+		result.id = this.getId();
+		result.lastUpdated = this.getLastUpdated();
+
+		return result;
 	}
 }
