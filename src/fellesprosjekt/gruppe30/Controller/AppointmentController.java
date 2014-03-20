@@ -123,20 +123,27 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	}
 
 	private boolean save(Appointment appointment) {
+		return save(appointment, false);
+	}
+
+	private boolean save(Appointment appointment, boolean force) {
 		JSONObject message = appointment.getJSON();
 
 		message.put("lastUpdated", new Date().getTime());
 
 		// don't allow saving if no meetingRoom or meetingPlace is chosen
-		if (appointmentView.useMeetingRoomIsChecked()) {
-			if (appointment.getMeetingRoom() == null)
-				return false;
-			message.put("meetingPlace", "");
-		} else {
-			if (appointment.getMeetingPlace() == "")
-				return false;
-			message.put("meetingRoom", -1);
+		if(!force) {
+			if (appointmentView.useMeetingRoomIsChecked()) {
+				if (appointment.getMeetingRoom() == null)
+					return false;
+				message.put("meetingPlace", "");
+			} else {
+				if (appointment.getMeetingPlace() == "")
+					return false;
+				message.put("meetingRoom", -1);
+			}
 		}
+
 
 		// only save if this is a new appointment //, or if changes have been
 		if (appointment.getId() == -1) {
@@ -279,7 +286,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
 						if(source.getName() != null && source.getName().equals("appointmentSummaryViewParticipants")) {
-							save(attendant.getAppointment());
+							save(attendant.getAppointment(), true);
 						}
 						source.repaint();
 					}
