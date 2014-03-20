@@ -318,6 +318,16 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 				emailField.setVisible(false);
 				allUsersAndGroups.setVisible(true);
 			}
+
+		} else if (e.getSource() == setAlarm) {
+			if (setAlarm.isSelected()) {
+				alarmModel.setSet(true);
+				alarmTimeField.setValue(getAlarmTimeDiff());
+
+			} else {
+				alarmModel.setSet(false);
+
+			}
 		}
 
 	}
@@ -431,15 +441,22 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 			}
 		}
 
-		if(alarmModel == null) {
+		if(alarmModel != null) {
+			setAlarm.setEnabled(true);
+			alarmTimeField.setEnabled(true);
+
+			if (alarmModel.isSet()) {
+				setAlarm.setSelected(true);
+				alarmTimeField.setValue(getAlarmTimeDiff());
+			} else {
+				setAlarm.setSelected(false);
+				alarmTimeField.setValue("00:30");
+			}
+
+		}else{
 			setAlarm.setEnabled(false);
 			setAlarm.setSelected(false);
 			alarmTimeField.setEnabled(false);
-		} else {
-			setAlarm.setEnabled(true);
-			setAlarm.setSelected(true);
-			alarmTimeField.setEnabled(true);
-			alarmTimeField.setValue(getAlarmTimeDiff());
 		}
 
 		PersonListModel personListModel = new PersonListModel();

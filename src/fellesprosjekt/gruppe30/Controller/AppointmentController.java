@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.SimpleTimeZone;
 
 public class AppointmentController implements ActionListener, KeyListener, ListSelectionListener, MouseListener {
-	private final Client client;
-	public AppointmentView appointmentView;
-	private ViewAppointmentView viewAppointmentView;
+	private final Client		client;
+	public AppointmentView		appointmentView;
+	private ViewAppointmentView	viewAppointmentView;
 
 
 	public AppointmentController(Client client) {
@@ -298,14 +298,15 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		InternalAttendant newAttendant = new InternalAttendant(client.getLoggedInUser(), newAppointment);
 		appointmentView.setComponentsToDefault();
 		appointmentView.setModel(newAppointment, newAttendant, null);
-		appointmentView.setAlarmCheckbox(false);
 		appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 		appointmentView.setVisible(true);
 	}
 
 	public void open(Appointment appointment) {
 		Attendant attendant = appointment.getAttendant(client.getLoggedInUser());
+
 		Alarm alarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms());
+
 		if(appointment.getOwner() == client.getLoggedInUser()) {
 			appointmentView.setComponentsToDefault();
 			appointmentView.setModel(appointment, attendant, alarm);

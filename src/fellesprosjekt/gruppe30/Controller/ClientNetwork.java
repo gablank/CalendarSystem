@@ -290,6 +290,7 @@ public class ClientNetwork extends Network {
 				long time = message.getLong("time");
 				Date date = new Date(time);
 				Alarm alarm = new Alarm(user, appointment, date);
+				alarm.setSet(true);
 
 				client.addAlarm(alarm);
 				System.out.println("successfully added alarm!");
@@ -304,6 +305,7 @@ public class ClientNetwork extends Network {
 				Date date = new Date(time);
 
 				Utilities.getAlarm(appointment, user, client.getAlarms()).setDate(date);
+				Utilities.getAlarm(appointment, user, client.getAlarms()).setSet(true);
 				System.out.println("successfully changed alarm!");
 
 			} else if ("remove".equals(action)) {

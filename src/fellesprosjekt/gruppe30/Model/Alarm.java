@@ -9,11 +9,13 @@ public class Alarm {
 	private final InternalUser user;
 	private final Appointment  appointment;
 	private       Date         date;
+	private 	  boolean	   isSet;
 
 	public Alarm(InternalUser user, Appointment appointment, Date date) {
 		this.user = user;
 		this.appointment = appointment;
 		this.date = date;
+		isSet = false;
 	}
 
 	public Date getDate() {
@@ -39,5 +41,13 @@ public class Alarm {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public boolean isSet() {
+		return isSet;
+	}
+
+	public void setSet(boolean isSet) {
+		this.isSet = isSet;
 	}
 }
