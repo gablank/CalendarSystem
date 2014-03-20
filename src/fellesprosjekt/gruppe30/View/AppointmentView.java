@@ -398,7 +398,8 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 		this.appointmentModel.addListener(this);
 
-		this.attendantModel = appointment.getAttendant(owner.getEmail());
+		this.attendantModel = this.appointmentModel.getAttendant(owner.getEmail());
+		System.out.println(attendantModel);
 
 		if (alarm == null) {
 			Date alarmDate = new Date(this.appointmentModel.getStart().getTime() + 1000 * 60 * 30);

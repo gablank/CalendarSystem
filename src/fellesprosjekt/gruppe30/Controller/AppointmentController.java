@@ -122,6 +122,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if (name.equalsIgnoreCase("hideFromCalendar")) {
 			// InternalAttendant attendant = (InternalAttendant)
 			// appointmentView.getAttendantModel();
+			// InternalAttendant attendant = (InternalAttendant) Utilities.getAttendantByEmailAppointmentId(client.getLoggedInUser().getEmail(), appointmentView.getAppointmentModel().getId(), appointmentView.getAppointmentModel().getAttendants());
 			InternalAttendant attendant = (InternalAttendant) appointmentView.getAttendantModel();
 			if (attendant != null) {
 				attendant.setVisibleOnCalendar(!appointmentView.getHideFromCalendar());
