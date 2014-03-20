@@ -267,7 +267,16 @@ public class Appointment implements Cloneable {
 	public Appointment myClone() {
 		Appointment result = new Appointment(this.owner, this.title, this.description, this.start, this.end, this.meetingPlace, this.room);
 
-		result.attendants = this.getAttendants();
+		for (Attendant attendant : this.attendants) {
+			Attendant clonedAttendant;
+			if (attendant instanceof InternalAttendant) {
+				clonedAttendant = new InternalAttendant((InternalUser) attendant.getUser(), result);
+			} else {
+				clonedAttendant = new ExternalAttendant((ExternalUser) attendant.getUser(), result);
+			}
+			clonedAttendant.setStatus(attendant.getStatus());
+			result.addAttendant(clonedAttendant);
+		}
 		result.id = this.getId();
 		result.lastUpdated = this.getLastUpdated();
 
