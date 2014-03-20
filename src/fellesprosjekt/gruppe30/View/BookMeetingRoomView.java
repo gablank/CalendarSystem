@@ -25,8 +25,7 @@ public class BookMeetingRoomView extends JPanel {
 	//Salvador Fali aka Kush Wagner
 	private JList<MeetingRoom>				roomList;
 	private DefaultListModel<MeetingRoom>	roomListModel;
-	private JFormattedTextField				startText, endText, dateText;	// capacityText;
-	private JTextField						capacityText;
+	private JFormattedTextField				startText, endText, dateText,  capacityText;
 	private JLabel							startLabel, endLabel, dateLabel, roomLabel, capacityLabel, spaceLabel;
 	private JScrollPane						roomListScroll;
 	private JButton							okButton, cancelButton;
