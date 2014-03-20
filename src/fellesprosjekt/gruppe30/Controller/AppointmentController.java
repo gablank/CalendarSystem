@@ -310,24 +310,21 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 	public void openNew() {
 		Appointment newAppointment = new Appointment(client.getLoggedInUser());
-		InternalAttendant newAttendant = new InternalAttendant(client.getLoggedInUser(), newAppointment);
 		appointmentView.setComponentsToDefault();
-		appointmentView.setModel(newAppointment, newAttendant, null);
+		appointmentView.setModel(newAppointment, client.getLoggedInUser(), null);
 		appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 		appointmentView.setVisible(true);
 	}
 
 	public void open(Appointment appointment) {
-		Attendant attendant = appointment.getAttendant(client.getLoggedInUser());
-
 		Alarm alarm = Utilities.getAlarm(appointment, client.getLoggedInUser(), client.getAlarms());
 
 		if(appointment.getOwner() == client.getLoggedInUser()) {
 			appointmentView.setComponentsToDefault();
-			appointmentView.setModel(appointment, attendant, alarm);
+			appointmentView.setModel(appointment, client.getLoggedInUser(), alarm);
 			appointmentView.setVisible(true);
 		} else {
-			viewAppointmentView.setModel(appointment, attendant, alarm);
+			viewAppointmentView.setModel(appointment, client.getLoggedInUser(), alarm);
 			viewAppointmentView.setVisible(true);
 		}
 	}
