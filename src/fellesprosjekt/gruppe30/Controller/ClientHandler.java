@@ -230,6 +230,8 @@ public class ClientHandler extends Network {
 			int id = message.getInt("id");
 
 			Appointment appointment = Utilities.getAppointmentById(id, server.getAppointments());
+			if (appointment == null)
+				return;
 
 			server.getDatabase().deleteAppointment(appointment);
 			server.removeAppointment(appointment);
