@@ -386,6 +386,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		if(appointmentModel != null) {
 			appointmentModel.removeListener(this);
 		}
+		
 		this.appointmentModel = appointment;
 		this.attendantModel = attendant;
 		//this.personListModel.addElement((Attendant) attendant);
@@ -495,7 +496,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 				return hour * 60 + minutes;
 			}
 		} catch (Exception e) {
-			// silently disregard exceptions fromparseInt
+			// silently disregard exceptions from parseInt
 		}
 		return -1;
 	}
@@ -632,9 +633,5 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 	public Alarm getAlarmModel() {
 		return this.alarmModel;
-	}
-
-	public void setAlarmCheckbox(boolean b) {
-		setAlarm.setSelected(b);
 	}
 }
