@@ -203,6 +203,9 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 
 	public void setInternalUsers(java.util.List<InternalUser> internalUsers) {
 		users.removeAllItems();
+		if(internalUsers.size() == 0) {
+			users.addItem(null); // Fixed calendar view rendering error. PS: Fuck swing!
+		}
 		for(InternalUser user : internalUsers) {
 			this.addInternalUser(user);
 		}
@@ -246,7 +249,12 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 	public void setModel (Calendar calendar){
 		this.model = calendar;
         this.model.addPropertyChangeSupportListener(this);
-		updateView();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				updateView();
+			}
+		});
 	}
 
 	/*public static void main(String[] args) {
