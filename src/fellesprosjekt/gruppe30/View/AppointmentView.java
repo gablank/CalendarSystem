@@ -515,7 +515,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		alarmMinutes += cal.get(java.util.Calendar.HOUR_OF_DAY) * 60;
 		alarmMinutes += cal.get(java.util.Calendar.MINUTE);
 
-		int diff = startMinutes - alarmMinutes;
+		int diff = alarmMinutes - startMinutes;
 		if(diff < 0) {
 			diff += 24 * 60;
 		}
