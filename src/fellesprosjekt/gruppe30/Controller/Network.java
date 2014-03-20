@@ -79,9 +79,8 @@ public abstract class Network implements Runnable {
 			outgoingStream.writeUTF(jsonString);
 			outgoingStream.flush();
 			return true;
-		} catch(IOException e) {
-			System.out.println("send threw exception: ");
-			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("send threw exception, client disconnected?");
 			return false;
 		}
 	}
