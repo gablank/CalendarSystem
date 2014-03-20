@@ -23,18 +23,18 @@ public class ServerListener implements Runnable {
 		this.server = server;
 	}
 
-	// for testing only
-	public ClientHandler getFirstHandler() {
-		if(clientHandlers.isEmpty()) {
-			return null;
-		} else {
-			return clientHandlers.get(0);
-		}
-	}
-
 	public void broadcast(JSONObject message){
-		for (ClientHandler clientHandler : clientHandlers) {
-			clientHandler.send(message);
+		System.out.println("broadcasting to " + clientHandlers.size());
+		for(int i = 0; i < clientHandlers.size(); ++i){
+			if(clientHandlers.get(i).send(message)){
+				;//all is fine
+
+			} else {
+				//client has disconnected
+				clientHandlers.get(i).running = false;
+				clientHandlers.remove(i);
+				--i;
+			}
 		}
 
 		if (message.has("action") && message.has("title") && message.has("attendants") && message.has("description") && message.has("start") && message.has("end")) {

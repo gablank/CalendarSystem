@@ -72,15 +72,17 @@ public abstract class Network implements Runnable {
 		}
 	}
 
-	public void send(JSONObject obj) {
+	public boolean send(JSONObject obj) {
 		String jsonString = obj.toString();
 		System.out.println("sending: " + jsonString);
 		try {
 			outgoingStream.writeUTF(jsonString);
 			outgoingStream.flush();
+			return true;
 		} catch(IOException e) {
-			System.out.println("sendJsonObject threw exception: ");
+			System.out.println("send threw exception: ");
 			e.printStackTrace();
+			return false;
 		}
 	}
 
