@@ -14,7 +14,7 @@ import fellesprosjekt.gruppe30.Client;
 
 public class ClientNetwork extends Network {
 	int serverPort = 11223;
-	String	serverAddress	= "localhost";
+	String	serverAddress	= "www.furic.pw";
 	Client client;
 
 	public ClientNetwork(Client client) {
