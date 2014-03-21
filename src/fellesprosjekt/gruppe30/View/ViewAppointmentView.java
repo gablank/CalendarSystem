@@ -30,6 +30,7 @@ public class ViewAppointmentView extends AppointmentView {
 		cancelButton.setName("viewcancel");
 		alarmTimeField.setName("viewAlarmTimeField");
 		setAlarm.setName("viewSetAlarm");
+		hideFromCalendar.setName("viewHideFromCalendar");
 	}
 
 	/*public static void main(String[] args) {
@@ -45,6 +46,12 @@ public class ViewAppointmentView extends AppointmentView {
 			;
 		} else {
 			meetingPlaceField.setText(selectRoom.getText());
+		}
+		
+		if(attendantModel == null){		// the logged in user is not an attendant in this appointment
+			hideFromCalendar.setEnabled(false);
+		} else {
+			hideFromCalendar.setEnabled(true);
 		}
 	}
 
