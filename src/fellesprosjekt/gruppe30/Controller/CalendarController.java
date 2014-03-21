@@ -136,4 +136,8 @@ public class CalendarController implements ActionListener, MouseListener, Window
 	public Calendar getCalendarModel() {
 		return calendarModel;
 	}
+
+	public CalendarView getCalendarView() {
+		return calendarView;
+	}
 }

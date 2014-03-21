@@ -253,7 +253,10 @@ public class Appointment implements Cloneable {
 		this.end = appointment.getEnd();
 		this.meetingPlace = appointment.getMeetingPlace();
 		this.room = appointment.getMeetingRoom();
-		this.attendants = appointment.getAttendants();
+		this.attendants.clear();
+		for(Attendant attendant : appointment.getAttendants()) {
+			addAttendant(attendant);
+		}
 		this.lastUpdated = appointment.getLastUpdated();
 		if(pcs != null)
 			pcs.firePropertyChange("changedAppointment", 1, 2);

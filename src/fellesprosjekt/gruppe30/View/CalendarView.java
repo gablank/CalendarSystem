@@ -144,7 +144,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		personListModel.addElement("Dude dudeson");
 		//end test code
 
-		frame = new JFrame("Calendar view");
+		frame = new JFrame("Calendar System - Calendar");
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);
@@ -219,7 +219,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		users.removeItem(user.getEmail());
 	}
 	
-	public void updateView(){
+	synchronized public void updateView(){
+		if(!this.isVisible()) {
+			return;
+		}
 		java.util.List<java.util.List<Appointment>> showAppointments = model.getAppointments();
 		String[] labels = model.getDays();
 		int weekNumber = model.getWeek();
