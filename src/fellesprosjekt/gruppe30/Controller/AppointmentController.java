@@ -304,19 +304,19 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 				@Override
 				public void run() {
-					InternalAttendant attendant = (InternalAttendant) source.getSelectedValue();
+					Attendant attendant = (Attendant) source.getSelectedValue();
 					if(attendant == null) {
 						System.out.println("Attendant is null in AppointmentController.mouseClicked!");
 						return;
 					}
+
 					InternalUser owner = attendant.getAppointment().getOwner();
-					InternalUser user = (InternalUser) attendant.getUser();
+					User user = attendant.getUser();
 					boolean isOwner = owner == client.getLoggedInUser();
 					boolean isSelf = user == client.getLoggedInUser();
 					if((owner != user) && (isOwner || isSelf)) {
 						int newStatus = (attendant.getStatus() + 1) % 3;
 						attendant.setStatus(newStatus);
-						attendant.setLastChecked();
 						if(source.getName() != null && source.getName().equals("appointmentSummaryViewParticipants")) {
 							save(attendant.getAppointment(), true, true);
 						}
