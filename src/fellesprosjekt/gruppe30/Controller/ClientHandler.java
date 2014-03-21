@@ -209,8 +209,8 @@ public class ClientHandler extends Network {
 					return;
 				}
 
-				server.getDatabase().insertAppointment(oldAppointment);
 				oldAppointment.copyAllFrom(appointment);
+				server.getDatabase().insertAppointment(oldAppointment);
 				server.getServerListener().broadcast(message);
 				System.out.println("successfully changed an appointment!");
 
