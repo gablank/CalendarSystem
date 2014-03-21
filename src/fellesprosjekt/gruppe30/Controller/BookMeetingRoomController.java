@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 
 import fellesprosjekt.gruppe30.Application;
 import fellesprosjekt.gruppe30.Client;
+import fellesprosjekt.gruppe30.Utilities;
 import fellesprosjekt.gruppe30.Model.Appointment;
 import fellesprosjekt.gruppe30.Model.MeetingRoom;
 import fellesprosjekt.gruppe30.View.BookMeetingRoomView;
@@ -76,37 +77,14 @@ public class BookMeetingRoomController implements ActionListener, ListSelectionL
 			}
 		}
 		
-		Date startDate = bookMeetingRoomView.getModel().getStart();
-		Date endDate = bookMeetingRoomView.getModel().getEnd();
 		for (int i = 0; i < validRooms.size(); ++i) {
-			if (!isAvailable(validRooms.get(i), startDate, endDate, client.getAppointments())) {
+			if (!Utilities.isAvailable(validRooms.get(i), bookMeetingRoomView.getModel(), client.getAppointments())) {
 				validRooms.remove(i);
 				--i;
 			}
 		}
 
 		bookMeetingRoomView.populateList(validRooms);
-	}
-	
-	private boolean isAvailable(MeetingRoom room, Date startDate, Date endDate, List<Appointment> appointments) {
-		
-		int roomId = room.getId();
-		
-		for(Appointment appointment : appointments){
-			if(appointment.getMeetingRoom() == null)
-				continue;
-			
-			if(appointment.getMeetingRoom().getId() != roomId)
-				continue;	
-			
-			// (StartDate1 <= EndDate2) 			   && (StartDate2 <= EndDate1)
-			if (appointment.getStart().before(endDate) && startDate.before(appointment.getEnd())) {
-				// there is overlap
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	public static void main(String[] args) {

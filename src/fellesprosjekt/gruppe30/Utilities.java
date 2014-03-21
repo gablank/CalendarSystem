@@ -108,4 +108,27 @@ public class Utilities {
 		}
 		return hour + ":" + minute;
 	}
+
+	public static boolean isAvailable(MeetingRoom room, Appointment isForAppointment, List<Appointment> appointments) {
+		int roomId = room.getId();
+
+		for (Appointment appointment : appointments) {
+			if (appointment.getMeetingRoom() == null)
+				continue;
+
+			if (appointment.getMeetingRoom().getId() != roomId)
+				continue;
+
+			if (appointment.getId() == isForAppointment.getId())
+				continue;
+
+			// (StartDate1 <= EndDate2) && (StartDate2 <= EndDate1)
+			if (appointment.getStart().before(isForAppointment.getEnd()) && isForAppointment.getStart().before(appointment.getEnd())) {
+				// there is overlap
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
