@@ -219,7 +219,10 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		users.removeItem(user.getEmail());
 	}
 	
-	public void updateView(){
+	synchronized public void updateView(){
+		if(!this.isVisible()) {
+			return;
+		}
 		java.util.List<java.util.List<Appointment>> showAppointments = model.getAppointments();
 		String[] labels = model.getDays();
 		int weekNumber = model.getWeek();

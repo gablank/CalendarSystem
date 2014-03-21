@@ -74,6 +74,7 @@ public class Client extends Application {
 			this.bookMeetingRoomController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.CALENDAR)) {
+			this.calendarController.getCalendarView().updateView();
 			this.calendarController.setVisible(state);
 		}
 		if(viewEnum.equals(ViewEnum.ALL) || viewEnum.equals(ViewEnum.AREYOUSUREVIEW)) {
@@ -83,10 +84,10 @@ public class Client extends Application {
 
 	public void setLoggedIn(String email) {
 		close(ViewEnum.LOGIN);
-		open(ViewEnum.CALENDAR);
 		this.loggedInUser = (InternalUser) Utilities.getUserByEmail(email, users);
 		this.calendarController.setUser(this.loggedInUser);
-        pcs.firePropertyChange("change", 1, 2);
+		pcs.firePropertyChange("change", 1, 2);
+		open(ViewEnum.CALENDAR);
 	}
 
 	public void newAppointment() {
