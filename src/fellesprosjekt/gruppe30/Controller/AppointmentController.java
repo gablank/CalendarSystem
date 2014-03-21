@@ -6,6 +6,7 @@ import fellesprosjekt.gruppe30.Client.ViewEnum;
 import fellesprosjekt.gruppe30.Model.*;
 import fellesprosjekt.gruppe30.Utilities;
 
+import javax.rmi.CORBA.Util;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
@@ -165,12 +166,22 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		// don't allow saving if no meetingRoom or meetingPlace is chosen
 		if(!force) {
 			if (appointmentView.useMeetingRoomIsChecked()) {
-				if (appointment.getMeetingRoom() == null)
+				if (appointment.getMeetingRoom() == null) {
+					System.out.println("no meetingroom selected!");
 					return false;
+				}
+
+				if (!Utilities.isAvailable(appointment.getMeetingRoom(), appointment, client.getAppointments())) {
+					System.out.println("the meetingroom is not available!");
+					return false;
+				}
+
 				message.put("meetingPlace", "");
 			} else {
-				if (appointment.getMeetingPlace() == "")
+				if (appointment.getMeetingPlace() == "") {
+					System.out.println("no meetingplace selected!");
 					return false;
+				}
 				message.put("meetingRoom", -1);
 			}
 		}
