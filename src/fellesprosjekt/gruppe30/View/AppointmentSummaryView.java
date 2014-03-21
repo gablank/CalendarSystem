@@ -167,7 +167,7 @@ public class AppointmentSummaryView extends JPanel implements MouseListener, Pro
 		loggedInUser = Utilities.getAttendantByUserAppointment(model, client.getLoggedInUser());
 		if(loggedInUser != null) {
 			if(((InternalAttendant) loggedInUser).getLastChecked().before(model.getLastUpdated())) {
-				this.setBackground(Color.RED);
+				this.setBackground(Color.GRAY);
 			}
 		}
 	}
