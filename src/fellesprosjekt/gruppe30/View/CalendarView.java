@@ -144,7 +144,7 @@ public class CalendarView extends JPanel implements PropertyChangeListener {
 		personListModel.addElement("Dude dudeson");
 		//end test code
 
-		frame = new JFrame("Calendar view");
+		frame = new JFrame("Calendar System - Calendar");
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);

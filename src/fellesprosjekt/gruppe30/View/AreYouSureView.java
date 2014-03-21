@@ -40,8 +40,7 @@ public class AreYouSureView extends JPanel {
 		panel.add(noButton);
 		add(panel, gbc);
 		
-		frame = new JFrame();
-		frame.setTitle("Calendar System");
+		frame = new JFrame("Calendar System - Are you sure?");
 		frame.setSize(220, 120);
 		frame.setVisible(false);
 		frame.setResizable(false);

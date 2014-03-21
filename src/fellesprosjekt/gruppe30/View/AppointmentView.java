@@ -233,7 +233,7 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		saveDelete.add(cancelButton);
 		add(saveDelete, cRight);
 
-		frame = new JFrame("Appointment view");
+		frame = new JFrame("Calendar System - Appointment");
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(false);

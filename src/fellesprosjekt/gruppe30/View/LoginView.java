@@ -74,7 +74,7 @@ public class LoginView extends JPanel implements KeyListener {
 		buttonPanel.add(quitButton);
 		add(buttonPanel, cRight);
 
-		frame = new JFrame("Calendar System");
+		frame = new JFrame("Calendar System - Login");
 		frame.add(this);
 		frame.setVisible(false);
 		frame.setResizable(false);

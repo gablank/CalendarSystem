@@ -172,7 +172,7 @@ public class BookMeetingRoomView extends JPanel {
 		cRight.gridheight = 2;
 		add(okCancelPanel, cRight);
 
-		frame = new JFrame("Reserve Room");
+		frame = new JFrame("Calendar System - Reserve Room");
 		frame.add(this);
 		frame.setVisible(false);
 		frame.setResizable(false);
