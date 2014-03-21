@@ -26,14 +26,18 @@ public class ServerListener implements Runnable {
 	public void broadcast(JSONObject message){
 		System.out.println("broadcasting to " + clientHandlers.size());
 		for(int i = 0; i < clientHandlers.size(); ++i){
-			if(clientHandlers.get(i).send(message)){
-				;//all is fine
+			// only broadcast to connections that have a logged in client
+			if (clientHandlers.get(i).getUsername() != null) {
 
-			} else {
-				//client has disconnected
-				clientHandlers.get(i).running = false;
-				clientHandlers.remove(i);
-				--i;
+				if (clientHandlers.get(i).send(message)) {
+					;// all is fine
+
+				} else {
+					// client has disconnected
+					clientHandlers.get(i).running = false;
+					clientHandlers.remove(i);
+					--i;
+				}
 			}
 		}
 

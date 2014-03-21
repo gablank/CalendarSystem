@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class ClientHandler extends Network {
 	Server	server;
-	String	username				= null;
+	String	username				= null;	//null means that the connected client is not logged in
 	
 	int		lastNewAppointmentId	= -1;	// used to determine appointmentId
 											// of alarms with appointmentId = -1
@@ -339,5 +339,9 @@ public class ClientHandler extends Network {
 		for (Group group : server.getGroups()) {
 			send(group.getJSON());
 		}
+	}
+
+	public String getUsername() {
+		return username;
 	}
 }
