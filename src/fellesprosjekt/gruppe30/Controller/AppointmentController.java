@@ -89,6 +89,12 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 		} else if(name.equalsIgnoreCase("viewsave")) {
 			Appointment appointment = viewAppointmentView.getAppointmentModel();
+
+			InternalAttendant loggedInUser = (InternalAttendant) Utilities.getAttendantByUserAppointment(appointment, client.getLoggedInUser());
+			if (loggedInUser != null) {
+				loggedInUser.setLastChecked();
+			}
+
 			JSONObject message = appointment.getJSON();
 			message.put("action", "change");
 			client.network.send(message);
@@ -122,9 +128,20 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		} else if (name.equalsIgnoreCase("hideFromCalendar")) {
 			// InternalAttendant attendant = (InternalAttendant)
 			// appointmentView.getAttendantModel();
+			// InternalAttendant attendant = (InternalAttendant) Utilities.getAttendantByEmailAppointmentId(client.getLoggedInUser().getEmail(), appointmentView.getAppointmentModel().getId(), appointmentView.getAppointmentModel().getAttendants());
 			InternalAttendant attendant = (InternalAttendant) appointmentView.getAttendantModel();
 			if (attendant != null) {
 				attendant.setVisibleOnCalendar(!appointmentView.getHideFromCalendar());
+				System.out.println("visible: " + attendant.getVisibleOnCalendar());
+			}
+			
+		} else if (name.equalsIgnoreCase("viewHideFromCalendar")) {
+			// InternalAttendant attendant = (InternalAttendant)
+			// appointmentView.getAttendantModel();
+			// InternalAttendant attendant = (InternalAttendant) Utilities.getAttendantByEmailAppointmentId(client.getLoggedInUser().getEmail(), appointmentView.getAppointmentModel().getId(), appointmentView.getAppointmentModel().getAttendants());
+			InternalAttendant attendant = (InternalAttendant) viewAppointmentView.getAttendantModel();
+			if (attendant != null) {
+				attendant.setVisibleOnCalendar(!viewAppointmentView.getHideFromCalendar());
 				System.out.println("visible: " + attendant.getVisibleOnCalendar());
 			}
 		}
@@ -345,6 +362,7 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		if(appointment.getOwner() == client.getLoggedInUser()) {
 			appointmentView.setComponentsToDefault();
 			appointmentView.setModel(appointment, client.getLoggedInUser(), alarm);
+			appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 			appointmentView.setVisible(true);
 		} else {
 			viewAppointmentView.setModel(appointment, client.getLoggedInUser(), alarm);

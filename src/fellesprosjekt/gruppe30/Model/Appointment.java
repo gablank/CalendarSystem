@@ -293,6 +293,8 @@ public class Appointment implements Cloneable {
 			Attendant clonedAttendant;
 			if (attendant instanceof InternalAttendant) {
 				clonedAttendant = new InternalAttendant((InternalUser) attendant.getUser(), result);
+				((InternalAttendant) clonedAttendant).setLastChecked(((InternalAttendant) attendant).getLastChecked());
+				((InternalAttendant) clonedAttendant).setVisibleOnCalendar(((InternalAttendant) attendant).getVisibleOnCalendar());
 			} else {
 				clonedAttendant = new ExternalAttendant((ExternalUser) attendant.getUser(), result);
 			}

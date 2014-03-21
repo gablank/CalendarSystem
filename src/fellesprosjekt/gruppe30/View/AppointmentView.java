@@ -384,13 +384,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	}
 
 
-	public void setModel(Appointment appointment, InternalUser owner, Alarm alarm) {
+	public void setModel(Appointment appointment, InternalUser loggedInUser, Alarm alarm) {
 		if(appointmentModel != null) {
 			appointmentModel.removeListener(this);
 		}
 		
 		if (appointment == null) {
-			this.appointmentModel = new Appointment(owner);
+			this.appointmentModel = new Appointment(loggedInUser);
 			System.out.println("new!");
 		} else {
 			this.appointmentModel = appointment.myClone();
@@ -398,11 +398,11 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 		}
 		this.appointmentModel.addListener(this);
 
-		this.attendantModel = appointment.getAttendant(owner.getEmail());
+		this.attendantModel = this.appointmentModel.getAttendant(loggedInUser.getEmail());
 
 		if (alarm == null) {
 			Date alarmDate = new Date(this.appointmentModel.getStart().getTime() + 1000 * 60 * 30);
-			this.alarmModel = new Alarm(owner, this.appointmentModel, alarmDate);
+			this.alarmModel = new Alarm(loggedInUser, this.appointmentModel, alarmDate);
 			System.out.println("new!");
 		} else {
 			this.alarmModel = alarm.myClone();
