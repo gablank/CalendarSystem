@@ -110,6 +110,9 @@ public class Utilities {
 	}
 
 	public static boolean isAvailable(MeetingRoom room, Appointment isForAppointment, List<Appointment> appointments) {
+		if (room == null)
+			return true;
+
 		int roomId = room.getId();
 
 		for (Appointment appointment : appointments) {

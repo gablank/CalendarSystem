@@ -486,8 +486,11 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+	public void propertyChange(PropertyChangeEvent pce) {
 		this.updateFields();
+
+		if (pce.getPropertyName() == "room")
+			setMeetingRoomButtonColor(true);
 	}
 
 	public Appointment getAppointmentModel() {
@@ -653,5 +656,13 @@ public class AppointmentView extends JPanel implements ActionListener, PropertyC
 
 	public boolean getHideFromCalendar() {
 		return hideFromCalendar.isSelected();
+	}
+
+	public void setMeetingRoomButtonColor(boolean validRoom) {
+		if (validRoom) {
+			selectRoom.setBackground(UIManager.getColor("Button.background"));
+		} else {
+			selectRoom.setBackground(Color.red);
+		}
 	}
 }

@@ -15,6 +15,7 @@ import fellesprosjekt.gruppe30.View.ViewAppointmentView;
 
 import org.json.JSONObject;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -284,6 +285,9 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 
 			}
 
+			boolean roomIsAvailable = Utilities.isAvailable(appointmentView.getAppointmentModel().getMeetingRoom(), appointmentView.getAppointmentModel(), client.getAppointments());
+			appointmentView.setMeetingRoomButtonColor(roomIsAvailable);
+
 		} else if (source.equalsIgnoreCase("alarmTimeField")) {
 			java.util.Date startTime = appointmentView.getAppointmentModel().getStart();
 			java.util.Date alarmDate = new java.util.Date(startTime.getTime() - appointmentView.getAlarmInMinutes() * 60 * 1000);
@@ -365,6 +369,9 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 		appointmentView.setModel(null, client.getLoggedInUser(), null);
 		appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 		appointmentView.setVisible(true);
+
+		boolean roomIsAvailable = Utilities.isAvailable(appointmentView.getAppointmentModel().getMeetingRoom(), appointmentView.getAppointmentModel(), client.getAppointments());
+		appointmentView.setMeetingRoomButtonColor(roomIsAvailable);
 	}
 
 	public void open(Appointment appointment) {
@@ -375,6 +382,10 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 			appointmentView.setModel(appointment, client.getLoggedInUser(), alarm);
 			appointmentView.setInternalUsersAndGroups(client.getInternalUsers(), client.getGroups());
 			appointmentView.setVisible(true);
+
+			boolean roomIsAvailable = Utilities.isAvailable(appointmentView.getAppointmentModel().getMeetingRoom(), appointmentView.getAppointmentModel(), client.getAppointments());
+			appointmentView.setMeetingRoomButtonColor(roomIsAvailable);
+
 		} else {
 			viewAppointmentView.setModel(appointment, client.getLoggedInUser(), alarm);
 			viewAppointmentView.setVisible(true);
@@ -389,4 +400,5 @@ public class AppointmentController implements ActionListener, KeyListener, ListS
 	public Appointment getModel() {
 		return appointmentView.getAppointmentModel();
 	}
+
 }
